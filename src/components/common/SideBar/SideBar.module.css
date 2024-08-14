@@ -1,0 +1,83 @@
+.sidebarContainer {
+  display: flex; /* 사이드바와 hr을 나란히 배치하기 위해 flex 사용 */
+  align-items: center; /* 세로 중앙 정렬 */
+}
+
+.sidebar {
+  width: 20vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 85vh;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  color: #5F6165;
+}
+
+.navList {
+  list-style: none; /* 기본 리스트 스타일 제거 */
+  padding: 0; /* 기본 패딩 제거 */
+  margin: 0; /* 기본 마진 제거 */
+}
+
+.navItem {  
+  display: flex;
+  margin-bottom: 1vh; /* 항목 간 간격 설정 */
+}
+
+.navLink {
+  text-decoration: none; /* 링크의 기본 밑줄 제거 */
+  color: #333; /* 링크 텍스트 색상 설정 */
+  font-size: 1.4vw; /* 링크 텍스트 크기 설정 */
+  padding: 10px; /* 링크의 내부 여백 설정 */
+  display: block; /* 링크가 블록으로 표시되도록 설정 */
+  border-radius: 4px; /* 링크의 둥근 모서리 설정 */
+}
+
+.navLink:hover {
+  background-color: #ddd; /* 마우스 오버 시 배경색 변경 */
+  font-weight: bold;
+  color: #000; /* 마우스 오버 시 텍스트 색상 변경 */
+}
+
+
+.separator {
+  height: 87vh; /* 전체 화면 높이 설정 */
+  border: none; /* 기본 테두리 제거 */
+  border-left: 1px solid #9F9F9F; /* 사이드바 오른쪽에 수직선 추가 */
+  margin-left: 0px; /* 사이드바와 수직선 간의 간격 설정 */
+}
+
+.title {
+  font-size: 2.7vw; /* 링크 텍스트 크기 설정 */
+  font-weight: bold;
+  display: flex;
+  padding-top: 5%;
+  padding-bottom: 15%;
+}
+
+.titleImg {
+  width: 3vw; /* 아이콘 크기를 고정합니다. */
+  height: auto;
+  margin-right: 8px; /* 아이콘과 텍스트 사이의 간격 */
+}
+
+.icon {
+  width: 10%; 
+  height: 10%;
+  align-self: center;
+  margin-right: 8px; /* 아이콘과 텍스트 사이의 간격 */
+}
+
+.topMenu{
+  margin-top: 0%;
+  margin-left: 13%;
+}
+
+.logoutIcon {
+  width: 20%; 
+  align-self: center;
+}

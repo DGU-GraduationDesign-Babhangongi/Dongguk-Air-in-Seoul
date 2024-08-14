@@ -1,0 +1,58 @@
+/* Header.module.css */
+.header {
+  margin-left: 3%;
+  margin-right: 4%;
+  width: 92%;
+  display: flex;
+  align-items: center;
+  padding: 1%;
+  justify-content: space-between;
+  position: relative;
+}
+
+.nav {
+  width: 44%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navLink {
+  color: #000000;
+  display: flex;
+  text-decoration: none;
+  align-items: center;
+  font-size: 1.8vw;
+  padding: 5px; /* 링크의 클릭 영역을 넓히기 위한 패딩 */
+  white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 */
+}
+
+.navLink:hover {
+  font-weight: bold;
+}
+
+.logo {
+  width: 20%;
+  height: auto;
+}
+
+.icon {
+  width: 3vw; /* 아이콘 크기를 고정합니다. */
+  height: auto;
+  margin-right: 8px; /* 아이콘과 텍스트 사이의 간격 */
+}
+
+.font {
+  display: flex;
+  align-items: center;
+}
+
+.separator {
+  align-self: center;
+  width: 95%;
+  border: none;
+  border-top: 1px solid #9F9F9F;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}

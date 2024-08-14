@@ -1,0 +1,17 @@
+.top {
+    background-color: #FFB841;
+    width: 80vw;
+    height: 50%;
+    aspect-ratio: 5 / 1;
+    margin-top: 0;
+  }
+
+  /* figures.module.css */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+}
