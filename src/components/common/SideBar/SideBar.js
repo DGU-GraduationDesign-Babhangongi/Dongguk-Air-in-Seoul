@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import styles from './SideBar.module.css'; // 사이드바 스타일을 위한 CSS 모듈
+import styles from './SideBar.module.css'; // figure 스타일을 위한 CSS 모듈
 
 var buildingName= "신공학관";
 
