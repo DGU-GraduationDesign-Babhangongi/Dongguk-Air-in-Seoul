@@ -1,4 +1,4 @@
-![header](https://capsule-render.vercel.app/api?type=waving&color=FFB841&height=300&section=header&text=CleanAirInDongguk&fontSize=90&fontColor=FFFFFF)
+![header](https://capsule-render.vercel.app/api?type=waving&color=FFB841&height=300&section=header&text=Clean\\sAirInDongguk&fontSize=90&fontColor=FFFFFF)
 
 <h2 align="center">공기질 센서를 이용한 공기질 모니터링 및 제어 프로젝트</h2>
 
