@@ -28,10 +28,10 @@ function Figures() {
     <div>
       <Header />
       <div style={{ display: 'flex', width:'100%' }}>
-        <SideBar i='figures'/>
+        <SideBar i='2'/>
         <div style={{ width:'100%' }}>
           <div className={styles.top}> 
-            <div style={{ width:'16%' }}>
+            <div style={{ width:'clamp(10px, 16%, 180px)' }}>
              <div className={styles.titleTop}>
                 <div>현재 강의실</div>
                 <img
@@ -46,7 +46,9 @@ function Figures() {
                   alt="building"
                   className={styles.titleImg}
                />
-                {buildingName}
+               <div>
+                  {buildingName}
+                </div>
               </div>
               <NEBDropdown onSelect={handleSelect} />
             </div>

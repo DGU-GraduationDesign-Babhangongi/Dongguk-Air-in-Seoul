@@ -10,7 +10,7 @@ const SideBar = ({ i }) => {
     <div className={styles.sidebarContainer} style={{marginTop: '0'}}>
       <aside className={styles.sidebar}>
         <div className={styles.topMenu}>
-        <div>현재 건물</div>
+        <div style={{fontSize:'clamp(10px, 1vw, 32px)',  paddingLeft: 'clamp(19px, 1.9%, 31px)' }}>현재 건물</div>
         <div className={styles.title}>
           <img
             src={require('../../../assets/images/building.png')}
@@ -22,7 +22,7 @@ const SideBar = ({ i }) => {
         <nav className={styles.nav}>
           <ul className={styles.navList}>
           <li className={classNames(styles.navItem, 
-              { [styles.bold]: i === 'main' })}>
+              { [styles.bold]: i === '1' })}>
               <img
                 src={require('../../../assets/images/main.png')}
                 alt="main"
@@ -31,7 +31,7 @@ const SideBar = ({ i }) => {
               <Link to="/" className={styles.navLink}>메인화면</Link>
             </li>
             <li className={classNames(styles.navItem, 
-              { [styles.bold]: i === 'figures' })}>
+              { [styles.bold]: i === '2' })}>
               <img
                 src={require('../../../assets/images/graph.png')}
                 alt="graph"

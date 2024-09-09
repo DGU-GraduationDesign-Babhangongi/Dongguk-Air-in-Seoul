@@ -17,7 +17,7 @@ function NEBDropdown({ image, value, unit, name }) {
                 <div className={styles.text}>
                     <div style={{display:'flex'}}>
                         {value}
-                        <div style={{fontSize:'1.5vw',alignSelf:'end' }}>{unit}</div>
+                        <div className={styles.unit}>{unit}</div>
                     </div>
                     <div className={styles.name}>{name}</div>
                 </div>
