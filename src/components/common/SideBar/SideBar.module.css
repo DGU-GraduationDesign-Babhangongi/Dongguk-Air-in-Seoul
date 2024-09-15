@@ -1,5 +1,5 @@
 .sidebarContainer {
-  width: clamp(220px, 24%, 800px);
+  width: clamp(220px, 24%, 260px);
   display: flex; /* 사이드바와 hr을 나란히 배치하기 위해 flex 사용 */
   align-items: center; /* 세로 중앙 정렬 */
 }
@@ -35,7 +35,7 @@
 .navLink {
   text-decoration: none; /* 링크의 기본 밑줄 제거 */
   color: #333; /* 링크 텍스트 색상 설정 */
-  font-size: clamp(11px, 1.1vw, 28px); /* 링크 텍스트 크기 설정 */
+  font-size: clamp(11px, 1vw, 28px); /* 링크 텍스트 크기 설정 */
   padding: 10px; /* 링크의 내부 여백 설정 */
   display: block; /* 링크가 블록으로 표시되도록 설정 */
   border-radius: 4px; /* 링크의 둥근 모서리 설정 */
@@ -85,3 +85,4 @@
   width: 20%; 
   align-self: center;
 }
+

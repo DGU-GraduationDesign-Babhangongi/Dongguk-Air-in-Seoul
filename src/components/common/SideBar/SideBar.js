@@ -55,7 +55,7 @@ const SideBar = ({ i }) => {
                 alt="compare"
                 className={styles.icon}
               />
-              <Link to="/contact" className={styles.navLink}>강의실 수치비교</Link>
+              <Link to="/comparison" className={styles.navLink}>강의실 수치비교</Link>
             </li>
             <li className={styles.navItem}>
               <img
