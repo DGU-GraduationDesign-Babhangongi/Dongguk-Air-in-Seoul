@@ -3,9 +3,9 @@
     align-items: center;
     justify-content: space-evenly;
     background-color: #FFB841;
-    width: 100%;
-    aspect-ratio: 7.2 / 1;
-    padding: clamp(4px, 1%, 8px) 0;
+    width: 96%;
+    aspect-ratio: 8 / 1;
+    padding: clamp(4px, 2%, 100px);
     margin-top: 0;
   }
 
@@ -26,7 +26,7 @@
 }
 
 .title {
-  font-size: clamp(10px, 2vw, 32px); /* 링크 텍스트 크기 설정 */
+  font-size: clamp(10px, 1.6vw, 32px); /* 링크 텍스트 크기 설정 */
   margin: 5% 0;
   font-weight: bold;
   display: flex;

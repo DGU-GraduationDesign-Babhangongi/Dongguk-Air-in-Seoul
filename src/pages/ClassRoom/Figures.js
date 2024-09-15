@@ -31,7 +31,7 @@ function Figures() {
         <SideBar i='2'/>
         <div style={{ width:'100%' }}>
           <div className={styles.top}> 
-            <div style={{ width:'clamp(10px, 16%, 180px)' }}>
+            <div style={{ width:'clamp(10px, 12%, 180px)' }}>
              <div className={styles.titleTop}>
                 <div>현재 강의실</div>
                 <img

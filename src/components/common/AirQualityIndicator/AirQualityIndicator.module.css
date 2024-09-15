@@ -1,0 +1,26 @@
+.table {
+    display: flex;
+    flex-direction: column;
+    width: 49%;
+    border-collapse: collapse;
+    font-size: clamp(5px, 0.8vw, 800px);
+    font-weight: bold;
+  }
+  
+  .tableRow {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .tableCell {
+    flex: 1;
+    padding: 2px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+  }
+  
+  .img {
+    width: 50%;
+  }
+  
