@@ -17,7 +17,7 @@
   align-items: center;    /* 세로 중앙 정렬 */
   justify-items: start;   /* 가로 왼쪽 정렬 */
   margin: auto;
-  padding: 0 10%;
+  padding: 0 clamp(8px, 20%, 12px);
 }
 
 .dot3{

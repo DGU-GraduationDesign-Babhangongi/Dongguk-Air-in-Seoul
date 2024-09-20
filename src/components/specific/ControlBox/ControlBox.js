@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './ControlBox.module.css';
-import ToggleButton from '../ToggleButton/ToggleButton';
+import ToggleButton from '../../common/ToggleButton/ToggleButton';
 
 function ControlBox() {
   // 여러 개의 ToggleButton 상태를 배열로 관리
@@ -20,13 +20,7 @@ function ControlBox() {
 
   return (
     <div className={styles.box}>
-      <div className={styles.top}>
-        <img
-          src={require('../../../assets/images/settings/blue.png')}
-          alt="logo"
-          className={styles.topImg}
-        />
-      </div>
+
 
       <div className={styles.table}>
         {toggleStates.map((state, index) => (

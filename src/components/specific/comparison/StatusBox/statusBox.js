@@ -7,7 +7,7 @@ import styles from '../StatusBox/statusBox.module.css';
 
 var buildingName = "신공학관";
 
-function StatusBox({ color}) {
+function StatusBox({id, color}) {
   const [selectedOption, setSelectedOption] = useState('');
 
   useEffect(() => {
@@ -27,7 +27,7 @@ function StatusBox({ color}) {
     }}>
       <div style={{ width: 'clamp(10px, 36%, 144px)' }}>
         <div className={styles.titleTop}>
-          <div>비교 강의실1</div>
+          <div>비교 강의실{id}</div>
           <img
             src={require('../../../../assets/images/star.png')}
             alt="building"
