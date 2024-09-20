@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Main from '../src/pages/Main'; 
 import Figures from '../src/pages/ClassRoom/Figures'; 
 import Comparison from '../src/pages/ClassRoom/Comparison'; 
+import Log from '../src/pages/Log/Log';
+
 
 function App() {
   return (
@@ -11,6 +13,7 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route path="/figures" element={<Figures />} />
         <Route path="/comparison" element={<Comparison />} />
+        <Route path="/Log" element={<Log />} />
       </Routes>
     </Router>
   );
