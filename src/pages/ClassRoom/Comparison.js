@@ -3,61 +3,74 @@ import Header from '../../components/common/Header/Header';
 import SideBar from '../../components/common/SideBar/SideBar';
 import StatusBox from '../../components/specific/comparison/StatusBox/statusBox';
 import ControlBox from '../../components/common/ControlBox/ControlBox';
+import PeriodDropdown from '../../components/common/periodDropdown/periodDropdown';
+import WhatDropdown from '../../components/common/whatDropdown/whatDropdown';
 
 import styles from '../../assets/styles/figures.module.css';
 import bottomStyles from '../../assets/styles/comparison.module.css';
+import LineChart from '../../components/specific/charts/lineChart';
 
-
-var buildingName = "신공학관";
+const buildingName = "신공학관";
 
 function Comparison() {
   const [selectedOption1, setSelectedOption1] = useState('');
   const [selectedOption2, setSelectedOption2] = useState('');
 
-  // 선택된 값이 변경될 때마다 호출되는 함수
   useEffect(() => {
     if (selectedOption1) {
-      // 선택된 값을 전송하는 로직을 여기에 추가
-      console.log(`Selected option: ${selectedOption1}`);
-      // 예: 서버에 전송하거나 다른 작업 수행
+      console.log(`Selected option1: ${selectedOption1}`);
     }
     if (selectedOption2) {
-      // 선택된 값을 전송하는 로직을 여기에 추가
-      console.log(`Selected option: ${selectedOption2}`);
-      // 예: 서버에 전송하거나 다른 작업 수행
+      console.log(`Selected option2: ${selectedOption2}`);
     }
-  }, [selectedOption2]); // selectedOption이 변경될 때마다 실행
+  }, [selectedOption1, selectedOption2]);
 
   const handleSelect1 = (value) => {
-    setSelectedOption1(value); // 선택된 값을 상태에 저장
-        setSelectedOption1(value); // 선택된 값을 상태에 저장
+    setSelectedOption1(value);
+  };
+
+  const handleSelect2 = (value) => {
+    setSelectedOption2(value);
   };
 
   return (
     <div>
       <Header />
-      <div style={{ display: 'flex', width:'100%' }}>
+      <div style={{ display: 'flex', width: '100%' }}>
         <SideBar i='2'/>
-        <div style={{ width:'100%' }}>
-          <div className={styles.top}> 
+        <div style={{ width: '100%' }}>
+          <div className={styles.top}>
             <ControlBox/>
-            <StatusBox color='#1FE5A3'/>     
-
-            <div style={{ fontSize:'1.5vw' }}>vs</div>
-            <StatusBox color='#1A9AFB'/>       
-            <ControlBox/>  
-          </div >
-          <div className={bottomStyles.bottom}> 
-              <div> 2024.09.03 PM 04:59</div>
-              <div className={bottomStyles.box}>
-             
-             
+            <StatusBox id='1' color='#1FE5A3'/>
+            <div style={{ fontSize: '1.5vw' }}>vs</div>
+            <StatusBox id='2' color='#1A9AFB'/>
+            <ControlBox/>
           </div>
-
+          <div className={bottomStyles.bottom}>
+            <div>2024.09.03 PM 04:59</div>
+            <div className={bottomStyles.box}>
+              <div>
+                period
+                <PeriodDropdown onSelect={handleSelect1}/>
+                <div style={{margin:'30%'}}></div>
+                what
+                <WhatDropdown onSelect={handleSelect2}/>
+              </div>
+              <hr
+                style={{
+                  margin: '0 10px',
+                  border: '1px dashed #FFB841',
+                  filter: 'blur(2px)',
+                  height: 'clamp(10px, 90%, 1000px)',
+                  backgroundColor: '#FFB841',
+                  borderLeft: 'none',
+                }}
+              />
+              <LineChart width='56vw' height='60vh'/>
+            </div>
           </div>
         </div>
-
-      </div >
+      </div>
     </div>
   );
 }
