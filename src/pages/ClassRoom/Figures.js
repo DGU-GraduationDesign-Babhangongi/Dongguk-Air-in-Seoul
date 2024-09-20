@@ -2,37 +2,44 @@ import React, { useState, useEffect } from 'react';
 import Header from '../../components/common/Header/Header';
 import SideBar from '../../components/common/SideBar/SideBar';
 import NEBDropdown from '../../components/specific/figures/NEBDropdown/NEBDropdown';
+import PeriodDropdown from '../../components/common/periodDropdown/periodDropdown';
+import WhatCheckBoxes from '../../components/common/whatSelectBox/WhatRadioButtons';
 import TopBox from '../../components/specific/figures/TopBox/TopBox';
 import styles from '../../assets/styles/figures.module.css';
-import Chart from '../../components/specific/charts/lineChart';
+import LineChart from '../../components/specific/charts/lineChart';
+import ControlBox from '../../components/specific/ControlBox/ControlBox';
+import AlarmScrollBox from '../../components/specific/alarmScrollBox/alarmScrollBox';
 
-var buildingName = "신공학관";
+const buildingName = "신공학관";
 
 function Figures() {
   const [selectedOption, setSelectedOption] = useState('');
+  const [selectedValue, setSelectedValue] = useState('temperature');
+  const [selectedValues, setSelectedValues] = useState([]);
 
-  // 선택된 값이 변경될 때마다 호출되는 함수
   useEffect(() => {
     if (selectedOption) {
-      // 선택된 값을 전송하는 로직을 여기에 추가
       console.log(`Selected option: ${selectedOption}`);
-      // 예: 서버에 전송하거나 다른 작업 수행
     }
-  }, [selectedOption]); // selectedOption이 변경될 때마다 실행
+  }, [selectedOption]);
 
   const handleSelect = (value) => {
-    setSelectedOption(value); // 선택된 값을 상태에 저장
+    setSelectedOption(value);
+  };
+
+  const handleValueSelect = (value) => {
+    setSelectedValue(value);
   };
 
   return (
     <div>
       <Header />
-      <div style={{ display: 'flex', width:'100%' }}>
-        <SideBar i='2'/>
-        <div style={{ width:'100%' }}>
-          <div className={styles.top}> 
-            <div style={{ width:'clamp(10px, 16%, 180px)' }}>
-             <div className={styles.titleTop}>
+      <div style={{ display: 'flex', width: '100%' }}>
+        <SideBar i='2' />
+        <div style={{ width: '100%' }}>
+          <div className={styles.top}>
+            <div style={{ width: 'clamp(10px, 12%, 180px)' }}>
+              <div className={styles.titleTop}>
                 <div>현재 강의실</div>
                 <img
                   src={require('../../assets/images/star.png')}
@@ -45,48 +52,64 @@ function Figures() {
                   src={require('../../assets/images/building.png')}
                   alt="building"
                   className={styles.titleImg}
-               />
-               <div>
-                  {buildingName}
-                </div>
+                />
+                <div>{buildingName}</div>
               </div>
               <NEBDropdown onSelect={handleSelect} />
             </div>
-            <TopBox image={"tempIcon.png"} value={"32"} unit={"℃"} name={"temperature"}/>
-            <TopBox image={"tempIcon.png"} value={"90"} unit={"%"} name={"humidity"}/>
-            <TopBox image={"tempIcon.png"} value={"500"} unit={"㎍/m³"} name={"TVOC"}/>
-            <TopBox image={"tempIcon.png"} value={"32"} unit={"㎍/m³"} name={"PM2.5"}/>
-          </div >
-          <div className={styles.bottom}> 
-          <div className={styles.leftContainer}>
-              <div> 2024.09.03 PM 04:59</div>
-              <div className={styles.leftBox}> 
-                <div>
-                  period
-                  <NEBDropdown onSelect={handleSelect} />
-                  what
-                  <NEBDropdown onSelect={handleSelect} />
+            <TopBox image="tempIcon.png" value="32" unit="℃" name="temp" />
+            <TopBox image="tempIcon.png" value="90" unit="%" name="humidity" />
+            <TopBox image="tempIcon.png" value="500" unit="㎍/m³" name="TVOC" />
+            <TopBox image="tempIcon.png" value="32" unit="㎍/m³" name="PM2.5" />
+          </div>
+          <div className={styles.bottom}>
+            <div className={styles.leftContainer}>
+              <div>2024.09.03 PM 04:59</div>
+              <div className={styles.leftBox}>
+                <div className={styles.select}>
+                  <div>
+                    period
+                    <PeriodDropdown onSelect={handleSelect} />
+                  </div>
+                  <div>
+                    what
+                    <WhatCheckBoxes
+                      selectedValues={selectedValues}
+                      onSelect={setSelectedValues}
+                      borderColor="#A5A5A5"
+                      borderWidth="2px"
+                    />
+                  </div>
                 </div>
+                <hr
+                  style={{
+                    margin: '0 10px',
+                    border: '1px dashed #FFB841',
+                    filter: 'blur(2px)',
+                    height: 'clamp(10px, 90%, 1000px)',
+                    backgroundColor: '#FFB841',
+                    borderLeft: 'none',
+                  }}
+                />
                 <div>
                   종합설계2 수업중[10/30]
-                  
+                  <LineChart />
                 </div>
               </div>
             </div>
-            <div>
-              <div> 
-                <div> a </div>
-                <div className={styles.leftBox}> b </div> 
+            <div className={styles.rightContainer}>
+              <div style={{width: '80%'}}>
+                <div>alarms</div>
+                <AlarmScrollBox />
               </div>
-              <div> 
-                <div> c </div>
-                <div className={styles.leftBox}> d </div> 
+              <div style={{width: '80%'}}>
+                <div>facility control</div>
+                <ControlBox/>
               </div>
             </div>
           </div>
         </div>
-
-      </div >
+      </div>
     </div>
   );
 }

@@ -1,0 +1,49 @@
+  /* figures.module.css */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+}
+
+.box{
+  background-color: white;
+  width: clamp(10px, 24vw, 400px);
+  height: 90%;
+  aspect-ratio: 10 / 1;
+  border-radius: clamp(0.5px, 2vw, 15px);
+  border: 1px solid BLUE;
+  display: flex;
+  align-items: center;
+  justify-content:space-evenly;
+  padding: 1%;
+}
+
+.titleTop {
+  font-size: clamp(4px, 1vw, 16px);
+  font-weight: bold;
+  display: flex;
+}
+
+.title {
+  font-size: clamp(10px, 1.4vw, 32px); /* 링크 텍스트 크기 설정 */
+  margin: 5% 0;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.titleImg {
+  width: 26%; /* 아이콘 크기를 고정합니다. */
+  aspect-ratio: 1 / 1.1;
+  margin-right: 0.1%; /* 아이콘과 텍스트 사이의 간격 */
+}
+
+.titleTopImg {
+  width: 10%; /* 아이콘 크기를 고정합니다. */
+  height: auto;
+  margin-left: 0.1%; /* 아이콘과 텍스트 사이의 간격 */
+}

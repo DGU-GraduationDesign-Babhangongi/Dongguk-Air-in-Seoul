@@ -10,7 +10,7 @@ const SideBar = ({ i }) => {
     <div className={styles.sidebarContainer} style={{marginTop: '0'}}>
       <aside className={styles.sidebar}>
         <div className={styles.topMenu}>
-        <div style={{fontSize:'clamp(10px, 1vw, 32px)',  paddingLeft: 'clamp(19px, 1.9%, 31px)' }}>현재 건물</div>
+        <div style={{fontSize:'clamp(8px, 0.9vw, 20px)',  paddingLeft: 'clamp(19px, 1.9%, 31px)' }}>현재 건물</div>
         <div className={styles.title}>
           <img
             src={require('../../../assets/images/building.png')}
@@ -55,7 +55,7 @@ const SideBar = ({ i }) => {
                 alt="compare"
                 className={styles.icon}
               />
-              <Link to="/contact" className={styles.navLink}>강의실 수치비교</Link>
+              <Link to="/comparison" className={styles.navLink}>강의실 수치비교</Link>
             </li>
             <li className={styles.navItem}>
               <img

@@ -1,8 +1,8 @@
 /* Header.module.css */
 .header {
-  margin-left: 2%;
-  margin-right: 2%;
+  margin: 1% 2%;
   width: 96%;
+  height: clamp(40px, 3vw, 140px);
   display: flex;
   align-items: center;
   padding: 0%;
@@ -32,7 +32,7 @@
 }
 
 .logo {
-  width: 20%;
+  width: clamp(10px, 16%, 160px);
   height: auto;
 }
 
@@ -49,10 +49,9 @@
 
 .separator {
   align-self: center;
-  width: 95%;
+  width: clamp(167px, 99%, 1600px);
   border: none;
   border-top: 1px solid #9F9F9F;
   margin-top: 10px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 1%;
 }
