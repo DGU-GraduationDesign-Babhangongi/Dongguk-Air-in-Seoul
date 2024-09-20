@@ -6,15 +6,14 @@
 
 .box {
   background-color: white;
-  width: clamp(40px, 9vw, 400px);
-  height: 90%;
+  width: 70%; /* 너비를 100%로 설정하거나 원하는 크기로 조절 */
+  height: 180px; /* 원하는 높이로 설정 */
   border-radius: clamp(0.5px, 2vw, 15px);
-  border: 1px solid BLUE;
   display: flex;
   flex-direction: column;
   align-items: start;
-  padding: clamp(0px, 1.9%, 800px) clamp(0.5px, 1%, 10px) ;
-  padding-top: 0.5%;
+  padding: 10%; /* 내부 여백 */
+  box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.25);
 }
 
 .top {
@@ -35,7 +34,7 @@
   display: grid;
   grid-template-columns: 3fr 1fr; /* 3:1 비율로 설정 */
   width: 100%;
-  font-size: clamp(5px, 0.8vw, 800px);
+  font-size: clamp(5px, 1.6vw, 16px);
   font-weight: bold;
   margin-top: 4%;
   gap: 5px; /* 셀 간의 간격 */

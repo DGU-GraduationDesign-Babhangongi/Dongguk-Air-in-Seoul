@@ -2,6 +2,7 @@
 .header {
   margin: 1% 2%;
   width: 96%;
+  height: clamp(40px, 3vw, 140px);
   display: flex;
   align-items: center;
   padding: 0%;
@@ -48,7 +49,7 @@
 
 .separator {
   align-self: center;
-  width: clamp(167px, 14%, 260px);
+  width: clamp(167px, 99%, 1600px);
   border: none;
   border-top: 1px solid #9F9F9F;
   margin-top: 10px;
