@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.css"; // 스타일은 필요에 따라 추가
+import Login_Header from "../../components/common/Header/Login_Header";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -25,6 +26,7 @@ const Login = () => {
 
   return (
     <div className={styles.loginContainer}>
+      <Login_Header />
       <h2>로그인</h2>
       <form onSubmit={handleSubmit} className={styles.loginForm}>
         <div className={styles.formGroup}>
