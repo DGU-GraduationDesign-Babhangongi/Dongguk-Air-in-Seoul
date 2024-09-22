@@ -5,38 +5,34 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #f5f5f5;
+  background: linear-gradient(135deg, #74ebd5 0%, #acb6e5 100%);
+  font-family: "Arial", sans-serif;
 }
 
 .login-form {
   display: flex;
   flex-direction: column;
+  gap: 20px;
   background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  width: 400px;
+  transition: transform 0.3s ease;
 }
 
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 14px;
-}
-
-.form-group input {
-  width: 250px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
+.login-form input {
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border 0.2s ease;
 }
 
 .login-button {
-  background-color: #4caf50;
+  background-color: #007bff;
   color: white;
   padding: 10px;
   border: none;
@@ -46,7 +42,21 @@
 }
 
 .login-button:hover {
-  background-color: #45a049;
+  background-color: #0056b3;
+}
+
+.signup-link {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.signup-link a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
 }
 
 /*회원가입 버튼*/
