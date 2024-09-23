@@ -10,11 +10,12 @@ const options = [
   { value: 'noise', label: '소음' },
 ];
 
-const whatDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px', width = '100%' }) => {
+const whatDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px', width = '100%', height = 'auto' }) => {
   const customStyles = {
     control: (provided) => ({
       ...provided,
       width: width, // 너비 설정
+      height: height, // 높이 설정
       borderRadius: '10px',
       borderColor: borderColor,
       borderWidth: borderWidth,

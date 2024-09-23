@@ -32,7 +32,7 @@ function Figures() {
   };
 
   return (
-    <div>
+    <div style={{ height: '100vh' }}>
       <Header />
       <div style={{ display: 'flex', width: '100%' }}>
         <SideBar i='2' />
@@ -64,12 +64,12 @@ function Figures() {
           </div>
           <div className={styles.bottom}>
             <div className={styles.leftContainer}>
-              <div>2024.09.03 PM 04:59</div>
+              <div style={{width: '100%'}}>2024.09.03 PM 04:59</div>
               <div className={styles.leftBox}>
                 <div className={styles.select}>
                   <div>
                     period
-                    <PeriodDropdown onSelect={handleSelect} />
+                    <PeriodDropdown width='clamp(10px, 10vw, 140px)' height='clamp(10px, 5vw, 56px)' onSelect={handleSelect} />
                   </div>
                   <div>
                     what
@@ -97,14 +97,15 @@ function Figures() {
                 </div>
               </div>
             </div>
+            <div></div>
             <div className={styles.rightContainer}>
-              <div style={{width: '80%'}}>
+              <div style={{ width: '110%' }}>
                 <div>alarms</div>
                 <AlarmScrollBox />
               </div>
-              <div style={{width: '80%'}}>
+              <div style={{ width: '110%' }}>
                 <div>facility control</div>
-                <ControlBox/>
+                <ControlBox />
               </div>
             </div>
           </div>
