@@ -1,12 +1,14 @@
 .sidebarContainer {
   width: clamp(180px, 24%, 260px);
+  min-height: 480px;
+  height: calc(100vh - clamp(140px, 16vw, 100px));
   display: flex; /* 사이드바와 hr을 나란히 배치하기 위해 flex 사용 */
   align-items: center; /* 세로 중앙 정렬 */
 }
 
 .sidebar {
   width: 100%;
-  height: 90%;
+  height: 94%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -30,14 +32,14 @@
   padding-top: clamp(5px, 3%, 32px);
   padding-bottom: clamp(5px, 3%, 32px);
   display: flex;
-  margin-bottom: clamp(16px, 1vh, 32px);  /* 항목 간 간격 설정 */
+  margin-bottom: clamp(16px, 2%, 32px);  /* 항목 간 간격 설정 */
 }
 
 .navLink {
   text-decoration: none; /* 링크의 기본 밑줄 제거 */
   color: #333; /* 링크 텍스트 색상 설정 */
   font-size: clamp(10px, 1vw, 28px); /* 링크 텍스트 크기 설정 */
-  padding: 10px; /* 링크의 내부 여백 설정 */
+  padding: 5%; /* 링크의 내부 여백 설정 */
   display: block; /* 링크가 블록으로 표시되도록 설정 */
   border-radius: 4px; /* 링크의 둥근 모서리 설정 */
 }
@@ -50,7 +52,8 @@
 
 
 .separator {
-  height: 83vh; /* 전체 화면 높이 설정 */
+  min-height: 480px;
+  height: calc(100vh - clamp(140px, 16vw, 100px));
   border: none; /* 기본 테두리 제거 */
   border-left: 1px solid #9F9F9F; /* 사이드바 오른쪽에 수직선 추가 */
   margin-left: 0px; /* 사이드바와 수직선 간의 간격 설정 */

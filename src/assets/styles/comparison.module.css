@@ -9,6 +9,7 @@
   justify-content:space-evenly;
   padding: 1%;
   margin: auto;
+  font-size: clamp(10px, 2vw, 24px);
   font-weight: bold;
 }
 

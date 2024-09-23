@@ -51,10 +51,10 @@ function Comparison() {
             <div className={bottomStyles.box}>
               <div>
                 period
-                <PeriodDropdown onSelect={handleSelect1}/>
+                <PeriodDropdown width='clamp(10px, 10vw, 140px)' height='clamp(10px, 5vw, 56px)' onSelect={handleSelect1}/>
                 <div style={{margin:'30%'}}></div>
                 what
-                <WhatDropdown onSelect={handleSelect2}/>
+                <WhatDropdown width='clamp(10px, 10vw, 140px)' height='clamp(10px, 5vw, 56px)' onSelect={handleSelect2}/>
               </div>
               <hr
                 style={{

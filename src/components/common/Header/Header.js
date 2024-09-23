@@ -4,7 +4,7 @@ import styles from './Header.module.css';
 
 const Header = () => {
   return (
-    <div>
+    <div style={{height : 'clamp(51px, 4vw, 160px)'}}>
       <header className={styles.header}>
         <img
           src={require('../../../assets/images/logo.png')}
