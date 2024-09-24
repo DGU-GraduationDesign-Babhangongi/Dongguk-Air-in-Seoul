@@ -1,10 +1,9 @@
 .checkboxGroup {
   display: flex;
-  width: 10vw;
-  height: 90%;
+  height: 80%;
   flex-direction: column;
   border: 1px solid #b0b0b0 !important;
-  padding: 30% 5%;
+  padding: 16% 5%;
   box-shadow: 0px 4px 4px -1px rgba(12, 12, 13, 0.1), 0px 4px 4px -1px rgba(12, 12, 13, 0.05);
   border-radius: 10px;
 
@@ -37,6 +36,6 @@
 /* 체크 표시 제거: ::before 가상 요소 삭제 */
 
 .checkboxText {
-  font-size: 16px;
+  font-size: clamp(10px, 1.2vw, 18px);
   color: #333;
 }

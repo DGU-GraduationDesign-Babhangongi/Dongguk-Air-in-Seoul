@@ -1,7 +1,7 @@
 .scrollableContainer {
   background-color: white;
   width: 70%; /* 너비를 100%로 설정하거나 원하는 크기로 조절 */
-  height: 180px; /* 원하는 높이로 설정 */
+  height: 12vh; /* 원하는 높이로 설정 */
   overflow: auto; /* 스크롤 바 표시 */
   border: 1px solid #ccc; /* 경계선을 추가하여 시각적으로 구분 */
   padding: 10%; /* 내부 여백 */

@@ -1,22 +1,25 @@
-.box{
+.box {
   background-color: white;
-  width: clamp(10px, 98%, 1800px);
+  width: clamp(10px, 96%, 1800px);
   height: 90%;
   border-radius: clamp(0.5px, 2vw, 15px);
   box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.25);
-  display: flex;
+  display: grid; /* 변경: grid 레이아웃 적용 */
+  grid-template-columns: 0.6fr 0.1fr 3.5fr; 
   align-items: center;
-  justify-content:space-evenly;
-  padding: 1%;
+  justify-items: center; /* 수평 정렬 (grid 기준) */
+  padding: 1% 2%;
   margin: auto;
   font-size: clamp(10px, 2vw, 24px);
   font-weight: bold;
 }
 
+
 .bottom {
     padding: 2% 4%;
     background-color: #F0F0F0;
-    width: 92%;
     height: 90%;
+    width: 92%;
+    min-height: 350px;
   }
   

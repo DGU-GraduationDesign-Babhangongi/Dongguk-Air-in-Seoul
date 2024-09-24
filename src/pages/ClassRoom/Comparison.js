@@ -8,7 +8,7 @@ import WhatDropdown from '../../components/common/whatDropdown/whatDropdown';
 
 import styles from '../../assets/styles/figures.module.css';
 import bottomStyles from '../../assets/styles/comparison.module.css';
-import LineChart from '../../components/specific/charts/lineChart';
+import LineChart from '../../components/specific/charts/lineChartCompare';
 
 const buildingName = "신공학관";
 
@@ -37,7 +37,7 @@ function Comparison() {
     <div>
       <Header />
       <div style={{ display: 'flex', width: '100%' }}>
-        <SideBar i='2'/>
+        <SideBar i='4'/>
         <div style={{ width: '100%' }}>
           <div className={styles.top}>
             <ControlBox/>
@@ -66,7 +66,7 @@ function Comparison() {
                   borderLeft: 'none',
                 }}
               />
-              <LineChart width='56vw' height='60vh'/>
+              <LineChart width='58vw' height='58vh'/>
             </div>
           </div>
         </div>

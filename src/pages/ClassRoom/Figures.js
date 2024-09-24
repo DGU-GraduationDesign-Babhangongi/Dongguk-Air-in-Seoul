@@ -16,6 +16,7 @@ function Figures() {
   const [selectedOption, setSelectedOption] = useState('');
   const [selectedValue, setSelectedValue] = useState('temperature');
   const [selectedValues, setSelectedValues] = useState([]);
+  const [highlightedIndex, setHighlightedIndex] = useState(null); // 새로운 상태 추가
 
   useEffect(() => {
     if (selectedOption) {
@@ -31,8 +32,13 @@ function Figures() {
     setSelectedValue(value);
   };
 
+  const handleCheckboxSelect = (values, index) => {
+    setSelectedValues(values);
+    setHighlightedIndex(index); // 선택된 항목의 인덱스를 설정
+  };
+
   return (
-    <div style={{ height: '100vh' }}>
+    <div>
       <Header />
       <div style={{ display: 'flex', width: '100%' }}>
         <SideBar i='2' />
@@ -64,18 +70,19 @@ function Figures() {
           </div>
           <div className={styles.bottom}>
             <div className={styles.leftContainer}>
-              <div style={{width: '100%'}}>2024.09.03 PM 04:59</div>
+              <div style={{ width: '100%' }}>2024.09.03 PM 04:59</div>
               <div className={styles.leftBox}>
                 <div className={styles.select}>
-                  <div>
+                  <div style={{ width: '80%' }}>
                     period
-                    <PeriodDropdown width='clamp(10px, 10vw, 140px)' height='clamp(10px, 5vw, 56px)' onSelect={handleSelect} />
+                    <PeriodDropdown width='100%' height='clamp(10px, 5vw, 56px)' onSelect={handleSelect} />
                   </div>
-                  <div>
+                  <div style={{ width: '80%' }}>
                     what
                     <WhatCheckBoxes
+                      width='90%' 
                       selectedValues={selectedValues}
-                      onSelect={setSelectedValues}
+                      onSelect={handleCheckboxSelect} // 수정된 함수 사용
                       borderColor="#A5A5A5"
                       borderWidth="2px"
                     />
@@ -93,17 +100,21 @@ function Figures() {
                 />
                 <div>
                   종합설계2 수업중[10/30]
-                  <LineChart />
+                  <LineChart selectedValues={selectedValues} highlightedIndex={highlightedIndex} /> {/* highlightedIndex 사용 */}
                 </div>
               </div>
             </div>
             <div></div>
             <div className={styles.rightContainer}>
-              <div style={{ width: '110%' }}>
+              <div style={{ width: '100%' }}>
                 <div>alarms</div>
                 <AlarmScrollBox />
               </div>
-              <div style={{ width: '110%' }}>
+              <div style={{ width: '100%' }}>
+                <div>significant</div>
+                <AlarmScrollBox />
+              </div>
+              <div style={{ width: '100%' }}>
                 <div>facility control</div>
                 <ControlBox />
               </div>
