@@ -7,7 +7,7 @@
 .box {
   background-color: white;
   width: 70%; /* 너비를 100%로 설정하거나 원하는 크기로 조절 */
-  height: 180px; /* 원하는 높이로 설정 */
+  height: 100%; /* 원하는 높이로 설정 */
   border-radius: clamp(0.5px, 2vw, 15px);
   display: flex;
   flex-direction: column;

@@ -17,17 +17,20 @@ const colors = [
   '#FF8484'  // 소음
 ];
 
-const WhatCheckBoxes = ({ selectedValues, onSelect, borderColor = '#A5A5A5', borderWidth = '1px' }) => {
-  const handleChange = (value) => {
+const WhatCheckBoxes = ({ selectedValues, onSelect, borderColor = '#A5A5A5', borderWidth = '1px', width = '100%' }) => {
+  const handleChange = (value, index) => {
     if (selectedValues.includes(value)) {
-      onSelect(selectedValues.filter(v => v !== value));
+      onSelect(selectedValues.filter(v => v !== value), null); // 인덱스는 null로 설정
     } else {
-      onSelect([...selectedValues, value]);
+      onSelect([...selectedValues, value], index); // 새로 선택된 항목의 인덱스를 전달
     }
   };
 
   return (
-    <div className={styles.checkboxGroup} style={{ borderColor, borderWidth }}>
+    <div 
+      className={styles.checkboxGroup} 
+      style={{ borderColor, borderWidth, width }} // width 추가
+    >
       {options.map((option, index) => (
         <label 
           key={option.value} 
@@ -39,7 +42,7 @@ const WhatCheckBoxes = ({ selectedValues, onSelect, borderColor = '#A5A5A5', bor
             name="attribute"
             value={option.value}
             checked={selectedValues.includes(option.value)}
-            onChange={() => handleChange(option.value)}
+            onChange={() => handleChange(option.value, index)} // 인덱스 추가
             className={styles.checkboxInput}
           />
           <span className={styles.checkboxText}>{option.label}</span>

@@ -1,7 +1,7 @@
 .sidebarContainer {
   width: clamp(180px, 24%, 260px);
   min-height: 480px;
-  height: calc(100vh - clamp(140px, 16vw, 100px));
+  height: calc(100vh - 51px);
   display: flex; /* 사이드바와 hr을 나란히 배치하기 위해 flex 사용 */
   align-items: center; /* 세로 중앙 정렬 */
 }
@@ -53,7 +53,7 @@
 
 .separator {
   min-height: 480px;
-  height: calc(100vh - clamp(140px, 16vw, 100px));
+  height: 100%;
   border: none; /* 기본 테두리 제거 */
   border-left: 1px solid #9F9F9F; /* 사이드바 오른쪽에 수직선 추가 */
   margin-left: 0px; /* 사이드바와 수직선 간의 간격 설정 */
@@ -90,3 +90,6 @@
   align-self: center;
 }
 
+.bold {
+  font-weight: bold !important;
+}
