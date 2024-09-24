@@ -1,6 +1,8 @@
 ![header](https://capsule-render.vercel.app/api?type=waving&color=FFB841&height=300&section=header&text=Clean%20Air%20In%20Dongguk&fontSize=80&fontColor=FFFFFF)
 
-<h2 align="center">공기질 센서를 이용한 공기질 모니터링 및 제어 프로젝트</h2>
+<h2 align="center">🍃Clean Air In Dongguk(CAID)🍃</h2>
+<h3 align="center">공기질 센서를 이용한 공기질 모니터링 및 제어 프로젝트</h3>
+<h4 align="center">🎨Frontend</h4>
 
 <h1>👋 Members</h1>
 
