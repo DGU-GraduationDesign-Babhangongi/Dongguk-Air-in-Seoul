@@ -6,6 +6,7 @@ import Login from "../src/pages/Login/Login";
 import SignUp from "../src/pages/SignUp/SignUp";
 import Comparison from '../src/pages/ClassRoom/Comparison'; 
 import Log from '../src/pages/Log/Log';
+import Manager from '../src/pages/Manager/Manager';
 //TEST
 
 
@@ -21,6 +22,8 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/comparison" element={<Comparison />} />
         <Route path="/Log" element={<Log />} />
+        <Route path="/Manager" element={<Manager />} />
+    
       </Routes>
     </Router>
   );

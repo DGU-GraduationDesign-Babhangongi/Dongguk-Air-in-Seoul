@@ -1,0 +1,53 @@
+/* 전체 레이아웃 설정 */
+.layout {
+    display: flex;
+  }
+  
+  /* 메인 콘텐츠 영역 */
+  .content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 20px;
+  }
+  
+  /* 사용자 정보 섹션 */
+  .userInfo {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #f7c600;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .userName {
+    display: flex;
+    align-items: center;
+  }
+  
+  .userIcon {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  /* 강의실 카드 그리드 */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  /* 강의실 카드 설정 */
+  .card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border: 2px solid #00FF00;
+    border-radius: 15px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
