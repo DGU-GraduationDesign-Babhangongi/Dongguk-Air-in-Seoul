@@ -6,11 +6,13 @@ const Login_Header = () => {
   return (
     <div>
       <header className={styles.header}>
-        <img
-          src={require("../../../assets/images/logo.png")}
-          alt="logo"
-          className={styles.logo}
-        />
+        <Link to="/">
+          <img
+            src={require("../../../assets/images/logo.png")}
+            alt="logo"
+            className={styles.logo}
+          />
+        </Link>
         <nav className={styles.nav}>
           <Link to="/login" className={styles.navLink}>
             <img
