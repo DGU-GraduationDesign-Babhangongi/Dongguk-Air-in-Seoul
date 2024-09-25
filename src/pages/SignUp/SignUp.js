@@ -1,6 +1,7 @@
 // src/pages/SignUp/SignUp.js
 import React, { useState } from "react";
 import "./SignUp.css"; // 스타일 적용
+import Header from "../../components/common/Header/Header";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -18,6 +19,7 @@ const SignUp = () => {
 
   return (
     <div className="signup-container">
+      <Header />
       <h2>Create an account</h2>
       <form onSubmit={handleSubmit} className="signup-form">
         <input
