@@ -1,0 +1,89 @@
+.card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border: 2px solid #00FF00;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    max-width: 600px;
+  }
+  
+  .leftSection {
+    display: flex;
+    align-items: center;
+  }
+  
+  .icon img {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .roomInfo h3, .roomInfo h2 {
+    margin: 0;
+    font-size: 1rem;
+  }
+  
+  .roomInfo h2 {
+    font-size: 1.5rem;
+  }
+  
+  .star img {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+  }
+  
+  .sensorSection {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sensorItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .sensorItem img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+  
+  .sensorItem span {
+    margin-right: 10px;
+  }
+  
+  .statusDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #00FF00;
+  }
+  
+  .controlSection {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .controlSection div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  
+  .memoEdit {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: gray;
+  }
+  
+  .memoEdit img {
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+  }
+  
