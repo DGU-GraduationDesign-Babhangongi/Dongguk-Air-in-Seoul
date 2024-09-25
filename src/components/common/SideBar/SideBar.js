@@ -63,7 +63,7 @@ const SideBar = ({ i }) => {
                 alt="manager"
                 className={styles.icon}
               />
-              <Link to="/Contact" className={styles.navLink}>관리실 페이지</Link>
+              <Link to="/contact" className={styles.navLink}>관리실 페이지</Link>
             </li>
           </ul>
         </nav>
