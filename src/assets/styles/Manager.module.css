@@ -35,9 +35,10 @@
   /* 강의실 카드 그리드 */
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-  }
+    grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개의 카드 배치 */
+    gap: 10px; /* 카드 간 간격 더 넓게 설정 */
+}
+
   
   /* 강의실 카드 설정 */
   .card {
