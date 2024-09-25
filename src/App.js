@@ -8,6 +8,7 @@ import Comparison from '../src/pages/ClassRoom/Comparison';
 import Log from '../src/pages/Log/Log';
 import Manager from '../src/pages/Manager/Manager';
 import Alarm from '../src/pages/Alarm/Alarm';
+import Contact from '../src/pages/Contact/Contact';
 //TEST
 
 
@@ -25,6 +26,7 @@ function App() {
         <Route path="/Log" element={<Log />} />
         <Route path="/Manager" element={<Manager />} />
         <Route path="/Alarm" element={<Alarm />} />
+        <Route path="/Contact" element={<Contact />} />
     
       </Routes>
     </Router>
