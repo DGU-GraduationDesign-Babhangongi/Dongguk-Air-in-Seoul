@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './ManageAll.module.css'; // CSS 파일 연결
 
-function AirQualityCard() {
+function ManageAll() {
   return (
     <div className={styles.card}>
       {/* 왼쪽 섹션: 아이콘과 데이터 */}
@@ -22,6 +22,11 @@ function AirQualityCard() {
             alt="Star Icon"
           />
         </div>
+        {/* 메모 수정 버튼 */}
+      <div className={styles.memoEdit}>
+        <img src={require('../../../assets/images/edit.png')} alt="Edit Icon" />
+        <span>메모수정</span>
+      </div>
       </div>
 
       {/* 센서 정보 */}
@@ -80,13 +85,9 @@ function AirQualityCard() {
         </div>
       </div>
 
-      {/* 메모 수정 버튼 */}
-      <div className={styles.memoEdit}>
-        <img src={require('../../../assets/images/edit.png')} alt="Edit Icon" />
-        <span>메모수정</span>
-      </div>
+      
     </div>
   );
 }
 
-export default AirQualityCard;
+export default ManageAll;

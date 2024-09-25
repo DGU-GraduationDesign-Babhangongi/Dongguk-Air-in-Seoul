@@ -8,22 +8,30 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: white;
     max-width: 600px;
+
   }
   
   .leftSection {
     display: flex;
-    align-items: center;
-  }
+    flex-direction: column; /* 세로 정렬 */
+    justify-content: flex-start; /* 상단에 고정 */
+    align-items: flex-start; /* 좌측 정렬 */
+}
+
   
   .icon img {
     width: 40px;
     height: 40px;
   }
   
-  .roomInfo h3, .roomInfo h2 {
+  .roomInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* 상단에 위치 */
     margin: 0;
-    font-size: 1rem;
-  }
+    font-size: 1.5rem;
+}
+
   
   .roomInfo h2 {
     font-size: 1.5rem;

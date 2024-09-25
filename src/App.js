@@ -7,6 +7,7 @@ import SignUp from "../src/pages/SignUp/SignUp";
 import Comparison from '../src/pages/ClassRoom/Comparison'; 
 import Log from '../src/pages/Log/Log';
 import Manager from '../src/pages/Manager/Manager';
+import Alarm from '../src/pages/Alarm/Alarm';
 //TEST
 
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/comparison" element={<Comparison />} />
         <Route path="/Log" element={<Log />} />
         <Route path="/Manager" element={<Manager />} />
+        <Route path="/Alarm" element={<Alarm />} />
     
       </Routes>
     </Router>

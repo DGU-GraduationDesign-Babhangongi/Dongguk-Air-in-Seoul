@@ -12,7 +12,7 @@ const Header = () => {
           className={styles.logo}
         /> 
         <nav className={styles.nav}>
-          <Link to="/alarm" className={styles.navLink}>
+          <Link to="/Alarm" className={styles.navLink}>
             <img
               src={require('../../../assets/images/alarm.png')}
               alt="alarm"
@@ -22,10 +22,10 @@ const Header = () => {
               알림
             </div>
           </Link>
-          <Link to="/list" className={styles.navLink}>
+          <Link to="/Log" className={styles.navLink}>
             <img
               src={require('../../../assets/images/list.png')}
-              alt="list"
+              alt="/log"
               className={styles.icon}
             /> 
             <div className={styles.font}>
