@@ -26,7 +26,7 @@ function App() {
         <Route path="/Log" element={<Log />} />
         <Route path="/Manager" element={<Manager />} />
         <Route path="/Alarm" element={<Alarm />} />
-        <Route path="/Contact" element={<Contact />} />
+        <Route path="/contact" element={<Contact />} />
     
       </Routes>
     </Router>
