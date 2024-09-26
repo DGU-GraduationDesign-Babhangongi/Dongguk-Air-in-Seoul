@@ -7,6 +7,7 @@
 
 /* 메인 컨테이너 레이아웃 */
 .container {
+  
 display: flex;
 height: 100vh;
 font-family: 'RixXladywatermelonR', Sansation; /* 폰트 변경 */
@@ -14,11 +15,13 @@ font-family: 'RixXladywatermelonR', Sansation; /* 폰트 변경 */
 
 /* 콘텐츠 스타일 */
 .content {
-flex-grow: 1;
-padding: 20px;
-display: flex;
-flex-direction: column;
-font-family: 'RixXladywatermelonR'; /* 폰트 적용 */
+  width: 96%;
+  padding: clamp(9px, 1vw, 13px) 2%;
+  flex-grow: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  font-family: 'RixXladywatermelonR'; /* 폰트 적용 */
 }
 
 /* 필터 스타일 */

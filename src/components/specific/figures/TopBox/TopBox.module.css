@@ -27,6 +27,8 @@
   text-align: end;
 }
 .IconCircle {
+  display: flex;
+  align-items: center;
   width: clamp(16px, 32%, 100px);
   background-color: #E3E3E3;
   aspect-ratio: 1 / 1;
@@ -35,11 +37,11 @@
 }
 
 .IconImg {
-  width: 68%;
-  aspect-ratio: 1 / 1.3;
+  width: 60%;
+  aspect-ratio: 1 / 1;
   text-align: center;
   font-weight: bold;
-
+  margin: auto;
   opacity: 0.66;
 }
 

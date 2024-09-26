@@ -64,9 +64,9 @@ function Figures() {
               <NEBDropdown onSelect={handleSelect} />
             </div>
             <TopBox image="tempIcon.png" value="32" unit="℃" name="temp" />
-            <TopBox image="tempIcon.png" value="90" unit="%" name="humidity" />
-            <TopBox image="tempIcon.png" value="500" unit="㎍/m³" name="TVOC" />
-            <TopBox image="tempIcon.png" value="32" unit="㎍/m³" name="PM2.5" />
+            <TopBox image="humidIcon.png" value="90" unit="%" name="humidity" />
+            <TopBox image="TVOCIcon.png" value="500" unit="㎍/m³" name="TVOC" />
+            <TopBox image="PM25Icon.png" value="32" unit="㎍/m³" name="PM2.5" />
           </div>
           <div className={styles.bottom}>
             <div className={styles.leftContainer}>

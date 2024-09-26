@@ -5,7 +5,7 @@ const options = [
   { value: 'temperature', label: '온도' },
   { value: 'humidity', label: '습도' },
   { value: 'TVOC', label: 'TVOC' },
-  { value: 'PM2.5', label: 'PM 2.5' },
+  { value: 'PM2.5', label: 'PM2_5' }, // 여기에서 value 수정
   { value: 'noise', label: '소음' },
 ];
 

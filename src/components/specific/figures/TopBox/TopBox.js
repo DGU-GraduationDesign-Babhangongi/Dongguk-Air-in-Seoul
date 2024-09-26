@@ -9,7 +9,7 @@ function NEBDropdown({ image, value, unit, name }) {
             <div className={styles.inline}>
                 <div className={styles.IconCircle}>
                     <img
-                    src={require(`../../../../assets/images/${image}`)}
+                    src={require(`../../../../assets/images/TopIcons/${image}`)}
                     alt="building"
                     className={styles.IconImg}
                     />

@@ -14,7 +14,7 @@ const buildingName = "신공학관";
 
 function Comparison() {
   const [selectedOption1, setSelectedOption1] = useState('');
-  const [selectedOption2, setSelectedOption2] = useState('');
+  const [selectedOption2, setSelectedOption2] = useState('');  // 속성 선택 상태
 
   useEffect(() => {
     if (selectedOption1) {
@@ -30,7 +30,7 @@ function Comparison() {
   };
 
   const handleSelect2 = (value) => {
-    setSelectedOption2(value);
+    setSelectedOption2(value);  // 속성 선택
   };
 
   return (
@@ -66,7 +66,8 @@ function Comparison() {
                   borderLeft: 'none',
                 }}
               />
-              <LineChart width='58vw' height='58vh'/>
+              {/* selectedOption2를 LineChart에 전달 */}
+              <LineChart width='58vw' height='58vh' selectedAttribute={selectedOption2} />
             </div>
           </div>
         </div>

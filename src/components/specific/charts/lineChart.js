@@ -71,16 +71,17 @@ const LineChartComponent = ({ width = '34vw', height = '56vh', selectedValues, d
               onAnimationEnd={() => setDrawEffect(prev => ({ ...prev, TVOC: false }))} // 애니메이션 종료 후 상태 초기화
             />
           )}
-          {selectedValues.includes('PM2.5') && (
-            <Line
-              type="monotone"
-              dataKey="PM2_5"
-              stroke="#FFDC82"
-              strokeWidth={3}
-              isAnimationActive={highlightedIndex === 3 || drawEffect['PM2_5']} // 강조된 인덱스나 변경된 선에만 애니메이션 적용
-              onAnimationEnd={() => setDrawEffect(prev => ({ ...prev, PM2_5: false }))} // 애니메이션 종료 후 상태 초기화
-            />
-          )}
+{selectedValues.includes('PM2.5') && ( // 여기에서 value 수정
+  <Line
+    type="monotone"
+    dataKey="PM2_5" // dataKey는 유지
+    stroke="#FFDC82"
+    strokeWidth={3}
+    isAnimationActive={highlightedIndex === 3 || drawEffect['PM2.5']} // 여기에서 drawEffect 키 수정
+    onAnimationEnd={() => setDrawEffect(prev => ({ ...prev, 'PM2.5': false }))} // 여기에서도 수정
+  />
+)}
+
           {selectedValues.includes('noise') && (
             <Line
               type="monotone"
