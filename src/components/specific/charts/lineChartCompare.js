@@ -40,7 +40,7 @@ const data = [
   },
 ];
 
-const LineChartComponent = ({ selectedAttribute }) => {
+const LineChartComponent = ({ selectedAttribute, classroomA, classroomB }) => {
   return (
     <div style={{ width: '100%', height: 300 }}>
       <ResponsiveContainer>
@@ -51,8 +51,21 @@ const LineChartComponent = ({ selectedAttribute }) => {
           <Legend />
 
           {/* 강의실 A 데이터 */}
-          <Line type="monotone" dataKey={selectedAttribute+'A'} stroke="#8884d8" strokeWidth={3} />
-          <Line type="monotone" dataKey={selectedAttribute+'B'} stroke="#82ca9d" strokeWidth={3} />
+          <Line 
+            type="monotone" 
+            dataKey={selectedAttribute + 'A'} 
+            stroke="#8884d8" 
+            strokeWidth={3} 
+            name={`${classroomA}`+' '}  // 강의실 A 번호
+          />
+          {/* 강의실 B 데이터 */}
+          <Line 
+            type="monotone" 
+            dataKey={selectedAttribute + 'B'} 
+            stroke="#82ca9d" 
+            strokeWidth={3} 
+            name={`${classroomB}`+' '}  // 강의실 B 번호
+          />
         </LineChart>
       </ResponsiveContainer>
     </div>

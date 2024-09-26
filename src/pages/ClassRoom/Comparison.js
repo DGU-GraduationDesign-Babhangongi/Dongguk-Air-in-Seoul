@@ -5,7 +5,6 @@ import StatusBox from '../../components/specific/comparison/StatusBox/statusBox'
 import ControlBox from '../../components/common/ControlBox/ControlBox';
 import PeriodDropdown from '../../components/common/periodDropdown/periodDropdown';
 import WhatDropdown from '../../components/common/whatDropdown/whatDropdown';
-
 import styles from '../../assets/styles/figures.module.css';
 import bottomStyles from '../../assets/styles/comparison.module.css';
 import LineChart from '../../components/specific/charts/lineChartCompare';
@@ -14,10 +13,12 @@ const buildingName = "신공학관";
 
 function Comparison() {
   const [selectedOption1, setSelectedOption1] = useState('');
-  const [selectedOption2, setSelectedOption2] = useState('');  // 속성 선택 상태
+  const [selectedOption2, setSelectedOption2] = useState(''); // selectedOption2 상태
+  const [classroomA, setClassroomA] = useState(""); // 초기값
+  const [classroomB, setClassroomB] = useState(""); // 초기값
 
   useEffect(() => {
-    if (selectedOption1) {
+    if (SelectedOption1) {
       console.log(`Selected option1: ${selectedOption1}`);
     }
     if (selectedOption2) {
@@ -30,31 +31,39 @@ function Comparison() {
   };
 
   const handleSelect2 = (value) => {
-    setSelectedOption2(value);  // 속성 선택
+    setSelectedOption2(value); // selectedOption2 상태 업데이트
+  };
+
+  const handleClassroomAChange = (value) => {
+    setClassroomA(value); // StatusBox 1에서 선택된 값
+  };
+
+  const handleClassroomBChange = (value) => {
+    setClassroomB(value); // StatusBox 2에서 선택된 값
   };
 
   return (
     <div>
       <Header />
       <div style={{ display: 'flex', width: '100%' }}>
-        <SideBar i='4'/>
+        <SideBar i='4' />
         <div style={{ width: '100%' }}>
           <div className={styles.top}>
-            <ControlBox/>
-            <StatusBox id='1' color='#1FE5A3'/>
+            <ControlBox />
+            <StatusBox id='1' color='#1FE5A3' onSelect={handleClassroomBChange} /> {/* StatusBox 1 */}
             <div style={{ fontSize: '1.5vw' }}>vs</div>
-            <StatusBox id='2' color='#1A9AFB'/>
-            <ControlBox/>
+            <StatusBox id='2' color='#1A9AFB' onSelect={handleClassroomAChange} /> {/* StatusBox 2 */}
+            <ControlBox />
           </div>
           <div className={bottomStyles.bottom}>
             <div>2024.09.03 PM 04:59</div>
             <div className={bottomStyles.box}>
               <div>
                 period
-                <PeriodDropdown width='clamp(10px, 10vw, 140px)' height='clamp(10px, 5vw, 56px)' onSelect={handleSelect1}/>
-                <div style={{margin:'30%'}}></div>
+                <PeriodDropdown width='clamp(10px, 10vw, 140px)' height='clamp(10px, 5vw, 56px)' onSelect={handleSelect1} />
+                <div style={{ margin: '30%' }}></div>
                 what
-                <WhatDropdown width='clamp(10px, 10vw, 140px)' height='clamp(10px, 5vw, 56px)' onSelect={handleSelect2}/>
+                <WhatDropdown width='clamp(10px, 10vw, 140px)' height='clamp(10px, 5vw, 56px)' onSelect={handleSelect2} />
               </div>
               <hr
                 style={{
@@ -66,8 +75,7 @@ function Comparison() {
                   borderLeft: 'none',
                 }}
               />
-              {/* selectedOption2를 LineChart에 전달 */}
-              <LineChart width='58vw' height='58vh' selectedAttribute={selectedOption2} />
+              <LineChart width='58vw' height='58vh' selectedAttribute={selectedOption2} classroomA={classroomA} classroomB={classroomB} />
             </div>
           </div>
         </div>
