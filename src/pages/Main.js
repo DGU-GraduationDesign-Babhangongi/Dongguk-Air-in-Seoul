@@ -1,15 +1,25 @@
 import React from "react";
 import Header from "../components/common/Header/Header";
+import { useNavigate } from "react-router-dom";
 
 /*처음 들어가면 나오는 화면*/
 function Figures() {
+  const navigate = useNavigate(); // navigate 훅 사용
+
+  const handleImageClick = () => {
+    navigate("/floorcheck"); // 원하는 페이지로 이동
+  };
   return (
     <div>
       <Header />
       <div style={styles.container}>
         <div style={styles.left}>신공학관</div>
         <div style={styles.middle}>
-          <img src="../1층_3d.png" style={styles.image} />
+          <img
+            src="/Main/img_main.png"
+            style={styles.image}
+            onClick={handleImageClick}
+          />
         </div>
         <div style={styles.right}>
           <div style={styles.box}>{/* 네모 박스의 내용 */}</div>
