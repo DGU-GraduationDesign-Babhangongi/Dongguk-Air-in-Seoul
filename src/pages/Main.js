@@ -22,7 +22,7 @@ function Figures() {
           />
         </div>
         <div style={styles.right}>
-          <div style={styles.box}>{/* 네모 박스의 내용 */}</div>
+          현재 위치에 따른 날씨, 센서 수치 이상 로그 기록, 더 알아보기 창
         </div>
       </div>
     </div>
@@ -40,6 +40,7 @@ const styles = {
   left: {
     flex: 1,
     textAlign: "left",
+    margin: 20,
   },
   middle: {
     flex: 3,
@@ -53,7 +54,7 @@ const styles = {
     alignItems: "center",
   },
   image: {
-    maxWidth: "100%",
+    maxWidth: "70%", //스크롤 안 될 정도로만 맞춤
     height: "auto",
   },
   box: {
