@@ -16,15 +16,16 @@ function Comparison() {
   const [selectedOption2, setSelectedOption2] = useState(''); // selectedOption2 상태
   const [classroomA, setClassroomA] = useState(""); // 초기값
   const [classroomB, setClassroomB] = useState(""); // 초기값
-
+  
   useEffect(() => {
-    if (SelectedOption1) {
+    if (selectedOption1) { // 올바른 변수명 사용
       console.log(`Selected option1: ${selectedOption1}`);
     }
     if (selectedOption2) {
       console.log(`Selected option2: ${selectedOption2}`);
     }
   }, [selectedOption1, selectedOption2]);
+  
 
   const handleSelect1 = (value) => {
     setSelectedOption1(value);
