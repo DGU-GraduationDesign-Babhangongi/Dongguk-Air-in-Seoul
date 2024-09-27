@@ -15,7 +15,6 @@
   position: relative;
 }
 
-
 .nav {
   width: clamp(10px, 40%, 440px);
   display: flex;
@@ -55,9 +54,10 @@
 
 .separator {
   align-self: center;
-  width: clamp(167px, 99%, 1600px);
+  /* width: clamp(167px, 99%, 1600px); */
   border: none;
-  border-top: 1px solid #9F9F9F;
+  border-top: 1px solid #9f9f9f;
   margin-top: 10px;
   margin-left: 1%;
+  margin-right: 1%;
 }
