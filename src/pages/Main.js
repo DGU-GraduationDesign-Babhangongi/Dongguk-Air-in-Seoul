@@ -16,7 +16,7 @@ function Figures() {
         <div style={styles.left}>신공학관</div>
         <div style={styles.middle}>
           <img
-            src="../1층_3d.png"
+            src="/Main/img_main.png"
             style={styles.image}
             onClick={handleImageClick}
           />

@@ -1,4 +1,5 @@
 /*층별 강의실 수치 확인*/
+/*사진 위치 C:\Dongguk-Air-in-Seoul\src\assets\images\AirQualityIndicator\humidity.png*/
 import React, { useState } from "react";
 import Header from "../../components/common/Header/Header";
 import SideBar from "../../components/common/SideBar/SideBar";
@@ -11,7 +12,7 @@ const floorData = [
     humidity: "56%",
     tvoc: "23",
     pm25: "150",
-    noise: "89데시벨",
+    noise: "89dB",
     sensorStatus: "정상",
     score1: 87,
     score2: 52,
@@ -22,7 +23,7 @@ const floorData = [
     humidity: "60%",
     tvoc: "20",
     pm25: "120",
-    noise: "75데시벨",
+    noise: "75dB",
     sensorStatus: "정상",
     score1: 80,
     score2: 55,
@@ -41,7 +42,7 @@ const FloorCheck = () => {
             <div className={style.floorMap}>
               {/* 도면 이미지 */}
               <img
-                src="../3층.png"
+                src="/FloorPlan/3층.png"
                 alt="신공학관 구조도"
                 className={style.mapImage}
               />
