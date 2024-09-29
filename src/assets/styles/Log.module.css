@@ -7,16 +7,14 @@
 
 /* 메인 컨테이너 레이아웃 */
 .container {
-  
-display: flex;
-height: 100vh;
-font-family: 'RixXladywatermelonR', Sansation; /* 폰트 변경 */
+  display: flex;
+  height: 90vh;
+  font-family: 'RixXladywatermelonR', Sansation; /* 폰트 변경 */
 }
 
 /* 콘텐츠 스타일 */
 .content {
   width: 96%;
-  padding: clamp(9px, 1vw, 13px) 2%;
   flex-grow: 1;
   padding: 20px;
   display: flex;
@@ -24,43 +22,50 @@ font-family: 'RixXladywatermelonR', Sansation; /* 폰트 변경 */
   font-family: 'RixXladywatermelonR'; /* 폰트 적용 */
 }
 
-/* 필터 스타일 */
+/* 필터들을 가로로 동일한 축에 맞추기 위한 수정 */
 .filters {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: row; /* 필터 항목들을 가로로 배치 */
+  align-items: center; /* 요소들을 세로로 가운데 정렬 */
+  gap: 20px; /* 필터 항목 간의 간격 */
   padding: 10px;
   margin-bottom: 20px;
-  background-color: #fff; /* 배경을 흰색으로 변경 */
+  background-color: #fff;
   border-radius: 8px;
-  font-family: 'RixXladywatermelonR'; /* 폰트 적용 */
-  gap: 10px; /* 필터 아이템 간의 간격 조정 */
 }
 
 .filterItem {
   display: flex;
-  align-items: center;
-  gap: 5px; /* 라디오 버튼 간의 간격 조정 */
+  flex-direction: row; /* 라벨과 입력창을 가로로 배치 */
+  align-items: center; /* 라벨과 입력창을 세로로 가운데 정렬 */
+  gap: 10px; /* 라벨과 입력창 사이의 간격 */
 }
 
 .filterItem label {
-  margin-right: 10px;
+  margin: 0; /* 라벨의 기본 여백 제거 */
+  white-space: nowrap; /* 라벨 텍스트가 줄바꿈되지 않도록 설정 */
 }
 
 .filterItem input, .filterItem select {
-  padding: 8px;
+  padding: 5px; /* 입력창의 패딩 최소화 */
   border-radius: 5px;
-  border: 3px solid #888; /* 테두리 두께와 색상 변경 */
+  border: 2px solid #888; /* 테두리 두께 조정 */
+  height: 30px; /* 입력창 높이 고정 */
+  box-sizing: border-box; /* padding과 border 포함하여 박스 크기 계산 */
 }
 
 .tabs {
   display: flex;
-  justify-content: space-around;
+  justify-content: start;
+  align-items: center;
   margin-bottom: 20px;
 }
 
 .tabLabel {
-  margin-right: 5px; /* 라디오 버튼 간의 간격을 늘림 */
+  margin-left: 10px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center; /* 라디오 버튼과 라벨을 세로 가운데 정렬 */
 }
 
 /* 센서 데이터 목록 */
