@@ -52,7 +52,7 @@ function Contact() {
           
           {/* 노란 배너와 아이콘 */}
           <div className={styles.banner}>
-            <FiCpu size={49} color="#333" />
+            <FiCpu size={36} color="#333" />
             <h1>관리자 페이지</h1>
           </div>
           <div className={styles.registerSection}>

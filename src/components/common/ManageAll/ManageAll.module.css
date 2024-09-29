@@ -10,12 +10,28 @@
     max-width: 600px;
 
   }
-  
+  .AllSection{
+    display: flex;
+    flex-direction: column;
+  }
+
+  h3{
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: 16px;
+  }
+
+  .SecondSection{
+    display: flex;
+    flex-direction: row; /* 가로 배열 */
+    align-items: center; /* 세로 정렬 중앙 */
+  }
+
   .leftSection {
     display: flex;
-    flex-direction: column; /* 세로 정렬 */
     justify-content: flex-start; /* 상단에 고정 */
-    align-items: flex-start; /* 좌측 정렬 */
+    align-items: center; /* 세로 정렬 중앙 */
+    margin-bottom: 20px;
 }
 
   
@@ -26,7 +42,6 @@
   
   .roomInfo {
     display: flex;
-    flex-direction: column;
     justify-content: flex-start; /* 상단에 위치 */
     margin: 0;
     font-size: 1.5rem;
@@ -34,34 +49,40 @@
 
   
   .roomInfo h2 {
-    font-size: 1.5rem;
+    font-size: 16px;
   }
   
   .star img {
     width: 20px;
     height: 20px;
-    margin-left: 10px;
+    margin-left: 5px;
   }
   
   .sensorSection {
     display: flex;
     flex-direction: column;
+    margin-right: 20px;
   }
   
   .sensorItem {
     display: flex;
     align-items: center;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    margin-left: 10px;
   }
   
   .sensorItem img {
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     margin-right: 10px;
   }
   
   .sensorItem span {
+    display: flex;
+    align-items: center;
     margin-right: 10px;
+    width: 50px;
+    font-size: 14px;
   }
   
   .statusDot {
@@ -85,11 +106,12 @@
   .memoEdit {
     display: flex;
     align-items: center;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: gray;
   }
   
   .memoEdit img {
+    margin-left: 100px;
     width: 15px;
     height: 15px;
     margin-right: 5px;

@@ -1,9 +1,11 @@
 import React from 'react';
-import styles from './ManageAll.module.css'; // CSS 파일 연결
+import styles from './ManageAll.module.css'; // CSS 파일 
+import ControlBox from '../../common/ControlBoxMg/ControlBoxMg';
 
 function ManageAll() {
   return (
     <div className={styles.card}>
+      <div className={styles.AllSection}>
       {/* 왼쪽 섹션: 아이콘과 데이터 */}
       <div className={styles.leftSection}>
         <div className={styles.icon}>
@@ -30,6 +32,7 @@ function ManageAll() {
       </div>
 
       {/* 센서 정보 */}
+      <div className={styles.SecondSection}>
       <div className={styles.sensorSection}>
         <div className={styles.sensorItem}>
           <img src={require('../../../assets/images/AirQualityIndicator/temperature.png')} alt="Temperature Icon" />
@@ -51,7 +54,6 @@ function ManageAll() {
           <span>23</span>
           <div className={styles.statusDot}></div>
         </div>
-
         <div className={styles.sensorItem}>
           <img src={require('../../../assets/images/AirQualityIndicator/PM2.5.png')} alt="PM 2.5 Icon" />
           <span>PM 2.5</span>
@@ -66,26 +68,11 @@ function ManageAll() {
           <div className={styles.statusDot}></div>
         </div>
       </div>
-
+      <ControlBox />
       {/* 우측 섹션: 장치 제어 */}
-      <div className={styles.controlSection}>
-        <div>
-          <span>Air conditioner</span>
-          <input type="checkbox" />
-        </div>
-
-        <div>
-          <span>Ventilator</span>
-          <input type="checkbox" />
-        </div>
-
-        <div>
-          <span>Air cleaner</span>
-          <input type="checkbox" />
-        </div>
-      </div>
-
       
+      </div>
+    </div>
     </div>
   );
 }

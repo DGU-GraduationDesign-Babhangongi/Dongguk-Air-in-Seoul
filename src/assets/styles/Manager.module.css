@@ -1,42 +1,47 @@
-/* 전체 레이아웃 설정 */
 .layout {
     display: flex;
   }
-  
-  /* 메인 콘텐츠 영역 */
-  .content {
+
+  .banner {
+    display: flex;
+    align-items: center;
+    background-color: #FFB841; /* Matches the yellow banner in your design */
+    padding: 10px 20px;
+    margin-bottom: 20px; /* Adjust the size as needed */
+    width: 96%;
+    height: clamp(60px, 12vw, 70px);
+    padding: clamp(9px, 1vw, 13px) 2%;
+  }
+
+  .container {
     display: flex;
     flex-direction: column;
+    font-family: 'RixXladywatermelonR', Arial, sans-serif; /* 기본 폰트 적용 */
     width: 100%;
-    padding: 20px;
+    background-color: #f5f5f5; /* Light background to match the card contrast */
   }
   
-  /* 사용자 정보 섹션 */
-  .userInfo {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    background-color: #f7c600;
-    padding: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .userName {
+  .title{
     display: flex;
     align-items: center;
   }
-  
-  .userIcon {
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
+
+  h1 {
+    margin-left: 15px;
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;
+    font-family: 'RixXladywatermelonR', Arial, sans-serif; /* 폰트 적용 */
   }
-  
+
   /* 강의실 카드 그리드 */
   .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개의 카드 배치 */
     gap: 10px; /* 카드 간 간격 더 넓게 설정 */
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
 }
 
   
