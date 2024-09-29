@@ -3,6 +3,7 @@ import Header from '../../components/common/Header/Header';
 import SideBar from '../../components/common/SideBar/SideBar';
 import styles from '../../assets/styles/Contact.module.css';
 import Dropbutton from '../../components/common/Dropbutton/Dropbutton';
+import { FiCpu } from "react-icons/fi";
 
 function Contact() {
   const [buildingName, setBuildingName] = useState('');
@@ -37,6 +38,8 @@ function Contact() {
     const value = e.target.value;
     if (!isNaN(value) && Number(value) > 0) {
       setMaxFloors(value);
+    } else {
+      setMaxFloors('');
     }
   };
 
@@ -49,17 +52,17 @@ function Contact() {
           
           {/* 노란 배너와 아이콘 */}
           <div className={styles.banner}>
-            <img src="/Main/manager.png" className={styles.bannerIcon} alt="Manager" />
+            <FiCpu size={49} color="#333" />
             <h1>관리자 페이지</h1>
           </div>
           <div className={styles.registerSection}>
             
             {/* 새 건물 등록 */}
             <div className={styles.registerBuilding}>
+              <div className={styles.title}>
               <img src="/Main/building.png" className={styles.bannerIcon} alt="Building" />
-              <h2>새 건물 등록</h2>
+              <h2>새 건물 등록</h2></div>
               <p>최대 7일의 시간이 소요될 수 있습니다.</p>
-              
               <label>Building Name</label>
               <input
                 type="text"
@@ -77,26 +80,29 @@ function Contact() {
               />
               
               {/* maxFloors 값에 따라 동적으로 층 입력 필드 생성 */}
-              <div className={styles.floorDrawings}>
-
-                {[...Array(Number(maxFloors) || 0)].map((_, index) => (
-                  <div key={index} className={styles.Contact_registerBuilding__k2HnY}>
-                    <label>{index + 1} floor</label>
-                    <input
-                      type="file"
-                      onChange={(e) => handleDrawingChange(index + 1, e.target.files[0])}
-                    />
-                  </div>
-                ))}
-              </div>
+              {Number(maxFloors) > 0 && (
+                <div className={styles.floorDrawings}>
+                  <label>Register the drawing</label>
+                  {[...Array(Number(maxFloors))].map((_, index) => (
+                    <div key={index} className={styles.Contact_registerBuilding__map}>
+                      <label>{index + 1} floor</label>
+                      <input
+                        type="file"
+                        onChange={(e) => handleDrawingChange(index + 1, e.target.files[0])}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
               
               <button onClick={handleRegisterBuilding}>등록</button>
             </div>
 
             {/* 새 강의실 등록 */}
             <div className={styles.registerRoom}>
+            <div className={styles.title}>
               <img src="/Main/building.png" className={styles.bannerIcon} alt="Building" />
-              <h2>새 강의실 등록</h2>
+              <h2>새 강의실 등록</h2></div>
               <p>원하시는 건물이 없다면 건물 등록</p>
               <label>Building</label>
               <Dropbutton 
@@ -125,8 +131,9 @@ function Contact() {
 
             {/* 강의실 삭제 */}
             <div className={styles.removeRoom}>
+              <div className={styles.title}>
               <img src="/Main/building.png" className={styles.bannerIcon} alt="Building" />
-              <h2>강의실 삭제</h2>
+              <h2>강의실 삭제</h2></div>
               <p>최대 1일의 시간이 소요될 수 있습니다.</p>
               
               <label>Building</label>

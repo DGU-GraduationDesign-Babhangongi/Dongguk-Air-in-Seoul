@@ -28,6 +28,7 @@ body {
 }
 
 h1 {
+  margin-left: 15px;
   font-size: 24px;
   color: #333;
   font-weight: bold;
@@ -59,6 +60,8 @@ h1 {
   height: 580px; /* 고정된 높이 */
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Enhance shadow for depth */
   width: 32%; /* Slightly adjust the width to give more space between */
+  border: 2px solid #FFB841;
+
 }
 
 .registerBuilding {
@@ -69,6 +72,8 @@ h1 {
   width: 32%;
   height: 580px; /* 고정된 높이 */
   overflow-y: auto; /* 스크롤을 허용 */
+  border: 2px solid #FFB841;
+
 }
 
 h2 {
@@ -79,13 +84,16 @@ h2 {
 }
 
 p {
+  margin-top: 10px;
   margin-bottom: 35px;
+  margin-left: 5px;
   font-family: 'RixXladywatermelonR', Arial, sans-serif; /* 폰트 적용 */
 }
 
 label {
+  font-size: 18px;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   display: block;
 }
 
@@ -99,8 +107,13 @@ input, select {
   font-family: 'RixXladywatermelonR', Arial, sans-serif; /* 폰트 적용 */
 }
 
+.title{
+  display: flex;
+  align-items: center;
+}
+
 .reasonTextarea {
-  width: 100%;
+  width: 95%;
   height: 100px; /* 고정된 높이 */
   padding: 10px;
   margin-bottom: 30px;
@@ -133,7 +146,7 @@ button:hover {
   margin-bottom: 12px;
 }
 
-.Contact_registerBuilding__k2HnY {
+.Contact_registerBuilding__map {
   margin-bottom: 12px;
 }
 
