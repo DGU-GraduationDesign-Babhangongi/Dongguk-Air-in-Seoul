@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import Header from '../../components/common/Header/Header';
 import SideBar from '../../components/common/SideBar/SideBar';
-import styles from '../../assets/styles/Contact.module.css'; // Assuming you have this CSS file
+import styles from '../../assets/styles/Contact.module.css';
+import Dropbutton from '../../components/common/Dropbutton/Dropbutton';
 
 function Contact() {
   const [buildingName, setBuildingName] = useState('');
   const [maxFloors, setMaxFloors] = useState('');
-  const [drawings, setDrawings] = useState({}); // Storing floor drawings for each floor
+  const [drawings, setDrawings] = useState({});
   const [selectedRoom, setSelectedRoom] = useState('');
   const [serialNum, setSerialNum] = useState('');
   const [removeBuilding, setRemoveBuilding] = useState('');
@@ -32,31 +33,54 @@ function Contact() {
     }));
   };
 
+  const handleMaxFloorsChange = (e) => {
+    const value = e.target.value;
+    if (!isNaN(value) && Number(value) > 0) {
+      setMaxFloors(value);
+    }
+  };
+
   return (
     <div>
-      <Header /> {/* Adding the header */}
+      <Header /> {/* 헤더 */}
       <div style={{ display: 'flex' }}>
-        <SideBar /> {/* Adding the sidebar */}
+        <SideBar /> {/* 사이드바 */}
         <div className={styles.container}>
+          
+          {/* 노란 배너와 아이콘 */}
+          <div className={styles.banner}>
+            <img src="/Main/manager.png" className={styles.bannerIcon} alt="Manager" />
+            <h1>관리자 페이지</h1>
+          </div>
           <div className={styles.registerSection}>
-            {/* Register New Building */}
+            
+            {/* 새 건물 등록 */}
             <div className={styles.registerBuilding}>
+              <img src="/Main/building.png" className={styles.bannerIcon} alt="Building" />
               <h2>새 건물 등록</h2>
+              <p>최대 7일의 시간이 소요될 수 있습니다.</p>
+              
               <label>Building Name</label>
               <input
                 type="text"
+                placeholder="ex) 신공학관"
                 value={buildingName}
                 onChange={(e) => setBuildingName(e.target.value)}
               />
+              
               <label>Max Floors</label>
               <input
                 type="text"
+                placeholder="숫자만 입력해주세요"
                 value={maxFloors}
-                onChange={(e) => setMaxFloors(e.target.value)}
+                onChange={handleMaxFloorsChange}
               />
+              
+              {/* maxFloors 값에 따라 동적으로 층 입력 필드 생성 */}
               <div className={styles.floorDrawings}>
-                {[...Array(7)].map((_, index) => (
-                  <div key={index}>
+
+                {[...Array(Number(maxFloors) || 0)].map((_, index) => (
+                  <div key={index} className={styles.Contact_registerBuilding__k2HnY}>
                     <label>{index + 1} floor</label>
                     <input
                       type="file"
@@ -65,56 +89,72 @@ function Contact() {
                   </div>
                 ))}
               </div>
-              <button onClick={handleRegisterBuilding}>Register</button>
+              
+              <button onClick={handleRegisterBuilding}>등록</button>
             </div>
 
-            {/* Register New Room */}
+            {/* 새 강의실 등록 */}
             <div className={styles.registerRoom}>
+              <img src="/Main/building.png" className={styles.bannerIcon} alt="Building" />
               <h2>새 강의실 등록</h2>
+              <p>원하시는 건물이 없다면 건물 등록</p>
               <label>Building</label>
-              <select value={buildingName} onChange={(e) => setBuildingName(e.target.value)}>
-                <option value="신공학관">신공학관</option>
-                {/* Add other building options as needed */}
-              </select>
+              <Dropbutton 
+                onSelect={(value) => setBuildingName(value)} 
+                width="100%" 
+                height="auto"
+                borderColor="#A5A5A5" 
+                borderWidth="1px"
+              />
               <label>Room</label>
               <input
                 type="text"
+                placeholder="등록을 원하는 강의실 번호만 입력해주세요"
                 value={selectedRoom}
                 onChange={(e) => setSelectedRoom(e.target.value)}
               />
-              <div className={styles.mapPreview}>
-                {/* Replace with actual map image */}
-                <img src="/path-to-map.png" alt="Map" />
-              </div>
               <label>Serial Num</label>
               <input
                 type="text"
                 value={serialNum}
+                placeholder="센서번호를 입력해주세요 ex) 3B73-A1C6-8IK21-R406"
                 onChange={(e) => setSerialNum(e.target.value)}
               />
-              <button onClick={handleRegisterRoom}>Register</button>
+              <button onClick={handleRegisterRoom}>등록</button>
             </div>
 
-            {/* Remove Room */}
+            {/* 강의실 삭제 */}
             <div className={styles.removeRoom}>
+              <img src="/Main/building.png" className={styles.bannerIcon} alt="Building" />
               <h2>강의실 삭제</h2>
+              <p>최대 1일의 시간이 소요될 수 있습니다.</p>
+              
               <label>Building</label>
-              <select value={removeBuilding} onChange={(e) => setRemoveBuilding(e.target.value)}>
-                <option value="신공학관">신공학관</option>
-                {/* Add other building options as needed */}
-              </select>
+              <Dropbutton 
+                onSelect={(value) => setRemoveBuilding(value)} 
+                width="100%" 
+                height="auto"
+                borderColor="#A5A5A5" 
+                borderWidth="1px"
+              />
+              
               <label>Room</label>
-              <select value={removeRoom} onChange={(e) => setRemoveRoom(e.target.value)}>
-                <option value="3173">3173</option>
-                {/* Add other room options as needed */}
-              </select>
-              <label>Reason</label>
               <input
                 type="text"
+                placeholder="등록을 원하는 강의실 번호만 입력해주세요"
+                value={removeRoom}
+                onChange={(e) => setRemoveRoom(e.target.value)}
+              />
+              
+              <label>Reason</label>
+              <textarea
+                className={styles.reasonTextarea} // 스크롤이 가능한 텍스트 영역
                 value={removeReason}
+                placeholder="삭제를 원하시는 이유를 작성해주세요"
                 onChange={(e) => setRemoveReason(e.target.value)}
               />
-              <button onClick={handleRemoveRoom}>Remove</button>
+              
+              <button onClick={handleRemoveRoom}>삭제</button>
             </div>
           </div>
         </div>
