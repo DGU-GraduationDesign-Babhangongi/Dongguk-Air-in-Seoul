@@ -51,9 +51,9 @@ function Comparison() {
         <div style={{ width: '100%' }}>
           <div className={styles.top}>
             <ControlBox />
-            <StatusBox id='1' color='#1FE5A3' onSelect={handleClassroomBChange} /> {/* StatusBox 1 */}
+            <StatusBox id='1' color='#1FE5A3' onSelect={handleClassroomAChange} /> {/* StatusBox 1 */}
             <div style={{ fontSize: '1.5vw' }}>vs</div>
-            <StatusBox id='2' color='#1A9AFB' onSelect={handleClassroomAChange} /> {/* StatusBox 2 */}
+            <StatusBox id='2' color='#1A9AFB' onSelect={handleClassroomBChange} /> {/* StatusBox 2 */}
             <ControlBox />
           </div>
           <div className={bottomStyles.bottom}>
@@ -76,7 +76,7 @@ function Comparison() {
                   borderLeft: 'none',
                 }}
               />
-              <LineChart width='58vw' height='58vh' selectedAttribute={selectedOption2} classroomA={classroomA} classroomB={classroomB} />
+              <LineChart width='58vw' height='80%' selectedAttribute={selectedOption2} classroomA={classroomA} classroomB={classroomB} />
             </div>
           </div>
         </div>
