@@ -10,7 +10,7 @@ import Manager from "../src/pages/Manager/Manager";
 import Alarm from "../src/pages/Alarm/Alarm";
 import Contact from "../src/pages/Contact/Contact";
 import FloorCheck from "../src/pages/FloorCheck/FloorCheck";
-//TEST
+import Test from "../src/pages/test";
 
 function App() {
   return (
@@ -27,6 +27,8 @@ function App() {
         <Route path="/Alarm" element={<Alarm />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/floorcheck" element={<FloorCheck />} />
+
+        <Route path="/test" element={<Test />} />
       </Routes>
     </Router>
   );

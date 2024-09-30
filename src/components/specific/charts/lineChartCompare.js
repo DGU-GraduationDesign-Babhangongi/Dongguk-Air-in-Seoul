@@ -39,11 +39,10 @@ const data = [
     temperatureB: 33, humidityB: 29, TVOCB: 150, PM2_5B: 36, noiseB: 70,
   },
 ];
-
-const LineChartComponent = ({ selectedAttribute, classroomA, classroomB }) => {
+const LineChartComponent = ({ selectedAttribute, classroomA, classroomB, width, height }) => {
   return (
-    <div style={{ width: '100%', height: 300 }}>
-      <ResponsiveContainer>
+    <div style={{ width: width, height: height }}>  {/* 부모 div의 크기를 동적으로 설정 */}
+      <ResponsiveContainer width="100%" height="100%"> {/* 100% width/height로 부모에 맞추기 */}
         <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
@@ -54,22 +53,21 @@ const LineChartComponent = ({ selectedAttribute, classroomA, classroomB }) => {
           <Line 
             type="monotone" 
             dataKey={selectedAttribute + 'A'} 
-            stroke="#8884d8" 
+            stroke="#82ca9d" 
             strokeWidth={3} 
-            name={`${classroomA}`+' '}  // 강의실 A 번호
+            name={`${classroomA}`+' '}  
           />
           {/* 강의실 B 데이터 */}
           <Line 
             type="monotone" 
             dataKey={selectedAttribute + 'B'} 
-            stroke="#82ca9d" 
+            stroke="#8884d8" 
             strokeWidth={3} 
-            name={`${classroomB}`+' '}  // 강의실 B 번호
+            name={`${classroomB}`+' '}  
           />
         </LineChart>
       </ResponsiveContainer>
     </div>
   );
 };
-
 export default LineChartComponent;
