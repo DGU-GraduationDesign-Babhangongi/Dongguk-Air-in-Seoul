@@ -1,15 +1,16 @@
 @font-face {
-  font-family: 'RixXladywatermelonR';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-4@1.0/RixXladywatermelonR.woff2') format('woff2');
-  font-weight: normal;
+  font-family: 'NanumBarunGothic';
   font-style: normal;
+  font-weight: 400;
+  src: url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot');
+  src: url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix') format('embedded-opentype'), url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff') format('woff'), url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf') format('truetype');
 }
 
 /* 메인 컨테이너 레이아웃 */
 .container {
   display: flex;
   height: 90vh;
-  font-family: 'RixXladywatermelonR', Sansation; /* 폰트 변경 */
+  font-family: 'NanumBarunGothic', sans-serif; /* 폰트 변경 */
 }
 
 /* 콘텐츠 스타일 */
@@ -19,7 +20,7 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  font-family: 'RixXladywatermelonR'; /* 폰트 적용 */
+  font-family: 'NanumBarunGothic'; /* 폰트 적용 */
 }
 
 /* 필터들을 가로로 동일한 축에 맞추기 위한 수정 */
@@ -75,7 +76,7 @@
   background-color: #f0f0f0; /* 배경을 연한 그레이로 지정 */
   padding: 20px;
   border-radius: 8px;
-  font-family: 'RixXladywatermelonR'; /* 폰트 적용 */
+  font-family: 'NanumBarunGothic'; /* 폰트 적용 */
 }
 
 .sensorItem {
@@ -86,24 +87,25 @@
   border-radius: 5px;
   padding: 10px;
   margin-bottom: 10px;
-  font-family: 'RixXladywatermelonR'; /* 폰트 적용 */
+  font-family: 'NanumBarunGothic'; /* 폰트 적용 */
   background-color: #fff; /* 로그 값 박스 배경을 흰색으로 설정 */
 }
+
 /* 하단 스타일 */
 .bottom {
-padding: 2% 4%;
-background-color: #F0F0F0;
-width: 92%;
-height: 90%;
-font-family: 'RixXladywatermelonR'; /* 폰트 적용 */
+  padding: 2% 4%;
+  background-color: #F0F0F0;
+  width: 92%;
+  height: 90%;
+  font-family: 'NanumBarunGothic'; /* 폰트 적용 */
 }
 
 /* 스크롤바 스타일 */
 .sensorData::-webkit-scrollbar {
-width: 10px;
+  width: 10px;
 }
 
 .sensorData::-webkit-scrollbar-thumb {
-background-color: rgba(0, 0, 0, 0.2);
-border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }

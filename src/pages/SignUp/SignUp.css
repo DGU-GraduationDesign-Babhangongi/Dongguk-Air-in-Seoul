@@ -1,10 +1,18 @@
-/* src/pages/SignUp/SignUp.css */
+@font-face {
+  font-family: 'NanumBarunGothic';
+  font-style: normal;
+  font-weight: 400;
+  src: url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot');
+  src: url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix') format('embedded-opentype'), url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff') format('woff'), url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf') format('truetype');
+}
+
 .signup-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
+  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
 }
 
 .signup-form {
@@ -16,6 +24,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 350px;
+  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
 }
 
 .signup-form input {
@@ -24,6 +33,7 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   width: 100%;
+  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
 }
 
 .signup-button {
@@ -34,6 +44,7 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
+  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
 }
 
 .signup-button:hover {
@@ -43,11 +54,13 @@
 .login-link {
   margin-top: 15px;
   font-size: 14px;
+  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
 }
 
 .login-link a {
   color: #007bff;
   text-decoration: none;
+  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
 }
 
 .login-link a:hover {
