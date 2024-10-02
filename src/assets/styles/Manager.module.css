@@ -1,59 +1,58 @@
 .layout {
-    display: flex;
-  }
-
-  .banner {
-    display: flex;
-    align-items: center;
-    background-color: #FFB841; /* Matches the yellow banner in your design */
-    padding: 10px 20px;
-    margin-bottom: 20px; /* Adjust the size as needed */
-    width: 96%;
-    height: clamp(60px, 12vw, 70px);
-    padding: clamp(9px, 1vw, 13px) 2%;
-  }
-
-  .container {
-    display: flex;
-    flex-direction: column;
-    font-family: 'RixXladywatermelonR', Arial, sans-serif; /* 기본 폰트 적용 */
-    width: 100%;
-    background-color: #f5f5f5; /* Light background to match the card contrast */
-  }
-  
-  .title{
-    display: flex;
-    align-items: center;
-  }
-
-  h1 {
-    margin-left: 15px;
-    font-size: 20px;
-    color: #333;
-    font-weight: bold;
-    font-family: 'RixXladywatermelonR', Arial, sans-serif; /* 폰트 적용 */
-  }
-
-  /* 강의실 카드 그리드 */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개의 카드 배치 */
-    gap: 10px; /* 카드 간 간격 더 넓게 설정 */
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-bottom: 20px;
+  display: flex;
 }
 
-  
-  /* 강의실 카드 설정 */
-  .card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    border: 2px solid #00FF00;
-    border-radius: 15px;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
+.banner {
+  display: flex;
+  align-items: center;
+  background-color: #FFB841; /* Matches the yellow banner in your design */
+  padding: 10px 20px;
+  margin-bottom: 20px; /* Adjust the size as needed */
+  width: 96%;
+  height: clamp(60px, 12vw, 70px);
+  padding: clamp(9px, 1vw, 13px) 2%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 기본 폰트 적용 */
+  width: 100%;
+  background-color: #f5f5f5; /* Light background to match the card contrast */
+}
+
+.title {
+  display: flex;
+  align-items: center;
+}
+
+h1 {
+  margin-left: 15px;
+  font-size: 20px;
+  color: #333;
+  font-weight: bold;
+  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
+}
+
+/* 강의실 카드 그리드 */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개의 카드 배치 */
+  gap: 10px; /* 카드 간 간격 더 넓게 설정 */
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+/* 강의실 카드 설정 */
+.card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border: 2px solid #00FF00;
+  border-radius: 15px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
+}

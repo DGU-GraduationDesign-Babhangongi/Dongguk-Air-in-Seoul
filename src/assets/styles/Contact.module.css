@@ -1,13 +1,14 @@
 @font-face {
-  font-family: 'RixXladywatermelonR';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-4@1.0/RixXladywatermelonR.woff2') format('woff2');
-  font-weight: normal;
+  font-family: 'NanumBarunGothic';
   font-style: normal;
+  font-weight: 400;
+  src: url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot');
+  src: url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix') format('embedded-opentype'), url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff') format('woff'), url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf') format('truetype');
 }
 
 /* 기본 폰트 설정 */
 body {
-  font-family: 'RixXladywatermelonR', Arial, sans-serif;
+  font-family: 'NanumBarunGothic', Arial, sans-serif;
 }
 
 .banner {
@@ -32,13 +33,13 @@ h1 {
   font-size: 20px;
   color: #333;
   font-weight: bold;
-  font-family: 'RixXladywatermelonR', Arial, sans-serif; /* 폰트 적용 */
+  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
 }
 
 .container {
   display: flex;
   flex-direction: column;
-  font-family: 'RixXladywatermelonR', Arial, sans-serif; /* 기본 폰트 적용 */
+  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 기본 폰트 적용 */
   width: 100%;
   background-color: #f5f5f5; /* Light background to match the card contrast */
 }
@@ -60,7 +61,6 @@ h1 {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Enhance shadow for depth */
   width: 32%; /* Slightly adjust the width to give more space between */
   border: 2px solid #FFB841;
-
 }
 
 .registerBuilding {
@@ -72,21 +72,20 @@ h1 {
   height: 470px; /* 고정된 높이 */
   overflow-y: auto; /* 스크롤을 허용 */
   border: 2px solid #FFB841;
-
 }
 
 h2 {
   font-size: 22px;
   font-weight: bold;
   margin-bottom: 5px;
-  font-family: 'RixXladywatermelonR', Arial, sans-serif; /* 폰트 적용 */
+  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
 }
 
 p {
   margin-top: 8px;
   margin-bottom: 35px;
   margin-left: 5px;
-  font-family: 'RixXladywatermelonR', Arial, sans-serif; /* 폰트 적용 */
+  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
 }
 
 label {
@@ -103,10 +102,10 @@ input, select {
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 14px; /* Make the font slightly bigger */
-  font-family: 'RixXladywatermelonR', Arial, sans-serif; /* 폰트 적용 */
+  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
 }
 
-.title{
+.title {
   display: flex;
   align-items: center;
 }
@@ -121,7 +120,7 @@ input, select {
   font-size: 14px;
   resize: none; /* 사용자가 크기를 조정하지 못하게 설정 */
   overflow-y: auto; /* 텍스트가 넘칠 경우 스크롤바 표시 */
-  font-family: 'RixXladywatermelonR', Arial, sans-serif; /* 폰트 적용 */
+  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
 }
 
 button {
@@ -133,12 +132,12 @@ button {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  font-family: 'RixXladywatermelonR', Arial, sans-serif; /* 폰트 적용 */
+  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
 }
 
 button:hover {
   background-color: #FFB841; /* Slightly darker on hover */
-  font-family: 'RixXladywatermelonR', Arial, sans-serif; /* 폰트 적용 */
+  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
 }
 
 .floorDrawings div {
