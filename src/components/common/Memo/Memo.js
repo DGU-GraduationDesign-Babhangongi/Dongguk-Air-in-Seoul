@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Memo.module.css';
 
-function Memo({ closeModal, selectedMemo }) {
+function Memo({ closeModal, selectedBuilding, selectedRoom, selectedMemo }) {
   const [memoContent, setMemoContent] = useState(selectedMemo);
 
   // 메모 내용 변경 처리
@@ -12,11 +12,19 @@ function Memo({ closeModal, selectedMemo }) {
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
-        <h2>메모 수정</h2>
-        <textarea value={memoContent} onChange={handleChange} placeholder="메모를 작성하세요" />
-        <div className={styles.buttons}>
-          <button onClick={closeModal} className={styles.closeButton}>닫기</button>
-          <button className={styles.saveButton}>저장</button>
+        <div className={styles.header}>
+          <img src={require('../../../assets/images/edit.png')} alt="Edit Icon" />
+          <h2>{selectedBuilding} {selectedRoom}</h2>
+          <button onClick={closeModal} className={styles.closeButton}>×</button>
+          </div>
+        <textarea
+          value={memoContent}
+          onChange={handleChange}
+          placeholder="메모를 작성하세요"
+          className={styles.textarea}
+        />
+        <div className={styles.buttonContainer}>
+          <button className={styles.registerButton}>Register</button>
         </div>
       </div>
     </div>

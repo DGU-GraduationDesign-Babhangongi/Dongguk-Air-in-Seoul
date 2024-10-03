@@ -3,7 +3,8 @@ import styles from './ManageAll.module.css';
 import ControlBox from '../../common/ControlBoxMg/ControlBoxMg';
 
 function ManageAll({ openMemoModal }) {
-  const memo = "여기에 메모를 작성하세요"; // 기본 메모 내용
+  const buildingName = "신공학관";
+  const roomNumber = "4147";
 
   return (
     <div className={styles.card}>
@@ -14,14 +15,14 @@ function ManageAll({ openMemoModal }) {
             <img src={require('../../../assets/images/building.png')} alt="Building Icon" />
           </div>
           <div className={styles.roomInfo}>
-            <h3>신공학관</h3>
-            <h2>4147</h2>
+            <h3>{buildingName}</h3>
+            <h2>{roomNumber}</h2>
           </div>
           <div className={styles.star}>
             <img src={require('../../../assets/images/star.png')} alt="Star Icon" />
           </div>
           {/* 메모 수정 버튼 */}
-          <div className={styles.memoEdit} onClick={() => openMemoModal(memo)}>
+          <div className={styles.memoEdit} onClick={() => openMemoModal(buildingName, roomNumber)}>
             <img src={require('../../../assets/images/edit.png')} alt="Edit Icon" />
             <span>메모수정</span>
           </div>
