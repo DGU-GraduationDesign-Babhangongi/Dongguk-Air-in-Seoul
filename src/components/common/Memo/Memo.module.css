@@ -4,49 +4,100 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5); /* 배경 흐림 처리 */
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 999;
   }
   
   .modalContent {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
+    background-color: #FFFFFF; /* 팝업창 배경색 */
+    border-radius: 15px;
+    width: 100%; /* 반응형으로 설정 (화면의 90%) */
+    max-width: 700px; /* 최대 폭 설정 */
+    position: relative;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 400px;
-    text-align: center;
   }
-  
-  textarea {
-    width: 100%;
-    height: 150px;
-    margin-bottom: 20px;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-  }
-  
-  .buttons {
+
+  .header {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    background-color: #FFE191; /* 상단 배너 색상 */
+    padding: 10px 20px;
+    height: 30px;
+    border-radius: 15px 15px 0 0;
+    font-weight: bold;
+    font-size: 18px; /* 헤더 텍스트 크기 */
   }
   
-  .closeButton, .saveButton {
-    padding: 10px 20px;
+  .header img {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+  }
+  
+  .header h2 {
+    margin: 0;
+    font-size: 18px;
+    margin-right: 480px;
+  }
+
+  .textarea {
+    display: flex;
+    width: 94%; 
+    height: 150px; /* 텍스트 영역 높이 */
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 16px;
+    margin: 10px 20px; /* 양옆에 20px 마진 추가 */
+    font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
+  }
+
+  .textarea:focus {
+    border: 2px solid #ccc;
+    outline: none; /* 포커스 시 outline 제거 */
+}
+
+  .buttonContainer {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
+  }
+  
+  .registerButton {
+    background-color: #FFE191;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: black;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
+    padding: 12px 24px; /* 버튼 크기 조정 */
+    font-size: 16px;
     cursor: pointer;
+    font-weight: bold;
+    width: 40%;
+    height: 100%;
+  }
+  
+  .registerButton:hover {
+    background-color: #FFCA2C;
   }
   
   .closeButton {
-    background-color: #ccc;
+    position: relative;
+    width: 1%;
+    background: none;
+    border: none;
+    font-size: 20px; /* 닫기 버튼 크기 */
+    cursor: pointer;
+    color: gray; /* 닫기 버튼 색상 */
   }
-  
-  .saveButton {
-    background-color: #FFB841;
-    color: white;
+
+  .closeButton:hover {
+    background-color: #FFE191;
+    font-weight:bold;
   }
-  
