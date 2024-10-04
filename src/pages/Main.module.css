@@ -1,0 +1,145 @@
+.mainContainer {
+  padding: 20px;
+  height: 100vh; /* 전체 화면 높이를 맞추기 위해 추가 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 수직 중앙 정렬 */
+}
+/* 애니메이션 1 */
+@keyframes fadeInAndGrow {
+  0% {
+    opacity: 0;
+    transform: scale(0.8); /* 크기를 80%로 줄여 시작 */
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1); /* 원래 크기로 돌아옴 */
+  }
+}
+/* 애니메이션 2 */
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px); /* 위에서 시작 */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* 원래 위치로 이동 */
+  }
+}
+
+/* 환영합니데이 */
+.welcomeMessage {
+  text-align: center;
+  margin-top: 40px;
+  animation: slideDown 1.5s ease-in-out;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* 수평 중앙 정렬 */
+  height: 80%; /* 부모 요소 높이에 맞추기 위해 추가 */
+  width: 100%;
+  margin: 0 auto;
+}
+
+.buildings {
+  display: flex;
+  justify-content: space-around;
+  width: 70%;
+}
+
+.building {
+  text-align: center;
+  cursor: pointer;
+  margin: 0 4px; /* 건물들 사이에 여백을 추가 */
+}
+
+.building img {
+  width: 300px;
+  height: auto;
+}
+
+.sensorInfo {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.greenLight {
+  width: 10px;
+  height: 10px;
+  background-color: green;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.redLight {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+/*날씨 / 센서로그기록*/
+.weatherAndLogs {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end; /* 오른쪽 끝으로 밀어내기 */
+  gap: 8px;
+  margin-top: -500px;
+}
+/*날씨*/
+.weatherInfo {
+  background-color: #ffedc3; /* 오렌지색 배경 */
+  border-radius: 12px; /* 둥근 모서리 */
+  padding: 40px; /* 박스 내부 여백 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+  width: 100%; /* 박스가 부모의 너비를 차지하도록 */
+  color: black; /* 글씨 색상을 흰색으로 */
+}
+/*로그기록*/
+.sensorLogs {
+  background-color: #ffd9b7; /* 오렌지색 배경 */
+  border-radius: 12px; /* 둥근 모서리 */
+  padding: 40px; /* 박스 내부 여백 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+  width: 100%; /* 박스가 부모의 너비를 차지하도록 */
+  color: black; /* 글씨 색상을 흰색으로 */
+}
+
+.weatherInfo h3 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+.sensorLogs h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.weatherInfo p,
+.sensorInfo p {
+  margin: 5px 0;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popupContent {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
