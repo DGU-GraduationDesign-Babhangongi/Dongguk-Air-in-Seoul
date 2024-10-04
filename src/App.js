@@ -12,6 +12,8 @@ import Contact from "../src/pages/Contact/Contact";
 import FloorCheck from "../src/pages/FloorCheck/FloorCheck";
 import Test from "../src/pages/test";
 
+import SmartMirrorMain from "../src/smartMirror/main";
+
 function App() {
   return (
     <Router>
@@ -29,6 +31,7 @@ function App() {
         <Route path="/floorcheck" element={<FloorCheck />} />
 
         <Route path="/test" element={<Test />} />
+        <Route path="/smartM" element={<SmartMirrorMain />} />
       </Routes>
     </Router>
   );
