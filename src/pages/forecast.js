@@ -54,7 +54,7 @@ function getFormatTime(date) {
     return hour + '' + minutes;
 }
 
-const API_Base = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
+const API_Base = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
 
 function xyUrl2(x, y) {
     let std_time = new Date();
