@@ -31,6 +31,7 @@
 /* 환영합니데이 */
 .welcomeMessage {
   text-align: center;
+  margin-right: 240px;
   margin-top: 40px;
   animation: slideDown 1.5s ease-in-out;
 }
@@ -48,17 +49,27 @@
   display: flex;
   justify-content: space-around;
   width: 70%;
+  align-items: flex-start;
+  margin-top: -180px;
+  margin-left: 40px;
 }
 
 .building {
   text-align: center;
   cursor: pointer;
   margin: 0 4px; /* 건물들 사이에 여백을 추가 */
+  width: 200px; /* 고정된 넓이 */
+  height: 300px; /* 고정된 높이 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .building img {
   width: 300px;
   height: auto;
+  max-height: 300px;
 }
 
 .sensorInfo {
@@ -96,7 +107,7 @@
 .weatherInfo {
   background-color: #ffedc3; /* 오렌지색 배경 */
   border-radius: 12px; /* 둥근 모서리 */
-  padding: 40px; /* 박스 내부 여백 */
+  padding: 32px; /* 박스 내부 여백 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
   width: 100%; /* 박스가 부모의 너비를 차지하도록 */
   color: black; /* 글씨 색상을 흰색으로 */
@@ -105,10 +116,17 @@
 .sensorLogs {
   background-color: #ffd9b7; /* 오렌지색 배경 */
   border-radius: 12px; /* 둥근 모서리 */
-  padding: 40px; /* 박스 내부 여백 */
+  padding: 32px; /* 박스 내부 여백 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
   width: 100%; /* 박스가 부모의 너비를 차지하도록 */
   color: black; /* 글씨 색상을 흰색으로 */
+}
+
+/* ping icon */
+.pingIcon {
+  margin-right: 10px;
+  font-size: 24px;
+  color: black;
 }
 
 .weatherInfo h3 {
