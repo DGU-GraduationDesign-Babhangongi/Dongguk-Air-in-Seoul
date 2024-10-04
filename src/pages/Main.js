@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Header from "../components/common/Header/Header";
 import { useNavigate } from "react-router-dom";
 import styles from "./Main.module.css";
+import { FaMapMarkedAlt } from "react-icons/fa";
 
 /*처음 들어가면 나오는 화면*/
 
@@ -88,7 +89,10 @@ function Main() {
           {/* 오른쪽 날씨 및 로그 섹션 */}
           <div className={styles.weatherAndLogs}>
             <div className={styles.weatherInfo}>
-              <h3>서울 중구 필동 1가</h3>
+              <h3>
+                <FaMapMarkedAlt className={styles.pingIcon} />
+                서울 중구 필동 1가
+              </h3>
               <p>32°C 흐리고 비</p>
               <p>체감온도: 34°C/24°C</p>
               <p>
