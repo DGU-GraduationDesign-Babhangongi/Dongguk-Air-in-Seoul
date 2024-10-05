@@ -18,57 +18,59 @@ const SignUp = () => {
   };
 
   return (
-    <div className="signup-container">
+    <div>
       <Header />
-      <h2>Create an account</h2>
-      <form onSubmit={handleSubmit} className="signup-form">
-        <input
-          type="text"
-          placeholder="Enter Your Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        <input
-          type="email"
-          placeholder="Enter Your Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Enter Your Phone Number"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Enter Your Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Enter your area of responsibility"
-          value={responsibility}
-          onChange={(e) => setResponsibility(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Security code"
-          value={securityCode}
-          onChange={(e) => setSecurityCode(e.target.value)}
-        />
-        <button type="submit" className="signup-button">
-          회원가입
-        </button>
-      </form>
-      <p className="login-link">
-        이미 계정이 있으신가요? <a href="/login">로그인 하러 가기</a>
-      </p>
+      <div className="signup-container">
+        <h2>Create an account</h2>
+        <form onSubmit={handleSubmit} className="signup-form">
+          <input
+            type="text"
+            placeholder="Enter Your Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <input
+            type="email"
+            placeholder="Enter Your Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Enter Your Phone Number"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Enter Your Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Enter your area of responsibility"
+            value={responsibility}
+            onChange={(e) => setResponsibility(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Security code"
+            value={securityCode}
+            onChange={(e) => setSecurityCode(e.target.value)}
+          />
+          <button type="submit" className="signup-button">
+            회원가입
+          </button>
+        </form>
+        <p className="login-link">
+          이미 계정이 있으신가요? <a href="/login">로그인 하러 가기</a>
+        </p>
+      </div>
     </div>
   );
 };
