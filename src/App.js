@@ -12,7 +12,7 @@ import Contact from "../src/pages/Contact/Contact";
 import FloorCheck from "../src/pages/FloorCheck/FloorCheck";
 import Test from "../src/pages/test";
 
-import SmartMirrorMain from "../src/smartMirror/main";
+import SmartMirrorMain from "../src/smartMirror/pages/main";
 
 function App() {
   return (
