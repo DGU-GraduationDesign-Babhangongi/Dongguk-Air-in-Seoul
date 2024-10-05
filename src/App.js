@@ -31,7 +31,7 @@ function App() {
         <Route path="/floorcheck" element={<FloorCheck />} />
 
         <Route path="/test" element={<Test />} />
-        <Route path="/smartM" element={<SmartMirrorMain />} />
+        <Route path="/smartMirrorMain" element={<SmartMirrorMain />} />
       </Routes>
     </Router>
   );
