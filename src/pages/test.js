@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { fetchForeCast, fetchForeCast2 } from './forecast';
-
+import { fetchForeCast, fetchForeCast2 } from './forecast'; // 날씨 정보 가져오는 파일
+// 현재 온습도 및 날씨 & 최저, 최고 온도
 function App() {
     const [forecast, setForecast] = useState(null);
     const [forecast2, setForecast2] = useState(null);
@@ -8,12 +8,14 @@ function App() {
 
     useEffect(() => {
         Promise.all([
+            /*60, 127이 필동 주소(학교는 안움직이니까 고정 값으로...)*/
+            /*해당 숫자는 기상청이 제공하는 엑셀 값보고 찾는거라 위도 경도 아닙니다... */
             fetchForeCast(60, 127).then(data => {
-                console.log('Forecast data:', data); // 데이터 로깅
+               // console.log('Forecast data:', data); // 데이터 로깅
                 setForecast(data);
             }),
             fetchForeCast2(60, 127).then(data => {
-                console.log('Forecast2 data:', data); // 데이터 로깅
+               // console.log('Forecast2 data:', data); // 데이터 로깅
                 setForecast2(data);
             })
         ])
