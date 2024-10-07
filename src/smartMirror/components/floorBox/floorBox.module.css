@@ -1,0 +1,66 @@
+/* Make a conditional style for selected and non-selected states */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 85%;
+    padding: 5%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    margin-left: 3%;
+    margin-right: 3%;
+    background-color: #FFFFFF;
+    border: 0.2vw solid #90EE90; /* Initially green border */
+    border-radius: 2.7vw;
+    box-shadow: 0px 0.37vw 0.37vw rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
+}
+
+.container.redBorder {
+    border-color: #FF6347; /* Red border for non-selected floors */
+}
+
+.floorInfo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1vw;
+}
+
+.icon {
+    width: 8vw; /* Adjusted size */
+    margin-right: 1.5vw;
+}
+
+.floorName {
+    font-size: 3.5vw; /* Adjust font size */
+    font-weight: bold;
+    color: #151515;
+}
+
+.roomContainer {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 1vw;
+}
+
+.roomButton {
+    background-color: #FDCB58;  /* Yellow button background */
+    color: #000;
+    border-radius: 1.5vw;
+    padding: 1.5vw 3vw;
+    font-size: 3vw; /* Adjust button font size */
+    font-weight: bold;
+    box-shadow: 0px 0.2vw 0.2vw rgba(0, 0, 0, 0.25);
+    text-align: center;
+    cursor: pointer;
+}
+
+.divider {
+    width: 90%; /* Adjust width as needed */
+    height: 0.2vw; /* Thin line */
+    background-color: #ccc; /* Light gray color for the divider */
+    margin: 1vw 0; /* Space above and below the line */
+}

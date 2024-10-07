@@ -1,0 +1,164 @@
+/* classRoom.module.css */
+.container {
+    width: 100vw;
+    min-height: 100vh;
+    background-color: #EEEEEE;
+}
+
+
+.topContainer{
+    padding-bottom: 4%;
+    background-color: #FFFFFF;
+    border-radius: 0px 0px 10vw 10vw;
+    box-shadow: 0px 0.4vw 0.4vw rgba(0, 0, 0, 0.25);
+}
+
+.header {
+    width: 94%;
+    padding: 2% 3%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.topButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 8.3%;
+    aspect-ratio: 1/1;
+}
+
+.logo {
+    width: 44%;
+}
+
+.img{
+    width: 100%;
+    
+}
+
+.mainContainer {
+    display: flex;
+    width: 100%;
+    padding: 3% 0%;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.moveContainer {
+    display: flex;
+    width: 100%;
+    padding: 4% 0%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.detailContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    grid-template-rows: 1fr 1fr 1fr; /* Keep the 2 rows layout */
+    width: 90%;
+    padding: 0% 5%;
+    font-size: 4vw;
+    color: #151515;
+    font-weight: 400;
+}
+
+.helpContainer {
+    display: flex;
+    font-size: 2vw;
+    color: #151515;
+    font-weight: 400;
+    align-items: 'end';
+}
+
+.boxContainer {
+    display: grid;
+    width: 0%;
+    padding: 3% 0%;
+    grid-template-columns: 1fr 1fr; /* Keep the 2 columns layout */
+    grid-template-rows: 1fr 1fr; /* Keep the 2 rows layout */
+    justify-content: space-between;
+}
+
+
+.bottomContainer {
+    width: 90%;
+    padding: 0% 5%;
+    font-size: 4vw;
+    color: #151515;
+    font-weight: 400;
+}
+
+.whiteBox{
+    width: 80%;
+    height: 400px;
+    margin: 3% 0;
+    padding: 5% 10%;
+    background-color: #FFFFFF;
+    border-radius: 3vw;
+    text-align: left;
+    box-shadow: 0px 0.4vw 0.4vw rgba(0, 0, 0, 0.25);
+}
+
+.blackBox{
+    width: 50%;
+    height: 400px;
+    padding: 2% 5%;
+    margin-left: 2%;
+    margin-right: 5%;
+    background-color: #000000;
+    border-radius: 3vw;
+    text-align: left;
+    box-shadow: 0px 0.4vw 0.4vw rgba(0, 0, 0, 0.25);
+}
+
+.weatherBox {
+    width: 50%;
+    height: 400px;
+    padding: 2% 3%;
+    margin-left: 5%;
+    background-color: #FFFFFF;
+    border-radius: 3vw;
+    text-align: left;
+    box-shadow: 0px 0.4vw 0.4vw rgba(0, 0, 0, 0.25);
+    font-size: 2.5vw;
+    line-height: 1.2;
+}
+
+.weatherDateContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1vw;
+}
+
+.dateIcon {
+    width: 2.5vw; /* Adjust the icon size */
+    margin-right: 0.7vw; /* Add a small margin between icon and date text */
+}
+
+.weatherDate {
+    font-size: 2vw; /* Date text size */
+}
+
+.weatherTemperature {
+    font-size: 6vw;
+    font-weight: bold;
+    margin: 0;
+}
+
+.weatherRain {
+    font-size: 2.8vw;
+    margin: 0;
+}
+
+.weatherMinMax {
+    font-size: 2.5vw;
+    margin: 0.5vw 0;
+}
+
+.weatherAdvice {
+    font-size: 2.2vw;
+    margin-top: 0.8vw;
+}
