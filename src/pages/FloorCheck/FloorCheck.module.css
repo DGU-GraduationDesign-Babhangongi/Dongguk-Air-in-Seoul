@@ -1,27 +1,30 @@
 @font-face {
-  font-family: 'NanumBarunGothic';
+  font-family: "NanumBarunGothic";
   font-style: normal;
   font-weight: 400;
-  src: url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot');
-  src: url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix') format('embedded-opentype'), url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff') format('woff'), url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf') format('truetype');
+  src: url("//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot");
+  src: url("//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix")
+      format("embedded-opentype"),
+    url("//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff")
+      format("woff"),
+    url("//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf")
+      format("truetype");
 }
 
-/* 전체 컨테이너 */
 .container {
   display: flex;
-  flex-direction: column;
-  padding: 20px;
-  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
-  width: 100%;
+  height: 90vh;
+  font-family: "NanumBarunGothic", sans-serif; /* 폰트 변경 */
 }
-
 /* 헤더와 사이드바 제외한 메인 컨텐츠 */
 .content {
   display: flex;
-  flex-direction: row; /* 사이드바와 메인 컨텐츠 수평 배치 */
-  width: 100%;
-  height: calc(100% - 60px); /* 헤더 높이만큼 뺌 */
-  box-sizing: border-box;
+  flex-direction: column; /* 사이드바와 메인 컨텐츠 수평 배치 */
+  width: 96%;
+  padding: 20px;
+  /*height: calc(100% - 60px); /* 헤더 높이만큼 뺌 */
+  /*box-sizing: border-box;*/
+  font-family: "NanumBarunGothic", sans-serif; /* 폰트 변경 */
 }
 
 .SideBar {
@@ -69,7 +72,7 @@
   font-size: 18px; /* 문구 크기 */
   font-weight: bold;
   text-align: center;
-  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
+  font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }
 
 .roomPin {
@@ -81,7 +84,7 @@
   font-size: 14px;
   font-weight: bold;
   transform: translate(-50%, -50%);
-  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
+  font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }
 
 /* 우측 정보 패널 */
@@ -102,14 +105,14 @@
   flex-direction: column;
   align-items: center;
   margin-top: 100px;
-  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
+  font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }
 
 .infoPanel h2 {
   text-align: center;
   margin-bottom: 15px; /* 제목 아래 여백 조정 */
   font-size: 16px; /* 제목 크기 줄임 */
-  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
+  font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }
 
 .infoItem {
@@ -119,7 +122,7 @@
   align-items: center;
   margin-bottom: 8px; /* 항목 간 간격을 줄임 */
   font-size: 14px; /* 글자 크기를 줄여서 패널 내 공간을 확보 */
-  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
+  font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }
 
 .redDot,
@@ -144,5 +147,5 @@
   align-items: center;
   font-size: 36px; /* 수치 글씨 크기 줄임 */
   margin-top: 15px; /* 수치 위 아래 여백 조정 */
-  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
+  font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }

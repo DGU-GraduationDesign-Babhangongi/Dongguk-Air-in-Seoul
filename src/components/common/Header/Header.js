@@ -6,6 +6,7 @@ const Header = () => {
   const navigate = useNavigate();
   const GoToRoot = () => {
     navigate("/");
+    window.location.reload();
   }; //navigate 설정
 
   return (
