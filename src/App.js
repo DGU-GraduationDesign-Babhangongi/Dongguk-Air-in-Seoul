@@ -14,7 +14,7 @@ import Test from "../src/pages/test";
 
 import SmartMirrorMain from "../src/smartMirror/pages/main";
 import SmartMirrorClassRoom from "../src/smartMirror/pages/classRoom";
-
+import GetSensorValues from "../src/API/getSensorValues"
 function App() {
   return (
     <Router>
@@ -33,7 +33,13 @@ function App() {
 
         <Route path="/test" element={<Test />} />
         <Route path="/smartM" element={<SmartMirrorMain />} />
-        <Route path="/smartMirror/ClassRoom" element={<SmartMirrorClassRoom />} />
+       
+        {/*강의실 관련 */}
+        <Route path="/smartMirror/ClassRoom/:id" element={<SmartMirrorClassRoom />} />
+        
+        
+        <Route path="/smartMirror/test" element={<GetSensorValues />} />
+      
       </Routes>
     </Router>
   );
