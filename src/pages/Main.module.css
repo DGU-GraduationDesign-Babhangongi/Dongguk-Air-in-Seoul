@@ -75,10 +75,15 @@
   align-items: center;
 }
 
+.building:hover {
+  transform: scale(1.1);
+}
+
 .building img {
   width: 300px;
   height: auto;
   max-height: 300px;
+  filter: drop-shadow(0px 8px 8px #c7c7c7);
 }
 
 .sensorInfo {
@@ -103,6 +108,15 @@
 }
 
 /*날씨 / 센서로그기록*/
+
+.sensorLogs:hover {
+  transform: scale(1.05);
+}
+
+.weatherInfo:hover {
+  transform: scale(1.05);
+}
+
 .weatherAndLogs {
   width: 25%;
   display: flex;
