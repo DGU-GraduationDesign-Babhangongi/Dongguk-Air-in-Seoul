@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import styles from "./SignUp.module.css"; // 스타일 적용
 import Header from "../../components/common/Header/Header";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -10,11 +11,13 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [responsibility, setResponsibility] = useState("");
   const [securityCode, setSecurityCode] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // 회원가입 처리 로직을 추가
     alert("회원가입 완료!");
+    navigate("/login");
   };
 
   return (
