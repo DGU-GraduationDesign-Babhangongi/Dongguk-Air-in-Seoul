@@ -14,7 +14,7 @@ function showBox({ image, i,  unit, name}) {  // props 구조로 변경
             <div style={{fontSize:'5vw', fontWeight:'bold'}}>{i}</div>
             <div style={{fontSize:'2vw'}}>{unit}</div>
           </div>
-          <div style={{fontSize:'3vw' }}>{name}</div>
+          <div style={{fontSize:'2vw' }}>{name}</div>
         </div>
       </div>
     </div>
