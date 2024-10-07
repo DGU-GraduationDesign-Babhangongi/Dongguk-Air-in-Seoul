@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "./Login.css"; // CSS 파일을 Import
-import Header from "../../components/common/Header/Header"; // Header 컴포넌트 import
+import styles from "./Login.module.css"; // CSS 파일을 Import
+import Header from "../../components/common/Header/Header"; //
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -24,56 +24,58 @@ const Login = () => {
   };
 
   return (
-    <div className={styles.loginContainer}>
+    <div>
       <Header />
-      <div className={styles.loginContent}>
-        <h2 className={styles.heading}>Get’s started.</h2>
-        <p className={styles.signupText}>
-          Don’t have an account?{" "}
-          <button onClick={handleSignUpClick} className={styles.signUpButton}>
-            Sign up
-          </button>
-        </p>
+      <div className={styles.loginContainer}>
+        <div className={styles.loginContent}>
+          <h2 className={styles.heading}>Get’s started.</h2>
+          <p className={styles.signupText}>
+            Don’t have an account?{" "}
+            <button onClick={handleSignUpClick} className={styles.signUpButton}>
+              Sign up
+            </button>
+          </p>
 
-        <form onSubmit={handleSubmit} className={styles.loginForm}>
-          <div className={styles.formGroup}>
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className={styles.inputField}
-            />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className={styles.inputField}
-            />
-          </div>
-
-          <div className={styles.extraOptions}>
-            <div>
-              <input type="checkbox" id="rememberMe" />
-              <label htmlFor="rememberMe">Remember me</label>
+          <form onSubmit={handleSubmit} className={styles.loginForm}>
+            <div className={styles.formGroup}>
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className={styles.inputField}
+              />
             </div>
-            <a href="/forgot-password" className={styles.forgotPassword}>
-              Forget your password?
-            </a>
-          </div>
 
-          <button type="submit" className={styles.loginButton}>
-            로그인
-          </button>
-        </form>
+            <div className={styles.formGroup}>
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className={styles.inputField}
+              />
+            </div>
+
+            <div className={styles.extraOptions}>
+              <div>
+                <input type="checkbox" id="rememberMe" />
+                <label htmlFor="rememberMe">Remember me</label>
+              </div>
+              <a href="/forgot-password" className={styles.forgotPassword}>
+                Forget your password?
+              </a>
+            </div>
+
+            <button type="submit" className={styles.loginButton}>
+              로그인
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
