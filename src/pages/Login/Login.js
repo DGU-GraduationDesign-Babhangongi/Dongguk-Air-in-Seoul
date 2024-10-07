@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "./Login.module.css"; // CSS 파일을 Import
+import styles from "./Login.module.css";
 import Header from "../../components/common/Header/Header"; //
 
 const Login = () => {
@@ -29,10 +29,22 @@ const Login = () => {
       <div className={styles.loginContainer}>
         <div className={styles.loginContent}>
           <h2 className={styles.heading}>Get’s started.</h2>
-          <p className={styles.signupText}>
-            Don’t have an account?{" "}
-            <button onClick={handleSignUpClick} className={styles.signUpButton}>
-              Sign up
+          <p
+            className={styles.signupText}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              whiteSpace: "nowrap",
+              marginLeft: "20px",
+            }}
+          >
+            계정이 없으신가요?{" "}
+            <button
+              onClick={handleSignUpClick}
+              className={styles.signUpButton}
+              style={{ marginLeft: "20px" }}
+            >
+              회원가입 하기
             </button>
           </p>
 
@@ -62,13 +74,29 @@ const Login = () => {
             </div>
 
             <div className={styles.extraOptions}>
-              <div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  whiteSpace: "nowrap",
+                }}
+              >
                 <input type="checkbox" id="rememberMe" />
-                <label htmlFor="rememberMe">Remember me</label>
+                <label
+                  htmlFor="rememberMe"
+                  style={{ marginLeft: "8px", marginBottom: "16px" }}
+                >
+                  아이디 기억하기
+                </label>
+
+                <a
+                  href="/forgot-password"
+                  className={styles.forgotPassword}
+                  style={{ marginLeft: "180px", marginBottom: "16px" }}
+                >
+                  비밀번호를 잊었나요?
+                </a>
               </div>
-              <a href="/forgot-password" className={styles.forgotPassword}>
-                Forget your password?
-              </a>
             </div>
 
             <button type="submit" className={styles.loginButton}>

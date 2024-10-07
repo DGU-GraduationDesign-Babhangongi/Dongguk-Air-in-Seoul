@@ -11,7 +11,7 @@
       format("truetype");
 }
 
-.loginContainer {
+.signupContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,7 +20,7 @@
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }
 
-.loginContent {
+.signupContent {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,88 +38,40 @@
   font-size: 32px;
   font-weight: bold;
   margin-bottom: 10px;
+  margin-top: 10px;
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }
 
-.signupText {
-  margin-bottom: 20px;
-  font-size: 14px;
-  font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
-}
-
-.signUpButton {
-  background: none;
-  border: none;
-  color: #007bff;
-  cursor: pointer;
-  text-decoration: underline;
-  font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
-}
-
-.signUpButton:hover {
-  color: #0056b3;
-}
-
-.loginForm {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.formGroup {
-  margin-bottom: 15px;
-  width: 100%;
-}
-
-.formGroup label {
-  font-size: 14px;
-  color: #333;
-  margin-bottom: 5px;
-  display: block;
-  font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
-}
-
-.inputField {
-  width: 100%;
+.signupForm input {
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
   font-size: 14px;
-  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }
 
-.extraOptions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  font-size: 14px;
-  font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
-}
-
-.forgotPassword {
-  color: #007bff;
-  text-decoration: none;
-  font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
-}
-
-.forgotPassword:hover {
-  text-decoration: underline;
-}
-
-.loginButton {
+.signupButton {
   background-color: #ffc233;
   color: white;
-  padding: 12px;
+  padding: 10px;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  width: 100%;
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }
 
-.loginButton:hover {
+.signupButton:hover {
   background-color: #ff9a02;
+}
+
+.loginLink {
+  margin-top: 15px;
+  font-size: 14px;
+  font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
+}
+
+.loginLink a:hover {
+  text-decoration: underline;
 }

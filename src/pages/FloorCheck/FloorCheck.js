@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Header from "../../components/common/Header/Header";
 import SideBar from "../../components/common/SideBar/SideBar";
-import style from "./FloorCheck.module.css";
+import styles from "./FloorCheck.module.css";
 
 function FloorCheck() {
   const floorData = [
@@ -35,66 +35,66 @@ function FloorCheck() {
   return (
     <div>
       <Header />
-      <div className={style.container}>
+      <div className={styles.container}>
         <SideBar />
-        <div className={style.content}>
-          <div className={style.main}>
-            <div className={style.floorMapContainer}>
-              <div className={style.floorMap}>
+        <div className={styles.content}>
+          <div className={styles.main}>
+            <div className={styles.floorMapContainer}>
+              <div className={styles.floorMap}>
                 <img
                   src="/FloorPlan/3층.png"
                   alt="신공학관 구조도"
-                  className={style.mapImage}
+                  className={styles.mapImage}
                 />
                 <div
-                  className={style.roomPin}
+                  className={styles.roomPin}
                   style={{ top: "20%", left: "30%" }}
                 >
                   3183
                 </div>
                 <div
-                  className={style.roomPin}
+                  className={styles.roomPin}
                   style={{ top: "60%", left: "40%" }}
                 >
                   3115
                 </div>
               </div>
-              <h2 className={style.floorTitle}>신공학관 구조도</h2>{" "}
+              <h2 className={styles.floorTitle}>신공학관 구조도</h2>{" "}
               {/* 도면 아래 문구 */}
             </div>
 
-            <div className={style.infoPanels}>
+            <div className={styles.infoPanels}>
               {floorData.map((room, index) => (
-                <div className={style.infoPanel} key={index}>
+                <div className={styles.infoPanel} key={index}>
                   <h2>{room.roomNumber} 강의실</h2>
-                  <div className={style.infoItem}>
+                  <div className={styles.infoItem}>
                     <span>온도</span> <span>{room.temperature}</span>
-                    <span className={style.redDot} />
+                    <span className={styles.redDot} />
                   </div>
-                  <div className={style.infoItem}>
+                  <div className={styles.infoItem}>
                     <span>습도</span> <span>{room.humidity}</span>
-                    <span className={style.greenDot} />
+                    <span className={styles.greenDot} />
                   </div>
-                  <div className={style.infoItem}>
+                  <div className={styles.infoItem}>
                     <span>TVOC</span> <span>{room.tvoc}</span>
-                    <span className={style.greenDot} />
+                    <span className={styles.greenDot} />
                   </div>
-                  <div className={style.infoItem}>
+                  <div className={styles.infoItem}>
                     <span>PM 2.5</span> <span>{room.pm25}</span>
-                    <span className={style.greenDot} />
+                    <span className={styles.greenDot} />
                   </div>
-                  <div className={style.infoItem}>
+                  <div className={styles.infoItem}>
                     <span>소음</span> <span>{room.noise}</span>
-                    <span className={style.greenDot} />
+                    <span className={styles.greenDot} />
                   </div>
-                  <div className={style.infoItem}>
+                  <div className={styles.infoItem}>
                     <span>센서 상태</span> <span>{room.sensorStatus}</span>
-                    <span className={style.greenDot} />
+                    <span className={styles.greenDot} />
                   </div>
-                  <div className={style.infoScore}>
+                  <div className={styles.infoScore}>
                     <span>{room.score1}</span>
                   </div>
-                  <div className={style.infoScore}>
+                  <div className={styles.infoScore}>
                     <span>{room.score2}</span>
                   </div>
                 </div>
