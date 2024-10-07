@@ -1,105 +1,154 @@
-import React, { useState, useEffect } from "react";
-import './main.css';
-import logo from '../../assets/images/smartmirror/logo.png';
-import map from '../../assets/images/smartmirror/map.png';
-import locationIcon from '../../assets/images/smartmirror/location.png';
-import helpIcon from '../../assets/images/smartmirror/help.png';
-import dateIcon from '../../assets/images/smartmirror/date.png';
-import checkIcon from '../../assets/images/smartmirror/check.png';
-import touchIcon from '../../assets/images/smartmirror/touch.png';
+import React, { useState, useEffect } from 'react';
+import styles from './main.module.css';  // CSS 파일을 모듈로 import
+import FloorBox from '../components/floorBox/floorBox';  // 대문자로 변경
+import { fetchForeCast, fetchForeCast2 } from '../../pages/forecast'; // 날씨 정보 가져오는 파일
 
-const Main = () => {
-  const [currentTime, setCurrentTime] = useState('');
+function Main() {
+  const [dateTime, setDateTime] = useState(new Date());  // For real-time date and time
+  const [forecast, setForecast] = useState(null);
+  const [forecast2, setForecast2] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // 현재 시간을 가져와 포맷하는 함수
-  const updateTime = () => {
-    const now = new Date();
-    const days = ['일', '월', '화', '수', '목', '금', '토'];
-    const dayName = days[now.getDay()];
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
-    const date = String(now.getDate()).padStart(2, '0');
-    const hours = now.getHours();
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const formattedHours = hours % 12 || 12; // 12시간제로 변환
-    const formattedTime = `${year}년 ${month}월 ${date}일 ${dayName} ${ampm} ${formattedHours}:${minutes}`;
-    
-    setCurrentTime(formattedTime);
-  };
-
+  // Fetch weather data
   useEffect(() => {
-    // 페이지 로드 시 시간을 업데이트
-    updateTime();
-    // 매 1분마다 시간을 업데이트
-    const interval = setInterval(updateTime, 60000);
-    return () => clearInterval(interval); // 컴포넌트 언마운트 시 타이머 제거
+    const fetchData = async () => {
+      try {
+        const weatherData = await fetchForeCast(60, 127);
+        const weatherData2 = await fetchForeCast2(60, 127);
+        setForecast(weatherData);
+        setForecast2(weatherData2);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching weather data: ", error);
+        setLoading(false);
+      }
+    };
+    fetchData();
   }, []);
 
+  // Update time every minute
+  useEffect(() => {
+    const timer = setInterval(() => setDateTime(new Date()), 60000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Format the date and time
+  const formatDate = (date) => {
+    const days = ['일', '월', '화', '수', '목', '금', '토'];
+    const dayOfWeek = days[date.getDay()];
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${year}년 ${month}월 ${day}일 ${dayOfWeek} PM ${hours}:${minutes}`;
+  };
+
   return (
-    <div className="container">
-      <header>
-        <div className="header-content">
-          <div className="date">
-            <img src={dateIcon} alt="Date Icon" />
-            <span>{currentTime}</span> {/* 실시간 시간 표시 */}
-          </div>
-          <div className="logo">
-            <img src={logo} alt="Clean Air Logo" />
-          </div>
-          <div className="check">
-            <span>외모 check</span>
-            <img src={checkIcon} alt="Check Icon" />
-          </div>
+    <div className={styles.container}>
+      {/* Header section */}
+      <div className={styles.header}>
+        <div className={styles.topButton}>
+          <img
+            src={require("../../assets/images/smartmirror/home.png")}
+            alt="Home"
+            className={styles.img}
+          />
         </div>
-      </header>
-      
-      <div className="main-content">
-        <div className="weather">
-          <h2>32°C</h2>
-          <p>흐리고 비</p>
-          <p>34°C/24°C</p>
-          <p>오늘은 하루종일 비소식이 있으니 실내 습도 조절에 유의하세요</p>
+        <img
+          src={require("../../assets/images/smartmirror/logo.png")}
+          alt="CLEAN AIR iN DONGGUK"
+          className={styles.logo}
+        />
+        <div className={styles.topButton}>
+          <img
+            src={require("../../assets/images/smartmirror/return.png")}
+            alt="Return"
+            style={{ width: '60%', margin: 'auto' }}
+          />
         </div>
-        <div className="external-info"></div>
       </div>
 
-      <section className="building-info">
-        <div className="location">
-          <img src={locationIcon} alt="Location Icon" />
-          <span>신공학관</span>
+      {/* Weather and black box */}
+      <div className={styles.mainContainer}>
+        <div className={styles.weatherBox}>
+          <div className={styles.weatherDateContainer}>
+            <img
+              src={require("../../assets/images/smartmirror/date.png")}
+              alt="Date Icon"
+              className={styles.dateIcon}
+            />
+            <p className={styles.weatherDate}>{formatDate(dateTime)}</p>
+          </div>
+          {loading ? (
+            <p>Loading weather data...</p>
+          ) : (
+            <>
+              <p className={styles.weatherTemperature}>{forecast.temperature}°C</p>
+              <p className={styles.weatherRain}>
+                {forecast.rain === '1' ? '비' : forecast.rain === '2' ? '비/눈' : forecast.rain === '3' ? '눈' : '흐리고 비'}
+              </p>
+              <p className={styles.weatherMinMax}>
+                {forecast2.minTemp}°C / {forecast2.maxTemp}°C
+              </p>
+              <p className={styles.weatherAdvice}>
+                오늘은 하루종일 {forecast.rain === '1' ? '비' : '비소식이 있으니'} 실내 습도 조절에 유의하세요
+              </p>
+            </>
+          )}
         </div>
-        <p>원하는 층을 선택하여 현재 공기질 상태를 확인하세요</p>
+        <div className={styles.blackBox}></div>
+      </div>
 
-        <div className="floor-buttons">
-          <div className="floor active">
-            <span>3th floor</span>
-            <button>3115</button>
-            <button>3173 ✨</button>
-          </div>
-          <div className="floor">
-            <span>4th floor</span>
-            <button>4142</button>
-          </div>
-          <div className="floor selected">
-            <span>5th floor</span>
-            <button>5145</button>
-            <button>5147</button>
-          </div>
-          <div className="floor">
-            <span>6th floor</span>
-            <button>6119</button>
-            <button>6144</button>
+      {/* Detail Section */}
+      <div className={styles.detailContainer}>
+        <div style={{ display: 'flex', alignItems: 'end' }}>
+          <img
+            src={require("../../assets/images/smartmirror/location.png")}
+            alt="location"
+            style={{ width: '5vw', paddingRight: '1.5vw' }}
+          />
+          신공학관
+        </div>
+        <div className={styles.helpContainer}>
+          <img
+            src={require("../../assets/images/smartmirror/TipsIcon.png")}
+            alt="detail"
+            style={{ width: '3vw',height: '3vw', paddingRight: '1.5vw' }}
+          />
+          원하는 층을 선택하여 현재 공기질 상태를 확인하세요
+        </div>
+
+          <FloorBox floor="3rd" rooms={['3115', '3173']} isSelected={true} />
+          <FloorBox floor="4th" rooms={['4142']} isSelected={false} />
+          <FloorBox floor="5th" rooms={['5145', '5147']} isSelected={false} />
+          <FloorBox floor="6th" rooms={['6119', '6144']} isSelected={false} />
+
+      </div>
+
+      {/* Map Display Section */}
+      <div className={styles.bottomContainer}>
+        <div className={styles.whiteBox}>
+          5th floor
+          <div
+            style={{
+              display: "flex",
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "space-around",
+              marginTop: "2%",
+            }}
+          >
+            <img
+              src={require("../../assets/images/smartmirror/map.png")}
+              alt="Map"
+              style={{ width: "45vw" }}
+            />
           </div>
         </div>
-      </section>
-
-      <div className="floor-plan">
-        <h4>5th floor</h4>
-        <img src={map} alt="5th floor map" />
       </div>
     </div>
   );
-};
+}
 
 export default Main;
