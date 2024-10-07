@@ -27,6 +27,15 @@
     transform: translateY(0); /* 원래 위치로 이동 */
   }
 }
+/* 애니메이션 3 */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 
 /* 환영합니데이 */
 .welcomeMessage {
@@ -118,9 +127,9 @@
   background-color: #ffd9b7; /* 오렌지색 배경 */
   border-radius: 20px 0 0 20px; /* 모서리 */
   padding: 28px; /* 박스 내부 여백 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.261); /* 부드러운 그림자 */
-  width: 72%; /* 박스가 부모의 너비를 차지하도록 */
-  color: black; /* 글씨 색상을 흰색으로 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.261); /* 그림자 */
+  width: 72%;
+  color: black;
 }
 
 /* ping icon */
@@ -154,27 +163,18 @@
   transform: translateX(-450px); /* 신공학관이 왼쪽으로 이동 */
   transition: transform 1.5s ease-in-out;
 }
-
+/* 도면도 보여주기 */
 .additionalContent {
   opacity: 0;
   animation: fadeIn 1s forwards 1s; /* 새로운 정보가 서서히 나타남 */
 }
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
+/* 도면도 수치 설정 */
 .selectedBuildingImage {
   position: absolute;
-  left: 50%; /* 화면의 수평 중앙 기준 */
-  top: 60%; /* 화면의 수직 중앙 기준 */
+  left: 45%; /* 화면의 수평 중앙 기준 */
+  top: 50%; /* 화면의 수직 중앙 기준 */
   transform: translate(-500%, -500%); /* 중앙 기준으로 이미지 자체를 이동 */
-  width: 5%; /* 너비를 50%로 설정 */
+
   height: auto; /* 높이에 비례해 자동 조절 */
   max-width: 50px; /* 최대 너비를 설정 */
   max-height: 50px; /* 최대 높이를 설정 */
