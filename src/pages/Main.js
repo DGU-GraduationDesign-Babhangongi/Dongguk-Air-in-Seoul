@@ -156,10 +156,12 @@ function Main() {
                 신공학관 3173 소음 수치 이상
               </p>
             </div>
-            {/* 신공학관이 선택되었을 때만 이미지 표시 */}
+            {/* 신공학관이 선택되었을 때 이미지 표시 */}
             {selectedBuilding === "신공학관" && (
-              <div className={styles.selectedBuildingImage}>
-                <img src="/Main/floorplan.png" alt="신공학관 도면도" />
+              <div className={styles.additionalContent}>
+                <div className={styles.selectedBuildingImage}>
+                  <img src="/Main/floorplan.png" alt="신공학관 도면도" />
+                </div>
               </div>
             )}
           </div>
