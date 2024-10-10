@@ -108,14 +108,12 @@
 }
 
 /*날씨 / 센서로그기록*/
-
-.sensorLogs:hover {
+/*.sensorLogs:hover {
   transform: scale(1.05);
 }
-
 .weatherInfo:hover {
   transform: scale(1.05);
-}
+}*/
 
 .weatherAndLogs {
   width: 25%;
