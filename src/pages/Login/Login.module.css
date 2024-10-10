@@ -48,7 +48,7 @@
 }
 
 .signUpButton {
-  background: none;
+  background: white;
   border: none;
   color: #007bff;
   cursor: pointer;
@@ -57,7 +57,8 @@
 }
 
 .signUpButton:hover {
-  color: #0056b3;
+  color: #ff9500;
+  background: white;
 }
 
 .loginForm {
