@@ -10,11 +10,13 @@ function Main() {
   const [fadeOut, setFadeOut] = useState(false);
 
   const handleBuildingClick = (building, buildingInfo) => {
-    setFadeOut(true); // 나머지 건물들을 fade out 시킴
-    setTimeout(() => {
-      setSelectedBuilding(building);
-      setFadeOut(false);
-    }, 1000);
+    if (building == "신공학관") {
+      setFadeOut(true); // 나머지 건물들을 fade out 시킴
+      setTimeout(() => {
+        setSelectedBuilding(building);
+        setFadeOut(false);
+      }, 1000);
+    }
     setPopupContent(buildingInfo);
   };
 
@@ -71,7 +73,7 @@ function Main() {
 
             <div
               className={`${styles.building} ${
-                selectedBuilding !== "신공학관" && selectedBuilding
+                selectedBuilding !== null && selectedBuilding !== "신공학관"
                   ? styles.fadeOut
                   : ""
               } ${selectedBuilding === "신공학관" ? styles.moveLeft : ""}`}
