@@ -14,32 +14,38 @@ import Test from "../src/pages/test";
 
 import SmartMirrorMain from "../src/smartMirror/pages/main";
 import SmartMirrorClassRoom from "../src/smartMirror/pages/classRoom";
-import GetSensorValues from "../src/API/getSensorValues"
+
+import { SensorDataProvider } from '../src/API/SensorDataContext';
+
 function App() {
   return (
     <Router>
       <Routes>
+        {/* 기본 페이지들 */}
         <Route path="/" element={<Main />} />
         <Route path="/figures" element={<Figures />} />
-
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/comparison" element={<Comparison />} />
-        <Route path="/Log" element={<Log />} />
-        <Route path="/Manager" element={<Manager />} />
-        <Route path="/Alarm" element={<Alarm />} />
+        <Route path="/log" element={<Log />} />
+        <Route path="/manager" element={<Manager />} />
+        <Route path="/alarm" element={<Alarm />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/floorcheck" element={<FloorCheck />} />
 
+        {/* 테스트 페이지 */}
         <Route path="/test" element={<Test />} />
         <Route path="/smartM" element={<SmartMirrorMain />} />
-       
-        {/*강의실 관련 */}
-        <Route path="/smartMirror/ClassRoom/:id" element={<SmartMirrorClassRoom />} />
-        
-        
-        <Route path="/smartMirror/test" element={<GetSensorValues />} />
-      
+
+ 
+        <Route 
+          path="/smartMirror/classRoom/:id" 
+          element={
+            <SensorDataProvider>
+              <SmartMirrorClassRoom />
+            </SensorDataProvider>
+          } 
+        />
       </Routes>
     </Router>
   );

@@ -1,16 +1,49 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './classRoom.module.css'; 
 import ClassRoomButton from '../components/classRoomButton/classRoomButton';  
 import ShowBox from '../components/showBox/showBox';  
 import { useLocation, useNavigate } from 'react-router-dom';
 import Map from '../components/map'; 
 import { Link } from 'react-router-dom';
+import { SensorDataContext } from '../../API/SensorDataContext';
 
 function ClassRoom() {
   const location = useLocation();
-  const navigate = useNavigate(); // useNavigate 추가
+  const navigate = useNavigate();
   const Id = location.pathname.split('/').pop();
   
+  const { data: sensorData, fetchData } = useContext(SensorDataContext);
+  const [loading, setLoading] = useState(true); // 로딩 상태 관리
+  const [error, setError] = useState(null); // 에러 상태 관리
+  const [lastFetched, setLastFetched] = useState(0); // 마지막으로 데이터를 불러온 시간 저장
+
+  useEffect(() => {
+    const fetchDataWithErrorHandling = async () => {
+      try {
+        setLoading(true);
+        await fetchData(Id); // 초기 데이터 가져오기
+        setLastFetched(Date.now()); // 데이터 가져온 시간 저장
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // 컴포넌트가 마운트될 때 초기 데이터 가져오기
+    fetchDataWithErrorHandling();
+
+    // 5초 후에 데이터 가져오기
+    const intervalId = setInterval(() => {
+      if (Date.now() - lastFetched >= 5000) { // 5초가 지난 경우에만 데이터 가져오기
+        fetchDataWithErrorHandling();
+      }
+    }, 1000); // 1초마다 체크
+
+    // 컴포넌트 언마운트 시 interval 정리
+    return () => clearInterval(intervalId);
+  }, [Id, fetchData, lastFetched]);
+
   const classRoomIds = ['3115', '3173', '4142', '5145', '5147', '6119', '6144'];
   const currentIndex = classRoomIds.indexOf(Id);
   
@@ -49,7 +82,7 @@ function ClassRoom() {
             className={styles.logo}
           />
           
-          <div className={styles.topButton} onClick={() => navigate(-1)}> {/* 클릭 시 이전 페이지로 이동 */}
+          <div className={styles.topButton} onClick={() => navigate(-1)}>
             <img
               src={require("../../assets/images/smartmirror/return.png")}
               alt="Return"
@@ -67,27 +100,31 @@ function ClassRoom() {
               alt="good"
               style={{ width: '76%' }}
             />
-            <div style={{ fontSize: '6vw' }}>GOOD</div>
+            {loading ? (
+              <div>Loading...</div> // 로딩 중 메시지
+            ) : error ? (
+              <div>Error: {error}</div> // 에러 메시지
+            ) : (
+              <div style={{ fontSize: '6vw' }}>{sensorData.IAQIndex?.value || '--'}점</div>
+            )}
           </div>
         </div>
       </div>
 
       <div className={styles.moveContainer}>
-        <div style={{display:"flex" ,alignItems:'center', justifyContent:'start'}}>
+        <div style={{ display: "flex", alignItems: 'center', justifyContent: 'start' }}>
           <img
-              src={require("../../assets/images/smartmirror/leftVector.png")}
-              alt="Return"
-              style={{ width: '8%', margin: '0 8%' }}
-            />
+            src={require("../../assets/images/smartmirror/leftVector.png")}
+            alt="Previous"
+            style={{ width: '8%', margin: '0 8%' }}
+          />
           <ClassRoomButton i={previousId} /> 
         </div>
         <div style={{ display: "flex", alignItems: 'center', justifyContent: 'end' }}>
-          {nextId && (
-            <ClassRoomButton i={nextId} />
-          )}
+          <ClassRoomButton i={nextId} />
           <img
             src={require("../../assets/images/smartmirror/rightVector.png")}
-            alt="Return"
+            alt="Next"
             style={{ width: '8%', margin: '0 8%' }}
           />
         </div>
@@ -97,19 +134,19 @@ function ClassRoom() {
         <div style={{ display: 'flex', alignItems: 'end' }}>
           <img
             src={require("../../assets/images/smartmirror/document.png")}
-            alt="detail"
+            alt="Detail"
             style={{ width: '5vw', paddingRight: '1.5vw' }}
           />
           Detail
         </div>
 
         <div className={styles.boxContainer}>
-          <ShowBox image='temp.png' i='80' unit='°C' name='temperature' />
-          <ShowBox image='humidity.png' i='43' unit='g/㎥' name='humidity' />
-          <ShowBox image='tvoc.png' i='47' unit='㎍/㎥' name='tvoc' />
-          <ShowBox image='pm2.5.png' i='150' unit='㎛' name='PM2.5' />
-          <ShowBox image='noise.png' i='43' unit='dB' name='noise' />
-          <ShowBox image='sensor.png' i='ON' unit='' name='sensor' />
+          <ShowBox image='temp.png' i={sensorData.Temperature?.value || '--'} unit='°C' name='Temperature' />
+          <ShowBox image='humidity.png' i={sensorData.Humidity?.value || '--'} unit='%' name='Humidity' />
+          <ShowBox image='tvoc.png' i={sensorData.TVOC?.value || '--'} unit='㎍/㎥' name='TVOC' />
+          <ShowBox image='pm2.5.png' i={sensorData.PM2_5MassConcentration?.value || '--'} unit='㎛' name='PM2.5' />
+          <ShowBox image='noise.png' i={sensorData.AmbientNoise?.value || '--'} unit='dB' name='Noise' />
+          <ShowBox image='sensor.png' i='ON' unit='' name='Sensor' />
         </div>
       </div>
 
@@ -117,7 +154,7 @@ function ClassRoom() {
         <div style={{ display: 'flex', alignItems: 'end' }}>
           <img
             src={require("../../assets/images/smartmirror/TipsIcon.png")}
-            alt="detail"
+            alt="Tips"
             style={{ width: '5vw', paddingRight: '1.5vw' }}
           />
           Tips
@@ -135,28 +172,27 @@ function ClassRoom() {
           }}>
             <img
               src={require("../../assets/images/smartmirror/personIcons/person1.png")}
-              alt="detail"
+              alt="person1"
               style={{ width: '16vw' }}
             />
             <img
               src={require("../../assets/images/smartmirror/personIcons/person2.png")}
-              alt="detail"
+              alt="person2"
               style={{ width: '16vw' }}
             />
             <img
               src={require("../../assets/images/smartmirror/personIcons/person3.png")}
-              alt="detail"
+              alt="person3"
               style={{ width: '16vw' }}
             />
             <img
               src={require("../../assets/images/smartmirror/personIcons/person4.png")}
-              alt="detail"
+              alt="person4"
               style={{ width: '16vw' }}
             />
           </div>
         </div>
       </div>
-
     </div>
   );
 }
