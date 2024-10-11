@@ -2,12 +2,31 @@ import React, { useState, useEffect } from 'react';
 import styles from './main.module.css';  // CSS 파일을 모듈로 import
 import FloorBox from '../components/floorBox/floorBox';  // 대문자로 변경
 import { fetchForeCast, fetchForeCast2 } from '../../pages/forecast'; // 날씨 정보 가져오는 파일
+import { Link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function Main() {
-  const [dateTime, setDateTime] = useState(new Date());  // For real-time date and time
+  const [dateTime, setDateTime] = useState(new Date());
   const [forecast, setForecast] = useState(null);
   const [forecast2, setForecast2] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); // 이미지 인덱스를 관리하는 상태 추가
+  const navigate = useNavigate();
+
+  // 슬라이드에 사용할 이미지 배열
+  const mapImages = [
+    require("../../assets/images/smartmirror/test.png"),
+
+  ];
+
+  // 자동 슬라이드 효과 추가
+  useEffect(() => {
+    const slideInterval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % mapImages.length);
+    }, 5000); // 3초마다 이미지 변경
+
+    return () => clearInterval(slideInterval); // 컴포넌트가 언마운트될 때 인터벌 제거
+  }, [mapImages.length]);
 
   // Fetch weather data
   useEffect(() => {
@@ -49,18 +68,20 @@ function Main() {
       {/* Header section */}
       <div className={styles.header}>
         <div className={styles.topButton}>
-          <img
-            src={require("../../assets/images/smartmirror/home.png")}
-            alt="Home"
-            className={styles.img}
-          />
+          <Link to="/smartM">
+              <img
+                src={require("../../assets/images/smartmirror/home.png")}
+                alt="Home"
+                className={styles.img}
+              />
+          </Link>
         </div>
         <img
           src={require("../../assets/images/smartmirror/logo.png")}
           alt="CLEAN AIR iN DONGGUK"
           className={styles.logo}
         />
-        <div className={styles.topButton}>
+        <div className={styles.topButton} onClick={() => navigate(-1)}>
           <img
             src={require("../../assets/images/smartmirror/return.png")}
             alt="Return"
@@ -101,32 +122,35 @@ function Main() {
       </div>
 
       {/* Detail Section */}
-      <div className={styles.detailContainer}>
-        <div style={{ display: 'flex', alignItems: 'end' }}>
-          <img
-            src={require("../../assets/images/smartmirror/location.png")}
-            alt="location"
-            style={{ width: '5vw', paddingRight: '1.5vw' }}
-          />
-          신공학관
+      <div className={styles.titleContainer}>
+        <div className={styles.buildingContainer}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img
+              src={require("../../assets/images/smartmirror/location.png")}
+              alt="location"
+              style={{ width: '5vw', paddingRight: '1.5vw' }}
+            />
+            신공학관
+          </div>
         </div>
         <div className={styles.helpContainer}>
           <img
             src={require("../../assets/images/smartmirror/TipsIcon.png")}
             alt="detail"
-            style={{ width: '3vw',height: '3vw', paddingRight: '1.5vw' }}
+            style={{ width: '3vw', height: '3vw', paddingRight: '1.5vw' }}
           />
           원하는 층을 선택하여 현재 공기질 상태를 확인하세요
         </div>
-
-          <FloorBox floor="3rd" rooms={['3115', '3173']} isSelected={true} />
-          <FloorBox floor="4th" rooms={['4142']} isSelected={false} />
-          <FloorBox floor="5th" rooms={['5145', '5147']} isSelected={false} />
-          <FloorBox floor="6th" rooms={['6119', '6144']} isSelected={false} />
-
+      </div>
+      
+      <div className={styles.detailContainer}>
+        <FloorBox floor="3rd" rooms={['3115', '3173']} isSelected={true} />
+        <FloorBox floor="4th" rooms={['4142']} isSelected={false} />
+        <FloorBox floor="5th" rooms={['5145', '5147']} isSelected={false} />
+        <FloorBox floor="6th" rooms={['6119', '6144']} isSelected={false} />
       </div>
 
-      {/* Map Display Section */}
+      {/* Map Display Section with Image Slide */}
       <div className={styles.bottomContainer}>
         <div className={styles.whiteBox}>
           5th floor
@@ -140,9 +164,9 @@ function Main() {
             }}
           >
             <img
-              src={require("../../assets/images/smartmirror/map.png")}
+              src={mapImages[currentImageIndex]}  // 슬라이드할 이미지 선택
               alt="Map"
-              style={{ width: "45vw" }}
+              style={{ width: "50vw" }}
             />
           </div>
         </div>

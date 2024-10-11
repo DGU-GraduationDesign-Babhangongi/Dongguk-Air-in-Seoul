@@ -57,12 +57,23 @@
 .detailContainer {
     display: grid;
     grid-template-columns: 1fr 1fr; 
-    grid-template-rows: 1fr 1fr 1fr; /* Keep the 2 rows layout */
+    grid-template-rows: 1fr 1fr; /* Keep the 2 rows layout */
     width: 90%;
-    padding: 0% 5%;
+    padding: 1% 5%;
     font-size: 4vw;
     color: #151515;
     font-weight: 400;
+}
+
+.titleContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    margin-left: 5%;
+    margin-right: 6%;
+    font-size: 2vw;
+    color: #151515;
+    font-weight: 400;
+    align-items: 'end';
 }
 
 .helpContainer {
@@ -71,6 +82,14 @@
     color: #151515;
     font-weight: 400;
     align-items: 'end';
+}
+
+.buildingContainer {
+    display: flex;
+    font-size: 3vw;
+    color: #151515;
+    font-weight: 400;
+    align-items: 'center';
 }
 
 .boxContainer {
@@ -94,7 +113,8 @@
 .whiteBox{
     width: 80%;
     height: 400px;
-    margin: 3% 0;
+    margin: 0% 0;
+    font-weight: 600;
     padding: 5% 10%;
     background-color: #FFFFFF;
     border-radius: 3vw;
@@ -104,7 +124,7 @@
 
 .blackBox{
     width: 50%;
-    height: 400px;
+    height: 350px;
     padding: 2% 5%;
     margin-left: 2%;
     margin-right: 5%;
@@ -116,7 +136,7 @@
 
 .weatherBox {
     width: 50%;
-    height: 400px;
+    height: 350px;
     padding: 2% 3%;
     margin-left: 5%;
     background-color: #FFFFFF;
