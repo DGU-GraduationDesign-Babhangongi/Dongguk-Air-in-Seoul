@@ -175,6 +175,11 @@
   transform: translateX(-450px); /* 신공학관이 왼쪽으로 이동 */
   transition: transform 1.5s ease-in-out;
 }
+.moveLeft:hover {
+  /* 신공학관이 moveLeft 상태일 때 hover해도 위치 변경 안되도록 함 */
+  transform: translateX(-450px); /* 이 부분을 삭제하거나 수정 */
+  pointer-events: none;
+}
 /* 도면도 보여주기 */
 .additionalContent {
   opacity: 0;
