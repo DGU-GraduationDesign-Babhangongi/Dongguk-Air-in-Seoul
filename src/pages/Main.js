@@ -10,11 +10,13 @@ function Main() {
   const [fadeOut, setFadeOut] = useState(false);
 
   const handleBuildingClick = (building, buildingInfo) => {
-    setFadeOut(true); // 나머지 건물들을 fade out 시킴
-    setTimeout(() => {
-      setSelectedBuilding(building);
-      setFadeOut(false);
-    }, 1000);
+    if (building == "신공학관") {
+      setFadeOut(true); // 나머지 건물들을 fade out 시킴
+      setTimeout(() => {
+        setSelectedBuilding(building);
+        setFadeOut(false);
+      }, 1000);
+    }
     setPopupContent(buildingInfo);
   };
 
@@ -71,11 +73,16 @@ function Main() {
 
             <div
               className={`${styles.building} ${
-                selectedBuilding !== "신공학관" && selectedBuilding
+                selectedBuilding !== null && selectedBuilding !== "신공학관"
                   ? styles.fadeOut
                   : ""
               } ${selectedBuilding === "신공학관" ? styles.moveLeft : ""}`}
-              onClick={() => handleBuildingClick("신공학관")}
+              onClick={() => handleBuildingClick("신공학관", null)}
+              onMouseEnter={(e) => {
+                if (selectedBuilding === "신공학관") {
+                  e.preventDefault(); // hover 방지
+                }
+              }}
             >
               <img src="/Main/singong.png" alt="신공학관" />
               <h2>신공학관</h2>
@@ -128,7 +135,8 @@ function Main() {
                 <FaMapMarkedAlt className={styles.pingIcon} />
                 서울 중구 필동
               </h3>
-              <p>32°C 강수: 0</p>
+              <p>32°C</p>
+              <p>강수: 0</p>
               <p>습도: </p>
               <p>하늘상태: 맑음</p>
               <p>최고온도 : 34°C</p>
