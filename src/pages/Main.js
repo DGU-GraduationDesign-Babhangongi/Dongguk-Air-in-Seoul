@@ -48,13 +48,13 @@ function Main() {
               onClick={() =>
                 handleBuildingClick(
                   "정보문화관 P",
-                  <>
+                  <p>
                     현재 정보문화관 P에는
                     <br />
                     등록된 센서가 없습니다.
                     <br />
                     센서를 등록하시겠습니까?
-                  </>
+                  </p>
                 )
               }
             >
@@ -104,13 +104,13 @@ function Main() {
               onClick={() =>
                 handleBuildingClick(
                   "원흥관",
-                  <>
+                  <p>
                     현재 원흥관에는
                     <br />
                     등록된 센서가 없습니다.
                     <br />
                     센서를 등록하시겠습니까?
-                  </>
+                  </p>
                 )
               }
             >
@@ -177,15 +177,26 @@ function Main() {
         {popupContent && (
           <div className={styles.popup}>
             <div className={styles.popupContent}>
-              <h2>알림</h2>
+              <h2>알 림</h2>
+              <div className={styles.dividers}></div>
               <p>{popupContent}</p>
-              <Link to="/contact" className={styles.popupButton}>
-                등록하기
-              </Link>
               <div className={styles.divider}></div>
-              <button onClick={closePopup} className={styles.popupButton}>
-                닫기
-              </button>
+              <p
+                className={styles.signupText}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  whiteSpace: "nowrap",
+                  marginLeft: "16px",
+                }}
+              >
+                <button to="/contact" className={styles.popupButton}>
+                  등록하기
+                </button>
+                <button onClick={closePopup} className={styles.popupButton}>
+                  닫기
+                </button>
+              </p>
             </div>
           </div>
         )}
