@@ -16,8 +16,10 @@ const sensorList = [
 ];
 
 export const SensorDataProvider = ({ children }) => {
+  
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false); // 로딩 상태 추가
+  const [selectedSensorName, setSelectedSensorName] = useState(sensorList[0]?.name); // 선택된 센서의 이름 상태 추가
 
   const fetchData = async (name) => {
     if (!name) return;
@@ -43,25 +45,20 @@ export const SensorDataProvider = ({ children }) => {
     }
   };
 
-  // 5초마다 fetchData 실행
   useEffect(() => {
-    const fetchDataInterval = async () => {
-      while (true) {
-        await fetchData(sensorList[0]?.name); // 데이터 요청
-        await new Promise(resolve => setTimeout(resolve, 5000)); // 5초 대기
-      }
-    };
+    fetchData(selectedSensorName); // 초기 데이터 요청
 
-    fetchDataInterval();
+    // 5초마다 fetchData 호출
+    const intervalId = setInterval(() => {
+      fetchData(selectedSensorName);
+    }, 5000);
 
-    return () => {
-      // 컴포넌트 언마운트 시 데이터 초기화
-      setData({});
-    };
-  }, []);
+    // 컴포넌트 언마운트 시 interval 정리
+    return () => clearInterval(intervalId);
+  }, [selectedSensorName]); // selectedSensorName이 변경될 때마다 호출
 
   return (
-    <SensorDataContext.Provider value={{ data, fetchData, loading }}> {/* loading 추가 */}
+    <SensorDataContext.Provider value={{ data, setSelectedSensorName, loading }}>
       {children}
     </SensorDataContext.Provider>
   );
