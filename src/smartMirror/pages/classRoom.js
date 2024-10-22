@@ -12,37 +12,14 @@ function ClassRoom() {
   const navigate = useNavigate();
   const Id = location.pathname.split('/').pop();
   
-  const { data: sensorData, fetchData } = useContext(SensorDataContext);
-  const [loading, setLoading] = useState(true); // 로딩 상태 관리
-  const [error, setError] = useState(null); // 에러 상태 관리
-  const [lastFetched, setLastFetched] = useState(0); // 마지막으로 데이터를 불러온 시간 저장
-
+  // SensorDataContext에서 fetchData 및 setSelectedSensorName 호출
+  const { data: sensorData, setSelectedSensorName, loading, error } = useContext(SensorDataContext);
+  
   useEffect(() => {
-    const fetchDataWithErrorHandling = async () => {
-      try {
-        setLoading(true);
-        await fetchData(Id); // 초기 데이터 가져오기
-        setLastFetched(Date.now()); // 데이터 가져온 시간 저장
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    // 컴포넌트가 마운트될 때 초기 데이터 가져오기
-    fetchDataWithErrorHandling();
-
-    // 5초 후에 데이터 가져오기
-    const intervalId = setInterval(() => {
-      if (Date.now() - lastFetched >= 5000) { // 5초가 지난 경우에만 데이터 가져오기
-        fetchDataWithErrorHandling();
-      }
-    }, 1000); // 1초마다 체크
-
-    // 컴포넌트 언마운트 시 interval 정리
-    return () => clearInterval(intervalId);
-  }, [Id, fetchData, lastFetched]);
+    if (Id) {
+      setSelectedSensorName(Id);  // 선택된 센서 이름을 Id로 설정
+    }
+  }, [Id, setSelectedSensorName]);  // Id 변경 시마다 호출
 
   const classRoomIds = ['3115', '3173', '4142', '5145', '5147', '6119', '6144'];
   const currentIndex = classRoomIds.indexOf(Id);
@@ -141,12 +118,12 @@ function ClassRoom() {
         </div>
 
         <div className={styles.boxContainer}>
-          <ShowBox image='temp.png' i={sensorData.Temperature?.value || '--'} unit='°C' name='Temperature' />
-          <ShowBox image='humidity.png' i={sensorData.Humidity?.value || '--'} unit='%' name='Humidity' />
-          <ShowBox image='tvoc.png' i={sensorData.TVOC?.value || '--'} unit='㎍/㎥' name='TVOC' />
-          <ShowBox image='pm2.5.png' i={sensorData.PM2_5MassConcentration?.value || '--'} unit='㎛' name='PM2.5' />
-          <ShowBox image='noise.png' i={sensorData.AmbientNoise?.value || '--'} unit='dB' name='Noise' />
-          <ShowBox image='sensor.png' i='ON' unit='' name='Sensor' />
+        <ShowBox image='temp.png' i={loading ? '--' : sensorData.Temperature?.value} unit='°C' name='Temperature' />
+        <ShowBox image='humidity.png' i={loading ? '--' : sensorData.Humidity?.value} unit='%' name='Humidity' />
+        <ShowBox image='tvoc.png' i={loading ? '--' : sensorData.TVOC?.value} unit='㎍/㎥' name='TVOC' />
+        <ShowBox image='pm2.5.png' i={loading ? '--' : sensorData.PM2_5MassConcentration?.value} unit='㎛' name='PM2.5' />
+        <ShowBox image='noise.png' i={loading ? '--' : sensorData.AmbientNoise?.value} unit='dB' name='Noise' />
+        <ShowBox image='sensor.png' i={loading ? '--' : 'ON'} unit='' name='Sensor' />
         </div>
       </div>
 
