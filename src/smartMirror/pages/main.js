@@ -15,7 +15,7 @@ function Main() {
 
   // 슬라이드에 사용할 이미지 배열
   const mapImages = [
-    require("../../assets/images/smartmirror/test.png"),
+    require("../../assets/images/smartmirror/smartclass/MON3114.jpg"),
 
   ];
 
@@ -166,7 +166,7 @@ function Main() {
             <img
               src={mapImages[currentImageIndex]}  // 슬라이드할 이미지 선택
               alt="Map"
-              style={{ width: "50vw" }}
+              style={{ width: "66vw" }}
             />
           </div>
         </div>
