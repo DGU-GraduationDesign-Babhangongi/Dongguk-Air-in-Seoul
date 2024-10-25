@@ -78,6 +78,24 @@ const SignUp = () => {
             value={securityCode}
             onChange={(e) => setSecurityCode(e.target.value)}
           />
+          <div className={styles.extraOptions}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <input type="checkbox" id="rememberMe" />
+              <label
+                htmlFor="rememberMe"
+                style={{ marginLeft: "8px", marginBottom: "16px" }}
+              >
+                위의 이메일로 알림 받기
+              </label>
+            </div>
+          </div>
+
           <button type="submit" className={styles.signupButton}>
             회원가입
           </button>

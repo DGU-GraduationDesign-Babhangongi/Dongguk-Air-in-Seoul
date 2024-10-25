@@ -44,6 +44,11 @@
   margin-top: 20px;
   animation: slideDown 1.5s ease-in-out;
 }
+.fadeOutMessage {
+  transform: translateY(-50px); /* 위로 이동 */
+  opacity: 0; /* 투명하게 */
+  transition: transform 1.5s ease-in-out, opacity 1.5s ease-in-out;
+}
 
 .content {
   display: flex;
