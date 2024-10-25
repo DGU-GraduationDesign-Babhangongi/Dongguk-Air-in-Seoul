@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Map from '../components/map'; 
 import { Link } from 'react-router-dom';
 import { SensorDataContext } from '../../API/SensorDataContext';
+import TipsSlide from '../components/tipsSlide/tipsSlide';  // 이름 변경된 컴포넌트 불러오기
 
 function ClassRoom() {
   const location = useLocation();
@@ -136,9 +137,7 @@ function ClassRoom() {
           />
           Tips
         </div>
-        <div className={styles.whiteBox} style={{ fontSize: '3.3vw' }}>
-          강의실 온도가 높으니 창문을 열어 환기시키거나 <br />에어컨을 작동하는 것은 어떨까요?
-        </div>
+        <TipsSlide contents={sensorData.AQMScores}/>
         <div className={styles.whiteBox}>
           종합설계2 밥한공기 임시운영 중입니다.
           <div style={{
