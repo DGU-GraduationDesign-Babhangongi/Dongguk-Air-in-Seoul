@@ -8,21 +8,21 @@ function Main() {
   const [popupContent, setPopupContent] = useState(null);
   const [selectedBuilding, setSelectedBuilding] = useState(null);
   const [fadeOut, setFadeOut] = useState(false);
+  const [isFadingOut, setIsFadingOut] = useState(false);
+  const [showMessage, setShowMessage] = useState(true);
 
   const handleBuildingClick = (building, buildingInfo) => {
     if (building == "신공학관") {
+      setIsFadingOut(true);
       setFadeOut(true); // 나머지 건물들을 fade out 시킴
       setTimeout(() => {
         setSelectedBuilding(building);
         setFadeOut(false);
+        setIsFadingOut(false);
+        setShowMessage(false);
       }, 1000);
     }
     setPopupContent(buildingInfo);
-  };
-
-  const resetBuildings = () => {
-    setSelectedBuilding(null);
-    setFadeOut(false);
   };
 
   const closePopup = () => {
@@ -34,10 +34,16 @@ function Main() {
     <div>
       <Header />
       <div className={styles.mainContainer}>
-        <div className={styles.welcomeMessage}>
-          <h2>이수민 관리자님 환영합니다!</h2>
-          <p>공기질을 확인할 강의실을 선택해주세요</p>
-        </div>
+        {showMessage && (
+          <div
+            className={`${styles.welcomeMessage} ${
+              isFadingOut ? styles.fadeOutMessage : ""
+            }`}
+          >
+            <h2>이수민 관리자님 환영합니다!</h2>
+            <p>공기질을 확인할 강의실을 선택해주세요</p>
+          </div>
+        )}
         <div className={styles.content}>
           {/* 건물 섹션 */}
           <div className={styles.buildings}>
@@ -190,7 +196,10 @@ function Main() {
                   marginLeft: "16px",
                 }}
               >
-                <button to="/contact" className={styles.popupButton}>
+                <button
+                  onClick={() => (window.location.href = "/contact")}
+                  className={styles.popupButton}
+                >
                   등록하기
                 </button>
                 <button onClick={closePopup} className={styles.popupButton}>
