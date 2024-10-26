@@ -17,6 +17,7 @@ const sensorList = [
 export const SensorDataProvider = ({ children }) => {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [selectedSensorName, setSelectedSensorName] = useState(null);
 
   const fetchAllData = async () => {
     setLoading(true);
@@ -26,8 +27,18 @@ export const SensorDataProvider = ({ children }) => {
       const endpoint = `/api/sensorData/recent/` + encodeURIComponent(sensor.sensorId);
       try {
         const response = await API.get(endpoint);
-        newData[sensor.name] = response.data;
-        console.log(`Data for ${sensor.name}:`, response.data); // 각 방의 데이터를 로깅
+
+        // 필요한 데이터만 추출하여 newData에 추가
+        newData[sensor.name] = {
+          Temperature: response.data?.Temperature || '--',
+          Humidity: response.data?.Humidity || '--',
+          TVOC: response.data?.TVOC || '--',
+          PM2_5MassConcentration: response.data?.PM2_5MassConcentration || '--',
+          AmbientNoise: response.data?.AmbientNoise || '--',
+          IAQIndex: response.data?.IAQIndex || '--'
+        };
+        
+        console.log(`Data for ${sensor.name}:`, newData[sensor.name]); // 각 방의 데이터를 로깅
       } catch (e) {
         console.error("API 오류: ", e);
       }
@@ -44,7 +55,7 @@ export const SensorDataProvider = ({ children }) => {
   }, []);
 
   return (
-    <SensorDataContext.Provider value={{ data, loading }}>
+    <SensorDataContext.Provider value={{ data, loading, selectedSensorName, setSelectedSensorName }}>
       {children}
     </SensorDataContext.Provider>
   );
