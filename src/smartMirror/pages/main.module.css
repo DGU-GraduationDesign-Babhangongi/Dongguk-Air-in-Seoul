@@ -40,7 +40,7 @@
 
 .mainContainer {
     display: flex;
-    width: 1080px;
+    width: 100%;
     padding: 3% 0%;
     align-items: center;
     justify-content: space-around;
@@ -111,38 +111,40 @@
 }
 
 .whiteBox{
-    width: 850px;
+    width: 80%;
     height: 400px;
-    margin-left: 20px;
+    margin: 0% 0;
     font-weight: 600;
-    padding: 3% 5%;
+    padding: 5% 10%;
     background-color: #FFFFFF;
     border-radius: 3vw;
     text-align: left;
     box-shadow: 0px 0.4vw 0.4vw rgba(0, 0, 0, 0.25);
 }
 
-.weatherBox {
-    width: 420px; /* 고정된 너비 */
-    height: 350px; /* 고정된 높이 */
-    padding: 20px;
-    margin-left: 30px;
-    background-color: #FFFFFF;
-    border-radius: 30px;
+.blackBox{
+    width: 50%;
+    height: 350px;
+    padding: 2% 5%;
+    margin-left: 2%;
+    margin-right: 5%;
+    background-color: #000000;
+    border-radius: 3vw;
     text-align: left;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    font-size: 20px; /* 고정된 폰트 크기 */
-    line-height: 1.2;
+    box-shadow: 0px 0.4vw 0.4vw rgba(0, 0, 0, 0.25);
 }
 
-.blackBox {
-    width: 420px; /* 고정된 너비 */
-    height: 350px; /* 고정된 높이 */
-    padding: 20px;
-    margin-right: 30px;
-    background-color: #000000;
-    border-radius: 30px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+.weatherBox {
+    width: 50%;
+    height: 350px;
+    padding: 2% 3%;
+    margin-left: 5%;
+    background-color: #FFFFFF;
+    border-radius: 3vw;
+    text-align: left;
+    box-shadow: 0px 0.4vw 0.4vw rgba(0, 0, 0, 0.25);
+    font-size: 2.5vw;
+    line-height: 1.2;
 }
 
 .weatherDateContainer {
@@ -152,7 +154,7 @@
 }
 
 .dateIcon {
-    width: 2vw; /* Adjust the icon size */
+    width: 2.5vw; /* Adjust the icon size */
     margin-right: 0.7vw; /* Add a small margin between icon and date text */
 }
 
@@ -180,3 +182,4 @@
     font-size: 2.2vw;
     margin-top: 0.8vw;
 }
+
