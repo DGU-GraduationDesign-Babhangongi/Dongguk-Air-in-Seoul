@@ -15,7 +15,7 @@ function Main() {
 
   // 슬라이드에 사용할 이미지 배열
   const mapImages = [
-    require("../../assets/images/smartmirror/smartclass/MON3114.jpg"),
+    require("../../assets/images/smartmirror/3115.png"),
 
   ];
 
