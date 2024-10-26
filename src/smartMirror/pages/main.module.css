@@ -104,7 +104,7 @@
 
 .buildingContainer {
     display: flex;
-    font-size: 3vw;
+    font-size: 3.5vw;
     color: #151515;
     font-weight: 400;
     align-items: 'center';
@@ -170,7 +170,7 @@
 .weatherDateContainer {
     display: flex;
     align-items: center;
-    margin-bottom: 0.5vw;
+    margin-bottom: 5vw;
 }
 
 .dateIcon {
