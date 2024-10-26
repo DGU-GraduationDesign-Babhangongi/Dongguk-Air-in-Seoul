@@ -1,31 +1,98 @@
 import React, { useState, useEffect } from 'react';
-import styles from './main.module.css';  // CSS 파일을 모듈로 import
-import FloorBox from '../components/floorBox/floorBox';  // 대문자로 변경
-import { fetchForeCast, fetchForeCast2 } from '../../pages/forecast'; // 날씨 정보 가져오는 파일
+import styles from './main.module.css';
+import FloorBox from '../components/floorBox/floorBox';
+import { fetchForeCast, fetchForeCast2 } from '../../pages/forecast';
 import { Link } from 'react-router-dom';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Main() {
   const [dateTime, setDateTime] = useState(new Date());
   const [forecast, setForecast] = useState(null);
   const [forecast2, setForecast2] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0); // 이미지 인덱스를 관리하는 상태 추가
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const navigate = useNavigate();
 
-  // 슬라이드에 사용할 이미지 배열
-  const mapImages = [
-    require("../../assets/images/smartmirror/3115.png"),
+  // 요일별 이미지 배열
+  const mapImagesByDay = {
+    월: [
+      require("../../assets/images/smartmirror/map/13115.PNG"),
+      require("../../assets/images/smartmirror/map/14142.PNG"),
+      require("../../assets/images/smartmirror/map/15145.PNG"),
+      require("../../assets/images/smartmirror/map/15147.PNG"),
+      require("../../assets/images/smartmirror/map/16119.PNG"),
+      require("../../assets/images/smartmirror/map/16144.PNG"),
+    ],
+    화: [
+      require("../../assets/images/smartmirror/map/23115.PNG"),
+      require("../../assets/images/smartmirror/map/24142.PNG"),
+      require("../../assets/images/smartmirror/map/25145.PNG"),
+      require("../../assets/images/smartmirror/map/25147.PNG"),
+      require("../../assets/images/smartmirror/map/26119.PNG"),
+      require("../../assets/images/smartmirror/map/26144.PNG"),
+    ],
+    수: [
+      require("../../assets/images/smartmirror/map/33115.PNG"),
+      require("../../assets/images/smartmirror/map/34142.PNG"),
+      require("../../assets/images/smartmirror/map/35145.PNG"),
+      require("../../assets/images/smartmirror/map/35147.PNG"),
+      require("../../assets/images/smartmirror/map/36119.PNG"),
+      require("../../assets/images/smartmirror/map/36144.PNG"),
+    ],
+    목: [
+      require("../../assets/images/smartmirror/map/43115.PNG"),
+      require("../../assets/images/smartmirror/map/44142.PNG"),
+      require("../../assets/images/smartmirror/map/45145.PNG"),
+      require("../../assets/images/smartmirror/map/45147.PNG"),
+      require("../../assets/images/smartmirror/map/46119.PNG"),
+      require("../../assets/images/smartmirror/map/46144.PNG"),
+    ],
+    금: [
+      require("../../assets/images/smartmirror/map/53115.PNG"),
+      require("../../assets/images/smartmirror/map/54142.PNG"),
+      require("../../assets/images/smartmirror/map/55147.PNG"),
+      require("../../assets/images/smartmirror/map/56119.PNG"),
+      require("../../assets/images/smartmirror/map/56144.PNG"),
+    ],
+    토: [
+      require("../../assets/images/smartmirror/map/happyweek.png"),
+    ],
+    일: [
+      require("../../assets/images/smartmirror/map/happyweek.png"),
+    ],
+  };
 
-  ];
+  // 현재 요일에 맞는 이미지를 선택하는 함수
+  const getMapImagesForToday = () => {
+    const days = ['일', '월', '화', '수', '목', '금', '토'];
+    const today = days[new Date().getDay()];
+    return mapImagesByDay[today] || [];
+  };
+
+  // 이미지 배열을 요일에 맞춰 설정
+  const [mapImages, setMapImages] = useState(getMapImagesForToday());
+
+  // 주말 여부 확인
+  const isWeekend = () => {
+    const today = new Date().getDay();
+    return today === 0 || today === 6; // 0: 일요일, 6: 토요일
+  };
+
+  // 현재 이미지에 따라 floor 텍스트 설정
+  const getFloorText = () => {
+    const currentImage = mapImages[currentImageIndex];
+    const imageName = currentImage.split('/').pop(); // 파일 이름 추출
+    const floorNumber = imageName[1]; // 두 번째 글자 추출
+    return `${floorNumber}th floor`;
+  };
 
   // 자동 슬라이드 효과 추가
   useEffect(() => {
     const slideInterval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % mapImages.length);
-    }, 5000); // 3초마다 이미지 변경
+    }, 5000); // 5초마다 이미지 변경
 
-    return () => clearInterval(slideInterval); // 컴포넌트가 언마운트될 때 인터벌 제거
+    return () => clearInterval(slideInterval);
   }, [mapImages.length]);
 
   // Fetch weather data
@@ -69,11 +136,11 @@ function Main() {
       <div className={styles.header}>
         <div className={styles.topButton}>
           <Link to="/smartM">
-              <img
-                src={require("../../assets/images/smartmirror/home.png")}
-                alt="Home"
-                className={styles.img}
-              />
+            <img
+              src={require("../../assets/images/smartmirror/home.png")}
+              alt="Home"
+              className={styles.img}
+            />
           </Link>
         </div>
         <img
@@ -94,12 +161,13 @@ function Main() {
       <div className={styles.mainContainer}>
         <div className={styles.weatherBox}>
           <div className={styles.weatherDateContainer}>
+            <p className={styles.weatherDate}>
             <img
               src={require("../../assets/images/smartmirror/date.png")}
               alt="Date Icon"
               className={styles.dateIcon}
             />
-            <p className={styles.weatherDate}>{formatDate(dateTime)}</p>
+              {formatDate(dateTime)}</p>
           </div>
           {loading ? (
             <p>Loading weather data...</p>
@@ -142,7 +210,7 @@ function Main() {
           원하는 층을 선택하여 현재 공기질 상태를 확인하세요
         </div>
       </div>
-      
+
       <div className={styles.detailContainer}>
         <FloorBox floor="3rd" rooms={['3115', '3173']} isSelected={true} />
         <FloorBox floor="4th" rooms={['4142']} isSelected={false} />
@@ -153,7 +221,7 @@ function Main() {
       {/* Map Display Section with Image Slide */}
       <div className={styles.bottomContainer}>
         <div className={styles.whiteBox}>
-          5th floor
+          {!isWeekend() && getFloorText()}
           <div
             style={{
               display: "flex",
@@ -164,7 +232,7 @@ function Main() {
             }}
           >
             <img
-              src={mapImages[currentImageIndex]}  // 슬라이드할 이미지 선택
+              src={mapImages[currentImageIndex]}
               alt="Map"
               style={{ width: "66vw" }}
             />
