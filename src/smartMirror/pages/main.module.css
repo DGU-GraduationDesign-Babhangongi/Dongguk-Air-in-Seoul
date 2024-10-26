@@ -170,6 +170,7 @@
 .weatherDateContainer {
     display: flex;
     align-items: center;
+    margin-bottom: 0.5vw;
 }
 
 .dateIcon {
@@ -189,16 +190,20 @@
 
 .weatherRain {
     font-size: 2.8vw;
-    margin: 0;
+    margin: 0.5vw;
+    margin-left: 1.5vw;
 }
 
 .weatherMinMax {
     font-size: 2.5vw;
     margin: 0.5vw 0;
+    margin-left: 1.5vw;
 }
 
 .weatherAdvice {
     font-size: 2.2vw;
     margin-top: 0.8vw;
+    margin: 0.5vw;
+    margin-left: 1.5vw;
 }
 
