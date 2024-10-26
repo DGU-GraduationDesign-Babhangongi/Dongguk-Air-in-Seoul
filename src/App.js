@@ -35,7 +35,12 @@ function App() {
 
         {/* 테스트 페이지 */}
         <Route path="/test" element={<Test />} />
-        <Route path="/smartM" element={<SmartMirrorMain />} />
+        <Route path="/smartM" 
+        element={
+          <SensorDataProvider>
+            <SmartMirrorMain />
+          </SensorDataProvider>
+        } />
 
  
         <Route 
