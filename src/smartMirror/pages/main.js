@@ -55,7 +55,11 @@ function Main() {
       require("../../assets/images/smartmirror/map/56144.PNG"),
     ],
     토: [
-      require("../../assets/images/smartmirror/map/happyweek.png"),
+      require("../../assets/images/smartmirror/map/53115.PNG"),
+      require("../../assets/images/smartmirror/map/54142.PNG"),
+      require("../../assets/images/smartmirror/map/55147.PNG"),
+      require("../../assets/images/smartmirror/map/56119.PNG"),
+      require("../../assets/images/smartmirror/map/56144.PNG"),
     ],
     일: [
       require("../../assets/images/smartmirror/map/happyweek.png"),
@@ -130,6 +134,29 @@ function Main() {
     return `${year}년 ${month}월 ${day}일 ${dayOfWeek} PM ${hours}:${minutes}`;
   };
 
+  // 날씨 안내 멘트 생성 함수
+  const getWeatherAdvice = () => {
+    if (forecast.rain === '1') {
+      return "오늘은 하루 종일 비가 예상됩니다. 외출 시 우산을 챙기세요.";
+    } else if (forecast.rain === '3') {
+      return "눈이 오는 날입니다. 외출 시 따뜻하게 입으세요.";
+    } else if (forecast.rain === '2') {
+      return "오늘은 비와 눈이 섞여 내릴 수 있습니다. 미끄럼에 주의하세요.";
+    } else if (forecast.cloudy === '1') {
+      return "맑은 날씨입니다. 야외 활동을 즐기기 좋은 날이에요.";
+    } else if (forecast.cloudy === '4') {
+      return "흐린 날씨입니다. 실내 활동을 계획해보세요.";
+    } else if (forecast.humidity < 30) {
+      return "건조한 날씨입니다. 수분 보충에 유의하세요.";
+    } else if (forecast2.maxTemp >= 30) {
+      return "무더운 날씨가 예상됩니다. 시원한 곳에서 휴식을 취하세요.";
+    } else if (forecast2.minTemp <= 5) {
+      return "추운 날씨입니다. 따뜻한 옷차림을 준비하세요.";
+    } else {
+      return "오늘의 날씨에 맞게 계획을 세워보세요!";
+    }
+  };
+
   return (
     <div className={styles.container}>
       {/* Header section */}
@@ -183,13 +210,16 @@ function Main() {
             <>
               <p className={styles.weatherTemperature}>{forecast.temperature}°C</p>
               <p className={styles.weatherRain}>
-                {forecast.rain === '1' ? '비' : forecast.rain === '2' ? '비/눈' : forecast.rain === '3' ? '눈' : '흐리고 비'}
+                {forecast.rain >= '1' ? '흐리고 비' : forecast.cloudy === '1' ? '맑음' : forecast.cloudy === '3' ? '구름많음' : '흐림'}
               </p>
               <p className={styles.weatherMinMax}>
                 {forecast2.minTemp}°C / {forecast2.maxTemp}°C
               </p>
+              <p className={styles.weatherMinMax}>
+                습도 {forecast.humidity}%
+              </p>
               <p className={styles.weatherAdvice}>
-                오늘은 하루종일 {forecast.rain === '1' ? '비' : '비소식이 있으니'} 실내 습도 조절에 유의하세요
+                {getWeatherAdvice()}
               </p>
             </>
           )}
