@@ -157,7 +157,15 @@ function Main() {
         </div>
       </div>
 
-      {/* Weather and black box */}
+      <div className={styles.checkContainer}>
+          외모 check
+          <img
+            src={require("../../assets/images/smartmirror/check.png")}
+            alt="error"
+            style={{ width: '2vw', height: '2vw', paddingLeft: '1vw' }}
+          />
+        </div>
+
       <div className={styles.mainContainer}>
         <div className={styles.weatherBox}>
           <div className={styles.weatherDateContainer}>

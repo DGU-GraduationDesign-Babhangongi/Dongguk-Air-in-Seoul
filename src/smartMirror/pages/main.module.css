@@ -15,7 +15,7 @@
 
 .header {
     width: 94%;
-    padding: 2% 3%;
+    padding: 3% 3%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -41,7 +41,8 @@
 .mainContainer {
     display: flex;
     width: 100%;
-    padding: 3% 0%;
+    padding-top: 1%;
+    padding-bottom: 3%;
     align-items: center;
     justify-content: space-around;
 }
@@ -84,6 +85,23 @@
     align-items: 'end';
 }
 
+.checkContainer {
+    display: flex;
+    font-size: 2vw;
+    color: #151515;
+    font-weight: 400;
+    justify-content: flex-end;
+    margin-right: 6%;
+}
+
+.Container {
+    display: flex;
+    font-size: 2vw;
+    color: #151515;
+    font-weight: 400;
+    align-items: 'end';
+}
+
 .buildingContainer {
     display: flex;
     font-size: 3vw;
@@ -112,7 +130,7 @@
 
 .whiteBox{
     width: 78%;
-    height: 35%;
+    height: 40vw;
     margin: 0% 0;
     margin-left: 2%;
     margin-top: 3%;
@@ -126,7 +144,7 @@
 
 .blackBox{
     width: 50%;
-    height: 31vw;
+    height: 35vw;
     padding: 2% 5%;
     margin-left: 2%;
     margin-right: 5%;
@@ -138,7 +156,7 @@
 
 .weatherBox {
     width: 50%;
-    height: 40%;
+    height: 35vw;
     padding: 2% 3%;
     margin-left: 5%;
     background-color: #FFFFFF;
@@ -152,7 +170,6 @@
 .weatherDateContainer {
     display: flex;
     align-items: center;
-    margin-bottom: 1vw;
 }
 
 .dateIcon {
