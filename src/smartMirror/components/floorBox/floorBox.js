@@ -1,36 +1,37 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './floorBox.module.css';
-import { useNavigate } from 'react-router-dom'; // assuming you're using react-router-dom for navigation
+import { useNavigate } from 'react-router-dom';
+import { SensorDataContext } from '../../../API/SensorDataContext';
 
-function FloorBox({ floor, rooms, isSelected }) {
-  const navigate = useNavigate();  // To navigate to a new URL
-  
+function FloorBox({ floor, rooms }) {
+  const navigate = useNavigate();
+  const { data, loading } = useContext(SensorDataContext);
+  const [averageIAQ, setAverageIAQ] = useState(null);
+
+  useEffect(() => {
+    if (!data) return;
+
+    const iaqValues = rooms.map(room => {
+      const iaqValue = data[room]?.IAQIndex?.value || 0;
+      console.log(`Room ${room} IAQIndex value:`, iaqValue); // 각 방의 IAQIndex 값 로깅
+      return iaqValue;
+    });
+
+    if (iaqValues.length > 0) {
+      const avg = iaqValues.reduce((sum, value) => sum + value, 0) / iaqValues.length;
+      setAverageIAQ(avg);
+      console.log(`Average IAQ for ${floor} floor:`, avg); // 평균 IAQ 값 로깅
+    }
+  }, [rooms, data]);
+
+  const borderColor = averageIAQ !== null && averageIAQ < 70 ? styles.redBorder : styles.greenBorder;
+
   const handleRoomClick = (room) => {
-    if (room === '3115') {
-      window.location.href = 'https://donggukseoul.com/smartmirror/classroom/3115';  // Redirect to the target URL
-    }
-    else if (room === '3173') {
-      window.location.href = 'https://donggukseoul.com/smartmirror/classroom/3173';  // Redirect to the target URL
-    }
-    else if (room === '4142') {
-      window.location.href = 'https://donggukseoul.com/smartmirror/classroom/4142';  // Redirect to the target URL
-    }
-    else if (room === '5145') {
-      window.location.href = 'https://donggukseoul.com/smartmirror/classroom/5145';  // Redirect to the target URL
-    }
-    else if (room === '5147') {
-      window.location.href = 'https://donggukseoul.com/smartmirror/classroom/5147';  // Redirect to the target URL
-    }
-    else if (room === '6119') {
-      window.location.href = 'https://donggukseoul.com/smartmirror/classroom/6119';  // Redirect to the target URL
-    }
-    else if (room === '6144') {
-      window.location.href = 'https://donggukseoul.com/smartmirror/classroom/6144';  // Redirect to the target URL
-    }
+    window.location.href = `https://donggukseoul.com/smartmirror/classroom/${room}`;
   };
 
   return (
-    <div className={`${styles.container} ${!isSelected ? styles.greenBorder : ''}`}>
+    <div className={`${styles.container} ${borderColor}`}>
       <div className={styles.floorInfo}>
         <img
           src={require("../../../assets/images/smartmirror/floor.png")}
@@ -41,7 +42,6 @@ function FloorBox({ floor, rooms, isSelected }) {
         <div className={styles.floorName}>{floor} floor</div>
       </div>
 
-      {/* Divider Line */}
       <div className={styles.divider}></div>
 
       <div className={styles.roomContainer}>
@@ -49,7 +49,7 @@ function FloorBox({ floor, rooms, isSelected }) {
           <div
             key={index}
             className={styles.roomButton}
-            onClick={() => handleRoomClick(room)}  // Add onClick handler here
+            onClick={() => handleRoomClick(room)}
           >
             {room}
           </div>

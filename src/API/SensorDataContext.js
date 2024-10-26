@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import API from '../API/api';
 
-// Context 생성
 export const SensorDataContext = createContext();
 
 // 센서 데이터 목록
@@ -16,49 +15,36 @@ const sensorList = [
 ];
 
 export const SensorDataProvider = ({ children }) => {
-  
   const [data, setData] = useState({});
-  const [loading, setLoading] = useState(false); // 로딩 상태 추가
-  const [selectedSensorName, setSelectedSensorName] = useState(sensorList[0]?.name); // 선택된 센서의 이름 상태 추가
+  const [loading, setLoading] = useState(false);
 
-  const fetchData = async (name) => {
-    if (!name) return;
-
-    // name에 해당하는 sensorId 찾기
-    const sensor = sensorList.find(sensor => sensor.name === name);
-    if (!sensor) {
-      console.error("해당 이름의 센서를 찾을 수 없습니다.");
-      return;
+  const fetchAllData = async () => {
+    setLoading(true);
+    const newData = {};
+    
+    for (const sensor of sensorList) {
+      const endpoint = `/api/sensorData/recent/` + encodeURIComponent(sensor.sensorId);
+      try {
+        const response = await API.get(endpoint);
+        newData[sensor.name] = response.data;
+        console.log(`Data for ${sensor.name}:`, response.data); // 각 방의 데이터를 로깅
+      } catch (e) {
+        console.error("API 오류: ", e);
+      }
     }
 
-    const endpoint = `/api/sensorData/recent/` + encodeURIComponent(sensor.sensorId);
-    setLoading(true); // 데이터 요청 시작, 로딩 상태 true로 설정
-    try {
-      const response = await API.get(endpoint);
-      console.log("주소:", endpoint); 
-      setData(response.data); // 센서 데이터를 설정
-      console.log("응답 데이터:", response.data); // 응답 확인용
-    } catch (e) {
-      console.error("API 오류: ", e);
-    } finally {
-      setLoading(false); // 데이터 요청 완료, 로딩 상태 false로 설정
-    }
+    setData(newData);
+    setLoading(false);
   };
 
   useEffect(() => {
-    fetchData(selectedSensorName); // 초기 데이터 요청
-
-    // 5초마다 fetchData 호출
-    const intervalId = setInterval(() => {
-      fetchData(selectedSensorName);
-    }, 5000);
-
-    // 컴포넌트 언마운트 시 interval 정리
+    fetchAllData();
+    const intervalId = setInterval(fetchAllData, 5000);
     return () => clearInterval(intervalId);
-  }, [selectedSensorName]); // selectedSensorName이 변경될 때마다 호출
+  }, []);
 
   return (
-    <SensorDataContext.Provider value={{ data, setSelectedSensorName, loading }}>
+    <SensorDataContext.Provider value={{ data, loading }}>
       {children}
     </SensorDataContext.Provider>
   );

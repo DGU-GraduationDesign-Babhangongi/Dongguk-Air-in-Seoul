@@ -141,6 +141,8 @@ function Main() {
       return "오늘은 비와 눈이 섞여 내릴 수 있습니다. 미끄럼에 주의하세요.";
     } else if (forecast.cloudy === '1') {
       return "맑은 날씨입니다. 야외 활동을 즐기기 좋은 날이에요.";
+    } else if (forecast.cloudy === '3') {
+      return "햇살이 구름 사이로 드문드문 비추고 있어요. 산책이나 가벼운 야외 활동을 즐겨보세요!";
     } else if (forecast.cloudy === '4') {
       return "흐린 날씨입니다. 실내 활동을 계획해보세요.";
     } else if (forecast.humidity < 30) {
