@@ -30,7 +30,7 @@ function FloorBox({ floor, rooms, isSelected }) {
   };
 
   return (
-    <div className={`${styles.container} ${!isSelected ? styles.redBorder : ''}`}>
+    <div className={`${styles.container} ${!isSelected ? styles.greenBorder : ''}`}>
       <div className={styles.floorInfo}>
         <img
           src={require("../../../assets/images/smartmirror/floor.png")}

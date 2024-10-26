@@ -11,15 +11,21 @@
     margin-left: 3%;
     margin-right: 3%;
     background-color: #FFFFFF;
-    border: 0.2vw solid #90EE90; /* Initially green border */
+    border: 0.2vw solid #90EE90; /* 기본 초록색 테두리 */
     border-radius: 2.7vw;
     box-shadow: 0px 0.37vw 0.37vw rgba(0, 0, 0, 0.25);
     transition: all 0.3s ease;
 }
 
-.container.redBorder {
-    border-color: #FF6347; /* Red border for non-selected floors */
+.redBorder {
+    border-color: #FF6347; /* 점수 70 이하일 때 빨간색 테두리 */
 }
+
+.greenBorder {
+    border-color: #90EE90; /* 점수 70 이상일 때 초록색 테두리 */
+}
+
+
 
 .floorInfo {
     display: flex;

@@ -13,6 +13,7 @@ function Main() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const navigate = useNavigate();
 
+
   // 요일별 이미지 배열
   const mapImagesByDay = {
     월: [
@@ -55,11 +56,7 @@ function Main() {
       require("../../assets/images/smartmirror/map/56144.PNG"),
     ],
     토: [
-      require("../../assets/images/smartmirror/map/53115.PNG"),
-      require("../../assets/images/smartmirror/map/54142.PNG"),
-      require("../../assets/images/smartmirror/map/55147.PNG"),
-      require("../../assets/images/smartmirror/map/56119.PNG"),
-      require("../../assets/images/smartmirror/map/56144.PNG"),
+      require("../../assets/images/smartmirror/map/happyweek.png"),
     ],
     일: [
       require("../../assets/images/smartmirror/map/happyweek.png"),
@@ -196,13 +193,13 @@ function Main() {
       <div className={styles.mainContainer}>
         <div className={styles.weatherBox}>
           <div className={styles.weatherDateContainer}>
-            <p className={styles.weatherDate}>
+            <div className={styles.weatherDate}>
             <img
               src={require("../../assets/images/smartmirror/date.png")}
               alt="Date Icon"
               className={styles.dateIcon}
             />
-              {formatDate(dateTime)}</p>
+              {formatDate(dateTime)}</div>
           </div>
           {loading ? (
             <p>Loading weather data...</p>
@@ -250,10 +247,10 @@ function Main() {
       </div>
 
       <div className={styles.detailContainer}>
-        <FloorBox floor="3rd" rooms={['3115', '3173']} isSelected={true} />
-        <FloorBox floor="4th" rooms={['4142']} isSelected={false} />
-        <FloorBox floor="5th" rooms={['5145', '5147']} isSelected={false} />
-        <FloorBox floor="6th" rooms={['6119', '6144']} isSelected={false} />
+        <FloorBox floor="3rd" rooms={['3115', '3173']}  />
+        <FloorBox floor="4th" rooms={['4142']}  />
+        <FloorBox floor="5th" rooms={['5145', '5147']} />
+        <FloorBox floor="6th" rooms={['6119', '6144']}  />
       </div>
 
       {/* Map Display Section with Image Slide */}
@@ -272,7 +269,7 @@ function Main() {
             <img
               src={mapImages[currentImageIndex]}
               alt="Map"
-              style={{ width: "66vw" }}
+              style={{ width: "72vw" }}
             />
           </div>
         </div>
