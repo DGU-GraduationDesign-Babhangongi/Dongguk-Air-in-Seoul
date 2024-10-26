@@ -111,9 +111,11 @@
 }
 
 .whiteBox{
-    width: 80%;
+    width: 78%;
     height: 35%;
     margin: 0% 0;
+    margin-left: 2%;
+    margin-top: 3%;
     font-weight: 600;
     padding: 5% 10%;
     background-color: #FFFFFF;
@@ -124,7 +126,7 @@
 
 .blackBox{
     width: 50%;
-    height: 40%;
+    height: 31vw;
     padding: 2% 5%;
     margin-left: 2%;
     margin-right: 5%;
