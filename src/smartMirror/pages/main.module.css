@@ -112,7 +112,7 @@
 
 .whiteBox{
     width: 80%;
-    height: 400px;
+    height: 35%;
     margin: 0% 0;
     font-weight: 600;
     padding: 5% 10%;
@@ -124,7 +124,7 @@
 
 .blackBox{
     width: 50%;
-    height: 350px;
+    height: 40%;
     padding: 2% 5%;
     margin-left: 2%;
     margin-right: 5%;
@@ -136,7 +136,7 @@
 
 .weatherBox {
     width: 50%;
-    height: 350px;
+    height: 40%;
     padding: 2% 3%;
     margin-left: 5%;
     background-color: #FFFFFF;
