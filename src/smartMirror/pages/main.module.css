@@ -42,7 +42,7 @@
     display: flex;
     width: 100%;
     padding-top: 1%;
-    padding-bottom: 3%;
+    padding-bottom: 5%;
     align-items: center;
     justify-content: space-around;
 }
@@ -144,7 +144,7 @@
 
 .blackBox{
     width: 50%;
-    height: 35vw;
+    height: 38vw;
     padding: 2% 5%;
     margin-left: 2%;
     margin-right: 5%;
@@ -156,7 +156,7 @@
 
 .weatherBox {
     width: 50%;
-    height: 35vw;
+    height: 38vw;
     padding: 2% 3%;
     margin-left: 5%;
     background-color: #FFFFFF;
