@@ -55,7 +55,11 @@ function Main() {
       require("../../assets/images/smartmirror/map/56144.PNG"),
     ],
     토: [
-      require("../../assets/images/smartmirror/map/happyweek.png"),
+      require("../../assets/images/smartmirror/map/53115.PNG"),
+      require("../../assets/images/smartmirror/map/54142.PNG"),
+      require("../../assets/images/smartmirror/map/55147.PNG"),
+      require("../../assets/images/smartmirror/map/56119.PNG"),
+      require("../../assets/images/smartmirror/map/56144.PNG"),
     ],
     일: [
       require("../../assets/images/smartmirror/map/happyweek.png"),
