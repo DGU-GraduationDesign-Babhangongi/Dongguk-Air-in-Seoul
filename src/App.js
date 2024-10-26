@@ -41,8 +41,7 @@ function App() {
             <SmartMirrorMain />
           </SensorDataProvider>
         } />
-
- 
+        
         <Route 
           path="/smartMirror/classRoom/:id" 
           element={
