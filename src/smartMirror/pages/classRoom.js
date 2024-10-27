@@ -1,12 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styles from './classRoom.module.css'; 
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ClassRoomButton from '../components/classRoomButton/classRoomButton';  
 import ShowBox from '../components/showBox/showBox';  
-import { useLocation, useNavigate } from 'react-router-dom';
 import Map from '../components/map'; 
-import { Link } from 'react-router-dom';
+import TipsSlide from '../components/tipsSlide/tipsSlide';
 import { SensorDataContext } from '../../API/SensorDataContext';
-import TipsSlide from '../components/tipsSlide/tipsSlide';  // 이름 변경된 컴포넌트 불러오기
 
 function ClassRoom() {
   const location = useLocation();
@@ -18,13 +17,12 @@ function ClassRoom() {
   
   useEffect(() => {
     if (Id) {
-      setSelectedSensorName(Id);  // 선택된 센서 이름을 Id로 설정
+      setSelectedSensorName(Id);
     }
-  }, [Id, setSelectedSensorName]);  // Id 변경 시마다 호출
+  }, [Id, setSelectedSensorName]);
 
   const classRoomIds = ['3115', '3173', '4142', '5145', '5147', '6119', '6144'];
   const currentIndex = classRoomIds.indexOf(Id);
-  
   const previousId = currentIndex > 0 ? classRoomIds[currentIndex - 1] : classRoomIds[classRoomIds.length - 1];
   const nextId = currentIndex < classRoomIds.length - 1 ? classRoomIds[currentIndex + 1] : classRoomIds[0];
 
@@ -39,6 +37,13 @@ function ClassRoom() {
   };
 
   const { x, y } = coordinates[Id] || { x: '0', y: '0' };
+
+  // IAQIndex 값을 기반으로 이미지 경로 결정
+  const iaqImageSrc = sensorData.IAQIndex?.value >= 70
+    ? require("../../assets/images/smartmirror/good.png")
+    : sensorData.IAQIndex?.value >= 40
+    ? require("../../assets/images/smartmirror/average.png")
+    : require("../../assets/images/smartmirror/bad.png");
 
   return (
     <div className={styles.container}>
@@ -72,16 +77,16 @@ function ClassRoom() {
           <Map classRoom={Id} x={x} y={y} />
           <div style={{ width: '27%', textAlign: 'center' }}>
             <div style={{ fontWeight: 'bold', fontSize: '4.6vw' }}>{Id} 강의실</div>
-            <div>동국대학교 신공학관</div>
+            <div>신공학관</div>
             <img
-              src={require("../../assets/images/smartmirror/good.png")}
-              alt="good"
+              src={iaqImageSrc}  // IAQIndex 값에 따라 이미지 설정
+              alt={sensorData.IAQIndex?.value >= 70 ? "good" : sensorData.IAQIndex?.value >= 40 ? "average" : "bad"}
               style={{ width: '76%' }}
             />
             {loading ? (
-              <div>Loading...</div> // 로딩 중 메시지
+              <div>Loading...</div>
             ) : error ? (
-              <div>Error: {error}</div> // 에러 메시지
+              <div>Error: {error}</div>
             ) : (
               <div style={{ fontSize: '6vw' }}>{sensorData.IAQIndex?.value || '--'}점</div>
             )}
@@ -119,12 +124,12 @@ function ClassRoom() {
         </div>
 
         <div className={styles.boxContainer}>
-        <ShowBox image='temp.png' i={loading ? '--' : sensorData.Temperature?.value} unit='°C' name='Temperature' />
-        <ShowBox image='humidity.png' i={loading ? '--' : sensorData.Humidity?.value} unit='%' name='Humidity' />
-        <ShowBox image='tvoc.png' i={loading ? '--' : sensorData.TVOC?.value} unit='㎍/㎥' name='TVOC' />
-        <ShowBox image='pm2.5.png' i={loading ? '--' : sensorData.PM2_5MassConcentration?.value} unit='㎛' name='PM2.5' />
-        <ShowBox image='noise.png' i={loading ? '--' : sensorData.AmbientNoise?.value} unit='dB' name='Noise' />
-        <ShowBox image='sensor.png' i={loading ? '--' : 'ON'} unit='' name='Sensor' />
+          <ShowBox image='temp.png' i={loading ? '--' : sensorData.Temperature?.value} unit='°C' name='Temperature' />
+          <ShowBox image='humidity.png' i={loading ? '--' : sensorData.Humidity?.value} unit='%' name='Humidity' />
+          <ShowBox image='tvoc.png' i={loading ? '--' : sensorData.TVOC?.value} unit='㎍/㎥' name='TVOC' />
+          <ShowBox image='pm2.5.png' i={loading ? '--' : sensorData.PM2_5MassConcentration?.value} unit='㎛' name='PM2.5' />
+          <ShowBox image='noise.png' i={loading ? '--' : sensorData.AmbientNoise?.value} unit='dB' name='Noise' />
+          <ShowBox image='sensor.png' i={loading ? '--' : 'ON'} unit='' name='Sensor' />
         </div>
       </div>
 
