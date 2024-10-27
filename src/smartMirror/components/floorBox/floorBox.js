@@ -24,7 +24,7 @@ function FloorBox({ floor, rooms }) {
     }
   }, [rooms, data]);
 
-  const borderColor = averageIAQ !== null && averageIAQ < 70 ? styles.redBorder : styles.greenBorder;
+  const borderColor = averageIAQ !== null && averageIAQ < 70 ? styles.greenBorder : styles.greenBorder;
 
   const handleRoomClick = (room) => {
     window.location.href = `https://donggukseoul.com/smartmirror/classroom/${room}`;
