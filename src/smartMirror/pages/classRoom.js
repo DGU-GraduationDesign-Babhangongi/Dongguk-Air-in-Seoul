@@ -39,9 +39,9 @@ function ClassRoom() {
   const { x, y } = coordinates[Id] || { x: '0', y: '0' };
 
   // IAQIndex 값을 기반으로 이미지 경로 결정
-  const iaqImageSrc = sensorData.IAQIndex?.value >= 70
+  const iaqImageSrc = sensorData.IAQIndex?.value >= 85
     ? require("../../assets/images/smartmirror/good.png")
-    : sensorData.IAQIndex?.value >= 40
+    : sensorData.IAQIndex?.value >= 60
     ? require("../../assets/images/smartmirror/average.png")
     : require("../../assets/images/smartmirror/bad.png");
 
@@ -143,7 +143,8 @@ function ClassRoom() {
           Tips
         </div>
         <TipsSlide contents={sensorData.AQMScores}/>
-        <div className={styles.whiteBox}>
+        <div className={styles.whiteBox} style={{fontSize: '3vw', display:'flex',  alignItems: 'center',     justifyContent: 'space-between'}}>
+          <div style={{width: '128%'}}> 
           종합설계2 밥한공기 임시운영 중입니다.
           <div style={{
             display: "flex", width: '100%',
@@ -154,23 +155,33 @@ function ClassRoom() {
             <img
               src={require("../../assets/images/smartmirror/personIcons/person1.png")}
               alt="person1"
-              style={{ width: '16vw' }}
+              style={{ width: '12vw' }}
             />
             <img
               src={require("../../assets/images/smartmirror/personIcons/person2.png")}
               alt="person2"
-              style={{ width: '16vw' }}
+              style={{ width: '12vw' }}
             />
             <img
               src={require("../../assets/images/smartmirror/personIcons/person3.png")}
               alt="person3"
-              style={{ width: '16vw' }}
+              style={{ width: '12vw' }}
             />
             <img
               src={require("../../assets/images/smartmirror/personIcons/person4.png")}
               alt="person4"
-              style={{ width: '16vw' }}
+              style={{ width: '12vw' }}
             />
+            </div>
+          </div>
+          <div style={{ width: '5vw' }}></div>
+          <div>
+          설문조사 참여
+          <img
+              src={require("../../assets/images/smartmirror/QR.png")}
+              alt="person4"
+              style={{ width: '16vw' , aspectRatio: '1/1'}}
+          />
           </div>
         </div>
       </div>
