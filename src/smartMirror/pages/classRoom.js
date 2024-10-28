@@ -80,7 +80,7 @@ function ClassRoom() {
             <div>신공학관</div>
             <img
               src={iaqImageSrc}  // IAQIndex 값에 따라 이미지 설정
-              alt={sensorData.IAQIndex?.value >= 70 ? "good" : sensorData.IAQIndex?.value >= 40 ? "average" : "bad"}
+              alt={sensorData.IAQIndex?.value >= 85 ? "good" : sensorData.IAQIndex?.value >= 60 ? "average" : "bad"}
               style={{ width: '76%' }}
             />
             {loading ? (
