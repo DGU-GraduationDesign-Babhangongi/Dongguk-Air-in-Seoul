@@ -175,11 +175,11 @@ function ClassRoom() {
             </div>
           </div>
           <div style={{ width: '5vw' }}></div>
-          <div>
-          설문조사 참여
+          <div style={{ fontSize: '2.5vw'}}>
+          문의사항 및 피드백
           <img
               src={require("../../assets/images/smartmirror/QR.png")}
-              alt="person4"
+              alt="QR"
               style={{ width: '16vw' , aspectRatio: '1/1'}}
           />
           </div>
