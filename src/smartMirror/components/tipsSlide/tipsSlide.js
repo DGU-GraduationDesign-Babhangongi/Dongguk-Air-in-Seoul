@@ -11,11 +11,11 @@ const TipsSlide = ({ contents }) => {
     const advice = getAdvice(type);
     switch (status) {
       case "Fair":
-        return `현재 ${type} 상태가 좋지 않네요. <br/> ${advice}`;
+        return `현재 ${type} 상태가 좋지 않습니다. <br/> ${advice}`;
       case "Poor":
-        return `현재 ${type} 상태가 매우 좋지 않네요. <br/> ${advice}`;
+        return `현재 ${type} 상태가 나쁩니다. <br/> ${advice}`;
       case "Inadequate":
-        return `현재 ${type} 상태에 문제가 발생했습니다. <br/> ${advice}`;
+        return `현재 ${type} 상태가 심각합니다. <br/> ${advice}`;
       default:
         return null; // Excellent와 Good일 경우 null 반환
     }
@@ -25,7 +25,7 @@ const TipsSlide = ({ contents }) => {
   const getAdvice = (type) => {
     switch (type) {
       case "소음":
-        return "소음을 줄이고 싶다면 조용한 공간으로 가거나 소음 차단 헤드폰을 사용하세요.";
+        return "소음을 줄이고 싶다면 조용한 공간으로 가거나 <br/>소음 차단 헤드폰을 사용하세요.";
       case "습도":
         return "가습기를 틀거나 창문을 열어 신선한 공기를 들이세요.";
       case "TVOC":
