@@ -239,13 +239,14 @@ function Main() {
           </div>
         </div>
         <div className={styles.helpContainer}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <img
             src={require("../../assets/images/smartmirror/TipsIcon.png")}
             alt="detail"
             style={{ width: '3vw', height: '3vw', paddingRight: '1.5vw' }}
           />
           원하는 층을 선택하여 현재 공기질 상태를 확인하세요
-        </div>
+        </div></div>
       </div>
 
       <div className={styles.detailContainer}>
