@@ -217,7 +217,7 @@ function Main() {
 
               {loading ? (
                 <p>Loading weather data...</p>
-              ) : (
+              ) : forecast && forecast2 ? (
                 <>
                   <div
                     style={{
@@ -281,8 +281,10 @@ function Main() {
                       marginTop: "10px",
                     }}
                   >
-                    최고 {forecast2.maxTemp}°C / 최저 {forecast2.minTemp}°C 습도{" "}
-                    {forecast.humidity}%
+                    최고 {forecast2.maxTemp}°C / 최저 {forecast2.minTemp}°C
+                    <span style={{ marginLeft: "24px" }}>
+                      습도 {forecast.humidity}%
+                    </span>
                   </p>
                   <p
                     style={{
@@ -312,6 +314,8 @@ function Main() {
                     </p>
                   </p>
                 </>
+              ) : (
+                <p>데이터를 불러오는 중입니다.</p>
               )}
             </div>
 
