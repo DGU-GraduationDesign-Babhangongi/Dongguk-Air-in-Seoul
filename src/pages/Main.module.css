@@ -1,3 +1,4 @@
+/*Main.module.css*/
 .mainContainer {
   padding: 20px;
   height: 100vh; /* 전체 화면 높이를 맞추기 위해 추가 */
@@ -5,6 +6,7 @@
   flex-direction: column;
   justify-content: center; /* 수직 중앙 정렬 */
 }
+
 /* 애니메이션 1 */
 @keyframes fadeInAndGrow {
   0% {
@@ -112,22 +114,14 @@
   border-radius: 50%;
 }
 
-/*날씨 / 센서로그기록*/
-/*.sensorLogs:hover {
-  transform: scale(1.05);
-}
-.weatherInfo:hover {
-  transform: scale(1.05);
-}*/
-
 .weatherAndLogs {
-  width: 25%;
+  width: 20%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-end; /* 오른쪽 끝으로 밀어내기 */
   gap: 8px;
-  margin-top: -400px;
+  margin-top: -300px;
   margin-right: -10px;
 }
 /*날씨*/
@@ -145,7 +139,7 @@
   border-radius: 20px 0 0 20px; /* 모서리 */
   padding: 28px; /* 박스 내부 여백 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.261); /* 그림자 */
-  width: 72%;
+  width: 100%;
   color: black;
 }
 
@@ -153,7 +147,7 @@
 .pingIcon {
   margin-right: 10px;
   font-size: 24px;
-  color: black;
+  color: grey;
 }
 
 .weatherInfo h3 {
@@ -257,4 +251,3 @@
   height: 1px;
   background-color: #ccc;
 }
-/*전으로 되돌림*/
