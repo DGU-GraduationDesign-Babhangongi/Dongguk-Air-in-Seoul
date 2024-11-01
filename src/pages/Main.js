@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Header from "../components/common/Header/Header";
 import { Link } from "react-router-dom";
 import styles from "./Main.module.css";
 import { FaMapMarkedAlt } from "react-icons/fa";
-import { fetchForeCast, fetchForeCast2 } from "../pages/forecast";
 
 function Main() {
   const [popupContent, setPopupContent] = useState(null);
@@ -11,11 +10,6 @@ function Main() {
   const [fadeOut, setFadeOut] = useState(false);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [showMessage, setShowMessage] = useState(true);
-
-  const [dateTime, setDateTime] = useState(new Date());
-  const [forecast, setForecast] = useState(null);
-  const [forecast2, setForecast2] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   const handleBuildingClick = (building, buildingInfo) => {
     if (building == "신공학관") {
@@ -35,70 +29,6 @@ function Main() {
     setPopupContent(null);
     setSelectedBuilding(null);
   };
-
-  // 날씨 안내 멘트 생성 함수
-  const getWeatherAdvice = () => {
-    if (!forecast || !forecast2) {
-      return "날씨 데이터를 불러오는 중입니다.";
-    }
-
-    if (forecast.rain === "1") {
-      return "오늘은 하루 종일 비가 예상됩니다\n외출 시 우산을 챙기세요";
-    } else if (forecast.rain === "3") {
-      return "눈이 오는 날입니다\n외출 시 따뜻하게 입으세요";
-    } else if (forecast.rain === "2") {
-      return "오늘은 비와 눈이 섞여 내릴 수 있습니다\n미끄럼에 주의하세요";
-    } else if (forecast.cloudy === "1") {
-      return "맑은 날씨입니다\n야외 활동을 즐기기 좋은 날이에요!";
-    } else if (forecast.cloudy === "3") {
-      return "햇살이 구름 사이로 드문드문 비추고 있어요\n산책이나 가벼운 야외 활동을 즐겨보세요!";
-    } else if (forecast.cloudy === "4") {
-      return "흐린 날씨입니다\n실내 활동을 계획해보세요";
-    } else if (forecast.humidity < 30) {
-      return "건조한 날씨입니다\n수분 보충에 유의하세요";
-    } else if (forecast2.maxTemp >= 30) {
-      return "무더운 날씨가 예상됩니다\n시원한 곳에서 휴식을 취하세요";
-    } else if (forecast2.minTemp <= 5) {
-      return "추운 날씨입니다\n따뜻한 옷차림을 준비하세요";
-    } else {
-      return "오늘의 날씨에 맞게 계획을 세워보세요!";
-    }
-  };
-
-  // Format the date and time
-  const formatDate = (date) => {
-    const days = ["일", "월", "화", "수", "목", "금", "토"];
-    const dayOfWeek = days[date.getDay()];
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    return `${year}년 ${month}월 ${day}일 ${dayOfWeek} PM ${hours}:${minutes}`;
-  };
-
-  // Fetch weather data
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const weatherData = await fetchForeCast(60, 127);
-        const weatherData2 = await fetchForeCast2(60, 127);
-        setForecast(weatherData);
-        setForecast2(weatherData2);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching weather data: ", error);
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-
-  // Update time every minute
-  useEffect(() => {
-    const timer = setInterval(() => setDateTime(new Date()), 60000);
-    return () => clearInterval(timer);
-  }, []);
 
   return (
     <div>
@@ -207,116 +137,19 @@ function Main() {
           {/* 오른쪽 날씨 및 로그 섹션 */}
           <div className={styles.weatherAndLogs}>
             <div className={styles.weatherInfo}>
-              <h2>
-                <FaMapMarkedAlt
-                  className={styles.pingIcon}
-                  style={{ alignItems: "center" }}
-                />
+              <h3>
+                <FaMapMarkedAlt className={styles.pingIcon} />
                 서울 중구 필동
-              </h2>
-
-              {loading ? (
-                <p>Loading weather data...</p>
-              ) : forecast && forecast2 ? (
-                <>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {/* 날씨 상태에 따른 이미지 */}
-                    <img
-                      src={
-                        forecast.rain >= "1"
-                          ? "/Main/cloudyrain_icon.png"
-                          : forecast.cloudy === "1"
-                          ? "/Main/sun_icon.png"
-                          : forecast.cloudy === "3"
-                          ? "/Main/semicloudy_icon.png"
-                          : "/Main/cloudy_icon.png"
-                      }
-                      alt="날씨 이미지"
-                      style={{
-                        width: "100px", // 이미지 크기 조정
-                        height: "100px",
-                        filter: "drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.2))",
-                      }}
-                    />
-                    <h1
-                      className={styles.weatherTemperature}
-                      style={{
-                        fontSize: "4rem",
-                        fontWeight: "bold",
-                        textAlign: "right",
-                      }}
-                    >
-                      {forecast.temperature}°C
-                    </h1>
-                  </div>
-
-                  <p
-                    className={styles.weatherRain}
-                    style={{
-                      fontSize: "28px",
-                      textAlign: "right",
-                    }}
-                  >
-                    {forecast.rain >= "1"
-                      ? "흐리고 비"
-                      : forecast.cloudy === "1"
-                      ? "맑음"
-                      : forecast.cloudy === "3"
-                      ? "구름많음"
-                      : "흐림"}
-                  </p>
-                  <p
-                    className={styles.weatherMinMax}
-                    style={{
-                      fontSize: "20px",
-                      textAlign: "right",
-                      fontWeight: "600",
-
-                      marginTop: "10px",
-                    }}
-                  >
-                    최고 {forecast2.maxTemp}°C / 최저 {forecast2.minTemp}°C
-                    <span style={{ marginLeft: "24px" }}>
-                      습도 {forecast.humidity}%
-                    </span>
-                  </p>
-                  <p
-                    style={{
-                      textAlign: "right",
-                      fontSize: "12px",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    {" "}
-                    {formatDate(dateTime)}
-                  </p>
-                  <p
-                    className={styles.weatherAdvice}
-                    style={{
-                      textAlign: "right",
-                    }}
-                  >
-                    <p
-                      className={styles.weatherAdvice}
-                      style={{
-                        textAlign: "right",
-                        whiteSpace: "pre-line", // 줄바꿈 적용
-                        fontSize: "20px",
-                      }}
-                    >
-                      {getWeatherAdvice()}
-                    </p>
-                  </p>
-                </>
-              ) : (
-                <p>데이터를 불러오는 중입니다.</p>
-              )}
+              </h3>
+              <p>32°C</p>
+              <p>강수: 0</p>
+              <p>습도: </p>
+              <p>하늘상태: 맑음</p>
+              <p>최고온도 : 34°C</p>
+              <p>최저온도 : 14°C</p>
+              <p>
+                오늘은 하루종일 비 소식이 있으니 실내 습도 조절에 유의하세요
+              </p>
             </div>
 
             <div className={styles.sensorLogs}>
@@ -382,3 +215,4 @@ function Main() {
 }
 
 export default Main;
+/*전으로 되돌림*/
