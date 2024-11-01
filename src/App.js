@@ -20,37 +20,26 @@ import { SensorDataProvider } from '../src/API/SensorDataContext';
 function App() {
   return (
     <Router>
-      <Routes>
-        {/* 기본 페이지들 */}
-        <Route path="/" element={<Main />} />
-        <Route path="/figures" element={<Figures />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/comparison" element={<Comparison />} />
-        <Route path="/log" element={<Log />} />
-        <Route path="/manager" element={<Manager />} />
-        <Route path="/alarm" element={<Alarm />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/floorcheck" element={<FloorCheck />} />
+      <SensorDataProvider>
+        <Routes>
+          {/* 기본 페이지들 */}
+          <Route path="/" element={<Main />} />
+          <Route path="/figures" element={<Figures />} />
+          <Route path="/comparison" element={<Comparison />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/log" element={<Log />} />
+          <Route path="/manager" element={<Manager />} />
+          <Route path="/alarm" element={<Alarm />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/floorcheck" element={<FloorCheck />} />
 
-        {/* 테스트 페이지 */}
-        <Route path="/test" element={<Test />} />
-        <Route path="/smartM" 
-        element={
-          <SensorDataProvider>
-            <SmartMirrorMain />
-          </SensorDataProvider>
-        } />
-        
-        <Route 
-          path="/smartMirror/classRoom/:id" 
-          element={
-            <SensorDataProvider>
-              <SmartMirrorClassRoom />
-            </SensorDataProvider>
-          } 
-        />
-      </Routes>
+          {/* 테스트 페이지 */}
+          <Route path="/test" element={<Test />} />
+          <Route path="/smartM" element={<SmartMirrorMain />} />
+          <Route path="/smartMirror/classRoom/:id" element={<SmartMirrorClassRoom />} />
+        </Routes>
+      </SensorDataProvider>
     </Router>
   );
 }

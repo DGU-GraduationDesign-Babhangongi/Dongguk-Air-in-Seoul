@@ -1,29 +1,23 @@
+// StatusBox.jsx
 import React, { useState, useEffect } from 'react';
 import NEBDropdown from '../../figures/NEBDropdown/NEBDropdown';
 import AirQualityIndicator from '../../../common/AirQualityIndicator/AirQualityIndicator';
 import styles from '../StatusBox/statusBox.module.css';
 
-var buildingName = "신공학관";
+const buildingName = "신공학관";
 
-function StatusBox({ id, color, onSelect }) {
+function StatusBox({ id, color }) {
   const [selectedOption, setSelectedOption] = useState('');
 
-  useEffect(() => {
-    if (selectedOption) {
-      console.log(`Selected option: ${selectedOption}`);
-      onSelect(selectedOption); // 부모에게 선택된 값을 전달
-    }
-  }, [selectedOption, onSelect]);
-
   const handleSelect = (value) => {
-    setSelectedOption(value);
+    setSelectedOption(value); // 선택된 값 저장
   };
 
   return (
     <div className={styles.box} style={{ border: `1.5px solid ${color}` }}>
       <div style={{ width: 'clamp(10px, 36%, 144px)' }}>
         <div className={styles.titleTop}>
-          <div>비교 강의실{id}</div>
+          <div>비교 강의실 {id}</div>
           <img
             src={require('../../../../assets/images/star.png')}
             alt="building"
@@ -50,7 +44,7 @@ function StatusBox({ id, color, onSelect }) {
           borderLeft: 'none',
         }}
       />
-      <AirQualityIndicator />
+      <AirQualityIndicator classRoom={selectedOption} /> {/* 선택된 값으로 독립적으로 표시 */}
     </div>
   );
 }

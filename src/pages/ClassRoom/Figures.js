@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Header from '../../components/common/Header/Header';
 import SideBar from '../../components/common/SideBar/SideBar';
 import NEBDropdown from '../../components/specific/figures/NEBDropdown/NEBDropdown';
@@ -9,32 +9,32 @@ import styles from '../../assets/styles/figures.module.css';
 import LineChart from '../../components/specific/charts/lineChart';
 import ControlBox from '../../components/specific/ControlBox/ControlBox';
 import AlarmScrollBox from '../../components/specific/alarmScrollBox/alarmScrollBox';
+import { SensorDataContext } from '../../API/SensorDataContext';
 
 const buildingName = "신공학관";
 
 function Figures() {
   const [selectedOption, setSelectedOption] = useState('');
-  const [selectedValue, setSelectedValue] = useState('temperature');
+  const [selectedValue, setSelectedValue] = useState('');
   const [selectedValues, setSelectedValues] = useState([]);
-  const [highlightedIndex, setHighlightedIndex] = useState(null); // 새로운 상태 추가
+  const [highlightedIndex, setHighlightedIndex] = useState(null);
+
+  const { data: sensorData, setSelectedSensorName, loading, error } = useContext(SensorDataContext);
 
   useEffect(() => {
     if (selectedOption) {
-      console.log(`Selected option: ${selectedOption}`);
+      setSelectedSensorName(selectedOption);
     }
-  }, [selectedOption]);
+  }, [selectedOption, setSelectedSensorName]);
 
   const handleSelect = (value) => {
+    console.log(`Selected option: ${value}`); // 로그 확인
     setSelectedOption(value);
-  };
-
-  const handleValueSelect = (value) => {
-    setSelectedValue(value);
   };
 
   const handleCheckboxSelect = (values, index) => {
     setSelectedValues(values);
-    setHighlightedIndex(index); // 선택된 항목의 인덱스를 설정
+    setHighlightedIndex(index);
   };
 
   return (
@@ -63,10 +63,10 @@ function Figures() {
               </div>
               <NEBDropdown onSelect={handleSelect} />
             </div>
-            <TopBox image="tempIcon.png" value="32" unit="℃" name="temp" />
-            <TopBox image="humidIcon.png" value="90" unit="%" name="humidity" />
-            <TopBox image="TVOCIcon.png" value="500" unit="㎍/m³" name="TVOC" />
-            <TopBox image="PM25Icon.png" value="32" unit="㎍/m³" name="PM2.5" />
+            <TopBox image="tempIcon.png" value={loading ? '--' : sensorData.Temperature?.value} unit="℃" name="temp" />
+            <TopBox image="humidIcon.png" value={loading ? '--' : sensorData.Humidity?.value} unit="%" name="humidity" />
+            <TopBox image="TVOCIcon.png" value={loading ? '--' : sensorData.TVOC?.value} unit="㎍/m³" name="TVOC" />
+            <TopBox image="PM25Icon.png" value={loading ? '--' : sensorData.PM2_5MassConcentration?.value} unit="㎍/m³" name="PM2.5" />
           </div>
           <div className={styles.bottom}>
             <div className={styles.leftContainer}>
