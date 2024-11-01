@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styles from './AirQualityIndicator.module.css';
+import { SensorDataContext } from '../../../API/SensorDataContext';
 
-function AirQualityIndicator() {
+function AirQualityIndicator({ classRoom }) { // temperature를 props로 받음
+  
+  const { data: sensorData, setSelectedSensorName, loading, error } = useContext(SensorDataContext);
+
+  useEffect(() => {
+    if (classRoom) {
+      setSelectedSensorName(classRoom);
+    }
+  }, [classRoom, setSelectedSensorName]);
+
   return (
     <div className={styles.table}>
       <div className={styles.tableRow}>
         <div className={styles.tableCell}>
           <img
             src={require('../../../assets/images/AirQualityIndicator/temperature.png')}
-            alt="logo"
+            alt="온도"
             className={styles.img}
           />
         </div>
         <div className={styles.tableCell}>온도</div>
-        <div className={styles.tableCell}>24°C</div>
+        <div className={styles.tableCell}>{loading ? '--' : sensorData.Temperature?.value}°C</div> {/* 온도를 여기서 사용 */}
         <div className={styles.tableCell}>
           <div className={styles.state} />
         </div>
@@ -22,7 +32,7 @@ function AirQualityIndicator() {
         <div className={styles.tableCell}>
           <img
             src={require('../../../assets/images/AirQualityIndicator/humidity.png')}
-            alt="logo"
+            alt="습도"
             className={styles.img}
           />
         </div>
@@ -36,7 +46,7 @@ function AirQualityIndicator() {
         <div className={styles.tableCell}>
           <img
             src={require('../../../assets/images/AirQualityIndicator/TVOC.png')}
-            alt="logo"
+            alt="TVOC"
             className={styles.img}
           />
         </div>
@@ -50,7 +60,7 @@ function AirQualityIndicator() {
         <div className={styles.tableCell}>
           <img
             src={require('../../../assets/images/AirQualityIndicator/PM2.5.png')}
-            alt="logo"
+            alt="PM2.5"
             className={styles.img}
           />
         </div>
@@ -64,7 +74,7 @@ function AirQualityIndicator() {
         <div className={styles.tableCell}>
           <img
             src={require('../../../assets/images/AirQualityIndicator/noise.png')}
-            alt="logo"
+            alt="소음"
             className={styles.img}
           />
         </div>

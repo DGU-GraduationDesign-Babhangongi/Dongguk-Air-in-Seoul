@@ -77,7 +77,7 @@ function ClassRoom() {
           <Map classRoom={Id} x={x} y={y} />
           <div style={{ width: '27%', textAlign: 'center' }}>
             <div style={{ fontWeight: 'bold', fontSize: '4.6vw' }}>{Id} 강의실</div>
-            <div>신공학관</div>
+            <div style={{ fontSize: '3vw' }}>동국대학교 신공학관</div>
             <img
               src={iaqImageSrc}  // IAQIndex 값에 따라 이미지 설정
               alt={sensorData.IAQIndex?.value >= 85 ? "good" : sensorData.IAQIndex?.value >= 60 ? "average" : "bad"}
