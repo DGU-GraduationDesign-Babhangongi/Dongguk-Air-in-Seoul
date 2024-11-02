@@ -115,6 +115,11 @@ function Main() {
             <p>공기질을 확인할 강의실을 선택해주세요</p>
           </div>
         )}
+        {selectedBuilding === "신공학관" && (
+          <div className={styles.topMessage}>
+            <p>신공학관 정보를 확인하세요</p>
+          </div>
+        )}
         <div className={styles.content}>
           {/* 건물 섹션 */}
           <div className={styles.buildings}>
@@ -173,6 +178,14 @@ function Main() {
                 </p>
               </div>
             </div>
+            {/* 신공학관이 선택되었을 때 이미지 표시 */}
+            {selectedBuilding === "신공학관" && (
+              <div className={styles.additionalContent}>
+                <div className={styles.selectedBuildingImage}>
+                  <img src="/Main/floorplan.png" alt="신공학관 도면도" />
+                </div>
+              </div>
+            )}
 
             <div
               className={`${styles.building} ${
@@ -209,9 +222,15 @@ function Main() {
           <div className={styles.weatherAndLogs}>
             <div className={styles.weatherInfo}>
               <h2>
-                <FaMapMarkedAlt
-                  className={styles.pingIcon}
-                  style={{ alignItems: "center" }}
+                <img
+                  src="/Main/location_icon.png" // 이미지 경로를 여기에 입력하세요
+                  alt="위치 아이콘"
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    marginRight: "8px",
+                    marginBottom: "-4px",
+                  }} // 이미지 크기와 간격 조절
                 />
                 서울 중구 필동
               </h2>
@@ -261,7 +280,7 @@ function Main() {
                     className={styles.weatherRain}
                     style={{
                       fontSize: "28px",
-                      textAlign: "right",
+                      textAlign: "center",
                     }}
                   >
                     {forecast.rain >= "1"
@@ -278,12 +297,11 @@ function Main() {
                       fontSize: "20px",
                       textAlign: "right",
                       fontWeight: "600",
-
                       marginTop: "10px",
                     }}
                   >
                     최고 {forecast2.maxTemp}°C / 최저 {forecast2.minTemp}°C
-                    <span style={{ marginLeft: "24px" }}>
+                    <span style={{ marginLeft: "16px" }}>
                       습도 {forecast.humidity}%
                     </span>
                   </p>
@@ -321,7 +339,19 @@ function Main() {
             </div>
 
             <div className={styles.sensorLogs}>
-              <h3>센서 수치 이상 로그 기록</h3>
+              <h3>
+                <img
+                  src="/Main/sensor_icon.png"
+                  alt="센서 아이콘"
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    marginRight: "8px",
+                    marginBottom: "-8px",
+                  }} // 이미지 크기와 간격 조절
+                />
+                센서 수치 이상 로그 기록
+              </h3>
               <p>
                 [2024.07.20 PM23:56]
                 <br />
@@ -338,14 +368,6 @@ function Main() {
                 신공학관 3173 소음 수치 이상
               </p>
             </div>
-            {/* 신공학관이 선택되었을 때 이미지 표시 */}
-            {selectedBuilding === "신공학관" && (
-              <div className={styles.additionalContent}>
-                <div className={styles.selectedBuildingImage}>
-                  <img src="/Main/floorplan.png" alt="신공학관 도면도" />
-                </div>
-              </div>
-            )}
           </div>
         </div>
         {popupContent && (
