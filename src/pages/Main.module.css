@@ -7,6 +7,69 @@
   justify-content: center; /* 수직 중앙 정렬 */
 }
 
+/* 모바일 화면용 스타일 */
+@media (max-width: 600px) {
+  .mainContainer {
+    padding: 10px;
+    height: auto;
+  }
+
+  .content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .buildings {
+    grid-template-columns: 1fr;
+    width: 100%;
+    margin: 0;
+  }
+
+  .weatherAndLogs {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .popupContent {
+    width: 80%;
+    padding: 10px;
+  }
+}
+/* 태블릿 화면용 스타일 */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .mainContainer {
+    padding: 15px;
+  }
+
+  .content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .buildings {
+    grid-template-columns: 1fr 1fr;
+    width: 90%;
+    margin-top: -100px;
+    margin-left: 0;
+  }
+
+  .weatherAndLogs {
+    width: 80%;
+    margin-top: 20px;
+  }
+
+  .popupContent {
+    width: 60%;
+  }
+}
+/* 데스크톱 기본 스타일 유지 */
+@media (min-width: 1025px) {
+  .buildings {
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 70%;
+  }
+}
+
 /* 애니메이션 1 */
 @keyframes fadeInAndGrow {
   0% {
@@ -38,6 +101,18 @@
     opacity: 1;
   }
 }
+/* 애니메이션 4 */
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    transform: translate3d(-8%, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateZ(0);
+  }
+}
 
 /* 환영합니데이 */
 .welcomeMessage {
@@ -51,6 +126,23 @@
   opacity: 0; /* 투명하게 */
   transition: transform 1.5s ease-in-out, opacity 1.5s ease-in-out;
 }
+/*margin-bottom 건들지 말 것,,,*/
+.topMessage {
+  display: flex;
+  margin-left: 6%;
+  margin-bottom: -34px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  animation: fadeInLeft 1.5s;
+  align-items: center; /* 아이콘과 텍스트 수직 중앙 정렬 */
+}
+
+.topMessageDetail {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
 
 .content {
   display: flex;
@@ -62,15 +154,32 @@
 }
 
 .buildings {
-  display: flex;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* 3개의 고정 칸 생성 */
+  gap: 20px;
   width: 70%;
   align-items: flex-start;
   margin-top: -180px;
   margin-left: 40px;
 }
 
+/* 각 건물의 위치 고정 */
+.buildings > div:nth-child(1) {
+  left: 10%;
+  top: 40%;
+}
+.buildings > div:nth-child(2) {
+  left: 32%;
+  top: 40%;
+}
+.buildings > div:nth-child(3) {
+  left: 54%;
+  top: 40%;
+}
+
+/**/
 .building {
+  position: absolute;
   text-align: center;
   cursor: pointer;
   margin: 0 4px; /* 건물들 사이에 여백을 추가 */
@@ -116,16 +225,18 @@
 
 .weatherAndLogs {
   width: 20%;
+  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-end; /* 오른쪽 끝으로 밀어내기 */
   gap: 8px;
-  margin-top: -300px;
+  margin-bottom: 15%;
   margin-right: -10px;
 }
 /*날씨*/
 .weatherInfo {
+  margin-top: 1%;
   background-color: #ffedc3; /* 오렌지색 배경 */
   border-radius: 20px 0 0 20px; /* 모서리 */
   padding: 28px; /* 박스 내부 여백 */
@@ -168,27 +279,19 @@
 /* 신공학관 누르면 */
 .fadeOut {
   opacity: 0;
-  transition: opacity 1s ease-in-out; /* 건물이 사라지도록 애니메이션 적용 */
   pointer-events: none; /*다른 건물 숨기기*/
+  transition: opacity 1s ease-in-out; /* 건물이 사라지도록 애니메이션 적용 */
 }
 
 .moveLeft {
   display: flex;
-  transform: translateX(-380px); /* 신공학관이 왼쪽으로 이동 */
+  transform: translateX(-200%); /* 신공학관이 왼쪽으로 이동 */
   transition: transform 1.5s ease-in-out;
 }
-/*margin-top 건들지 말 것,,,*/
-.topMessage {
-  display: flex;
-  margin-top: 38px;
-  margin-left: 4%;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
-}
+
 .moveLeft:hover {
   /* 신공학관이 moveLeft 상태일 때 hover해도 위치 변경 안되도록 함 */
-  transform: translateX(-450px); /* 이 부분을 삭제하거나 수정 */
+  transform: translateX(-200%); /* 신공학관이 왼쪽으로 이동 */
   pointer-events: none;
 }
 /* 도면도 보여주기 */
