@@ -1,9 +1,8 @@
 /*Main.js*/
 import React, { useState, useEffect } from "react";
 import Header from "../components/common/Header/Header";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./Main.module.css";
-import { FaMapMarkedAlt } from "react-icons/fa";
 import { fetchForeCast, fetchForeCast2 } from "../pages/forecast";
 
 function Main() {
@@ -116,8 +115,52 @@ function Main() {
           </div>
         )}
         {selectedBuilding === "신공학관" && (
-          <div className={styles.topMessage}>
-            <p>신공학관 정보를 확인하세요</p>
+          <div className={styles.topMessage} style={{ width: "400px" }}>
+            <img
+              src="/Main/currentBuilding_icon.png"
+              alt="현재 건물"
+              style={{ width: "80px", height: "84px", marginRight: "16px" }}
+            />
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div
+                className={styles.topMessageDetail}
+                style={{
+                  fontSize: "44px",
+                  textShadow: "3px 3px 1.5px lightgray",
+                  marginTop: "44px",
+                }}
+              >
+                신공학관
+              </div>
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: "16px",
+                  marginTop: "10px",
+                  zIndex: 10,
+                }}
+              >
+                <span
+                  onClick={() => (window.location.href = "/")}
+                  onMouseEnter={(e) => {
+                    e.target.style.color = "black"; // 호버 시 색상 변경
+                    e.target.style.textDecoration = "underline"; // 호버 시 밑줄 추가
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.color = "gray"; // 원래 색상으로 복원
+                    e.target.style.textDecoration = "none"; // 밑줄 제거
+                  }}
+                  style={{
+                    color: "gray",
+                    cursor: "pointer",
+                  }}
+                >
+                  다른 건물의 공기질을 확인하려면
+                  <br />
+                  여기를 누르세요{" "}
+                </span>
+              </p>
+            </div>
           </div>
         )}
         <div className={styles.content}>
@@ -178,14 +221,6 @@ function Main() {
                 </p>
               </div>
             </div>
-            {/* 신공학관이 선택되었을 때 이미지 표시 */}
-            {selectedBuilding === "신공학관" && (
-              <div className={styles.additionalContent}>
-                <div className={styles.selectedBuildingImage}>
-                  <img src="/Main/floorplan.png" alt="신공학관 도면도" />
-                </div>
-              </div>
-            )}
 
             <div
               className={`${styles.building} ${
@@ -216,10 +251,21 @@ function Main() {
                 </p>
               </div>
             </div>
+            {/* 신공학관이 선택되었을 때 이미지 표시 */}
+            {selectedBuilding === "신공학관" && (
+              <div className={styles.additionalContent}>
+                <div className={styles.selectedBuildingImage}>
+                  <img src="/Main/floorplan.png" alt="신공학관 도면도" />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* 오른쪽 날씨 및 로그 섹션 */}
-          <div className={styles.weatherAndLogs}>
+          <div
+            className={styles.weatherAndLogs}
+            style={{ position: "relative" }}
+          >
             <div className={styles.weatherInfo}>
               <h2>
                 <img
