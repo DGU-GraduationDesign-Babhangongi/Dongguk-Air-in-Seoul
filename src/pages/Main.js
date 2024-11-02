@@ -1,7 +1,6 @@
 /*Main.js*/
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Header from "../components/common/Header/Header";
-import { Link, useNavigate } from "react-router-dom";
 import styles from "./Main.module.css";
 import { fetchForeCast, fetchForeCast2 } from "../pages/forecast";
 
@@ -11,7 +10,6 @@ function Main() {
   const [fadeOut, setFadeOut] = useState(false);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [showMessage, setShowMessage] = useState(true);
-
   const [dateTime, setDateTime] = useState(new Date());
   const [forecast, setForecast] = useState(null);
   const [forecast2, setForecast2] = useState(null);
@@ -41,7 +39,6 @@ function Main() {
     if (!forecast || !forecast2) {
       return "날씨 데이터를 불러오는 중입니다.";
     }
-
     if (forecast.rain === "1") {
       return "오늘은 하루 종일 비가 예상됩니다\n외출 시 우산을 챙기세요";
     } else if (forecast.rain === "3") {
@@ -100,6 +97,31 @@ function Main() {
     return () => clearInterval(timer);
   }, []);
 
+  //*******CANVAS*******//
+  const canvasRef = useRef(null);
+  // 신공학관 클릭 후 도면도를 클릭하면 좌표를 표시하는 함수
+  const handleCanvasClick = (event) => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    // canvas 내의 클릭 위치 계산
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    // 좌표에 원을 그려 좌표 표시
+    ctx.fillStyle = "red";
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, 2 * Math.PI);
+    ctx.fill();
+  };
+  // canvas 설정
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      // canvas가 존재할 때만 크기 설정
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+  }, []);
   return (
     <div>
       <Header />
@@ -255,7 +277,27 @@ function Main() {
             {selectedBuilding === "신공학관" && (
               <div className={styles.additionalContent}>
                 <div className={styles.selectedBuildingImage}>
-                  <img src="/Main/floorplan.png" alt="신공학관 도면도" />
+                  <img
+                    src="/Main/floorplan.png"
+                    alt="신공학관 도면도"
+                    style={{
+                      width: "640px",
+                      height: "640px",
+                    }}
+                  />
+                  <canvas
+                    ref={canvasRef}
+                    onClick={handleCanvasClick}
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      zIndex: 2,
+                      pointerEvents: "auto",
+                    }}
+                  />
                 </div>
               </div>
             )}
