@@ -131,7 +131,7 @@
   padding: 28px; /* 박스 내부 여백 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.261); /* 부드러운 그림자 */
   width: 100%; /* 박스가 부모의 너비를 차지하도록 */
-  color: black; /* 글씨 색상을 흰색으로 */
+  color: black;
 }
 /*로그기록*/
 .sensorLogs {
@@ -146,6 +146,7 @@
 /* ping icon */
 .pingIcon {
   margin-right: 10px;
+  margin-bottom: -4px;
   font-size: 24px;
   color: grey;
 }
@@ -172,8 +173,18 @@
 }
 
 .moveLeft {
-  transform: translateX(-450px); /* 신공학관이 왼쪽으로 이동 */
+  display: flex;
+  transform: translateX(-380px); /* 신공학관이 왼쪽으로 이동 */
   transition: transform 1.5s ease-in-out;
+}
+/*margin-top 건들지 말 것,,,*/
+.topMessage {
+  display: flex;
+  margin-top: 38px;
+  margin-left: 4%;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
 }
 .moveLeft:hover {
   /* 신공학관이 moveLeft 상태일 때 hover해도 위치 변경 안되도록 함 */
@@ -185,15 +196,36 @@
   opacity: 0;
   animation: fadeIn 1s forwards 1s; /* 새로운 정보가 서서히 나타남 */
 }
-/* 도면도 수치 설정 */
+
+/* 오버레이 컨테이너
+.overlayContainer {
+  display: flex;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}*/
+
 .selectedBuildingImage {
   position: absolute;
-  left: 45%; /* 화면의 수평 중앙 기준 */
-  top: 50%; /* 화면의 수직 중앙 기준 */
-  transform: translate(-500%, -500%); /* 중앙 기준으로 이미지 자체를 이동 */
-  height: auto; /* 높이에 비례해 자동 조절 */
-  max-width: 50px; /* 최대 너비를 설정 */
-  max-height: 50px; /* 최대 높이를 설정 */
+  top: 20%;
+  left: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* 다른 요소 위에 배치 */
+  cursor: pointer;
+}
+
+.floorplanOverlay img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 8px;
 }
 
 /* 팝업 구현 */
@@ -214,12 +246,12 @@
 
 .popupContent {
   background-color: white;
-  padding: 28px 32px 0px 32px; /* 박스 내부 여백 */
+  padding: 20px 40px 0px 40px; /* 박스 내부 여백 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.261); /* 부드러운 그림자 */
   width: 14%; /* 박스가 부모의 너비를 차지하도록 */
   border-radius: 20px 20px 20px 20px; /* 모서리 */
   text-align: center;
-  animation: slideDown 1s ease-in-out;
+  animation: slideDown 0.5s ease-in-out;
 }
 
 .popupButton {
@@ -238,11 +270,13 @@
 }
 
 .divider {
+  display: flex;
   margin-top: 10px;
   margin-bottom: 20px;
   width: 100%;
   height: 1px;
   background-color: #ccc;
+  align-items: center;
 }
 .dividers {
   margin-top: 20px;
