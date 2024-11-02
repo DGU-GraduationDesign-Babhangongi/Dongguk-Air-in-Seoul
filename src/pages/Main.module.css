@@ -318,7 +318,6 @@
   position: absolute;
   top: 20%;
   left: 30%;
-  display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000; /* 다른 요소 위에 배치 */
