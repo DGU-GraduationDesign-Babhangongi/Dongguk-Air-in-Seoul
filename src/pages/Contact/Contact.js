@@ -7,6 +7,7 @@ import { FiCpu } from "react-icons/fi";
 
 function Contact() {
   const [buildingName, setBuildingName] = useState('');
+  const [roomBuildingName, setRoomBuildingName] = useState(''); // Separate state for room building
   const [maxFloors, setMaxFloors] = useState('');
   const [drawings, setDrawings] = useState({});
   const [selectedRoom, setSelectedRoom] = useState('');
@@ -20,7 +21,7 @@ function Contact() {
   };
 
   const handleRegisterRoom = () => {
-    console.log('Room Registered:', selectedRoom, serialNum);
+    console.log('Room Registered:', roomBuildingName, selectedRoom, serialNum);
   };
 
   const handleRemoveRoom = () => {
@@ -106,7 +107,7 @@ function Contact() {
               <p>원하시는 건물이 없다면 건물 등록</p>
               <label>Building</label>
               <Dropbutton 
-                onSelect={(value) => setBuildingName(value)} 
+                onSelect={(value) => setRoomBuildingName(value)} // Use separate state
                 width="100%" 
                 height="auto"
                 borderColor="#A5A5A5" 

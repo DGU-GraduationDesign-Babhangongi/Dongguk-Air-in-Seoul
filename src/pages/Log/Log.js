@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import Header from '../../components/common/Header/Header';
@@ -11,6 +11,9 @@ function Alarm() {
   const [endDate, setEndDate] = useState('');
   const [activeTab, setActiveTab] = useState('온도');
   const [sensorData, setSensorData] = useState([]);
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const observerRef = useRef();
 
   const sensorList = [
     { id: 2, name: "6144", sensorId: "0C:7B:C8:FF:55:5D" },
@@ -44,6 +47,8 @@ function Alarm() {
 
     if (sensorId && sensorType) {
       try {
+        setLoading(true);
+        console.log("Fetching data with dates:", startDate, endDate); // 확인용 로그
         const response = await axios.get(
           `https://donggukseoul.com/api/sensorData/${encodeURIComponent(sensorId)}`,
           {
@@ -51,24 +56,49 @@ function Alarm() {
               sensorType,
               sortBy: 'TIMESTAMP',
               order: 'DESC',
-              page: 0,
+              page: page,
               size: 10,
               startDate: startDate ? moment(startDate).toISOString() : null,
               endDate: endDate ? moment(endDate).toISOString() : null,
             },
           }
         );
-        setSensorData(response.data.data || []);
+        if (page === 0) {
+          setSensorData(response.data.data || []);
+        } else {
+          setSensorData((prevData) => [...prevData, ...response.data.data || []]);
+        }
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching sensor data:", error);
-        setSensorData([]);
+        setLoading(false);
       }
     }
   };
 
+  // 날짜 범위 또는 필터 변경 시 데이터를 초기화하고 페이지를 0으로 설정
+  useEffect(() => {
+    setSensorData([]); // 기존 데이터 초기화
+    setPage(0); // 페이지를 0으로 초기화하여 새로운 데이터를 불러옴
+  }, [selectedRoom, activeTab, startDate, endDate]);
+
   useEffect(() => {
     fetchSensorData();
-  }, [selectedRoom, activeTab, startDate, endDate]);
+  }, [page]);
+
+  // 무한 스크롤을 위한 IntersectionObserver 설정
+  const lastElementRef = useCallback((node) => {
+    if (loading) return;
+    if (observerRef.current) observerRef.current.disconnect();
+
+    observerRef.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setPage((prevPage) => prevPage + 1); // 페이지 증가
+      }
+    });
+
+    if (node) observerRef.current.observe(node);
+  }, [loading]);
 
   const getBorderColor = (value, type) => {
     switch (type) {
@@ -98,21 +128,6 @@ function Alarm() {
       default:
         return 'black';
     }
-  };
-
-  const filterData = () => {
-    if (!startDate && !endDate) return sensorData;
-
-    return sensorData.filter((data) => {
-      const dataDate = moment(data.timestamp);
-      const start = startDate ? moment(startDate) : null;
-      const end = endDate ? moment(endDate) : null;
-
-      return (
-        (!start || dataDate.isSameOrAfter(start)) &&
-        (!end || dataDate.isSameOrBefore(end))
-      );
-    });
   };
 
   const getDataValue = (data) => data.value !== null ? data.value : '--';
@@ -164,13 +179,14 @@ function Alarm() {
           </div>
 
           <div className={styles.sensorData}>
-            {filterData().map((data, index) => (
+            {sensorData.map((data, index) => (
               <div
                 key={index}
                 className={styles.sensorItem}
                 style={{
                   borderColor: getBorderColor(getDataValue(data), activeTab),
                 }}
+                ref={index === sensorData.length - 1 ? lastElementRef : null} // 마지막 요소에 ref 추가
               >
                 <span>{`[${moment(data.timestamp).format("YYYY.MM.DD A hh:mm")}]`}</span>
                 <span>{`${selectedRoom} 강의실`}</span>
@@ -178,6 +194,7 @@ function Alarm() {
               </div>
             ))}
           </div>
+          {loading && <p>Loading...</p>}
         </div>
       </div>
     </div>
