@@ -15,6 +15,9 @@ function Main() {
   const [forecast2, setForecast2] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // const canvasRef = useRef(null);
+  const imageRef = useRef(null);
+
   const handleBuildingClick = (building, buildingInfo) => {
     if (building == "신공학관") {
       setIsFadingOut(true);
@@ -61,7 +64,6 @@ function Main() {
       return "오늘의 날씨에 맞게 계획을 세워보세요!";
     }
   };
-
   // Format the date and time
   const formatDate = (date) => {
     const days = ["일", "월", "화", "수", "목", "금", "토"];
@@ -73,7 +75,6 @@ function Main() {
     const minutes = String(date.getMinutes()).padStart(2, "0");
     return `${year}년 ${month}월 ${day}일 ${dayOfWeek} PM ${hours}:${minutes}`;
   };
-
   // Fetch weather data
   useEffect(() => {
     const fetchData = async () => {
@@ -90,7 +91,6 @@ function Main() {
     };
     fetchData();
   }, []);
-
   // Update time every minute
   useEffect(() => {
     const timer = setInterval(() => setDateTime(new Date()), 60000);
@@ -98,30 +98,101 @@ function Main() {
   }, []);
 
   //*******CANVAS*******//
-  const canvasRef = useRef(null);
   // 신공학관 클릭 후 도면도를 클릭하면 좌표를 표시하는 함수
-  const handleCanvasClick = (event) => {
+  /*const handleCanvasClick = (event) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
+
     // canvas 내의 클릭 위치 계산
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-    // 좌표에 원을 그려 좌표 표시
+    //좌표를 콘솔에 출력함
+    console.log("Clicked coordinates:", x, y);
+
+    // 좌표에 도형을 그려 표시
     ctx.fillStyle = "red";
     ctx.beginPath();
     ctx.arc(x, y, 5, 0, 2 * Math.PI);
     ctx.fill();
+
+    // 좌표값을 텍스트로 표시
+    ctx.font = "12px Arial";
+    ctx.fillText(`(${x.toFixed(1)}, ${y.toFixed(1)})`, x + 10, y - 10);
   };
-  // canvas 설정
+  // canvas와 이미지의 크기 및 위치 동기화
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (canvas) {
-      // canvas가 존재할 때만 크기 설정
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    }
-  }, []);
+    const updateCanvasSize = () => {
+      const canvas = canvasRef.current;
+      const image = imageRef.current;
+      if (canvas && image) {
+        canvas.width = image.clientWidth;
+        canvas.height = image.clientHeight;
+      }
+    };
+    updateCanvasSize();
+
+    window.addEventListener("resize", updateCanvasSize);
+    return () => window.removeEventListener("resize", updateCanvasSize);
+  }, []);*/
+
+  // 좌표를 저장할 상태
+  const [coordinates, setCoordinates] = useState([
+    { x: 137, y: 116 }, // 6144
+    { x: 366, y: 125 }, // 6119
+    { x: 184, y: 213 }, // 5147
+    { x: 192, y: 237 }, // 5145
+    { x: 262, y: 388 }, // 4142
+    { x: 464, y: 442 }, // 3115
+    { x: 488, y: 482 }, // 3173
+  ]);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+
+  // 도형을 표시하는 함수
+  const renderShapes = () => {
+    return coordinates.map((coord, index) => (
+      <div
+        key={index}
+        onMouseEnter={() => setHoveredIndex(index)} // 마우스 진입 시 인덱스 설정
+        onMouseLeave={() => setHoveredIndex(null)} // 마우스 나가면 초기화
+        style={{
+          position: "absolute",
+          top: `${coord.y}px`,
+          left: `${coord.x}px`,
+          width: "16px",
+          height: "16px",
+          backgroundColor: "red",
+          borderRadius: "50%",
+          transform: "translate(-50%, -50%)", // 중앙 정렬
+          zIndex: 10,
+        }}
+        className="animated-shape" // 애니메이션 클래스 추가
+      >
+        <div className="ring"></div>
+        <div className="ring"></div>
+        {/* 호버 시 표시할 박스 */}
+        {hoveredIndex === index && (
+          <div
+            style={{
+              position: "absolute",
+              top: "30px",
+              left: "30px",
+              width: "120px",
+              padding: "10px",
+              backgroundColor: "white",
+              border: "1px solid #ccc",
+              boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
+              borderRadius: "8px",
+              zIndex: 20,
+            }}
+          >
+            <p style={{ margin: 0 }}>텍스트나 이미지 추가 가능</p>
+          </div>
+        )}
+      </div>
+    ));
+  };
+
   return (
     <div>
       <Header />
@@ -280,27 +351,51 @@ function Main() {
                   <img
                     src="/Main/floorplan.png"
                     alt="신공학관 도면도"
+                    ref={imageRef}
                     style={{
                       width: "640px",
                       height: "640px",
                     }}
                   />
-                  <canvas
-                    ref={canvasRef}
-                    onClick={handleCanvasClick}
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                      zIndex: 2,
-                      pointerEvents: "auto",
-                    }}
-                  />
+                  {renderShapes()}
                 </div>
               </div>
             )}
+            <style jsx>{`
+              .animated-shape {
+                position: relative;
+              }
+              /* 도형 주위의 확산 링 */
+              .ring {
+                position: absolute;
+                border: 2px solid rgba(255, 0, 0, 0.5);
+                border-radius: 50%;
+                width: 36px;
+                height: 36px;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                animation: pulse 1.5s infinite;
+                opacity: 0;
+              }
+              /* 두 번째 링을 조금 더 크게 설정하고 딜레이 추가 */
+              .ring:nth-child(2) {
+                width: 52px;
+                height: 52px;
+                animation-delay: 0.75s;
+              }
+              /* 확산 효과 애니메이션 */
+              @keyframes pulse {
+                0% {
+                  transform: translate(-50%, -50%) scale(0.5);
+                  opacity: 1;
+                }
+                100% {
+                  transform: translate(-50%, -50%) scale(1.5);
+                  opacity: 0;
+                }
+              }
+            `}</style>
           </div>
 
           {/* 오른쪽 날씨 및 로그 섹션 */}
