@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import Header from '../../components/common/Header/Header';
@@ -11,6 +11,9 @@ function Alarm() {
   const [endDate, setEndDate] = useState('');
   const [activeTab, setActiveTab] = useState('온도');
   const [sensorData, setSensorData] = useState([]);
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const observerRef = useRef();
 
   const sensorList = [
     { id: 2, name: "6144", sensorId: "0C:7B:C8:FF:55:5D" },
@@ -44,6 +47,7 @@ function Alarm() {
 
     if (sensorId && sensorType) {
       try {
+        setLoading(true);
         const response = await axios.get(
           `https://donggukseoul.com/api/sensorData/${encodeURIComponent(sensorId)}`,
           {
@@ -51,24 +55,46 @@ function Alarm() {
               sensorType,
               sortBy: 'TIMESTAMP',
               order: 'DESC',
-              page: 0,
+              page: page,
               size: 10,
               startDate: startDate ? moment(startDate).toISOString() : null,
               endDate: endDate ? moment(endDate).toISOString() : null,
             },
           }
         );
-        setSensorData(response.data.data || []);
+        setSensorData((prevData) => [...prevData, ...response.data.data || []]);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching sensor data:", error);
-        setSensorData([]);
+        setLoading(false);
       }
     }
   };
 
+  // 페이지가 변경되면 새로운 데이터 가져오기
   useEffect(() => {
     fetchSensorData();
+  }, [page]);
+
+  // 날짜나 필터가 변경될 때 데이터와 페이지를 초기화
+  useEffect(() => {
+    setSensorData([]);
+    setPage(0);
   }, [selectedRoom, activeTab, startDate, endDate]);
+
+  // 무한 스크롤을 위한 IntersectionObserver 설정
+  const lastElementRef = useCallback((node) => {
+    if (loading) return;
+    if (observerRef.current) observerRef.current.disconnect();
+
+    observerRef.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setPage((prevPage) => prevPage + 1);
+      }
+    });
+
+    if (node) observerRef.current.observe(node);
+  }, [loading]);
 
   const getBorderColor = (value, type) => {
     switch (type) {
@@ -103,7 +129,7 @@ function Alarm() {
   const filterData = () => {
     return sensorData.filter((data) => {
       const value = getDataValue(data);
-      return getBorderColor(value, activeTab) === 'red'; // 빨간색 경고 값만 필터링
+      return getBorderColor(value, activeTab) === 'red';
     });
   };
 
@@ -163,6 +189,7 @@ function Alarm() {
                 style={{
                   borderColor: 'red', // 빨간색 경고 값만 표시
                 }}
+                ref={index === sensorData.length - 1 ? lastElementRef : null} // 마지막 요소에 ref 추가
               >
                 <span>{`[${moment(data.timestamp).format("YYYY.MM.DD A hh:mm")}]`}</span>
                 <span>{`${selectedRoom} 강의실`}</span>
@@ -170,6 +197,7 @@ function Alarm() {
               </div>
             ))}
           </div>
+          {loading && <p>Loading...</p>}
         </div>
       </div>
     </div>
