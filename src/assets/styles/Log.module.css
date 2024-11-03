@@ -59,14 +59,21 @@
   display: flex;
   justify-content: start;
   align-items: center;
+  gap: 20px; /* 각 탭 간 간격 조정 */
   margin-bottom: 20px;
+  flex-wrap: nowrap; /* 줄바꿈 방지 */
 }
 
 .tabLabel {
-  margin-left: 10px;
-  margin-right: 10px;
   display: flex;
   align-items: center; /* 라디오 버튼과 라벨을 세로 가운데 정렬 */
+  gap: 5px; /* 라디오 버튼과 라벨 간격 조정 */
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  font-size: 16px; /* 텍스트 크기 조정 */
+}
+
+.tabLabel input[type="radio"] {
+  margin: 0; /* 라디오 버튼의 기본 여백 제거 */
 }
 
 /* 센서 데이터 목록 */
