@@ -74,7 +74,7 @@
   grid-template-columns: 1fr 0.1fr 3.5fr; /* 1:0.1:2 비율 */
   background-color: white;
   width: 96%;
-  height: 96%;
+  height: 88%;
   border-radius: 1.5vw;
   align-items: center;
   justify-items: center; /* 그리드 아이템을 중앙에 정렬 */

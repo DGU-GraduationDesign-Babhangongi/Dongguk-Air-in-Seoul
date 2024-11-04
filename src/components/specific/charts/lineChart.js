@@ -1,100 +1,179 @@
-import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import React, { useState, useEffect } from 'react';
+import API from '../../../API/api';
 
-// Sample data for demonstration
-const defaultData = [
-  { name: '12:00', 온도: 40, 습도: 24, TVOC: 150, PM2_5: 35, 소음: 50 },
-  { name: '13:00', 온도: 30, 습도: 18, TVOC: 120, PM2_5: 30, 소음: 55 },
-  { name: '14:00', 온도: 20, 습도: 90, TVOC: 200, PM2_5: 45, 소음: 60 },
-  { name: '15:00', 온도: 27, 습도: 38, TVOC: 180, PM2_5: 40, 소음: 65 },
-  { name: '16:00', 온도: 18, 습도: 40, TVOC: 160, PM2_5: 38, 소음: 70 },
-  { name: '17:00', 온도: 23, 습도: 30, TVOC: 140, PM2_5: 32, 소음: 68 },
-  { name: '18:00', 온도: 34, 습도: 30, TVOC: 155, PM2_5: 37, 소음: 72 },
+// 센서 데이터 목록
+const sensorList = [
+  { "id": 1, "name": "", "floor": 0, "building": "신공학관", "sensorId": "" },
+  { "id": 2, "name": "6144", "floor": 6, "building": "신공학관", "sensorId": "0C:7B:C8:FF:55:5D" },
+  { "id": 3, "name": "6119", "floor": 6, "building": "신공학관", "sensorId": "0C:7B:C8:FF:56:8A" },
+  { "id": 4, "name": "5147", "floor": 5, "building": "신공학관", "sensorId": "0C:7B:C8:FF:5B:8F" },
+  { "id": 5, "name": "5145", "floor": 5, "building": "신공학관", "sensorId": "0C:7B:C8:FF:5C:C8" },
+  { "id": 6, "name": "4142", "floor": 4, "building": "신공학관", "sensorId": "0C:7B:C8:FF:57:5A" },
+  { "id": 7, "name": "3173", "floor": 3, "building": "신공학관", "sensorId": "0C:7B:C8:FF:5B:06" },
+  { "id": 8, "name": "3115", "floor": 3, "building": "신공학관", "sensorId": "0C:7B:C8:FF:56:F1" }
 ];
 
-const LineChartComponent = ({ width = '34vw', height = '56vh', selectedValues, data = defaultData, highlightedIndex }) => {
+const LineChartComponent = ({ width = '34vw', height = '56vh', selectedValues, classRoom, period }) => {
+  const [data, setData] = useState([]);
   const [prevSelectedValues, setPrevSelectedValues] = useState(selectedValues);
   const [drawEffect, setDrawEffect] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // 이전 선택 값과 현재 선택 값을 비교하여 변경된 라인을 찾습니다.
     const addedLines = selectedValues.filter(value => !prevSelectedValues.includes(value));
     const removedLines = prevSelectedValues.filter(value => !selectedValues.includes(value));
 
-    // 변경된 라인을 설정합니다.
-    setDrawEffect({
-      ...drawEffect,
+    setDrawEffect(prev => ({
+      ...prev,
       ...addedLines.reduce((acc, value) => ({ ...acc, [value]: true }), {}),
       ...removedLines.reduce((acc, value) => ({ ...acc, [value]: false }), {}),
-    });
+    }));
 
-    // 현재 선택 값을 이전 선택 값으로 업데이트합니다.
     setPrevSelectedValues(selectedValues);
   }, [selectedValues]);
 
+  const fetchData = async (classRoom) => {
+  if (!classRoom || !period) return null; // period와 classRoom 모두 유효해야 실행
+
+  const sensor = sensorList.find(sensor => sensor.name === classRoom);
+  if (!sensor || !sensor.sensorId) {
+    console.error("해당 이름의 센서를 찾을 수 없거나 sensorId가 정의되지 않았습니다.");
+    return null;
+  }
+
+  const sensorTypes = ['PM2_5MASSCONCENTRATION', 'TEMPERATURE', 'HUMIDITY', 'TVOC', 'AMBIENTNOISE'];
+  setLoading(true);
+
+  try {
+    const promises = sensorTypes.map(type => {
+      const endpoint = `/api/sensorData/${encodeURIComponent(sensor.sensorId)}?sensorType=${encodeURIComponent(type)}&sortBy=TIMESTAMP&order=DESC&page=0&size=${period}`;
+      console.log('endpoint: ' + endpoint);
+      return API.get(endpoint);
+    });
+
+    const responses = await Promise.all(promises);
+    const formattedData = [];
+    console.log('responses:', responses);
+
+    const timestamps = responses[0]?.data.data ? responses[0].data.data.map(item => item.timestamp) : [];
+
+    // 가장 늦은 시간 찾기
+    const latestTimestamp = timestamps.length > 0 ? Math.max(...timestamps.map(ts => new Date(ts).getTime())) : null;
+
+    if (latestTimestamp) {
+      const latestDate = new Date(latestTimestamp).toISOString().replace('T', ' ').split('.')[0];
+      console.log('가장 늦은 시간:', latestDate);
+    }
+
+    timestamps.forEach((timestamp, index) => {
+      const formattedTimestamp = timestamp.replace('T', ' ');
+      const dataPoint = { name: formattedTimestamp };
+
+      responses.forEach((response, responseIndex) => {
+        const sensorType = sensorTypes[responseIndex].toLowerCase();
+        const value = response.data.data[index] ? response.data.data[index].value : null;
+        if (sensorType === 'pm2_5massconcentration') {
+          dataPoint['pm2_5'] = value;
+        } else if (sensorType === 'ambientnoise') {
+          dataPoint['noise'] = value;
+        } else {
+          dataPoint[sensorType] = value;
+        }
+      });
+      formattedData.push(dataPoint);
+    });
+
+    console.log('formattedData:', formattedData);
+    setData(formattedData.reverse());
+    console.log("응답 데이터:", formattedData);
+  } catch (e) {
+    console.error("API 오류: ", e);
+    setData([]);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+  useEffect(() => {
+    fetchData(classRoom);
+  }, [classRoom]);
+
+  useEffect(() => {
+    fetchData(classRoom);
+  }, [period]);
+
   return (
     <div style={{ width, height }}>
+      {loading && <div style={{marginLeft:'5%'}}>로딩 중...</div>}
+      {data.length === 0 && !loading && <div style={{marginLeft:'5%'}}>기간과 강의실을 선택해주세요.</div>}
+ 
       <ResponsiveContainer>
         <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+        <XAxis dataKey="name" interval={0} axisLine={false} tickLine={false} tick={false} />
+        <CartesianGrid strokeDasharray="3 3" />
           <Tooltip />
-          <Legend />
+        
           {selectedValues.includes('temperature') && (
             <Line
-              type="monotone"
-              dataKey="온도"
+              type="natural"
+              dataKey="temperature"
               stroke="#96C0E8"
               activeDot={{ r: 8 }}
               strokeWidth={3}
-              isAnimationActive={highlightedIndex === 0 || drawEffect['temperature']} // 강조된 인덱스나 변경된 선에만 애니메이션 적용
-              onAnimationEnd={() => setDrawEffect(prev => ({ ...prev, temperature: false }))} // 애니메이션 종료 후 상태 초기화
+              isAnimationActive={drawEffect['temperature']}
+              onAnimationEnd={() => setDrawEffect(prev => ({ ...prev, temperature: false }))}
+              dot={false}
             />
           )}
           {selectedValues.includes('humidity') && (
             <Line
-              type="monotone"
-              dataKey="습도"
+              type="natural"
+              dataKey="humidity"
               stroke="#F1B5FB"
               strokeWidth={3}
-              isAnimationActive={highlightedIndex === 1 || drawEffect['humidity']} // 강조된 인덱스나 변경된 선에만 애니메이션 적용
-              onAnimationEnd={() => setDrawEffect(prev => ({ ...prev, humidity: false }))} // 애니메이션 종료 후 상태 초기화
+              isAnimationActive={drawEffect['humidity']}
+              onAnimationEnd={() => setDrawEffect(prev => ({ ...prev, humidity: false }))}
+              dot={false}
             />
           )}
           {selectedValues.includes('TVOC') && (
             <Line
-              type="monotone"
-              dataKey="TVOC"
+              type="natural"
+              dataKey="tvoc"
               stroke="#19E6A0"
               strokeWidth={3}
-              isAnimationActive={highlightedIndex === 2 || drawEffect['TVOC']} // 강조된 인덱스나 변경된 선에만 애니메이션 적용
-              onAnimationEnd={() => setDrawEffect(prev => ({ ...prev, TVOC: false }))} // 애니메이션 종료 후 상태 초기화
+              isAnimationActive={drawEffect['TVOC']}
+              onAnimationEnd={() => setDrawEffect(prev => ({ ...prev, TVOC: false }))}
+              dot={false}
             />
           )}
-{selectedValues.includes('PM2.5') && ( // 여기에서 value 수정
-  <Line
-    type="monotone"
-    dataKey="PM2_5" // dataKey는 유지
-    stroke="#FFDC82"
-    strokeWidth={3}
-    isAnimationActive={highlightedIndex === 3 || drawEffect['PM2.5']} // 여기에서 drawEffect 키 수정
-    onAnimationEnd={() => setDrawEffect(prev => ({ ...prev, 'PM2.5': false }))} // 여기에서도 수정
-  />
-)}
-
+          {selectedValues.includes('PM2.5') && (
+            <Line
+              type="natural"
+              dataKey="pm2_5"
+              stroke="#FFDC82"
+              strokeWidth={3}
+              isAnimationActive={drawEffect['PM2.5']}
+              onAnimationEnd={() => setDrawEffect(prev => ({ ...prev, 'PM2.5': false }))}
+              dot={false}
+            />
+          )}
           {selectedValues.includes('noise') && (
             <Line
-              type="monotone"
-              dataKey="소음"
+              type="natural"
+              dataKey="noise"
               stroke="#FF8484"
               strokeWidth={3}
-              isAnimationActive={highlightedIndex === 4 || drawEffect['noise']} // 강조된 인덱스나 변경된 선에만 애니메이션 적용
-              onAnimationEnd={() => setDrawEffect(prev => ({ ...prev, noise: false }))} // 애니메이션 종료 후 상태 초기화
+              isAnimationActive={drawEffect['noise']}
+              onAnimationEnd={() => setDrawEffect(prev => ({ ...prev, 'noise': false }))}
+              dot={false}
             />
           )}
         </LineChart>
       </ResponsiveContainer>
-    </div>
+      </div>
   );
 };
 

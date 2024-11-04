@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
 import API from '../API/api';
-import { TbNumber1Small } from 'react-icons/tb';
 
 // Context 생성
 export const SensorDataContext = createContext();
@@ -18,29 +17,32 @@ const sensorList = [
 ];
 
 export const SensorDataProvider = ({ children }) => {
-  
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedSensorName, setSelectedSensorName] = useState(sensorList[0]?.name);
 
+  // 데이터를 초기화하는 함수
+  const resetSensorData = () => {
+    setData([]); // 데이터를 빈 배열로 초기화
+  };
+
   const fetchData = async (name) => {
-    if (!name) return null; // 이름이 없을 경우 null 반환
+    if (!name) return null;
 
     const sensor = sensorList.find(sensor => sensor.name === name);
-    if (!sensor || !sensor.sensorId) { // sensorId가 정의되지 않으면 null 반환
+    if (!sensor || !sensor.sensorId) {
       console.error("해당 이름의 센서를 찾을 수 없거나 sensorId가 정의되지 않았습니다.");
-      return null; // null 반환
+      return null;
     }
 
     const endpoint = `/api/sensorData/recent/` + encodeURIComponent(sensor.sensorId);
     setLoading(true);
     try {
       const response = await API.get(endpoint);
-      console.log("주소:", endpoint); 
       setData(response.data); // 센서 데이터를 설정
-      console.log("응답 데이터:", response.data); 
+      console.log("응답 데이터:", response.data);
     } catch (e) {
-      console.error("API 오류: ", e);   
+      console.error("API 오류: ", e);
       setData([]); // API 오류 발생 시 데이터 초기화
     } finally {
       setLoading(false);
@@ -60,14 +62,13 @@ export const SensorDataProvider = ({ children }) => {
   }, [selectedSensorName]);
 
   useEffect(() => {
-    // children이 없을 경우 data를 빈 배열로 설정
     if (!children) {
-      setData([]);
+      resetSensorData(); // children이 없을 경우 데이터 초기화
     }
   }, [children]); // children이 변경될 때마다 호출
 
   return (
-    <SensorDataContext.Provider value={{ data, setSelectedSensorName, loading }}>
+    <SensorDataContext.Provider value={{ data, setSelectedSensorName, loading, resetSensorData }}>
       {children}
     </SensorDataContext.Provider>
   );
