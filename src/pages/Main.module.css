@@ -243,6 +243,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.261); /* 부드러운 그림자 */
   width: 100%; /* 박스가 부모의 너비를 차지하도록 */
   color: black;
+  z-index: 1;
 }
 /*로그기록*/
 .sensorLogs {
@@ -252,6 +253,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.261); /* 그림자 */
   width: 100%;
   color: black;
+  z-index: 1;
 }
 
 /* ping icon */

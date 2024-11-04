@@ -1,8 +1,10 @@
 /*Main.js*/
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import Header from "../components/common/Header/Header";
 import styles from "./Main.module.css";
 import { fetchForeCast, fetchForeCast2 } from "../pages/forecast";
+import { SensorDataContext } from "./../API/SensorDataContext";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Main() {
   const [popupContent, setPopupContent] = useState(null);
@@ -13,10 +15,8 @@ function Main() {
   const [dateTime, setDateTime] = useState(new Date());
   const [forecast, setForecast] = useState(null);
   const [forecast2, setForecast2] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  // const canvasRef = useRef(null);
-  const imageRef = useRef(null);
+  const [loadingdata, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const handleBuildingClick = (building, buildingInfo) => {
     if (building == "신공학관") {
@@ -31,12 +31,10 @@ function Main() {
     }
     setPopupContent(buildingInfo);
   };
-
   const closePopup = () => {
     setPopupContent(null);
     setSelectedBuilding(null);
   };
-
   // 날씨 안내 멘트 생성 함수
   const getWeatherAdvice = () => {
     if (!forecast || !forecast2) {
@@ -73,7 +71,7 @@ function Main() {
     const day = String(date.getDate()).padStart(2, "0");
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
-    return `${year}년 ${month}월 ${day}일 ${dayOfWeek} PM ${hours}:${minutes}`;
+    return `${year}년 ${month}월 ${day}일 ${dayOfWeek} KST ${hours}:${minutes}`;
   };
   // Fetch weather data
   useEffect(() => {
@@ -97,100 +95,251 @@ function Main() {
     return () => clearInterval(timer);
   }, []);
 
-  //*******CANVAS*******//
-  // 신공학관 클릭 후 도면도를 클릭하면 좌표를 표시하는 함수
-  /*const handleCanvasClick = (event) => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
+  const imageRef = useRef(null);
 
-    // canvas 내의 클릭 위치 계산
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    //좌표를 콘솔에 출력함
-    console.log("Clicked coordinates:", x, y);
+  const { data, setSelectedSensorName, loading, error } =
+    useContext(SensorDataContext);
 
-    // 좌표에 도형을 그려 표시
-    ctx.fillStyle = "red";
-    ctx.beginPath();
-    ctx.arc(x, y, 5, 0, 2 * Math.PI);
-    ctx.fill();
-
-    // 좌표값을 텍스트로 표시
-    ctx.font = "12px Arial";
-    ctx.fillText(`(${x.toFixed(1)}, ${y.toFixed(1)})`, x + 10, y - 10);
-  };
-  // canvas와 이미지의 크기 및 위치 동기화
-  useEffect(() => {
-    const updateCanvasSize = () => {
-      const canvas = canvasRef.current;
-      const image = imageRef.current;
-      if (canvas && image) {
-        canvas.width = image.clientWidth;
-        canvas.height = image.clientHeight;
-      }
-    };
-    updateCanvasSize();
-
-    window.addEventListener("resize", updateCanvasSize);
-    return () => window.removeEventListener("resize", updateCanvasSize);
-  }, []);*/
-
-  // 좌표를 저장할 상태
-  const [coordinates, setCoordinates] = useState([
-    { x: 137, y: 116 }, // 6144
-    { x: 366, y: 125 }, // 6119
-    { x: 184, y: 213 }, // 5147
-    { x: 192, y: 237 }, // 5145
-    { x: 262, y: 388 }, // 4142
-    { x: 464, y: 442 }, // 3115
-    { x: 488, y: 482 }, // 3173
-  ]);
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
+  const location = useLocation();
+  const Id = location.pathname.split("/").pop(); // URL에서 ID 가져오기
+
+  useEffect(() => {
+    if (Id) {
+      setSelectedSensorName(Id); // 선택된 강의실 ID로 센서 데이터 업데이트
+    }
+    console.log("현재 센서 ID:", Id); // URL에서 가져온 ID 확인
+  }, [Id, setSelectedSensorName]);
+
+  // **sensorData 구조 확인 로그 추가**
+  useEffect(() => {
+    console.log("Main.js - sensorData 전체 구조 확인:", data); // 전체 데이터를 출력
+  }, [data]);
+
+  // 좌표 저장
+  const coordinates = [
+    { id: "6144", x: 137, y: 116 },
+    { id: "6119", x: 366, y: 125 },
+    { id: "5147", x: 184, y: 213 },
+    { id: "5145", x: 192, y: 237 },
+    { id: "4142", x: 262, y: 388 },
+    { id: "3115", x: 464, y: 442 },
+    { id: "3173", x: 488, y: 482 },
+  ];
+
+  const handleClick = (id) => {
+    // 클릭 시 해당 강의실 페이지로 이동
+    navigate(`/classroom/${id}`);
+  };
+
+  const getSensorIAQValue = (id) => {
+    const sensor = data.find((sensor) => sensor.name === id); // `name` 속성으로 매칭
+    console.log(`강의실 ID: ${id}, 센서 데이터:`, sensor); // 각 강의실 ID별 데이터 확인
+    return sensor ? sensor.IAQIndex?.value || "--" : "--"; // 데이터가 없으면 "--" 반환
+  };
+
+  // 좌표별 색상 결정 함수 추가
+  const getColor = (IAQvalue) => {
+    if (IAQvalue === null) return "gray";
+    if (IAQvalue >= 90) return "green";
+    if (IAQvalue >= 80) return "orange";
+    else return "red";
+  };
   // 도형을 표시하는 함수
   const renderShapes = () => {
-    return coordinates.map((coord, index) => (
-      <div
-        key={index}
-        onMouseEnter={() => setHoveredIndex(index)} // 마우스 진입 시 인덱스 설정
-        onMouseLeave={() => setHoveredIndex(null)} // 마우스 나가면 초기화
-        style={{
-          position: "absolute",
-          top: `${coord.y}px`,
-          left: `${coord.x}px`,
-          width: "16px",
-          height: "16px",
-          backgroundColor: "red",
-          borderRadius: "50%",
-          transform: "translate(-50%, -50%)", // 중앙 정렬
-          zIndex: 10,
-        }}
-        className="animated-shape" // 애니메이션 클래스 추가
-      >
-        <div className="ring"></div>
-        <div className="ring"></div>
-        {/* 호버 시 표시할 박스 */}
-        {hoveredIndex === index && (
-          <div
-            style={{
-              position: "absolute",
-              top: "30px",
-              left: "30px",
-              width: "120px",
-              padding: "10px",
-              backgroundColor: "white",
-              border: "1px solid #ccc",
-              boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
-              borderRadius: "8px",
-              zIndex: 20,
-            }}
-          >
-            <p style={{ margin: 0 }}>텍스트나 이미지 추가 가능</p>
-          </div>
-        )}
-      </div>
-    ));
+    return coordinates.map((coord, index) => {
+      const IAQvalue = getSensorIAQValue(coord.id); // 강의실 번호에 맞는 IAQ 값 가져오기
+      const color = getColor(IAQvalue);
+      console.log(`ID: ${coord.id}, IAQIndex: ${IAQvalue}, Color: ${color}`); // 디버그 출력
+
+      return (
+        <div
+          key={index}
+          onMouseEnter={() => setHoveredIndex(index)} // 마우스 진입 시 인덱스 설정
+          onMouseLeave={() => setHoveredIndex(null)} // 마우스 나가면 초기화
+          onClick={() => handleClick(coord.id)}
+          style={{
+            position: "absolute",
+            top: `${coord.y}px`,
+            left: `${coord.x}px`,
+            width: "16px",
+            height: "16px",
+            backgroundColor: color,
+            borderRadius: "50%",
+            transform: "translate(-50%, -50%)", // 중앙 정렬
+            zIndex: 1,
+            cursor: "pointer",
+          }}
+          className="animated-shape"
+        >
+          <div className="ring"></div>
+          <div className="ring"></div>
+          {/* 호버 시 표시할 박스 */}
+          {hoveredIndex === index && (
+            <div
+              style={{
+                position: "absolyte",
+                top: "30px",
+                left: "50px",
+                width: "220px",
+                padding: "20px",
+                backgroundColor: "rgba(255, 251, 216, 0.85)",
+                border: "1px solid #ccc",
+                boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
+                borderRadius: "16px",
+                zIndex: 10,
+              }}
+            >
+              {/* 강의실 이름 */}
+              <div
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "20px",
+                  marginBottom: "16px",
+                  textAlign: "center",
+                }}
+              >
+                {coord.id} 강의실
+              </div>
+              <hr
+                style={{
+                  border: "0.5px solid #FFD8A0",
+                  margin: "8px 8px 16px 8px",
+                }}
+              />
+              {/* 각 항목 표시 */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "6px",
+                }}
+              >
+                <img
+                  src="/Icons/img_temp.png"
+                  alt="온도"
+                  style={{
+                    width: "20px",
+                    marginRight: "8px",
+                    marginBottom: "4px",
+                  }}
+                />
+                <span>온도</span>
+                <span style={{ marginLeft: "auto" }}>
+                  {loading ? "--" : "24°C"}
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "6px",
+                }}
+              >
+                <img
+                  src="/Icons/img_mois.png"
+                  alt="습도"
+                  style={{
+                    width: "20px",
+                    marginRight: "8px",
+                    marginBottom: "4px",
+                  }}
+                />
+                <span>습도</span>
+                <span style={{ marginLeft: "auto" }}>
+                  {loading ? "--" : "56%"}
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "6px",
+                }}
+              >
+                <img
+                  src="/Icons/img_tvoc.png"
+                  alt="TVOC"
+                  style={{
+                    width: "20px",
+                    marginRight: "8px",
+                    marginBottom: "4px",
+                  }}
+                />
+                <span>TVOC</span>
+                <span style={{ marginLeft: "auto" }}>
+                  {loading ? "--" : "23"}
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "6px",
+                }}
+              >
+                <img
+                  src="/Icons/img_pm2.5.png"
+                  alt="PM2.5"
+                  style={{
+                    width: "20px",
+                    marginRight: "8px",
+                    marginBottom: "4px",
+                  }}
+                />
+                <span>PM 2.5</span>
+                <span style={{ marginLeft: "auto" }}>
+                  {loading ? "--" : "150um"}
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "6px",
+                }}
+              >
+                <img
+                  src="/Icons/img_noise.png"
+                  alt="소음"
+                  style={{
+                    width: "20px",
+                    marginRight: "8px",
+                    marginBottom: "4px",
+                  }}
+                />
+                <span>소음</span>
+                <span style={{ marginLeft: "auto" }}>
+                  {loading ? "--" : "89dB"}
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "6px",
+                }}
+              >
+                <img
+                  src="/Icons/img_sensor.png"
+                  alt="센서 상태"
+                  style={{
+                    width: "20px",
+                    marginRight: "8px",
+                    marginBottom: "4px",
+                  }}
+                />
+                <span>센서 상태</span>
+                <span style={{ marginLeft: "auto" }}>
+                  {loading ? "--" : "ON"}
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    });
   };
 
   return (
@@ -418,7 +567,7 @@ function Main() {
                 서울 중구 필동
               </h2>
 
-              {loading ? (
+              {loadingdata ? (
                 <p>Loading weather data...</p>
               ) : forecast && forecast2 ? (
                 <>
