@@ -39,9 +39,9 @@ function ClassRoom() {
   const { x, y } = coordinates[Id] || { x: '0', y: '0' };
 
   // IAQIndex 값을 기반으로 이미지 경로 결정
-  const iaqImageSrc = sensorData.IAQIndex?.value >= 85
+  const iaqImageSrc = sensorData.IAQIndex?.value >= 86
     ? require("../../assets/images/smartmirror/good.png")
-    : sensorData.IAQIndex?.value >= 60
+    : sensorData.IAQIndex?.value >= 71
     ? require("../../assets/images/smartmirror/average.png")
     : require("../../assets/images/smartmirror/bad.png");
 

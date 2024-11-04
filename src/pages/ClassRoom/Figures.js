@@ -15,7 +15,7 @@ const buildingName = "신공학관";
 
 function Figures() {
   const [selectedOption, setSelectedOption] = useState('');
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState(''); // 필요한 경우 사용할 수 있음
   const [selectedValues, setSelectedValues] = useState([]);
   const [highlightedIndex, setHighlightedIndex] = useState(null);
 
@@ -27,9 +27,14 @@ function Figures() {
     }
   }, [selectedOption, setSelectedSensorName]);
 
-  const handleSelect = (value) => {
-    console.log(`Selected option: ${value}`); // 로그 확인
+  const handleNEBSelect = (value) => {
+    console.log(`Selected NEB option: ${value}`); // 로그 확인
     setSelectedOption(value);
+  };
+
+  const handlePeriodSelect = (value) => {
+    console.log(`Selected period option: ${value}`); // 로그 확인
+    setSelectedValue(value); // 필요한 경우 사용할 수 있음
   };
 
   const handleCheckboxSelect = (values, index) => {
@@ -61,7 +66,7 @@ function Figures() {
                 />
                 <div>{buildingName}</div>
               </div>
-              <NEBDropdown onSelect={handleSelect} />
+              <NEBDropdown onSelect={handleNEBSelect} />
             </div>
             <TopBox image="tempIcon.png" value={loading ? '--' : sensorData.Temperature?.value} unit="℃" name="temp" />
             <TopBox image="humidIcon.png" value={loading ? '--' : sensorData.Humidity?.value} unit="%" name="humidity" />
@@ -70,19 +75,19 @@ function Figures() {
           </div>
           <div className={styles.bottom}>
             <div className={styles.leftContainer}>
-              <div style={{ width: '100%' }}>2024.09.03 PM 04:59</div>
+             {/* <div style={{ width: '100%' }}>2024.09.03 PM 04:59</div>*/} 
               <div className={styles.leftBox}>
                 <div className={styles.select}>
                   <div style={{ width: '80%' }}>
                     period
-                    <PeriodDropdown width='100%' height='clamp(10px, 5vw, 56px)' onSelect={handleSelect} />
+                    <PeriodDropdown width='100%' height='clamp(10px, 5vw, 56px)' onSelect={handlePeriodSelect} />
                   </div>
                   <div style={{ width: '80%' }}>
                     what
                     <WhatCheckBoxes
                       width='90%' 
                       selectedValues={selectedValues}
-                      onSelect={handleCheckboxSelect} // 수정된 함수 사용
+                      onSelect={handleCheckboxSelect}
                       borderColor="#A5A5A5"
                       borderWidth="2px"
                     />
@@ -99,8 +104,8 @@ function Figures() {
                   }}
                 />
                 <div>
-                  종합설계2 수업중[10/30]
-                  <LineChart selectedValues={selectedValues} highlightedIndex={highlightedIndex} /> {/* highlightedIndex 사용 */}
+                  {/*종합설계2 수업중[10/30]*/}
+                  <LineChart width='102%' selectedValues={selectedValues} highlightedIndex={highlightedIndex} classRoom={selectedOption} period={selectedValue}/>
                 </div>
               </div>
             </div>

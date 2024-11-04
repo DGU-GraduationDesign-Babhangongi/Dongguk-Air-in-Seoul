@@ -1,73 +1,93 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import API from '../../../API/api';
 
-// 데이터 통합
-const data = [
-  {
-    name: '12:00',
-    temperatureA: 40, humidityA: 24, TVOCA: 150, PM2_5A: 35, noiseA: 50,
-    temperatureB: 38, humidityB: 22, TVOCB: 145, PM2_5B: 34, noiseB: 48,
-  },
-  {
-    name: '13:00',
-    temperatureA: 30, humidityA: 18, TVOCA: 120, PM2_5A: 30, noiseA: 55,
-    temperatureB: 32, humidityB: 20, TVOCB: 125, PM2_5B: 31, noiseB: 54,
-  },
-  {
-    name: '14:00',
-    temperatureA: 20, humidityA: 90, TVOCA: 200, PM2_5A: 45, noiseA: 60,
-    temperatureB: 21, humidityB: 85, TVOCB: 195, PM2_5B: 44, noiseB: 59,
-  },
-  {
-    name: '15:00',
-    temperatureA: 27, humidityA: 38, TVOCA: 180, PM2_5A: 40, noiseA: 65,
-    temperatureB: 28, humidityB: 35, TVOCB: 175, PM2_5B: 39, noiseB: 64,
-  },
-  {
-    name: '16:00',
-    temperatureA: 18, humidityA: 40, TVOCA: 160, PM2_5A: 38, noiseA: 70,
-    temperatureB: 19, humidityB: 37, TVOCB: 155, PM2_5B: 37, noiseB: 68,
-  },
-  {
-    name: '17:00',
-    temperatureA: 23, humidityA: 30, TVOCA: 140, PM2_5A: 32, noiseA: 68,
-    temperatureB: 24, humidityB: 28, TVOCB: 135, PM2_5B: 33, noiseB: 66,
-  },
-  {
-    name: '18:00',
-    temperatureA: 34, humidityA: 30, TVOCA: 155, PM2_5A: 37, noiseA: 72,
-    temperatureB: 33, humidityB: 29, TVOCB: 150, PM2_5B: 36, noiseB: 70,
-  },
+const sensorList = [
+  { "id": 1, "name": "", "floor": 0, "building": "신공학관", "sensorId": "" },
+  { "id": 2, "name": "6144", "floor": 6, "building": "신공학관", "sensorId": "0C:7B:C8:FF:55:5D" },
+  { "id": 3, "name": "6119", "floor": 6, "building": "신공학관", "sensorId": "0C:7B:C8:FF:56:8A" },
+  { "id": 4, "name": "5147", "floor": 5, "building": "신공학관", "sensorId": "0C:7B:C8:FF:5B:8F" },
+  { "id": 5, "name": "5145", "floor": 5, "building": "신공학관", "sensorId": "0C:7B:C8:FF:5C:C8" },
+  { "id": 6, "name": "4142", "floor": 4, "building": "신공학관", "sensorId": "0C:7B:C8:FF:57:5A" },
+  { "id": 7, "name": "3173", "floor": 3, "building": "신공학관", "sensorId": "0C:7B:C8:FF:5B:06" },
+  { "id": 8, "name": "3115", "floor": 3, "building": "신공학관", "sensorId": "0C:7B:C8:FF:56:F1" }
 ];
-const LineChartComponent = ({ selectedAttribute, classroomA, classroomB, width, height }) => {
+
+const LineChartComponent = ({ selectedAttribute, classroomA, classroomB, width, height, period }) => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  console.log(period);
+  const fetchData = async () => {
+    const sensor1 = sensorList.find(sensor => sensor.name === classroomA);
+    const sensor2 = sensorList.find(sensor => sensor.name === classroomB);
+
+    if (!sensor1 || !sensor1.sensorId || !sensor2 || !sensor2.sensorId) {
+      console.error("해당 이름의 센서를 찾을 수 없거나 sensorId가 정의되지 않았습니다.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const endpoint1 = `/api/sensorData/${encodeURIComponent(sensor1.sensorId)}?sensorType=${encodeURIComponent(selectedAttribute)}&sortBy=TIMESTAMP&order=DESC&page=0&size=${period}`;
+      const endpoint2 = `/api/sensorData/${encodeURIComponent(sensor2.sensorId)}?sensorType=${encodeURIComponent(selectedAttribute)}&sortBy=TIMESTAMP&order=DESC&page=0&size=${period}`;
+
+      const [response1, response2] = await Promise.all([API.get(endpoint1), API.get(endpoint2)]);
+
+      const timestamps = response1.data.data.map(item => item.timestamp);
+      const formattedData = timestamps.map((timestamp, index) => {
+        const formattedTimestamp = timestamp.replace('T', ' ');
+        return {
+          name: formattedTimestamp,
+          [selectedAttribute + 'A']: response1.data.data[index]?.value || null,
+          [selectedAttribute + 'B']: response2.data.data[index]?.value || null,
+        };
+      });
+
+      setData(formattedData.reverse());
+    } catch (e) {
+      console.error("API 오류: ", e);
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [classroomA, classroomB, period, selectedAttribute]);  // 모든 의존성 추가
+
   return (
-    <div style={{ width: width, height: height }}>  {/* 부모 div의 크기를 동적으로 설정 */}
-      <ResponsiveContainer width="100%" height="100%"> {/* 100% width/height로 부모에 맞추기 */}
+    <div style={{ width: width, height: height }}>
+      {loading && <div style={{marginLeft:'5%'}}>로딩 중...</div>}
+      {data.length === 0 && !loading && <div style={{marginLeft:'5%'}}>기간과 강의실을 선택해주세요.</div>}
+ 
+      <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="name" interval={0} axisLine={false} tickLine={false} tick={false} />
           <Tooltip />
           <Legend />
 
-          {/* 강의실 A 데이터 */}
-          <Line 
-            type="monotone" 
-            dataKey={selectedAttribute + 'A'} 
-            stroke="#82ca9d" 
-            strokeWidth={3} 
-            name={`${classroomA}`+' '}  
+          <Line
+            type="natural"
+            dataKey={selectedAttribute + 'A'}
+            stroke="#82ca9d"
+            strokeWidth={3}
+            name={`${classroomA} `}
+            dot={false}
           />
-          {/* 강의실 B 데이터 */}
-          <Line 
-            type="monotone" 
-            dataKey={selectedAttribute + 'B'} 
-            stroke="#8884d8" 
-            strokeWidth={3} 
-            name={`${classroomB}`+' '}  
+          <Line
+            type="natural"
+            dataKey={selectedAttribute + 'B'}
+            stroke="#1A9AFB"
+            strokeWidth={3}
+            name={`${classroomB} `}
+            dot={false}
           />
         </LineChart>
       </ResponsiveContainer>
     </div>
   );
 };
+
 export default LineChartComponent;

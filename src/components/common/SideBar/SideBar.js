@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import classNames from "classnames";
 import styles from "./SideBar.module.css";
 import { FiGrid, FiLayers, FiCpu, FiLogOut } from "react-icons/fi";
+import { SensorDataContext } from '../../../API/SensorDataContext';
 
 var buildingName = "신공학관";
 

@@ -3,11 +3,11 @@ import Select from 'react-select';
 import styles from './whatDropdown.module.css';
 
 const options = [
-  { value: 'temperature', label: '온도' },
-  { value: 'humidity', label: '습도' },
+  { value: 'TEMPERATURE', label: '온도' },
+  { value: 'HUMIDITY', label: '습도' },
   { value: 'TVOC', label: 'TVOC' },
-  { value: 'PM2_5', label: 'PM 2.5' },
-  { value: 'noise', label: '소음' },
+  { value: 'PM2_5MASSCONCENTRATION', label: 'PM 2.5' },
+  { value: 'AMBIENTNOISE', label: '소음' },
 ];
 
 const whatDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px', width = '100%', height = 'auto' }) => {
