@@ -130,7 +130,7 @@ function Main() {
 
   const handleClick = (id) => {
     // 클릭 시 해당 강의실 페이지로 이동
-    navigate(`/classroom/${id}`);
+    navigate(`/floorcheck`);
   };
 
   const getSensorIAQValue = (id) => {
@@ -179,7 +179,6 @@ function Main() {
           {hoveredIndex === index && (
             <div
               style={{
-                position: "absolyte",
                 top: "30px",
                 left: "50px",
                 width: "220px",
@@ -188,7 +187,7 @@ function Main() {
                 border: "1px solid #ccc",
                 boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
                 borderRadius: "16px",
-                zIndex: 10,
+                zIndex: 100,
               }}
             >
               {/* 강의실 이름 */}
