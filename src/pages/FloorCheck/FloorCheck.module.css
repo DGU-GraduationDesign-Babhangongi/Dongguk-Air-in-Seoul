@@ -37,9 +37,9 @@
 .main {
   display: flex;
   flex-direction: row; /* 메인 내용 수평 배치 */
-  padding: 40px;
-  left: 20%;
+  padding: 20px;
   gap: 4%; /* 도면과 패널 사이의 간격 */
+  margin-top: -6%;
   box-sizing: border-box;
 }
 
@@ -50,6 +50,8 @@
   justify-content: center;
   align-items: center; /* 도면과 문구를 가운데 정렬 */
   margin-right: 4%;
+  height: fit-content;
+  margin-left: 11%;
 }
 
 .floorMap {
@@ -66,11 +68,13 @@
 }
 
 .floorTitle {
-  margin-top: 20px; /* 도면 아래에 여백 추가 */
-  font-size: 18px; /* 문구 크기 */
+  margin-top: 4%;
+  margin-left: 20%;
+  font-size: 32px; /* 문구 크기 */
   font-weight: bold;
-  text-align: center;
+  height: fit-content;
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
+  text-shadow: 0 0 gray;
 }
 
 .roomPin {
@@ -101,7 +105,7 @@
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
   flex-direction: column;
   align-items: center;
-  margin-top: 50%;
+  margin-top: 40%;
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }
 

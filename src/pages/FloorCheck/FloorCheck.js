@@ -21,6 +21,17 @@ function FloorCheck() {
         score1: 80,
         score2: 55,
       },
+      {
+        roomNumber: "3173",
+        temperature: "29°C",
+        humidity: "60%",
+        tvoc: "20",
+        pm25: "120",
+        noise: "75dB",
+        sensorStatus: "정상",
+        score1: 80,
+        score2: 55,
+      },
     ],
     4: [
       {
@@ -47,10 +58,32 @@ function FloorCheck() {
         score1: 85,
         score2: 58,
       },
+      {
+        roomNumber: "5147",
+        temperature: "30°C",
+        humidity: "50%",
+        tvoc: "22",
+        pm25: "130",
+        noise: "80dB",
+        sensorStatus: "정상",
+        score1: 85,
+        score2: 58,
+      },
     ],
     6: [
       {
         roomNumber: "6119",
+        temperature: "32°C",
+        humidity: "53%",
+        tvoc: "18",
+        pm25: "100",
+        noise: "78dB",
+        sensorStatus: "정상",
+        score1: 90,
+        score2: 63,
+      },
+      {
+        roomNumber: "6144",
         temperature: "32°C",
         humidity: "53%",
         tvoc: "18",
@@ -67,17 +100,17 @@ function FloorCheck() {
   const canvasRef = useRef(null);
   const coordinates = {
     3: [
-      { id: "3115", x: 36, y: 240 },
-      { id: "3173", x: 205, y: 200 },
+      { id: "3115", x: 36, y: 220 },
+      { id: "3173", x: 205, y: 180 },
     ],
-    4: [{ id: "4142", x: 260, y: 300 }],
+    4: [{ id: "4142", x: 270, y: 500 }],
     5: [
-      { id: "5145", x: 140, y: 270 },
-      { id: "5177", x: 190, y: 300 },
+      { id: "5145", x: 19, y: 500 },
+      { id: "5147", x: 104, y: 500 },
     ],
     6: [
-      { id: "6119", x: 160, y: 320 },
-      { id: "6144", x: 210, y: 350 },
+      { id: "6119", x: 318, y: 40 },
+      { id: "6144", x: 216, y: 500 },
     ],
   };
 
@@ -97,7 +130,7 @@ function FloorCheck() {
       // 좌표 값 및 강의실 이름 표시
       ctx.font = "16px Arial";
       ctx.fillStyle = "black";
-      ctx.fillText(`${id} (${x}, ${y})`, x + 15, y);
+      ctx.fillText(`${id}`, x + 15, y);
     });
   }, [currentFloor]);
 
@@ -107,10 +140,8 @@ function FloorCheck() {
       <div style={{ display: "flex" }}>
         <SideBar /> {/* 사이드바 */}
         <div className={styles.container}>
+          <h2 className={styles.floorTitle}>{currentFloor}층 강의실 구조도</h2>
           <div className={styles.main}>
-            <h2 className={styles.floorTitle}>
-              {currentFloor}층 강의실 구조도
-            </h2>
             <div className={styles.floorMapContainer}>
               <div className={styles.floorMap}>
                 <img
@@ -120,8 +151,8 @@ function FloorCheck() {
                 />
                 <canvas
                   ref={canvasRef}
-                  width={600} // 이미지 크기와 맞추기
-                  height={400} // 이미지 크기와 맞추기
+                  width={440} // 이미지 크기와 맞추기
+                  height={602.63} // 이미지 크기와 맞추기
                   style={{
                     position: "absolute",
                     top: 0,
@@ -134,8 +165,8 @@ function FloorCheck() {
                   style={{
                     display: "flex",
                     gap: "16px",
-                    marginLeft: "12%",
-                    marginTop: "1%",
+                    marginLeft: "8%",
+                    marginTop: "6%",
                   }}
                 >
                   {[3, 4, 5, 6].map((floor) => (
@@ -146,7 +177,7 @@ function FloorCheck() {
                       style={{
                         backgroundColor:
                           currentFloor === floor ? "#ffd690" : "#fff1d9",
-                        width: "80px",
+                        width: "20%",
                         fontSize: "90%",
                         fontWeight: "bold",
                         textAlign: "center",
