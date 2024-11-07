@@ -554,7 +554,7 @@ function Main() {
             <div className={styles.weatherInfo}>
               <h2>
                 <img
-                  src="/Main/location_icon.png" // 이미지 경로를 여기에 입력하세요
+                  src="/Main/location_icon.png"
                   alt="위치 아이콘"
                   style={{
                     width: "28px",
