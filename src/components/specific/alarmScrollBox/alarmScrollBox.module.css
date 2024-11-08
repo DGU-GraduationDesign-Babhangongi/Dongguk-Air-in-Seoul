@@ -9,12 +9,12 @@
 .scrollableContainer {
   background-color: white;
   width: 100%; /* 너비를 100%로 설정하거나 원하는 크기로 조절 */
-  height: calc(19vh - 2vw); 
+  height: calc(25vh - 5vw); 
   overflow: auto; /* 스크롤 바 표시 */
   border: 1px solid #ccc; /* 경계선을 추가하여 시각적으로 구분 */
   padding: 10%; /* 내부 여백 */
-  border-radius: 20px;
-  box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.25);
+  border-radius: clamp(0.5px, 2vw, 15px);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   font-weight: normal;
 }
 

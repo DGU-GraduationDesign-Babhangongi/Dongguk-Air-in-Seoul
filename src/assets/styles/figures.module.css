@@ -10,7 +10,7 @@
 }
 
 .mainContent {
-  display: flex;
+  display: flex;  
   width: 100%;
   height: calc(100vh - 5vw);
   background-color: #F0F0F0;
@@ -65,12 +65,13 @@
 .bottom {
   display: grid;
   grid-template-columns: 8fr 2fr;
-  gap: 2.5vw;
+  gap: 1vw;
   background-color: #F0F0F0;
   width: 100%;
   overflow: hidden;
-  padding: 2% 6%;
+  padding: 1% 2%;
   height: calc(85% - 5vw);
+  padding-bottom: 2vw;
 }
 
 
@@ -81,16 +82,16 @@
   align-items: end;
   justify-content: center;
   width: 100%;
-  height: 100%;
+  height: 98%;
   margin: auto;
 }
 
-.leftBox {
+.leftBox {  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   display: grid;
   grid-template-columns: 1fr 0.1fr 4fr; /* 1:0.1:2 비율 */
   background-color: white;
   width: 100%;
-  height: 94%;
+  height: 100%;
   border-radius: 1.5vw;
   align-items: center;
   justify-items: center; /* 그리드 아이템을 중앙에 정렬 */
@@ -100,14 +101,14 @@
 
 .rightContainer {
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr; /* 1:1:1 비율로 설정 */
+  grid-template-rows: 1fr 1fr 0.8fr; /* 1:1:1 비율로 설정 */
   align-items: center; /* 세로 방향 정렬 */
   justify-items: center; /* 가로 방향 정렬 */
   width: 100%;
-  height: 94%;
+  height: 98%;
   font-weight: bold;
   margin: auto;
-  gap: 1vh;
+  gap: 0.8vw;
 }
 
 
