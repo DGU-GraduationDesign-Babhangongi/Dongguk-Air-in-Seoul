@@ -7,13 +7,14 @@ import styles from '../../assets/styles/Log.module.css';
 import API from '../../API/api';
 
 function Log() {
-  const [selectedRoom, setSelectedRoom] = useState(''); // 기본값을 빈 문자열로 설정
+  const [selectedRoom, setSelectedRoom] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [activeTab, setActiveTab] = useState('온도');
   const [sensorData, setSensorData] = useState([]);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true); // 데이터가 더 있는지 확인하는 상태 추가
   const observerRef = useRef();
 
   const sensorList = [
@@ -40,7 +41,7 @@ function Log() {
   const fetchSensorData = async () => {
     const sensorType = getSensorType();
 
-    if (sensorType && selectedRoom) { // selectedRoom이 선택된 경우에만 실행
+    if (sensorType && selectedRoom) {
       try {
         setLoading(true);
 
@@ -50,19 +51,19 @@ function Log() {
 
         const url = `/api/sensorData/classroom/betweenDates?sensorTypes=${sensorType}&building=${encodedBuilding}&name=${selectedRoom}&startDate=${encodedStartDate}&endDate=${encodedEndDate}&sortBy=TIMESTAMP&order=DESC&page=${page}&size=10`;
         
-        console.log("Fetching data with URL:", url);
-
         const response = await API.get(url);
-        console.log(response.data);
-
         const sensorDataKey = sensorType;
+
         if (response.data[sensorDataKey] && response.data[sensorDataKey].data) {
-          if (page === 0) {
-            setSensorData(response.data[sensorDataKey].data);
-          } else {
-            setSensorData((prevData) => [...prevData, ...response.data[sensorDataKey].data]);
-          }
+          const fetchedData = response.data[sensorDataKey].data;
+
+          // 데이터를 추가하고 페이지를 로드한 후, 데이터가 부족하면 hasMore을 false로 설정
+          setSensorData((prevData) => (page === 0 ? fetchedData : [...prevData, ...fetchedData]));
+          setHasMore(fetchedData.length === 10); // 데이터가 10개 미만이면 더 이상 데이터가 없음
+        } else {
+          setHasMore(false); // 데이터를 못 가져오면 더 이상 데이터가 없는 것으로 간주
         }
+
         setLoading(false);
       } catch (error) {
         console.error("Error fetching sensor data:", error);
@@ -72,19 +73,20 @@ function Log() {
   };
 
   useEffect(() => {
-    if (startDate && endDate && selectedRoom) { // selectedRoom이 선택된 경우에만 실행
+    if (startDate && endDate && selectedRoom) {
       setSensorData([]);
       setPage(0);
+      setHasMore(true); // 새로운 조회를 시작할 때 hasMore 초기화
       fetchSensorData();
     }
   }, [selectedRoom, activeTab, startDate, endDate]);
 
   useEffect(() => {
-    if (page > 0) fetchSensorData();
+    if (page > 0 && hasMore) fetchSensorData(); // hasMore이 true일 때만 데이터 가져오기
   }, [page]);
 
   const lastElementRef = useCallback((node) => {
-    if (loading) return;
+    if (loading || !hasMore) return; // 로딩 중이거나 hasMore이 false면 observer 중지
     if (observerRef.current) observerRef.current.disconnect();
 
     observerRef.current = new IntersectionObserver((entries) => {
@@ -94,7 +96,7 @@ function Log() {
     });
 
     if (node) observerRef.current.observe(node);
-  }, [loading]);
+  }, [loading, hasMore]);
 
   const getBorderColor = (value, type) => {
     switch (type) {
@@ -145,7 +147,7 @@ function Log() {
             <div className={styles.filterItem}>
               <label>강의실: </label>
               <select value={selectedRoom} onChange={(e) => setSelectedRoom(e.target.value)}>
-                <option value="" disabled>강의실 선택</option> {/* 기본 옵션 추가 */}
+                <option value="" disabled>강의실 선택</option>
                 {sensorList.map((sensor) => (
                   <option key={sensor.id} value={sensor.name}>{sensor.name}</option>
                 ))}
@@ -157,8 +159,7 @@ function Log() {
                 type="datetime-local"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-              />{' '}
-              {' '}
+              />
               <input
                 type="datetime-local"
                 value={endDate}
