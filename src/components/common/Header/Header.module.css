@@ -1,24 +1,27 @@
-/* Header.module.css */
-/* Header.module.css */
 :root {
-  --header-height: clamp(40px, 3vw, 120px); /* 헤더의 높이 정의 */
+  --header-height: 7vh; /* 헤더 전체 높이 */
+}
+
+.all {
+  height: var(--header-height); /* 전체 높이 설정 */
 }
 
 .header {
-  margin: 1% 2%;
+  background-color: white;
+  margin: 0% 2%;
   width: 96%;
-  height: var(--header-height);
+  height: 99%; /* 전체 높이에 맞추기 위해 100%로 설정 */
   display: flex;
-  align-items: center;
-  padding: 0%;
+  align-items: center; /* 세로 가운데 정렬 */
+  padding: 0;
   justify-content: space-between;
   position: relative;
 }
 
 .nav {
-  width: clamp(10px, 40%, 440px);
+  width: 360px; /* 고정 너비로 설정 */
   display: flex;
-  align-items: center;
+  align-items: center; /* 세로 가운데 정렬 */
   justify-content: space-around;
 }
 
@@ -26,10 +29,10 @@
   color: #000000;
   display: flex;
   text-decoration: none;
-  align-items: center;
-  font-size: clamp(10px, 1.8vw, 20px);
-  padding: 5px; /* 링크의 클릭 영역을 넓히기 위한 패딩 */
-  white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 */
+  align-items: center; /* 세로 가운데 정렬 */
+  font-size: 18px; /* 고정 크기 설정 */
+  padding: 5px;
+  white-space: nowrap;
 }
 
 .navLink:hover {
@@ -37,27 +40,27 @@
 }
 
 .logo {
-  width: clamp(10px, 16%, 160px);
+  width: 120px; /* 로고 고정 너비 */
   height: auto;
 }
 
 .icon {
-  width: clamp(16px, 2.7vw, 32px); /* 아이콘 크기를 고정합니다. */
+  width: 24px; /* 아이콘 고정 너비 */
   height: auto;
-  margin-right: 8px; /* 아이콘과 텍스트 사이의 간격 */
+  margin-right: 8px;
 }
 
 .font {
   display: flex;
-  align-items: center;
+  align-items: center; /* 세로 가운데 정렬 */
 }
 
 .separator {
+
   align-self: center;
-  /* width: clamp(167px, 99%, 1600px); */
   border: none;
   border-top: 1px solid #9f9f9f;
-  margin-top: 10px;
+
   margin-left: 1%;
   margin-right: 1%;
 }

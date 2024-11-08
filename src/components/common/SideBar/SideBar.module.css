@@ -1,8 +1,8 @@
 
-.sidebarContainer {
+.sidebarContainer {  background-color: white;
   width: clamp(180px, 24%, 260px);
   min-height: 480px;
-  height: calc(100vh - 51px);
+  height: 93vh;
   display: flex; /* 사이드바와 hr을 나란히 배치하기 위해 flex 사용 */
   align-items: center; /* 세로 중앙 정렬 */
 
