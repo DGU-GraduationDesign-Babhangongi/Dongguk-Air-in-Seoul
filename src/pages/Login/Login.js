@@ -4,17 +4,45 @@ import styles from "./Login.module.css";
 import Header from "../../components/common/Header/Header"; //
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (email === "user@example.com" && password === "password") {
-      alert("로그인 성공");
-      navigate("/"); // 메인 페이지로 이동
-    } else {
-      alert("로그인 실패. 다시 시도하세요.");
+
+    const loginData = new URLSearchParams();
+    loginData.append("username", id);
+    loginData.append("password", password);
+
+    const queryParams = new URLSearchParams({
+      username: id,
+      password: password,
+    }).toString();
+
+    console.log(queryParams);
+
+    try {
+      console.log(`/api/login?${queryParams}`);
+      const response = await fetch(`/api/login?${queryParams}`, {
+        method: "GET",
+        headers: {
+          Accept: "*/*",
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const token = data.token; // 서버에서 받은 토큰
+        localStorage.setItem("authToken", token); // 토큰을 localStorage에 저장
+        alert("로그인 성공");
+        navigate("/"); // 메인 페이지로 이동
+      } else {
+        alert("로그인 실패. 다시 시도하세요.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("로그인 중 오류가 발생했습니다.");
     }
   };
 
@@ -50,12 +78,12 @@ const Login = () => {
 
           <form onSubmit={handleSubmit} className={styles.loginForm}>
             <div className={styles.formGroup}>
-              <label htmlFor="email">Email</label>
+              <label htmlFor="id">Id</label>
               <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="id"
+                id="id"
+                value={id}
+                onChange={(e) => setId(e.target.value)}
                 required
                 className={styles.inputField}
               />

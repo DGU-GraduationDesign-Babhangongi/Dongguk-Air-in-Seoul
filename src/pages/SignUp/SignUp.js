@@ -7,18 +7,54 @@ import { useNavigate } from "react-router-dom";
 const SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [responsibility, setResponsibility] = useState("");
   const [securityCode, setSecurityCode] = useState("");
+  const [alarmStatus, setAlarmStatus] = useState(false); // 알림 상태 추가
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
-    // 회원가입 처리 로직을 추가
-    alert("회원가입 완료!");
-    navigate("/login");
-  };
+
+    //const token = localStorage.getItem("authToken"); // localStorage에서 토큰 가져오기
+    const requestData = {
+      username: username,
+      password: password,
+      email: email,
+      phoneNumber: id, // API에 phoneNumber로 매핑
+      areaOfResponsibility: responsibility,
+      securityCode: securityCode,
+      alarmStatus: alarmStatus,
+    };
+    const queryParams = new URLSearchParams(requestData).toString();
+
+    try {
+      const response = await fetch(`/api/join?${queryParams}`, {
+        method: "POST",
+        headers: {
+          Accept: "*/*",
+          //"Content-Type": "application/json", // JSON 형식으로 데이터 전송
+          //Authorization: `Bearer ${token}`, // 필요할 경우 추가
+        },
+      });
+
+      if (response.ok) {
+        // 성공 시
+        const data = await response.text();
+        console.log(data);
+        alert("회원가입 완료!");
+        navigate("/login");
+      } else {
+        // 오류 처리
+        const errorData = await response.text();
+        alert(`회원가입 실패: ${errorData.message || "알 수 없는 오류"}`);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("회원가입 중 오류가 발생했습니다.");
+    }
+  }
 
   return (
     <div>
@@ -26,18 +62,7 @@ const SignUp = () => {
       <div className={styles.signupContainer}>
         <form onSubmit={handleSubmit} className={styles.signupContent}>
           <h2 className={styles.heading}>Let's Create an Account</h2>
-          <p
-            className={styles.signupText}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              whiteSpace: "nowrap",
-              marginLeft: "20px",
-              marginTop: "20px",
-            }}
-          >
-            아래 정보를 모두 입력해주세요.{" "}
-          </p>
+          <p className={styles.signupText}>아래 정보를 모두 입력해주세요. </p>
           <input
             type="text"
             placeholder="이름 Username"
@@ -46,17 +71,10 @@ const SignUp = () => {
             required
           />
           <input
-            type="email"
-            placeholder="이메일 Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
             type="text"
-            placeholder="휴대폰 번호 Phone Number"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            placeholder="사용할 아이디 Id"
+            value={id}
+            onChange={(e) => setId(e.target.value)}
             required
           />
           <input
@@ -66,18 +84,50 @@ const SignUp = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          {/* <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}></div> */}
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              marginBottom: "10px",
+            }}
+          >
+            <input
+              type="email"
+              placeholder="이메일 Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <button type="button" className={styles.smallButton}>
+              코드 받기
+            </button>
+          </div>
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              marginBottom: "10px",
+            }}
+          >
+            <input
+              type="text"
+              placeholder="Security code"
+              value={securityCode}
+              onChange={(e) => setSecurityCode(e.target.value)}
+            />
+            <button type="button" className={styles.smallButton}>
+              코드 인증
+            </button>
+          </div>
+
           <input
             type="text"
             placeholder="관할구역 Area of Responsibility"
             value={responsibility}
             onChange={(e) => setResponsibility(e.target.value)}
           />
-          <input
-            type="text"
-            placeholder="보안 코드 Security code"
-            value={securityCode}
-            onChange={(e) => setSecurityCode(e.target.value)}
-          />
+
           <div className={styles.extraOptions}>
             <div
               style={{
@@ -86,7 +136,12 @@ const SignUp = () => {
                 whiteSpace: "nowrap",
               }}
             >
-              <input type="checkbox" id="rememberMe" />
+              <input
+                type="checkbox"
+                id="rememberMe"
+                checked={alarmStatus}
+                onChange={(e) => setAlarmStatus(e.target.checked)}
+              />
               <label
                 htmlFor="rememberMe"
                 style={{ marginLeft: "8px", marginBottom: "16px" }}
