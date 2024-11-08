@@ -6,15 +6,14 @@
 
 .box {
   background-color: white;
-  width: clamp(40px, 9vw, 400px);
-  height: 90%;
-  border-radius: clamp(0.5px, 2vw, 15px);
+  width: 200px; /* ControlBox의 가로 크기를 고정으로 더 크게 설정 */
+  height: 100%; /* 높이를 카드 높이에 맞추기 */
+  border-radius: 15px;
   border: 1px solid BLUE;
   display: flex;
   flex-direction: column;
   align-items: start;
-  padding: clamp(0px, 1.9%, 800px) clamp(0.5px, 1%, 10px) ;
-  padding-top: 0.5%;
+  padding: 10px;
 }
 
 .top {
