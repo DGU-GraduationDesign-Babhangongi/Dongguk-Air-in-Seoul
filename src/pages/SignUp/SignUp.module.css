@@ -20,6 +20,14 @@
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }
 
+.signupText {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  margin-left: 4%;
+  margin-top: 4%;
+}
+
 .signupContent {
   display: flex;
   flex-direction: column;
@@ -32,6 +40,24 @@
   width: 450px;
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
   margin-bottom: 60px;
+}
+
+.smallButton {
+  position: absolute;
+  right: 0.4%;
+  top: 50%;
+  transform: translateY(-80%);
+  height: 58%;
+  width: 20%;
+  border: 1px gray;
+  border-radius: 4px;
+  background-color: #ffe2b2;
+  font-size: 15px;
+  cursor: pointer;
+  color: #535353;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .heading {
@@ -49,6 +75,7 @@
   border-radius: 4px;
   width: 100%;
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .signupButton {
@@ -60,6 +87,7 @@
   cursor: pointer;
   font-size: 16px;
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .signupButton:hover {

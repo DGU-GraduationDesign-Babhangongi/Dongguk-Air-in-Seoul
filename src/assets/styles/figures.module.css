@@ -1,23 +1,40 @@
 * {
   margin: 0;
-  padding: 0;
+  padding: 0; 
+   box-sizing: border-box;
 }
-
-.container {
+.fullScreenContainer {
+  height: 100vh;
   display: flex;
+  flex-direction: column;
 }
 
+.mainContent {
+  display: flex;
+  width: 100%;
+  height: 93vh; /* Header 제외한 나머지 화면 전체 */
+  background-color: #F0F0F0;
+}
+.content {
+  width: 100%;
+  display: flex;  
+  flex-grow: 1;
+  flex-direction: column;
+}
+/* top의 초기 높이와 비율 조정 */
 .top {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   background-color: #FFB841;
-  width: 96%;
-  height: clamp(112px, 12vw, 160px);
+  width: 100%;
+  height: calc(15% + 5vw); 
   padding: clamp(9px, 1vw, 13px) 2%;
   margin-top: 0;
 }
-
+.currentRoom{
+  width: 12%;
+}
 .titleTop {
   font-size: clamp(4px, 1.1vw, 16px);
   font-weight: bold;
@@ -25,7 +42,7 @@
 }
 
 .title {
-  font-size: clamp(10px, 1.6vw, 32px);
+  font-size: clamp(10px, 1.8vw, 32px);
   margin: 5% 0;
   font-weight: bold;
   display: flex;
@@ -47,14 +64,13 @@
 
 .bottom {
   display: grid;
-  grid-template-columns: 4fr 0.001fr 1.2fr;
-  gap: 10px; /* 그리드 아이템 간의 간격 설정 */
+  grid-template-columns: 8fr 2fr;
+  gap: 2.5vw;
   background-color: #F0F0F0;
-  width: 88%;
-  height: calc(100vh - clamp(190px, 16vw, 320px));
-  min-height: 350px;
+  width: 100%;
   overflow: hidden;
   padding: 2% 6%;
+  height: calc(85% - 5vw);
 }
 
 
@@ -65,16 +81,16 @@
   align-items: end;
   justify-content: center;
   width: 100%;
-  height: 94%;
+  height: 100%;
   margin: auto;
 }
 
 .leftBox {
   display: grid;
-  grid-template-columns: 1fr 0.1fr 3.5fr; /* 1:0.1:2 비율 */
+  grid-template-columns: 1fr 4fr; /* 1:0.1:2 비율 */
   background-color: white;
-  width: 96%;
-  height: 88%;
+  width: 100%;
+  height: 94%;
   border-radius: 1.5vw;
   align-items: center;
   justify-items: center; /* 그리드 아이템을 중앙에 정렬 */
@@ -91,7 +107,7 @@
   height: 94%;
   font-weight: bold;
   margin: auto;
-  gap: 10px;
+  gap: 1vh;
 }
 
 

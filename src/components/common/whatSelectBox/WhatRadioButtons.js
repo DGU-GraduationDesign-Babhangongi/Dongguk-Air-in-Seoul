@@ -29,7 +29,7 @@ const WhatCheckBoxes = ({ selectedValues, onSelect, borderColor = '#A5A5A5', bor
   return (
     <div 
       className={styles.checkboxGroup} 
-      style={{ borderColor, borderWidth, width }} // width 추가
+      style={{ borderColor, borderWidth }} // width 추가
     >
       {options.map((option, index) => (
         <label 
