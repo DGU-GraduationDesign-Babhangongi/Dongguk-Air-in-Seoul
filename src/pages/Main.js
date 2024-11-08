@@ -18,6 +18,12 @@ function Main() {
   const [loadingdata, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const [nickname, setNickname] = useState("");
+  useEffect(() => {
+    const savedNickname = localStorage.getItem("nickname");
+    setNickname(savedNickname || "");
+  }, []);
+
   const handleBuildingClick = (building, buildingInfo) => {
     if (building == "신공학관") {
       setIsFadingOut(true);
@@ -351,7 +357,7 @@ function Main() {
               isFadingOut ? styles.fadeOutMessage : ""
             }`}
           >
-            <h2>이수민 관리자님 환영합니다!</h2>
+            <h2>{nickname} 관리자님 환영합니다!</h2>
             <p>공기질을 확인할 강의실을 선택해주세요</p>
           </div>
         )}

@@ -4,19 +4,15 @@ import styles from "./Login.module.css";
 import Header from "../../components/common/Header/Header"; //
 
 const Login = () => {
-  const [id, setId] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const loginData = new URLSearchParams();
-    loginData.append("username", id);
-    loginData.append("password", password);
-
     const queryParams = new URLSearchParams({
-      username: id,
+      username: username,
       password: password,
     }).toString();
 
@@ -28,15 +24,19 @@ const Login = () => {
         method: "GET",
         headers: {
           Accept: "*/*",
+          "Content-Type": "application/json",
         },
       });
 
       if (response.ok) {
-        const data = await response.json();
-        const token = data.token; // 서버에서 받은 토큰
-        localStorage.setItem("authToken", token); // 토큰을 localStorage에 저장
-        alert("로그인 성공");
-        navigate("/"); // 메인 페이지로 이동
+        // const token = await response.text(); // 응답을 텍스트로 받아 바로 사용
+        const data = await response.text();
+        const token = data.token;
+        const nickname = data.nickname;
+        localStorage.setItem("authToken", token);
+        localStorage.setItem("nickname", nickname);
+        alert("로그인 성공! 관리자님 환영합니다.");
+        navigate("/");
       } else {
         alert("로그인 실패. 다시 시도하세요.");
       }
@@ -78,12 +78,12 @@ const Login = () => {
 
           <form onSubmit={handleSubmit} className={styles.loginForm}>
             <div className={styles.formGroup}>
-              <label htmlFor="id">Id</label>
+              <label htmlFor="username">Username</label>
               <input
-                type="id"
-                id="id"
-                value={id}
-                onChange={(e) => setId(e.target.value)}
+                type="username"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
                 className={styles.inputField}
               />
@@ -116,14 +116,6 @@ const Login = () => {
                 >
                   아이디 기억하기
                 </label>
-
-                <a
-                  href="/forgot-password"
-                  className={styles.forgotPassword}
-                  style={{ marginLeft: "180px", marginBottom: "16px" }}
-                >
-                  비밀번호를 잊었나요?
-                </a>
               </div>
             </div>
 
