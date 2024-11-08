@@ -58,8 +58,8 @@
 }
 
 .detailContainer {
-    width: 90%;
-    padding: 0% 5%;
+    width: 96%;
+    padding: 0% 2%;
     font-size: 4vw;
     color: #151515;
     font-weight: 400;
@@ -75,15 +75,15 @@
 }
 
 .bottomContainer {
-    width: 90%;
-    padding: 0% 5%;
+    width: 96%;
+    padding: 0% 2%;
     font-size: 4vw;
     color: #151515;
     font-weight: 400;
 }
 
 .whiteBox{
-    width: 80%;
+    width: 100%;
     margin: 3% 0;
     padding: 5% 10%;
     background-color: #FFFFFF;
