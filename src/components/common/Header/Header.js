@@ -7,17 +7,17 @@ const Header = () => {
   const GoToRoot = () => {
     navigate("/");
     window.location.reload();
-  }; //navigate 설정
+  };
 
   return (
-    <div style={{ height: "clamp(51px, 4vw, 160px)" }}>
+    <div className={styles.all}> {/* 전체 높이 설정 */}
       <header className={styles.header}>
         <img
           src={require("../../../assets/images/logo.png")}
           alt="logo"
           className={styles.logo}
-          style={{ cursor: "pointer" }} // 클릭 가능하게
-          onClick={GoToRoot} // 클릭 이벤트로 navigate 실행
+          style={{ cursor: "pointer" }}
+          onClick={GoToRoot}
         />
         <nav className={styles.nav}>
           <Link to="/Alarm" className={styles.navLink}>
