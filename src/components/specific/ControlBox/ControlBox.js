@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './ControlBox.module.css';
 import ToggleButton from '../../common/ToggleButton/ToggleButton';
 
-function ControlBox() {
+function ControlBox({title}) {
   // 여러 개의 ToggleButton 상태를 배열로 관리
   const [toggleStates, setToggleStates] = useState([false, false, false]);
 
@@ -19,9 +19,11 @@ function ControlBox() {
   };
 
   return (
+  <div className={styles.Container}> 
+    <div style={{ marginLeft: '5%' }}>{title}</div>
+
     <div className={styles.box}>
-
-
+          
       <div className={styles.table}>
         {toggleStates.map((state, index) => (
           <div key={index} className={styles.tableRow}>
@@ -37,7 +39,7 @@ function ControlBox() {
           </div>
         ))}
       </div>
-    </div>
+    </div></div>
   );
 }
 
