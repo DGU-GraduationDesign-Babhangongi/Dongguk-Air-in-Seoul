@@ -1,5 +1,5 @@
 :root {
-  --header-height: 7vh; /* 헤더 전체 높이 */
+  --header-height: 5vw; /* 헤더 전체 높이 */
 }
 
 .all {
@@ -10,7 +10,7 @@
   background-color: white;
   margin: 0% 2%;
   width: 96%;
-  height: 99%; /* 전체 높이에 맞추기 위해 100%로 설정 */
+  height: 99%; 
   display: flex;
   align-items: center; /* 세로 가운데 정렬 */
   padding: 0;
@@ -19,7 +19,7 @@
 }
 
 .nav {
-  width: 360px; /* 고정 너비로 설정 */
+  width: clamp(120px,36vw,450px); /* 고정 너비로 설정 */
   display: flex;
   align-items: center; /* 세로 가운데 정렬 */
   justify-content: space-around;
@@ -40,17 +40,18 @@
 }
 
 .logo {
-  width: 120px; /* 로고 고정 너비 */
+  width:  clamp(120px,16vw,12vw); /* 로고 고정 너비 */
   height: auto;
 }
 
 .icon {
-  width: 24px; /* 아이콘 고정 너비 */
+  width: clamp(10px, 2.8vw, 36px); /* 아이콘 고정 너비 */
   height: auto;
   margin-right: 8px;
 }
 
 .font {
+  font-size: clamp(10px,1.8vw,20px);
   display: flex;
   align-items: center; /* 세로 가운데 정렬 */
 }
