@@ -59,7 +59,7 @@
 
 .detailContainer {
     width: 96%;
-    padding: 0% 2%;
+    margin: auto;
     font-size: 4vw;
     color: #151515;
     font-weight: 400;
@@ -76,7 +76,7 @@
 
 .bottomContainer {
     width: 96%;
-    padding: 0% 2%;
+    margin: auto;
     font-size: 4vw;
     color: #151515;
     font-weight: 400;
