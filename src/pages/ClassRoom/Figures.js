@@ -68,16 +68,22 @@ function Figures() {
           <div className={styles.bottom}>
             <div className={styles.leftContainer}>
               <div className={styles.leftBox}>
-                <div className={styles.select}>
-                  <PeriodDropdown width='100%' height='clamp(10px, 5vw, 56px)' onSelect={handlePeriodSelect} />
-                  <WhatCheckBoxes
-                    width='100%'
-                    selectedValues={selectedValues}
-                    onSelect={handleCheckboxSelect}
-                    borderColor="#A5A5A5"
-                    borderWidth="2px"
-                  />
-                </div>
+              <div className={styles.select}>
+  <div style={{ width: '100%' }}>
+    <PeriodDropdown height='clamp(10px, 5vw, 56px)' onSelect={handlePeriodSelect} />
+  </div>
+
+  <div style={{ width: '100%' }}>
+    <WhatCheckBoxes
+      selectedValues={selectedValues}
+      onSelect={handleCheckboxSelect}
+      borderColor="#A5A5A5"
+      borderWidth="2px"
+    />
+  </div>
+</div>
+
+                <hr className={styles.verticalLine} />
                 <LineChart width='100%' selectedValues={selectedValues} highlightedIndex={highlightedIndex} classRoom={selectedOption} period={selectedValue} />
               </div>
             </div>

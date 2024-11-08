@@ -13,8 +13,8 @@ const PeriodDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px'
   const customStyles = {
     control: (provided) => ({
       ...provided,
-      width: width, // 너비 설정
-      height: height, // 높이 설정
+      width: '100%', // 부모 요소의 100% 너비를 차지하도록 설정
+      height: height,
       borderRadius: '10px',
       borderColor: borderColor,
       borderWidth: borderWidth,
@@ -22,8 +22,7 @@ const PeriodDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px'
       fontSize: 'clamp(10px, 1vw, 32px)',
       fontWeight: 'bold',
       textAlign: 'center',
-      margin: '0',
-      padding: '0',
+      margin: '0', // margin을 0으로 설정하여 불필요한 여백 제거
     }),
     placeholder: (provided) => ({
       ...provided,
@@ -60,12 +59,12 @@ const PeriodDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px'
   };
 
   return (
-    <Select 
+    <Select
       options={options}
       onChange={option => onSelect(option.value)}
       styles={customStyles}
       placeholder={<span className={styles.customPlaceholder}>기간 선택</span>}
-      className={styles.NEBDropdown}
+      className={styles.NEBDrpdown}
     />
   );
 };
