@@ -4,31 +4,28 @@ import moment from 'moment';
 import Header from '../../components/common/Header/Header';
 import SideBar from '../../components/common/SideBar/SideBar';
 import styles from '../../assets/styles/Log.module.css';
+import API from '../../API/api';
 
-function Alarm() {
-  const [selectedRoom, setSelectedRoom] = useState('3173');
+function Log() {
+  const [selectedRoom, setSelectedRoom] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [activeTab, setActiveTab] = useState('온도');
   const [sensorData, setSensorData] = useState([]);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true); // 데이터가 더 있는지 확인하는 상태 추가
   const observerRef = useRef();
 
   const sensorList = [
-    { id: 2, name: "6144", sensorId: "0C:7B:C8:FF:55:5D" },
-    { id: 3, name: "6119", sensorId: "0C:7B:C8:FF:56:8A" },
-    { id: 4, name: "5147", sensorId: "0C:7B:C8:FF:5B:8F" },
-    { id: 5, name: "5145", sensorId: "0C:7B:C8:FF:5C:C8" },
-    { id: 6, name: "4142", sensorId: "0C:7B:C8:FF:57:5A" },
-    { id: 7, name: "3173", sensorId: "0C:7B:C8:FF:5B:06" },
-    { id: 8, name: "3115", sensorId: "0C:7B:C8:FF:56:F1" }
+    { id: 1, name: "3115", sensorId: "0C:7B:C8:FF:56:F1" },
+    { id: 2, name: "3173", sensorId: "0C:7B:C8:FF:5B:06" },
+    { id: 3, name: "4142", sensorId: "0C:7B:C8:FF:57:5A" },
+    { id: 4, name: "5145", sensorId: "0C:7B:C8:FF:5C:C8" },
+    { id: 5, name: "5147", sensorId: "0C:7B:C8:FF:5B:8F" },
+    { id: 6, name: "6119", sensorId: "0C:7B:C8:FF:56:8A" },
+    { id: 7, name: "6144", sensorId: "0C:7B:C8:FF:55:5D" },
   ];
-
-  const getSensorId = () => {
-    const sensor = sensorList.find((item) => item.name === selectedRoom);
-    return sensor ? sensor.sensorId : null;
-  };
 
   const getSensorType = () => {
     switch (activeTab) {
@@ -42,32 +39,31 @@ function Alarm() {
   };
 
   const fetchSensorData = async () => {
-    const sensorId = getSensorId();
     const sensorType = getSensorType();
 
-    if (sensorId && sensorType) {
+    if (sensorType && selectedRoom) {
       try {
         setLoading(true);
-        console.log("Fetching data with dates:", startDate, endDate); // 확인용 로그
-        const response = await axios.get(
-          `https://donggukseoul.com/api/sensorData/${encodeURIComponent(sensorId)}`,
-          {
-            params: {
-              sensorType,
-              sortBy: 'TIMESTAMP',
-              order: 'DESC',
-              page: page,
-              size: 10,
-              startDate: startDate ? moment(startDate).toISOString() : null,
-              endDate: endDate ? moment(endDate).toISOString() : null,
-            },
-          }
-        );
-        if (page === 0) {
-          setSensorData(response.data.data || []);
+
+        const encodedBuilding = encodeURIComponent('신공학관');
+        const encodedStartDate = startDate ? encodeURIComponent(moment(startDate).format('YYYY-MM-DDTHH:mm:ss')) : null;
+        const encodedEndDate = endDate ? encodeURIComponent(moment(endDate).format('YYYY-MM-DDTHH:mm:ss')) : null;
+
+        const url = `/api/sensorData/classroom/betweenDates?sensorTypes=${sensorType}&building=${encodedBuilding}&name=${selectedRoom}&startDate=${encodedStartDate}&endDate=${encodedEndDate}&sortBy=TIMESTAMP&order=DESC&page=${page}&size=10`;
+        
+        const response = await API.get(url);
+        const sensorDataKey = sensorType;
+
+        if (response.data[sensorDataKey] && response.data[sensorDataKey].data) {
+          const fetchedData = response.data[sensorDataKey].data;
+
+          // 데이터를 추가하고 페이지를 로드한 후, 데이터가 부족하면 hasMore을 false로 설정
+          setSensorData((prevData) => (page === 0 ? fetchedData : [...prevData, ...fetchedData]));
+          setHasMore(fetchedData.length === 10); // 데이터가 10개 미만이면 더 이상 데이터가 없음
         } else {
-          setSensorData((prevData) => [...prevData, ...response.data.data || []]);
+          setHasMore(false); // 데이터를 못 가져오면 더 이상 데이터가 없는 것으로 간주
         }
+
         setLoading(false);
       } catch (error) {
         console.error("Error fetching sensor data:", error);
@@ -76,55 +72,64 @@ function Alarm() {
     }
   };
 
-  // 날짜 범위 또는 필터 변경 시 데이터를 초기화하고 페이지를 0으로 설정
   useEffect(() => {
-    setSensorData([]); // 기존 데이터 초기화
-    setPage(0); // 페이지를 0으로 초기화하여 새로운 데이터를 불러옴
+    if (startDate && endDate && selectedRoom) {
+      setSensorData([]);
+      setPage(0);
+      setHasMore(true); // 새로운 조회를 시작할 때 hasMore 초기화
+      fetchSensorData();
+    }
   }, [selectedRoom, activeTab, startDate, endDate]);
 
   useEffect(() => {
-    fetchSensorData();
+    if (page > 0 && hasMore) fetchSensorData(); // hasMore이 true일 때만 데이터 가져오기
   }, [page]);
 
-  // 무한 스크롤을 위한 IntersectionObserver 설정
   const lastElementRef = useCallback((node) => {
-    if (loading) return;
+    if (loading || !hasMore) return; // 로딩 중이거나 hasMore이 false면 observer 중지
     if (observerRef.current) observerRef.current.disconnect();
 
     observerRef.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        setPage((prevPage) => prevPage + 1); // 페이지 증가
+        setPage((prevPage) => prevPage + 1);
       }
     });
 
     if (node) observerRef.current.observe(node);
-  }, [loading]);
+  }, [loading, hasMore]);
 
   const getBorderColor = (value, type) => {
     switch (type) {
       case '온도':
-        if (value <= 0 || value >= 30) return 'red';
-        if (value <= 10 || value >= 25) return 'orange';
-        return 'green';
-      case 'PM2.5':
-        if (value <= 30) return 'blue';
-        if (value <= 80) return 'green';
-        if (value <= 150) return 'orange';
-        return 'red';
-      case '소음':
-        if (value <= 20) return 'blue';
-        if (value <= 60) return 'green';
-        if (value <= 100) return 'orange';
-        return 'red';
+        if (value < 16.5 || value > 27.5) return 'red';
+        if ((value >= 16.5 && value < 17.6) || (value > 26.4 && value <= 27.5)) return 'orange';
+        if ((value >= 17.6 && value < 18.7) || (value > 25.3 && value <= 26.4)) return '#FFFA00';
+        if ((value >= 18.7 && value < 19.8) || (value > 24.2 && value <= 25.3)) return 'green';
+        return 'blue';
       case '습도':
-        if (value < 30 || value > 80) return 'red';
-        if (value >= 40 && value <= 60) return 'green';
-        return 'orange';
+        if (value < 10 || value > 90) return 'red';
+        if ((value >= 10 && value < 20) || (value > 80 && value <= 90)) return 'orange';
+        if ((value >= 20 && value < 30) || (value > 70 && value <= 80)) return '#FFFA00';
+        if ((value >= 30 && value < 40) || (value > 60 && value <= 70)) return 'green';
+        return 'blue';
       case 'TVOC':
-        if (value <= 100) return 'blue';
-        if (value <= 300) return 'green';
-        if (value <= 500) return 'orange';
-        return 'red';
+        if (value > 10000) return 'red';
+        if (value > 3000 && value <= 10000) return 'orange';
+        if (value > 1000 && value <= 3000) return '#FFFA00';
+        if (value > 300 && value <= 1000) return 'green';
+        return 'blue';
+      case 'PM2.5':
+        if (value > 64) return 'red';
+        if (value > 53 && value <= 64) return 'orange';
+        if (value > 41 && value <= 53) return '#FFFA00';
+        if (value > 23 && value <= 41) return 'green';
+        return 'blue';
+      case '소음':
+        if (value > 80) return 'red';
+        if (value > 70 && value <= 80) return 'orange';
+        if (value > 60 && value <= 70) return '#FFFA00';
+        if (value > 50 && value <= 60) return 'green';
+        return 'blue';
       default:
         return 'black';
     }
@@ -142,6 +147,7 @@ function Alarm() {
             <div className={styles.filterItem}>
               <label>강의실: </label>
               <select value={selectedRoom} onChange={(e) => setSelectedRoom(e.target.value)}>
+                <option value="" disabled>강의실 선택</option>
                 {sensorList.map((sensor) => (
                   <option key={sensor.id} value={sensor.name}>{sensor.name}</option>
                 ))}
@@ -153,8 +159,7 @@ function Alarm() {
                 type="datetime-local"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-              />{' '}
-              -{' '}
+              />
               <input
                 type="datetime-local"
                 value={endDate}
@@ -186,9 +191,9 @@ function Alarm() {
                 style={{
                   borderColor: getBorderColor(getDataValue(data), activeTab),
                 }}
-                ref={index === sensorData.length - 1 ? lastElementRef : null} // 마지막 요소에 ref 추가
+                ref={index === sensorData.length - 1 ? lastElementRef : null}
               >
-                <span>{`[${moment(data.timestamp).format("YYYY.MM.DD A hh:mm")}]`}</span>
+                <span>{`[${moment(data.timestamp).format("YYYY-MM-DDTHH:mm:ss")}]`}</span>
                 <span>{`${selectedRoom} 강의실`}</span>
                 <span>{`${activeTab}: ${getDataValue(data)}`}</span>
               </div>
@@ -201,4 +206,4 @@ function Alarm() {
   );
 }
 
-export default Alarm;
+export default Log;
