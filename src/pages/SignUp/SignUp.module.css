@@ -42,17 +42,21 @@
   margin-bottom: 60px;
 }
 
+.inputspec {
+  width: 100%;
+}
+
 .smallButton {
   position: absolute;
   right: 0.4%;
   top: 50%;
-  transform: translateY(-80%);
+  transform: translateY(-81%);
   height: 58%;
   width: 20%;
   border: 1px gray;
   border-radius: 4px;
   background-color: #ffe2b2;
-  font-size: 15px;
+  font-size: 13px;
   cursor: pointer;
   color: #535353;
   display: flex;

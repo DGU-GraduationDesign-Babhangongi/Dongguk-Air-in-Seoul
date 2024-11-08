@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [id, setId] = useState("");
+  const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const [responsibility, setResponsibility] = useState("");
   const [securityCode, setSecurityCode] = useState("");
@@ -22,7 +22,7 @@ const SignUp = () => {
       username: username,
       password: password,
       email: email,
-      phoneNumber: id, // API에 phoneNumber로 매핑
+      nickname: nickname,
       areaOfResponsibility: responsibility,
       securityCode: securityCode,
       alarmStatus: alarmStatus,
@@ -65,39 +65,55 @@ const SignUp = () => {
           <p className={styles.signupText}>아래 정보를 모두 입력해주세요. </p>
           <input
             type="text"
-            placeholder="이름 Username"
+            placeholder="아이디  Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            style={{
+              position: "relative",
+              width: "100%",
+            }}
           />
-          <input
-            type="text"
-            placeholder="사용할 아이디 Id"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
-            required
-          />
+
           <input
             type="password"
-            placeholder="비밀번호 Password"
+            placeholder="비밀번호  Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            style={{
+              position: "relative",
+              width: "100%",
+            }}
+          />
+          <input
+            type="text"
+            placeholder="사용자 이름  Nickname"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+            required
+            style={{
+              position: "relative",
+              width: "100%",
+            }}
           />
           {/* <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}></div> */}
           <div
             style={{
               position: "relative",
               width: "100%",
-              marginBottom: "10px",
             }}
           >
             <input
               type="email"
-              placeholder="이메일 Email"
+              placeholder="이메일  Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              style={{
+                position: "relative",
+                width: "100%",
+              }}
             />
             <button type="button" className={styles.smallButton}>
               코드 받기
@@ -107,14 +123,17 @@ const SignUp = () => {
             style={{
               position: "relative",
               width: "100%",
-              marginBottom: "10px",
             }}
           >
             <input
               type="text"
-              placeholder="Security code"
+              placeholder="보안 코드  Security code"
               value={securityCode}
               onChange={(e) => setSecurityCode(e.target.value)}
+              style={{
+                position: "relative",
+                width: "100%",
+              }}
             />
             <button type="button" className={styles.smallButton}>
               코드 인증
@@ -123,9 +142,13 @@ const SignUp = () => {
 
           <input
             type="text"
-            placeholder="관할구역 Area of Responsibility"
+            placeholder="관할구역  Area of Responsibility"
             value={responsibility}
             onChange={(e) => setResponsibility(e.target.value)}
+            style={{
+              position: "relative",
+              width: "100%",
+            }}
           />
 
           <div className={styles.extraOptions}>
