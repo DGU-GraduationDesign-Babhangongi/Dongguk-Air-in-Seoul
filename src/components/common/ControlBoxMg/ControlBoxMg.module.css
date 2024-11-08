@@ -15,7 +15,9 @@
   }
   
   .table {
-    width: 100%;
+    width: 200px; /* ControlBox 너비를 고정된 크기로 설정하여 넓게 표시 */
+    max-width: 100%; /* 화면 크기에 맞춰 너비가 확장되도록 설정 */
+    padding: 10px; /* 여백 추가 */
   }
   
   .tableRow {

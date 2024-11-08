@@ -67,7 +67,10 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId }) {
             <div className={styles.sensorItem}>
               <img src={require('../../../assets/images/AirQualityIndicator/TVOC.png')} alt="TVOC Icon" />
               <span>TVOC</span>
-              <span>{loading ? '--' : sensorData.TVOC?.value}</span>
+              <span>
+                {loading ? '--' : `${sensorData.TVOC?.value}`}
+                <span className={styles.unit}>㎍/m³</span>
+              </span>
             </div>
 
             <div className={styles.sensorItem}>
