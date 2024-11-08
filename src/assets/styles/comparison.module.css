@@ -9,17 +9,23 @@
   align-items: center;
   justify-items: center; /* 수평 정렬 (grid 기준) */
   padding: 1% 2%;
-  margin: auto;
+  margin: auto; 
   font-size: clamp(10px, 2vw, 24px);
   font-weight: bold;
 }
 
+.mainContent {
+  display: flex;  
+  width: 100%;
+  height: calc(100vh - 5vw);
+  background-color: #F0F0F0;
+}
 
 .bottom {
     padding: 2% 4%;
     background-color: #F0F0F0;
     height: 84%;
-    width: 92%;
+    width: 100%;
     min-height: 350px;
   }
   

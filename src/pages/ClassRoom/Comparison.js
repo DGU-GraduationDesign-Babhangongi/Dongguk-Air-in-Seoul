@@ -10,7 +10,7 @@ import bottomStyles from '../../assets/styles/comparison.module.css';
 import LineChart from '../../components/specific/charts/lineChartCompare';
 
 const buildingName = "신공학관";
-
+ 
 function Comparison() {
   const [selectedClassroomA, setSelectedClassroomA] = useState('');
   const [selectedClassroomB, setSelectedClassroomB] = useState('');
@@ -43,7 +43,7 @@ function Comparison() {
   return (
     <div>
       <Header />
-      <div style={{ display: 'flex', width: '100%' }}>
+      <div className={styles.mainContent}>
         <SideBar i='4' />
         <div style={{ width: '100%' }}>
           <div className={styles.top}>
