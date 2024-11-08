@@ -59,14 +59,16 @@ const LineChartComponent = ({ selectedAttribute, classroomA, classroomB, width, 
   return (
     <div style={{ width: width, height: height }}>
       {loading && <div style={{marginLeft:'5%'}}>로딩 중...</div>}
-      {data.length === 0 && !loading && <div style={{marginLeft:'5%'}}>기간과 강의실을 선택해주세요.</div>}
+      {data.length === 0 && !loading && <div style={{fontSize:'16px',marginLeft:'5%'}}>기간과 강의실을 선택해주세요.</div>}
  
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+      <ResponsiveContainer width="100%" height="95%">
+        <LineChart data={data} margin={{ top: 0, right: 30, left: 20, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" interval={0} axisLine={false} tickLine={false} tick={false} />
           <Tooltip />
-          <Legend />
+          <Legend
+  wrapperStyle={{ fontSize: '1.6vw' }} // 글씨 크기 조절
+/>
 
           <Line
             type="natural"

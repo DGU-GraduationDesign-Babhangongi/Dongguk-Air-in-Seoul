@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styles from './ControlBox.module.css';
 import ToggleButton from '../ToggleButton/ToggleButton';
+import { IoMdSettings } from "react-icons/io";
 
-function ControlBox() {
+function ControlBox({ color }) {
   // 여러 개의 ToggleButton 상태를 배열로 관리
   const [toggleStates, setToggleStates] = useState([false, false, false]);
 
@@ -19,19 +20,14 @@ function ControlBox() {
   };
 
   return (
-    <div className={styles.box}>
+    <div className={styles.box} style={{ border: '1.5px solid'+ color }} >
       <div className={styles.top}>
-        <img
-          src={require('../../../assets/images/settings/blue.png')}
-          alt="logo"
-          className={styles.topImg}
-        />
+        <IoMdSettings className={styles.topImg} style={{ color: color }} /> {/* color 속성 직접 적용 */}
       </div>
 
       <div className={styles.table}>
         {toggleStates.map((state, index) => (
           <div key={index} className={styles.tableRow}>
-    
             {deviceNames[index]} 
 
             <div className={`${styles.tableCell} `}>
