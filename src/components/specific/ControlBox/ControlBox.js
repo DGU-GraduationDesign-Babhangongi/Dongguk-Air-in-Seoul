@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from './ControlBox.module.css';
 import ToggleButton from '../../common/ToggleButton/ToggleButton';
 
+
 function ControlBox({title}) {
   // 여러 개의 ToggleButton 상태를 배열로 관리
   const [toggleStates, setToggleStates] = useState([false, false, false]);

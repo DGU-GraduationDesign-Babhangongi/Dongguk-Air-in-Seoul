@@ -2,24 +2,46 @@ import React, { useState } from 'react';
 import NEBDropdown from '../../figures/NEBDropdown/NEBDropdown';
 import AirQualityIndicator from '../../../common/AirQualityIndicator/AirQualityIndicator';
 import styles from '../StatusBox/statusBox.module.css';
+import { FaStar } from "react-icons/fa";
 
 const buildingName = "신공학관";
 
 function StatusBox({ id, color, onSelect }) { 
   const [selectedOption, setSelectedOption] = useState('');
+  const [isFavorited, setIsFavorited] = useState(false); // 즐겨찾기 상태 관리
 
   const handleSelect = (value) => {
     setSelectedOption(value);
     onSelect(value); // 상위 컴포넌트에 선택된 값을 전달
+  };
+  // 즐겨찾기 버튼 클릭 시 색상 변경 함수
+  const handleFavoriteClick = () => {
+    setIsFavorited((prev) => !prev); // 상태를 반전시켜 색상 변경
+    favoriteFunction(); // 클릭 시 호출할 함수
+  };  
+  
+  // 실제로 동작할 함수 (실제 동작은 필요 없으므로 빈 함수로 설정)
+  const favoriteFunction = () => {
+    console.log('즐겨찾기 클릭됨');
   };
 
   return (
     <div className={styles.box} style={{ border: `1.5px solid ${color}` }}>
       <div style={{ width: 'clamp(10px, 36%, 144px)' }}>
         <div className={styles.titleTop}>
-          <div>비교 강의실 {id}</div>
-          <img src={require('../../../../assets/images/star.png')} alt="building" className={styles.titleTopImg} />
-        </div>
+          <div style={{paddingRight: '0.1vw'}}>비교 강의실 {id}</div>
+          <FaStar 
+                  onClick={handleFavoriteClick} // 클릭 시 색상 변경 및 함수 호출
+                  style={{ 
+                    width:'10%',
+                    color: isFavorited ? '#FFD700' : '#A5A5A5', // 노란색(즐겨찾기됨)과 회색(즐겨찾기 안됨) 사이 변경
+                    cursor: 'pointer', // 커서를 포인터로 변경하여 클릭 가능하게 보이게
+                    transition: 'color 0.3s ease', // 색상 변경 시 부드러운 전환 효과 추가
+                    stroke: '#000000',    // 테두리 색상
+                    strokeWidth: 80,     // 테두리 두께
+                    
+                  }} 
+                />    </div>
         <div className={styles.title}>
           <img src={require('../../../../assets/images/building.png')} alt="building" className={styles.titleImg} />
           <div>{buildingName}</div>

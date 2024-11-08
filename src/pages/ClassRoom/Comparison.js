@@ -10,7 +10,7 @@ import bottomStyles from '../../assets/styles/comparison.module.css';
 import LineChart from '../../components/specific/charts/lineChartCompare';
 
 const buildingName = "신공학관";
- 
+
 function Comparison() {
   const [selectedClassroomA, setSelectedClassroomA] = useState('');
   const [selectedClassroomB, setSelectedClassroomB] = useState('');
@@ -46,29 +46,27 @@ function Comparison() {
       <div className={styles.mainContent}>
         <SideBar i='4' />
         <div style={{ width: '100%' }}>
-          <div className={styles.top}>
-            <ControlBox />
+          <div className={styles.top2}>
+            <ControlBox width='1vw' color='#1FE5A3' height='90%' />
             <StatusBox 
-  id={1}
-  color='#1FE5A3' 
-  onSelect={handleSelectClassroomA} 
-/>
-<StatusBox 
-  id={2} 
-  color='#1A9AFB' 
-  onSelect={handleSelectClassroomB} 
-/>
-
-
-            <ControlBox />
+              id={1}
+              color='#1FE5A3' 
+              onSelect={handleSelectClassroomA} 
+            />
+            <div style={{fontSize: '2vw', fontWeight: 'bold', padding: '0 1%'}}>VS</div>
+            <StatusBox 
+              id={2} 
+              color='#1A9AFB' 
+              onSelect={handleSelectClassroomB} 
+            />
+            <ControlBox width='60%' height='auto' color='#1A9AFB'  />
           </div>
           <div className={bottomStyles.bottom}>
-            {/*<div>2024.09.03 PM 04:59</div>*/}
             <div className={bottomStyles.box}>
-              <div>
+              <div style={{fontSize: '1.5vw', fontWeight: 'bold'}}>
                 period
                 <PeriodDropdown 
-                  width='clamp(10px, 10vw, 140px)' 
+                  width='clamp(10px, 10%, 140px)' 
                   height='clamp(10px, 5vw, 56px)' 
                   onSelect={handleSelectOption1} 
                 />
@@ -82,8 +80,8 @@ function Comparison() {
               </div>
               <hr style={{ margin: '0 10px', border: '1px dashed #FFB841', filter: 'blur(2px)', height: 'clamp(10px, 90%, 1000px)', backgroundColor: '#FFB841', borderLeft: 'none' }} />
               <LineChart 
-                width='58vw' 
-                height='80%' 
+                width='100%' 
+                height='95%' 
                 period={selectedOption1}
                 selectedAttribute={selectedOption2} 
                 classroomA={selectedClassroomA} 

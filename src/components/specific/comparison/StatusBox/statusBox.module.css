@@ -11,7 +11,7 @@
 .box{
   background-color: white;
   width: clamp(10px, 24vw, 400px);
-  height: 90%;
+  height: 100%;
   aspect-ratio: 10 / 1;
   border-radius: clamp(0.5px, 2vw, 15px);
   border: 1px solid BLUE;
