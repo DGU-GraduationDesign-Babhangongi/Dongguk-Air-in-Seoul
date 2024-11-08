@@ -1,119 +1,120 @@
 .card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    border: 2px solid #00FF00;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: white;
-    max-width: 600px;
-
-  }
-  .AllSection{
-    display: flex;
-    flex-direction: column;
-  }
-
-  h3{
-    margin-left: 5px;
-    margin-right: 5px;
-    font-size: 16px;
-  }
-
-  .SecondSection{
-    display: flex;
-    flex-direction: row; /* 가로 배열 */
-    align-items: center; /* 세로 정렬 중앙 */
-  }
-
-  .leftSection {
-    display: flex;
-    justify-content: flex-start; /* 상단에 고정 */
-    align-items: center; /* 세로 정렬 중앙 */
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border: 2px solid #00FF00;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  max-width: 600px;
 }
 
-  
-  .icon img {
-    width: 40px;
-    height: 40px;
-  }
-  
-  .roomInfo {
-    display: flex;
-    justify-content: flex-start; /* 상단에 위치 */
-    margin: 0;
-    font-size: 1.5rem;
+.AllSection {
+  display: flex;
+  flex-direction: column;
 }
 
-  
-  .roomInfo h2 {
-    font-size: 16px;
-  }
-  
-  .star img {
-    width: 20px;
-    height: 20px;
-    margin-left: 5px;
-  }
-  
-  .sensorSection {
-    display: flex;
-    flex-direction: column;
-    margin-right: 20px;
-  }
-  
-  .sensorItem {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    margin-left: 10px;
-  }
-  
-  .sensorItem img {
-    width: 15px;
-    height: 15px;
-    margin-right: 10px;
-  }
-  
-  .sensorItem span {
-    display: flex;
-    align-items: center;
-    margin-right: 10px;
-    width: 50px;
-    font-size: 14px;
-  }
-  
-  .statusDot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: #00FF00;
-  }
-  
-  .controlSection {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .controlSection div {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-  }
-  
-  .memoEdit {
-    display: flex;
-    align-items: center;
-    font-size: 0.8rem;
-    color: gray;
-  }
-  
-  .memoEdit img {
-    margin-left: 100px;
-    width: 15px;
-    height: 15px;
-    margin-right: 5px;
-  }
-  
+h3 {
+  margin-left: 5px;
+  margin-right: 5px;
+  font-size: 16px;
+}
+
+.SecondSection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.leftSection {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.icon img {
+  width: 40px;
+  height: 40px;
+}
+
+.roomInfo {
+  display: flex;
+  justify-content: flex-start;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.roomInfo h2 {
+  font-size: 16px;
+}
+
+.star img {
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+}
+
+.sensorSection {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+}
+
+.sensorItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
+.sensorItem img {
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
+}
+
+.sensorItem span {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  white-space: nowrap; /* 줄바꿈 방지 */
+  font-size: 14px;
+}
+
+.unit {
+  margin-left: 2px; /* 수치와 단위 사이의 여백 */
+}
+
+.statusDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #00FF00;
+}
+
+.controlSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.controlSection div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.memoEdit {
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  color: gray;
+}
+
+.memoEdit img {
+  margin-left: 100px;
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+}
