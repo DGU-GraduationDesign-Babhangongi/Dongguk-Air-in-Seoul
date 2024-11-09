@@ -3,10 +3,10 @@ import Select from 'react-select';
 import styles from './periodDropdown.module.css';
 
 const options = [
-  { value: '12', label: '1hour' },
-  { value: '289', label: '1day' },
-  { value: '2010', label: '1week' },
-  { value: '5000', label: '1month' },
+  { value: '1', label: '1hour' },
+  { value: '24', label: '1day' },
+  { value: '168', label: '1week' },
+  { value: '720', label: '1month' },
 ];
 
 const PeriodDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px', width = '100%', height = 'auto' }) => {
