@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import NEBDropdown from '../../figures/NEBDropdown/NEBDropdown';
 import AirQualityIndicator from '../../../common/AirQualityIndicator/AirQualityIndicator';
 import styles from '../StatusBox/statusBox.module.css';
-import { FaStar } from "react-icons/fa";
+import { FaRegStar, FaStar } from "react-icons/fa";
 
 const buildingName = "신공학관";
 
@@ -30,18 +30,37 @@ function StatusBox({ id, color, onSelect }) {
       <div style={{ width: 'clamp(10px, 36%, 144px)' }}>
         <div className={styles.titleTop}>
           <div style={{paddingRight: '0.1vw'}}>비교 강의실 {id}</div>
-          <FaStar 
-                  onClick={handleFavoriteClick} // 클릭 시 색상 변경 및 함수 호출
-                  style={{ 
-                    width:'10%',
-                    color: isFavorited ? '#FFD700' : '#A5A5A5', // 노란색(즐겨찾기됨)과 회색(즐겨찾기 안됨) 사이 변경
-                    cursor: 'pointer', // 커서를 포인터로 변경하여 클릭 가능하게 보이게
-                    transition: 'color 0.3s ease', // 색상 변경 시 부드러운 전환 효과 추가
-                    stroke: '#000000',    // 테두리 색상
-                    strokeWidth: 80,     // 테두리 두께
-                    
-                  }} 
-                />    </div>
+          <div style={{ position: 'relative', display: 'inline-block', width: 'clamp(4px, 1vw, 16px)' }}>
+
+  {/* 메인 아이콘 */}
+  <FaStar
+    size={'68%'} // 실제 아이콘 크기
+    color={isFavorited ? '#FFD700' : '#A5A5A5'} // 메인 색상
+    onClick={handleFavoriteClick}
+    style={{
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)', // 중앙으로 이동
+      cursor: 'pointer',
+      transition: 'color 0.3s ease',
+      zIndex: 1,
+    }}
+  />  {/* 테두리 역할을 하는 아이콘 */}
+  <FaRegStar
+    size={'100%'} // 테두리 크기, 부모 요소의 크기에 맞춰 설정
+    color="#000000" // 테두리 색상
+    style={{
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)', // 중앙으로 이동
+      zIndex: 0,
+    }}
+  />
+</div>
+
+  </div>
         <div className={styles.title}>
           <img src={require('../../../../assets/images/building.png')} alt="building" className={styles.titleImg} />
           <div>{buildingName}</div>
