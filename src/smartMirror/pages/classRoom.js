@@ -11,10 +11,13 @@ function ClassRoom() {
   const location = useLocation();
   const navigate = useNavigate();
   const Id = location.pathname.split('/').pop();
-  
+
   // SensorDataContext에서 fetchData 및 setSelectedSensorName 호출
   const { data: sensorData, setSelectedSensorName, loading, error } = useContext(SensorDataContext);
-  
+  const handleClick = (id) => {
+    navigate(`/smartMirror/ClassRoom/${id}`); // 클릭 시 페이지 이동, id를 URL의 일부로 사용
+  };
+
   useEffect(() => {
     if (Id) {
       setSelectedSensorName(Id);
@@ -23,8 +26,8 @@ function ClassRoom() {
 
   const classRoomIds = ['3115', '3173', '4142', '5145', '5147', '6119', '6144'];
   const currentIndex = classRoomIds.indexOf(Id);
-  const previousId = currentIndex > 0 ? classRoomIds[currentIndex - 1] : classRoomIds[classRoomIds.length - 1];
-  const nextId = currentIndex < classRoomIds.length - 1 ? classRoomIds[currentIndex + 1] : classRoomIds[0];
+  const previousId = classRoomIds[currentIndex > 0 ? currentIndex - 1 : classRoomIds.length - 1];
+  const nextId = classRoomIds[currentIndex < classRoomIds.length - 1 ? currentIndex + 1 : 0];
 
   const coordinates = {
     '3115': { x: '-2.1', y: '29' },
@@ -100,7 +103,14 @@ function ClassRoom() {
             src={require("../../assets/images/smartmirror/leftVector.png")}
             alt="Previous"
             style={{ width: '8%', margin: '0 8%' }}
+            onClick={() => {
+              console.log('Previous clicked');
+              navigate(`/smartMirror/ClassRoom/${previousId}`);
+              }}
           />
+
+
+
           <ClassRoomButton i={previousId} /> 
         </div>
         <div style={{ display: "flex", alignItems: 'center', justifyContent: 'end' }}>
@@ -109,6 +119,10 @@ function ClassRoom() {
             src={require("../../assets/images/smartmirror/rightVector.png")}
             alt="Next"
             style={{ width: '8%', margin: '0 8%' }}
+            onClick={() => {
+              console.log('Previous clicked');
+              navigate(`/smartMirror/ClassRoom/${nextId}`);
+              }}
           />
         </div>
       </div>
@@ -143,45 +157,36 @@ function ClassRoom() {
           Tips
         </div>
         <TipsSlide contents={sensorData.AQMScores}/>
-        <div className={styles.whiteBox} style={{fontSize: '3vw', display:'flex',  alignItems: 'center',     justifyContent: 'space-between'}}>
-          <div style={{width: '128%'}}> 
-          종합설계2 밥한공기 임시운영 중입니다.
-          <div style={{
-            display: "flex", width: '100%',
-            alignItems: 'center',
-            justifyContent: 'space-around',
-            marginTop: '2%'
-          }}>
-            <img
-              src={require("../../assets/images/smartmirror/personIcons/person1.png")}
-              alt="person1"
-              style={{ width: '12vw' }}
-            />
-            <img
-              src={require("../../assets/images/smartmirror/personIcons/person2.png")}
-              alt="person2"
-              style={{ width: '12vw' }}
-            />
-            <img
-              src={require("../../assets/images/smartmirror/personIcons/person3.png")}
-              alt="person3"
-              style={{ width: '12vw' }}
-            />
-            <img
-              src={require("../../assets/images/smartmirror/personIcons/person4.png")}
-              alt="person4"
-              style={{ width: '12vw' }}
-            />
+        <div className={styles.whiteBox} style={{ fontSize: '3vw', display:'flex',  alignItems: 'center', justifyContent: 'space-between'}}>
+          <div style={{ width: '128%' }}> 
+            종합설계2 밥한공기 임시운영 중입니다.
+            <div style={{
+              display: "flex", width: '100%',
+              alignItems: 'center',
+              justifyContent: 'space-around',
+              marginTop: '2%'
+            }}>
+              <img
+                src={require("../../assets/images/smartmirror/personIcons/person1.png")}
+                alt="person1"
+                style={{ width: '12vw' }}
+              />
+              <img
+                src={require("../../assets/images/smartmirror/personIcons/person2.png")}
+                alt="person2"
+                style={{ width: '12vw' }}
+              />
+              <img
+                src={require("../../assets/images/smartmirror/personIcons/person3.png")}
+                alt="person3"
+                style={{ width: '12vw' }}
+              />
+              <img
+                src={require("../../assets/images/smartmirror/personIcons/person4.png")}
+                alt="person4"
+                style={{ width: '12vw' }}
+              />
             </div>
-          </div>
-          <div style={{ width: '5vw' }}></div>
-          <div style={{ fontSize: '2.5vw'}}>
-          문의사항 및 피드백
-          <img
-              src={require("../../assets/images/smartmirror/QR.png")}
-              alt="QR"
-              style={{ width: '16vw' , aspectRatio: '1/1'}}
-          />
           </div>
         </div>
       </div>
