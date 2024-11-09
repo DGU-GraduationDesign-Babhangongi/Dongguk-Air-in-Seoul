@@ -12,7 +12,7 @@ function showBox({ image, i,  unit, name}) {  // props 구조로 변경
         <div style={{width: '16vw', textAlign:'start'}}>
           <div style={{display:'flex'}}>
             <div style={{fontSize:'5.5vw', fontWeight:'bold'}}>{i}</div>
-            <div style={{fontSize:'2.5vw', alignSelf:'center'}}>{unit}</div>
+            <div style={{fontSize:'2.5vw', alignSelf:'center', paddingLeft:'5%'}}>{unit}</div>
           </div>
           <div style={{fontSize:'2.5vw' }}>{name}</div>
         </div>

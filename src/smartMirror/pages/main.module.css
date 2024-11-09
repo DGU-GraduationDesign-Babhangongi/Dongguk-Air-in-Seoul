@@ -135,10 +135,9 @@
 
 .whiteBox{
     width: 90%;
-
     height: 45vw;
     font-weight: 600;
-    padding: 5%;
+    padding: auto;
     background-color: #FFFFFF;
     border-radius: 3vw;
     text-align: left;
