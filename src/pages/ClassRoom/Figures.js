@@ -126,7 +126,7 @@ function Figures() {
               </div>
             </div>
             <div className={styles.rightContainer}>
-              <AlarmScrollBox title="alarms" />
+              <AlarmScrollBox title="alarms" classRoom={selectedOption}/>
               <AlarmScrollBox title="significant" />
               <ControlBox title="facility control" />
             </div>
