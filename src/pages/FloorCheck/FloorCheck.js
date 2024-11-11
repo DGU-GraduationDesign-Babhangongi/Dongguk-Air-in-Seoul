@@ -204,7 +204,7 @@ function FloorCheck() {
                   </h2>
                   <hr
                     style={{
-                      border: "0.5px solid #9c9c9c",
+                      border: "0.5px solid black",
                       margin: "8px 8px 24px 8px",
                     }}
                   />
