@@ -95,6 +95,7 @@ const AlarmScrollBox = ({ title, classRoom }) => {
     const message = `[${item.name}]\n${pm25}${noise}${temperature}${humidity}${tvoc}`;
     return message.trim(); // 메시지가 비어 있으면 null 반환
   };
+  
 
   return (
     <div className={styles.Container}>
@@ -103,20 +104,17 @@ const AlarmScrollBox = ({ title, classRoom }) => {
         {loading ? (
           <div>Loading...</div>
         ) : (
-          classRoom ? (
-            data.map((item, index) => {
-              const message = formatMessage(item);
-              return message ? (
-                <div key={index}>
-                  {message.split("\n").map((line, i) => (
-                    <span key={i}>{line}<br /></span>
-                  ))} <br/>
-                </div>
-              ) : null;
-            })
-          ) : (
-            <div>강의실을 선택해주세요</div>
-          )
+          data.map((item, index) => {
+            const message = formatMessage(item);
+            return message ? (
+              <div key={index}>
+                {message.split("\n").map((line, i) => (
+                  <span key={i}>{line}<br /></span>
+
+                ))} <br/>
+              </div>
+            ) : null;
+          })
         )}
       </div>
     </div>

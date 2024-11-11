@@ -1,17 +1,44 @@
 import React, { useState } from 'react';
 import { FaStar, FaRegStar } from 'react-icons/fa';
+import API from '../../../API/api';
+import debounce from 'lodash.debounce';
 
-const Star = ({ width = '100%', height = '100%' , classRoom}) => {
+const Star = ({ width = '100%', height = '100%', building = '신공학관', classRoom }) => {
   const [isFavorited, setIsFavorited] = useState(false); // 즐겨찾기 상태 관리
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // building을 제대로 URL에 인코딩
+  const encodedBuilding = encodeURIComponent(building);
+
+  const fetchData = async (classRoom) => {
+    const endpoint = `/api/classrooms/favorite?building=${encodedBuilding}&name=${encodeURIComponent(classRoom)}`; // classRoom을 올바르게 URL에 추가
+    try {
+      const response = await API.post(endpoint, {
+        headers: {
+          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1qIiwicm9sZSI6IlJPTEVfQURNSU4iLCJpYXQiOjE3MzEzMjAwMjYsImV4cCI6MTczMTM1NjAyNn0.xGUNZ1nCCR2vggaRPG6wHuYzKTtaOeSSOHs6avZ9Bhk',
+        },
+      });
+
+    } catch (e) {
+      console.error("API 오류: ", e);
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchDataDebounced = debounce(fetchData, 300);
 
   // 즐겨찾기 버튼 클릭 시 색상 변경 함수
   const handleFavoriteClick = () => {
     setIsFavorited((prev) => !prev); // 상태를 반전시켜 색상 변경
-    favoriteFunction(); // 클릭 시 호출할 함수
+    favoriteFunction(); // 클릭 시 호출할 함수44
   };
 
   // 실제로 동작할 함수 (실제 동작은 필요 없으므로 빈 함수로 설정)
   const favoriteFunction = () => {
+    fetchData(classRoom); // classRoom 값도 같이 넘기기
     console.log('즐겨찾기 클릭됨');
   };
 

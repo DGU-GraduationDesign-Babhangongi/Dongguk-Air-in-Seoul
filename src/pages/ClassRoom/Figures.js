@@ -50,7 +50,7 @@ function Figures() {
                 {/* 즐겨찾기 아이콘 */}
                 <div style={{ position: 'relative', display: 'inline-block', width: 'clamp(4px, 1.2vw, 20px)' }}>
 
-      <Star class={selectedOption}/>
+      <Star classRoom={selectedOption} building={buildingName}/>
     </div>
               </div>
               <div className={styles.title}>
