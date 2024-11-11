@@ -14,15 +14,14 @@ function Manager() {
   const [selectedMemo, setSelectedMemo] = useState('');
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [nickname, setNickname] = useState(''); // 닉네임 상태 추가
 
-  // 팝업창 열기
   const openModal = (building, room) => {
     setSelectedBuilding(building);
     setSelectedRoom(room);
     setIsModalOpen(true);
   };
 
-  // 팝업창 닫기
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedBuilding('');
@@ -30,7 +29,30 @@ function Manager() {
     setSelectedMemo('');
   };
 
-  // API를 통해 강의실 정보 가져오기
+  const fetchNickname = async () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const response = await axios.get("/api/user/nickname", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.status === 200) {
+          setNickname(response.data); // nickname 설정
+        } else {
+          console.error("닉네임을 불러오는데 실패했습니다.");
+        }
+      } catch (error) {
+        console.error("오류 발생:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchNickname();
+  }, []);
+
   useEffect(() => {
     const fetchRooms = async () => {
       setLoading(true);
@@ -47,25 +69,18 @@ function Manager() {
           }
         });
 
-        // sensorType이 'Air'인 경우만 필터링하고 데이터 구조를 변환
         const formattedData = response.data
-          .filter(room => room.sensorType === 'Air') // sensorType이 'Air'인 경우만 필터링
+          .filter(room => room.sensorType === 'Air')
           .map(room => ({
             id: room.id,
             building: room.building,
             roomNumber: room.name,
             sensorId: room.sensorId,
-            favorited: room.favorited, // favorited 필드를 추가합니다.
-            value: room.name, // 필요에 따라 추가
-            label: room.name  // 필요에 따라 추가
+            favorited: room.favorited,
+            value: room.name,
+            label: room.name
           }))
-          // favorited 값과 roomNumber로 정렬합니다.
-          .sort((a, b) => {
-            if (a.favorited === b.favorited) {
-              return a.roomNumber.localeCompare(b.roomNumber, 'en', { numeric: true });
-            }
-            return b.favorited - a.favorited;
-          });
+          .sort((a, b) => b.favorited - a.favorited || a.roomNumber.localeCompare(b.roomNumber, 'en', { numeric: true }));
 
         setRooms(formattedData);
       } catch (error) {
@@ -86,7 +101,7 @@ function Manager() {
         <div className={styles.container}>
           <div className={styles.banner}>
             <GoPerson size={36} color="#333" />
-            <h1>이수민 관리자</h1>
+            <h1>{nickname} 관리자</h1> {/* 닉네임을 동적으로 표시 */}
           </div>
           {loading ? (
             <p>로딩 중...</p>
@@ -99,7 +114,7 @@ function Manager() {
                   buildingName={room.building}
                   roomNumber={room.roomNumber}
                   sensorId={room.sensorId}
-                  favorited={room.favorited} // 필요하다면 전달
+                  favorited={room.favorited}
                 />
               ))}
             </div>
@@ -107,7 +122,6 @@ function Manager() {
         </div>
       </div>
 
-      {/* 팝업창 렌더링 */}
       {isModalOpen && (
         <Memo
           closeModal={closeModal}
