@@ -1,47 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { FaStar, FaRegStar } from 'react-icons/fa';
-import API from '../../../API/api';
+import axios from 'axios';  // axios 사용
 import debounce from 'lodash.debounce';
 
 const Star = ({ width = '100%', height = '100%', building = '신공학관', classRoom }) => {
   const [isFavorited, setIsFavorited] = useState(false); // 즐겨찾기 상태 관리
-  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // building을 제대로 URL에 인코딩
   const encodedBuilding = encodeURIComponent(building);
 
   const fetchData = async (classRoom) => {
-    const token = localStorage.getItem("token");
-    const endpoint = `/api/classrooms/favorite?building=${encodedBuilding}&name=${encodeURIComponent(classRoom)}`; // classRoom을 올바르게 URL에 추가
-    try {
-      const response = await API.post(endpoint, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+    const token = localStorage.getItem("token"); // 로컬스토리지에서 토큰 가져오기
+    const endpoint = `https://donggukseoul.com/api/classrooms/favorite?building=${encodedBuilding}&name=${encodeURIComponent(classRoom)}`; // 클래스룸 URL 파라미터 추가
 
+    try {
+      setLoading(true);  // 요청 시작
+
+      // axios를 사용하여 API POST 요청
+      const response = await axios.post(endpoint, null, {
+        headers: {
+          'Authorization': `Bearer ${token}`, // Authorization 헤더 추가
+          'accept': '*/*', // accept 헤더 추가
+        },
+      });
+
+      console.log('API 요청 성공:', response); // 성공적으로 요청이 완료되었을 경우 콘솔 출력
     } catch (e) {
-      console.error("API 오류: ", e);
-      setData([]);
+      console.error("API 오류: ", e); // 오류 발생 시 콘솔에 출력
     } finally {
-      setLoading(false);
+      setLoading(false); // 요청 완료 후 로딩 상태 변경
     }
   };
 
-  const fetchDataDebounced = debounce(fetchData, 300);
+  // debounce된 함수 정의 (useCallback을 통해 메모이제이션)
+  const fetchDataDebounced = useCallback(debounce(fetchData, 300), [encodedBuilding]);
 
   // 즐겨찾기 버튼 클릭 시 색상 변경 함수
   const handleFavoriteClick = () => {
     setIsFavorited((prev) => !prev); // 상태를 반전시켜 색상 변경
-    favoriteFunction(); // 클릭 시 호출할 함수44
   };
 
-  // 실제로 동작할 함수 (실제 동작은 필요 없으므로 빈 함수로 설정)
-  const favoriteFunction = () => {
-    fetchData(classRoom); // classRoom 값도 같이 넘기기
-    console.log('즐겨찾기 클릭됨');
-  };
+  // 상태가 변경될 때마다 fetchDataDebounced 호출 (효과적으로 한번만 호출되도록)
+  React.useEffect(() => {
+    
+      fetchDataDebounced(classRoom); // 상태가 true일 때만 API 호출
+    
+  }, [isFavorited, classRoom, fetchDataDebounced]);
 
   return (
     <div style={{ width, height, position: 'relative' }}>
