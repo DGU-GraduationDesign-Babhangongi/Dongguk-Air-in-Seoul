@@ -4,18 +4,6 @@ import API from '../../../API/api';
 import moment from 'moment';
 import debounce from 'lodash.debounce';
 
-// 센서 데이터 목록
-const sensorList = [
-  { "id": 1, "name": "", "floor": 0, "building": "신공학관", "sensorId": "" },
-  { "id": 2, "name": "6144", "floor": 6, "building": "신공학관", "sensorId": "0C:7B:C8:FF:55:5D" },
-  { "id": 3, "name": "6119", "floor": 6, "building": "신공학관", "sensorId": "0C:7B:C8:FF:56:8A" },
-  { "id": 4, "name": "5147", "floor": 5, "building": "신공학관", "sensorId": "0C:7B:C8:FF:5B:8F" },
-  { "id": 5, "name": "5145", "floor": 5, "building": "신공학관", "sensorId": "0C:7B:C8:FF:5C:C8" },
-  { "id": 6, "name": "4142", "floor": 4, "building": "신공학관", "sensorId": "0C:7B:C8:FF:57:5A" },
-  { "id": 7, "name": "3173", "floor": 3, "building": "신공학관", "sensorId": "0C:7B:C8:FF:5B:06" },
-  { "id": 8, "name": "3115", "floor": 3, "building": "신공학관", "sensorId": "0C:7B:C8:FF:56:F1" }
-];
-
 const LineChartComponent = ({ width = '34vw', height = '56vh', selectedValues, classRoom, period }) => {
   const [data, setData] = useState([]);
   const [prevSelectedValues, setPrevSelectedValues] = useState(selectedValues);
@@ -42,11 +30,7 @@ const LineChartComponent = ({ width = '34vw', height = '56vh', selectedValues, c
   const fetchData = async (classRoom, period) => {
     if (!classRoom || !period) return null;
 
-    const sensor = sensorList.find(sensor => sensor.name === classRoom);
-    if (!sensor || !sensor.sensorId) {
-      console.error("해당 이름의 센서를 찾을 수 없거나 sensorId가 정의되지 않았습니다.");
-      return null;
-    }
+
 
     const sensorTypes = ['PM2_5MASSCONCENTRATION', 'TEMPERATURE', 'HUMIDITY', 'TVOC', 'AMBIENTNOISE'];
     setLoading(true);
