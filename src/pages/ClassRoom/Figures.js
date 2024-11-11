@@ -53,7 +53,7 @@ function Figures() {
               <div className={styles.titleTop}>
                 <div style={{paddingRight: '0.1vw'}}>현재 강의실</div>
                 <div style={{ position: 'relative', display: 'inline-block', width: 'clamp(4px, 1.2vw, 20px)' }}>
-                  <Star classRoom={selectedOption} building={buildingName}/>
+                  <Star classRoom={selectedOption} building={buildingName} selectedFavorited={selectedFavorited}/>
                 </div>
               </div>
               <div className={styles.title}>
@@ -65,8 +65,7 @@ function Figures() {
                 <div>{buildingName}</div>
               </div>
               <NEBDropdown onSelect={handleNEBSelect} />
-              <div>즐겨찾기: {selectedFavorited ? "Yes" : "No"}</div> {/* favorited 값 표시 */}
-            </div>
+                </div>
             <TopBox image="tempIcon.png" value={loading ? '--' : sensorData.Temperature?.value} unit="℃" name="temp" />
             <TopBox image="humidIcon.png" value={loading ? '--' : sensorData.Humidity?.value} unit="%" name="humidity" />
             <TopBox image="TVOCIcon.png" value={loading ? '--' : sensorData.TVOC?.value} unit="㎍/m³" name="TVOC" />

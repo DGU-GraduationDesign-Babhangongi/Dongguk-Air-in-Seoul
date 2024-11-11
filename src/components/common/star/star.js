@@ -1,10 +1,11 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import axios from 'axios';  // axios 사용
 import debounce from 'lodash.debounce';
 
-const Star = ({ width = '100%', height = '100%', building = '신공학관', classRoom }) => {
-  const [isFavorited, setIsFavorited] = useState(false); // 즐겨찾기 상태 관리
+const Star = ({ width = '100%', height = '100%', building = '신공학관', classRoom, selectedFavorited = false }) => {
+  // selectedFavorited가 true이면 즐겨찾기가 되어있고, false이면 그렇지 않다고 가정
+  const [isFavorited, setIsFavorited] = useState(selectedFavorited); // selectedFavorited에 따라 초기값 설정
   const [loading, setLoading] = useState(false);
 
   // building을 제대로 URL에 인코딩
@@ -42,12 +43,17 @@ const Star = ({ width = '100%', height = '100%', building = '신공학관', clas
     fetchDataDebounced(classRoom); // 클릭 시에만 API 호출
   };
 
+  // selectedFavorited 값이 변경될 때마다 isFavorited 상태를 업데이트
+  useEffect(() => {
+    setIsFavorited(selectedFavorited);
+  }, [selectedFavorited]);
+
   return (
     <div style={{ width, height, position: 'relative' }}>
       {/* 메인 아이콘 */}
       <FaStar
         size={'68%'} // 실제 아이콘 크기
-        color={isFavorited ? '#FFD700' : '#A5A5A5'} // 메인 색상
+        color={isFavorited ? '#FFD700' : '#A5A5A5'} // 메인 색상 (노란색 또는 회색)
         onClick={handleFavoriteClick}
         style={{
           position: 'absolute',
