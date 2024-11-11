@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './ManageAll.module.css';
 import ControlBox from '../../common/ControlBoxMg/ControlBoxMg';
 import API from '../../../API/api';
+import Star from '../../common/star/star';
 
 function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId }) {
   const [sensorData, setSensorData] = useState({});
@@ -41,8 +42,8 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId }) {
             <h3>{buildingName}</h3>
             <h2>{roomNumber}</h2>
           </div>
-          <div className={styles.star}>
-            <img src={require('../../../assets/images/star.png')} alt="Star Icon" />
+          <div className={styles.star} >
+            <Star classRoom={roomNumber} building={buildingName}/>
           </div>
           <div className={styles.memoEdit} onClick={() => openMemoModal(buildingName, roomNumber)}>
             <img src={require('../../../assets/images/edit.png')} alt="Edit Icon" />
