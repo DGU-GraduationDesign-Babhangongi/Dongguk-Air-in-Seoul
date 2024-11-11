@@ -24,7 +24,7 @@ const Login = () => {
       });
       console.log("Login Response:", response);
 
-      if (response.status ===200)  {
+      if (response.status === 200) {
         // JWT 토큰을 로컬 스토리지에 저장
         const token = response.headers.get("authorization").split(" ")[1];
         localStorage.setItem("token", token);
