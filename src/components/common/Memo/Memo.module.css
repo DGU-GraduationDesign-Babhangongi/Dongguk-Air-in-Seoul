@@ -25,7 +25,7 @@
     align-items: center;
     background-color: #FFE191; /* 상단 배너 색상 */
     padding: 10px 20px;
-    height: 30px;
+    height: 50px;
     border-radius: 15px 15px 0 0;
     font-weight: bold;
     font-size: 18px; /* 헤더 텍스트 크기 */
@@ -88,11 +88,11 @@
   }
   
   .closeButton {
-    position: relative;
-    width: 1%;
+    position: flex;
+    width: 3%;
     background: none;
     border: none;
-    font-size: 20px; /* 닫기 버튼 크기 */
+    font-size: 22px; /* 닫기 버튼 크기 */
     cursor: pointer;
     color: gray; /* 닫기 버튼 색상 */
   }
