@@ -40,11 +40,11 @@ function Log() {
   // 센서 타입을 한국어로 변환하는 함수
   const getSensorNameInKorean = (sensorType) => {
     switch (sensorType) {
-      case 'TEMPERATURE': return '온도';
-      case 'HUMIDITY': return '습도';
+      case 'Temperature': return '온도';
+      case 'Humidity': return '습도';
       case 'TVOC': return 'TVOC';
-      case 'PM2_5MASSCONCENTRATION': return 'PM2.5';
-      case 'AMBIENTNOISE': return '소음';
+      case 'PM2_5MassConcentration': return 'PM2.5';
+      case 'AmbientNoise': return '소음';
       default: return sensorType;
     }
   };
@@ -119,13 +119,13 @@ function Log() {
 
   const getBorderColor = (value, type) => {
     switch (type) {
-      case 'TEMPERATURE':
+      case 'Temperature':
         if (value < 16.5 || value > 27.5) return 'red';
         if ((value >= 16.5 && value < 17.6) || (value > 26.4 && value <= 27.5)) return 'orange';
         if ((value >= 17.6 && value < 18.7) || (value > 25.3 && value <= 26.4)) return '#FFFA00';
         if ((value >= 18.7 && value < 19.8) || (value > 24.2 && value <= 25.3)) return 'green';
         return 'blue';
-      case 'HUMIDITY':
+      case 'Humidity':
         if (value < 10 || value > 90) return 'red';
         if ((value >= 10 && value < 20) || (value > 80 && value <= 90)) return 'orange';
         if ((value >= 20 && value < 30) || (value > 70 && value <= 80)) return '#FFFA00';
@@ -137,13 +137,13 @@ function Log() {
         if (value > 1000 && value <= 3000) return '#FFFA00';
         if (value > 300 && value <= 1000) return 'green';
         return 'blue';
-      case 'PM2_5MASSCONCENTRATION':
+      case 'PM2_5MassConcentration':
         if (value > 64) return 'red';
         if (value > 53 && value <= 64) return 'orange';
         if (value > 41 && value <= 53) return '#FFFA00';
         if (value > 23 && value <= 41) return 'green';
         return 'blue';
-      case 'AMBIENTNOISE':
+      case 'AmbientNoise':
         if (value > 80) return 'red';
         if (value > 70 && value <= 80) return 'orange';
         if (value > 60 && value <= 70) return '#FFFA00';
