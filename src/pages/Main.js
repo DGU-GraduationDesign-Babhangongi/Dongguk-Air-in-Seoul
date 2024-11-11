@@ -5,6 +5,7 @@ import styles from "./Main.module.css";
 import { fetchForeCast, fetchForeCast2 } from "../pages/forecast";
 import { SensorDataContext } from "./../API/SensorDataContext";
 import { useLocation, useNavigate } from "react-router-dom";
+import API from "../API/api";
 
 function Main() {
   const [popupContent, setPopupContent] = useState(null);
@@ -18,12 +19,63 @@ function Main() {
   const [loadingdata, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const [nickname, setNickname] = useState("");
+  const [nickname, setNickname] = useState("관리자");
+  //
   useEffect(() => {
-    const savedNickname = localStorage.getItem("nickname");
-    setNickname(savedNickname || "");
-  }, []);
+    const fetchNickname = async () => {
+      const token = localStorage.getItem("token");
 
+      if (token) {
+        try {
+          const response = await API.get("/api/user/nickname", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (response.status === 200) {
+            const nicknameData = response.data;
+            setNickname(nicknameData);
+          } else {
+            console.error("닉네임을 불러오는데 실패했습니다.");
+          }
+        } catch (error) {
+          console.error("오류 발생:", error);
+        }
+      }
+    };
+
+    // useEffect(() => {
+    //   const fetchNickname = async () => {
+    //     const token = localStorage.getItem("authToken");
+
+    //     if (!token) {
+    //       console.error("토큰이 없습니다.");
+    //       return;
+    //     }
+    //     try {
+    //       const token = localStorage.getItem("authToken");
+    //       const response = await fetch("/api/user/nickname", {
+    //         method: "GET",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //           Authorization: `Bearer ${token}`, // 로그인 후 저장한 토큰 사용
+    //         },
+    //       });
+
+    //       if (response.ok) {
+    //         const nicknameData = await response.text(); // string 형식의 응답을 텍스트로 받기
+    //         setNickname(nicknameData); // nickname 업데이트
+    //       } else {
+    //         console.error("Failed to fetch nickname.");
+    //       }
+    //     } catch (error) {
+    //       console.error("Error fetching nickname:", error);
+    //     }
+    //   };
+
+    fetchNickname(); // 페이지 로드 시 nickname 호출
+  }, []);
   const handleBuildingClick = (building, buildingInfo) => {
     if (building == "신공학관") {
       setIsFadingOut(true);
@@ -351,13 +403,13 @@ function Main() {
     <div>
       <Header />
       <div className={styles.mainContainer}>
-        {showMessage && (
+        {nickname && showMessage && (
           <div
             className={`${styles.welcomeMessage} ${
               isFadingOut ? styles.fadeOutMessage : ""
             }`}
           >
-            <h2>{nickname} 관리자님 환영합니다!</h2>
+            <h2>{nickname}님 환영합니다!</h2>
             <p>공기질을 확인할 강의실을 선택해주세요</p>
           </div>
         )}
