@@ -59,6 +59,7 @@
   box-sizing: border-box;
 }
 
+/* 탭 스타일 */
 .tabs {
   display: flex;
   justify-content: start;
@@ -70,14 +71,15 @@
 
 .tabLabel {
   display: flex;
-  align-items: center;
+  align-items: center; /* 체크박스와 텍스트를 수평 정렬 */
   gap: 5px;
   white-space: nowrap;
   font-size: 16px;
 }
 
-.tabLabel input[type="radio"] {
+.tabLabel input[type="checkbox"] {
   margin: 0;
+  vertical-align: middle; /* 체크박스 세로 정렬 */
 }
 
 /* 센서 데이터 목록 */
