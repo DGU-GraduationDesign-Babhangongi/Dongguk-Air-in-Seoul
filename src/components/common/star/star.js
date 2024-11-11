@@ -12,13 +12,14 @@ const Star = ({ width = '100%', height = '100%', building = '신공학관', clas
   const encodedBuilding = encodeURIComponent(building);
 
   const fetchData = async (classRoom) => {
+    const token = localStorage.getItem("token");
     const endpoint = `/api/classrooms/favorite?building=${encodedBuilding}&name=${encodeURIComponent(classRoom)}`; // classRoom을 올바르게 URL에 추가
     try {
       const response = await API.post(endpoint, {
-        headers: {
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im1qIiwicm9sZSI6IlJPTEVfQURNSU4iLCJpYXQiOjE3MzEzMjAwMjYsImV4cCI6MTczMTM1NjAyNn0.xGUNZ1nCCR2vggaRPG6wHuYzKTtaOeSSOHs6avZ9Bhk',
-        },
-      });
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
     } catch (e) {
       console.error("API 오류: ", e);

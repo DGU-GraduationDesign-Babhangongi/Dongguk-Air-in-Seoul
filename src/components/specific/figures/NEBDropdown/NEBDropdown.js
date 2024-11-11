@@ -1,23 +1,50 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import styles from './NEBDropdown.module.css';
+import API from '../../../../API/api';
 
-const options = [
-  { value: '3115', label: '3115' },
-  { value: '3173', label: '3173' },
-  { value: '4142', label: '4142' },
-  { value: '5145', label: '5145' },
-  { value: '5147', label: '5147' },
-  { value: '6119', label: '6119' },
-  { value: '6144', label: '6144' }
-  
-];
 const CustomDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px', width = '100%' }) => {
+  const [options, setOptions] = useState([]); // Options 상태 관리
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {      
+    const token = localStorage.getItem("token");
+    const fetchData = async () => {
+      const encodedBuilding = encodeURIComponent('신공학관');
+      try {
+        const endpoint = `/api/classrooms/myFavorites?building=${encodedBuilding}&favoriteFirst=false&orderDirection=asc`;
+        const responses = await API.get(endpoint, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+console.log(responses);
+        // API로부터 받아온 데이터를 options 형태로 변환
+// API로부터 받아온 데이터를 options 형태로 변환
+const formattedData = responses.data
+  .filter(room => room.sensorType === 'Air') // sensorType이 'Air'인 경우만 필터링
+  .map(room => ({
+    value: room.name, // value는 강의실 이름
+    label: room.name  // label도 강의실 이름
+  }));
+
+
+        setOptions(formattedData);
+      } catch (e) {
+        console.error("API 오류: ", e);
+        setOptions([]); // 오류 발생 시 빈 배열로 설정
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const customStyles = {
     control: (provided) => ({
       ...provided,
-      width: width, // 너비 설정
-
+      width: width,
       borderRadius: '10px',
       borderColor: borderColor,
       borderWidth: borderWidth,
@@ -64,12 +91,13 @@ const CustomDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px'
 
   return (
     <Select 
-      options={options}
+      options={options} // API에서 변환된 options 전달
       onChange={option => onSelect(option.value)}
       styles={customStyles}
       placeholder={<span className={styles.customPlaceholder}>강의실 선택</span>}
       className={styles.NEBDropdown}
-      classNamePrefix="custom-select" // add classNamePrefix to use with CSS if needed
+      classNamePrefix="custom-select"
+      isLoading={loading} // 데이터 로딩 시 로딩 표시
     />
   );
 };

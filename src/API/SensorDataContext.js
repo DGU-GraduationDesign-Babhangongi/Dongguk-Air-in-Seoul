@@ -20,18 +20,21 @@ export const SensorDataProvider = ({ children }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedSensorName, setSelectedSensorName] = useState(sensorList[0]?.name);
-
+  const [selectedBuilding, setSelectedBuilding] = useState(sensorList[0]?.building); // 선택된 빌딩 상태 추가
+  selectedBuilding='신공학관';
+  
   // 데이터를 초기화하는 함수
   const resetSensorData = () => {
     setData([]); // 데이터를 빈 배열로 초기화
   };
 
-  const fetchData = async (name) => {
-    if (!name) return null;
+  const fetchData = async (name, building) => {
+    if (!name || !building) return null;
 
-    const sensor = sensorList.find(sensor => sensor.name === name);
+    // name과 building으로 필터링하여 센서 검색
+    const sensor = sensorList.find(sensor => sensor.name === name && sensor.building === building);
     if (!sensor || !sensor.sensorId) {
-      console.error("해당 이름의 센서를 찾을 수 없거나 sensorId가 정의되지 않았습니다.");
+      console.error("해당 이름과 빌딩에 맞는 센서를 찾을 수 없거나 sensorId가 정의되지 않았습니다.");
       return null;
     }
 
@@ -50,16 +53,16 @@ export const SensorDataProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchData(selectedSensorName);
+    fetchData(selectedSensorName, selectedBuilding);
 
     const intervalId = setInterval(() => {
-      if (selectedSensorName) {
-        fetchData(selectedSensorName);
+      if (selectedSensorName && selectedBuilding) {
+        fetchData(selectedSensorName, selectedBuilding);
       }
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, [selectedSensorName]);
+  }, [selectedSensorName, selectedBuilding]);
 
   useEffect(() => {
     if (!children) {
@@ -68,7 +71,7 @@ export const SensorDataProvider = ({ children }) => {
   }, [children]); // children이 변경될 때마다 호출
 
   return (
-    <SensorDataContext.Provider value={{ data, setSelectedSensorName, loading, resetSensorData }}>
+    <SensorDataContext.Provider value={{ data, setSelectedSensorName, setSelectedBuilding, loading, resetSensorData }}>
       {children}
     </SensorDataContext.Provider>
   );
