@@ -36,17 +36,11 @@ const Star = ({ width = '100%', height = '100%', building = '신공학관', clas
   // debounce된 함수 정의 (useCallback을 통해 메모이제이션)
   const fetchDataDebounced = useCallback(debounce(fetchData, 300), [encodedBuilding]);
 
-  // 즐겨찾기 버튼 클릭 시 색상 변경 함수
+  // 즐겨찾기 버튼 클릭 시 색상 변경 및 fetchData 호출 함수
   const handleFavoriteClick = () => {
     setIsFavorited((prev) => !prev); // 상태를 반전시켜 색상 변경
+    fetchDataDebounced(classRoom); // 클릭 시에만 API 호출
   };
-
-  // 상태가 변경될 때마다 fetchDataDebounced 호출 (효과적으로 한번만 호출되도록)
-  React.useEffect(() => {
-    
-      fetchDataDebounced(classRoom); // 상태가 true일 때만 API 호출
-    
-  }, [isFavorited, classRoom, fetchDataDebounced]);
 
   return (
     <div style={{ width, height, position: 'relative' }}>

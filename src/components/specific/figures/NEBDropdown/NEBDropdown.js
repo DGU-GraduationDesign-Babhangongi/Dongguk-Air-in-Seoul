@@ -1,10 +1,12 @@
+// NEBDropdown.js
+
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import styles from './NEBDropdown.module.css';
 import API from '../../../../API/api';
 
 const CustomDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px', width = '100%' }) => {
-  const [options, setOptions] = useState([]); // Options 상태 관리
+  const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {      
@@ -17,22 +19,20 @@ const CustomDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px'
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
-console.log(responses);
-        // API로부터 받아온 데이터를 options 형태로 변환
-// API로부터 받아온 데이터를 options 형태로 변환
-const formattedData = responses.data
-  .filter(room => room.sensorType === 'Air') // sensorType이 'Air'인 경우만 필터링
-  .map(room => ({
-    value: room.name, // value는 강의실 이름
-    label: room.name  // label도 강의실 이름
-  }));
+        });  
 
+        const formattedData = responses.data
+          .filter(room => room.sensorType === 'Air')
+          .map(room => ({
+            value: room.name,
+            label: room.name,
+            favorited: room.favorited
+          }));
 
         setOptions(formattedData);
       } catch (e) {
         console.error("API 오류: ", e);
-        setOptions([]); // 오류 발생 시 빈 배열로 설정
+        setOptions([]);
       } finally {
         setLoading(false);
       }
@@ -91,13 +91,13 @@ const formattedData = responses.data
 
   return (
     <Select 
-      options={options} // API에서 변환된 options 전달
-      onChange={option => onSelect(option.value)}
+      options={options}
+      onChange={option => onSelect(option.value, option.favorited)}  // 선택된 강의실과 favorited 값 함께 전달
       styles={customStyles}
       placeholder={<span className={styles.customPlaceholder}>강의실 선택</span>}
       className={styles.NEBDropdown}
       classNamePrefix="custom-select"
-      isLoading={loading} // 데이터 로딩 시 로딩 표시
+      isLoading={loading}
     />
   );
 };

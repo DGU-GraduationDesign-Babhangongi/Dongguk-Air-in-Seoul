@@ -1,3 +1,5 @@
+// Figures.js
+
 import React, { useState, useContext, useEffect } from 'react';
 import Header from '../../components/common/Header/Header';
 import SideBar from '../../components/common/SideBar/SideBar';
@@ -16,6 +18,7 @@ const buildingName = "신공학관";
 
 function Figures() {
   const [selectedOption, setSelectedOption] = useState('');
+  const [selectedFavorited, setSelectedFavorited] = useState(false); // favorited 상태 추가
   const [selectedValue, setSelectedValue] = useState('');
   const [selectedValues, setSelectedValues] = useState([]);
   const [highlightedIndex, setHighlightedIndex] = useState(null);
@@ -28,14 +31,16 @@ function Figures() {
     }
   }, [selectedOption, setSelectedSensorName]);
 
-  const handleNEBSelect = (value) => setSelectedOption(value);
+  const handleNEBSelect = (value, favorited) => {
+    setSelectedOption(value);
+    setSelectedFavorited(favorited); // favorited 값 업데이트
+  };
+
   const handlePeriodSelect = (value) => setSelectedValue(value);
   const handleCheckboxSelect = (values, index) => {
     setSelectedValues(values);
     setHighlightedIndex(index);
   };
-
-
 
   return (
     <div className={styles.fullScreenContainer}>
@@ -47,11 +52,9 @@ function Figures() {
             <div className={styles.currentRoom}>
               <div className={styles.titleTop}>
                 <div style={{paddingRight: '0.1vw'}}>현재 강의실</div>
-                {/* 즐겨찾기 아이콘 */}
                 <div style={{ position: 'relative', display: 'inline-block', width: 'clamp(4px, 1.2vw, 20px)' }}>
-
-      <Star classRoom={selectedOption} building={buildingName}/>
-    </div>
+                  <Star classRoom={selectedOption} building={buildingName}/>
+                </div>
               </div>
               <div className={styles.title}>
                 <img
@@ -62,6 +65,7 @@ function Figures() {
                 <div>{buildingName}</div>
               </div>
               <NEBDropdown onSelect={handleNEBSelect} />
+              <div>즐겨찾기: {selectedFavorited ? "Yes" : "No"}</div> {/* favorited 값 표시 */}
             </div>
             <TopBox image="tempIcon.png" value={loading ? '--' : sensorData.Temperature?.value} unit="℃" name="temp" />
             <TopBox image="humidIcon.png" value={loading ? '--' : sensorData.Humidity?.value} unit="%" name="humidity" />
