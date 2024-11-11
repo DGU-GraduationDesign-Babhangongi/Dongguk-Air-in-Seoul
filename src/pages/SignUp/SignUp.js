@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styles from "./SignUp.module.css"; // 스타일 적용
 import Header from "../../components/common/Header/Header";
 import { useNavigate } from "react-router-dom";
+import API from "../../API/api";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -14,53 +15,59 @@ const SignUp = () => {
   const [alarmStatus, setAlarmStatus] = useState(false); // 알림 상태 추가
   const navigate = useNavigate();
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  const handleSignUp = async (event) => {
+    event.preventDefault();
 
-    //const token = localStorage.getItem("authToken"); // localStorage에서 토큰 가져오기
-    const requestData = {
-      username: username,
-      password: password,
-      email: email,
-      nickname: nickname,
-      areaOfResponsibility: responsibility,
-      securityCode: securityCode,
-      alarmStatus: alarmStatus,
-    };
-    const queryParams = new URLSearchParams(requestData).toString();
-
+    const body = `username=${encodeURIComponent(
+      username
+    )}&password=${encodeURIComponent(password)}&email=${encodeURIComponent(
+      email
+    )}&nickname=${encodeURIComponent(
+      nickname
+    )}&areaOfResponsibility=${encodeURIComponent(
+      responsibility
+    )}&securityCode=${encodeURIComponent(
+      securityCode
+    )}&alarmStatus=${encodeURIComponent(alarmStatus)}`;
+    const endpoint = "/api/join?" + body;
     try {
-      const response = await fetch(`/api/join?${queryParams}`, {
-        method: "POST",
-        headers: {
-          Accept: "*/*",
-          //"Content-Type": "application/json", // JSON 형식으로 데이터 전송
-          //Authorization: `Bearer ${token}`, // 필요할 경우 추가
-        },
-      });
+      const response = await API.post(endpoint);
+      console.log("회원가입 Response:", response);
+      console.log("end" + endpoint);
 
-      if (response.ok) {
-        // 성공 시
-        const data = await response.text();
-        console.log(data);
-        alert("회원가입 완료!");
+      // const response = await API.post("/api/join", requestData)
+      // .then((response) => {
+      //   if (response.status === 200) {
+      //     console.log("로그인 성공", response.data);
+      //   }
+      // })
+      // .catch((error) => {
+      //   console.error("회원가입 처리 중 오류:", error);
+      //   alert("회원가입 중 오류가 발생했습니다.");
+      // });
+
+      if (response.status === 200) {
+        alert("회원가입이 완료되었습니다 로그인 페이지로 이동합니다");
         navigate("/login");
       } else {
         // 오류 처리
-        const errorData = await response.text();
-        alert(`회원가입 실패: ${errorData.message || "알 수 없는 오류"}`);
+        const errorText = await response.text();
+        const errorData = errorText
+          ? JSON.parse(errorText)
+          : { message: "알 수 없는 오류" };
+        alert(`회원가입 실패: ${errorData.message}`);
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("회원가입 처리 중 오류:", error);
       alert("회원가입 중 오류가 발생했습니다.");
     }
-  }
+  };
 
   return (
     <div>
       <Header />
       <div className={styles.signupContainer}>
-        <form onSubmit={handleSubmit} className={styles.signupContent}>
+        <form onSubmit={handleSignUp} className={styles.signupContent}>
           <h2 className={styles.heading}>Let's Create an Account</h2>
           <p className={styles.signupText}>아래 정보를 모두 입력해주세요. </p>
           <input
