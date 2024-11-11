@@ -4,25 +4,12 @@ import API from '../API/api';
 // Context 생성
 export const SensorDataContext = createContext();
 
-// 센서 데이터 목록
-const sensorList = [
-  { "id": 1, "name": "", "floor": 0, "building": "신공학관", "sensorId": "" },
-  { "id": 2, "name": "6144", "floor": 6, "building": "신공학관", "sensorId": "0C:7B:C8:FF:55:5D" },
-  { "id": 3, "name": "6119", "floor": 6, "building": "신공학관", "sensorId": "0C:7B:C8:FF:56:8A" },
-  { "id": 4, "name": "5147", "floor": 5, "building": "신공학관", "sensorId": "0C:7B:C8:FF:5B:8F" },
-  { "id": 5, "name": "5145", "floor": 5, "building": "신공학관", "sensorId": "0C:7B:C8:FF:5C:C8" },
-  { "id": 6, "name": "4142", "floor": 4, "building": "신공학관", "sensorId": "0C:7B:C8:FF:57:5A" },
-  { "id": 7, "name": "3173", "floor": 3, "building": "신공학관", "sensorId": "0C:7B:C8:FF:5B:06" },
-  { "id": 8, "name": "3115", "floor": 3, "building": "신공학관", "sensorId": "0C:7B:C8:FF:56:F1" }
-];
-
 export const SensorDataProvider = ({ children }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedSensorName, setSelectedSensorName] = useState(sensorList[0]?.name);
-  const [selectedBuilding, setSelectedBuilding] = useState(sensorList[0]?.building); // 선택된 빌딩 상태 추가
-  selectedBuilding='신공학관';
-  
+  const [selectedSensorName, setSelectedSensorName] = useState(''); // 초기값 빈 문자열로 설정
+  const [selectedBuilding, setSelectedBuilding] = useState('신공학관'); // 초기 빌딩값을 '신공학관'으로 설정
+
   // 데이터를 초기화하는 함수
   const resetSensorData = () => {
     setData([]); // 데이터를 빈 배열로 초기화
@@ -31,15 +18,10 @@ export const SensorDataProvider = ({ children }) => {
   const fetchData = async (name, building) => {
     if (!name || !building) return null;
 
-    // name과 building으로 필터링하여 센서 검색
-    const sensor = sensorList.find(sensor => sensor.name === name && sensor.building === building);
-    if (!sensor || !sensor.sensorId) {
-      console.error("해당 이름과 빌딩에 맞는 센서를 찾을 수 없거나 sensorId가 정의되지 않았습니다.");
-      return null;
-    }
-
-    const endpoint = `/api/sensorData/recent/` + encodeURIComponent(sensor.sensorId);
+    // building과 name을 쿼리 파라미터로 추가하여 endpoint 구성
+    const endpoint = `/api/sensorData/recent/classroom?building=` + encodeURIComponent(building) + `&name=` + encodeURIComponent(name);
     setLoading(true);
+
     try {
       const response = await API.get(endpoint);
       setData(response.data); // 센서 데이터를 설정
@@ -53,7 +35,9 @@ export const SensorDataProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchData(selectedSensorName, selectedBuilding);
+    if (selectedSensorName && selectedBuilding) {
+      fetchData(selectedSensorName, selectedBuilding);
+    }
 
     const intervalId = setInterval(() => {
       if (selectedSensorName && selectedBuilding) {
