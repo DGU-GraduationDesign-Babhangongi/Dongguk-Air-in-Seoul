@@ -44,14 +44,18 @@ function Log() {
     if (sensorType && selectedRoom) {
       try {
         setLoading(true);
-
+        const token = localStorage.getItem("token");
         const encodedBuilding = encodeURIComponent('신공학관');
         const encodedStartDate = startDate ? encodeURIComponent(moment(startDate).format('YYYY-MM-DDTHH:mm:ss')) : null;
         const encodedEndDate = endDate ? encodeURIComponent(moment(endDate).format('YYYY-MM-DDTHH:mm:ss')) : null;
 
         const url = `/api/sensorData/classroom/betweenDates?sensorTypes=${sensorType}&building=${encodedBuilding}&name=${selectedRoom}&startDate=${encodedStartDate}&endDate=${encodedEndDate}&order=DESC&page=${page}&size=11`;
 
-        const response = await API.get(url);
+        const response = await API.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (response.data && response.data.data) {
           const fetchedData = response.data.data;
