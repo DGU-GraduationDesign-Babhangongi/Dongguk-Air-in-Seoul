@@ -10,11 +10,11 @@ function Log() {
   const [selectedRoom, setSelectedRoom] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [activeTab, setActiveTab] = useState('온도');
+  const [activeTab, setActiveTab] = useState('온도'); // 기본값을 '온도'로 설정
   const [sensorData, setSensorData] = useState([]);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true); // 데이터가 더 있는지 확인하는 상태 추가
+  const [hasMore, setHasMore] = useState(true);
   const observerRef = useRef();
 
   const sensorList = [
@@ -38,7 +38,7 @@ function Log() {
     }
   };
 
-  const fetchSensorData = async () => {
+  const fetchSensorData = async (reset = false) => {
     const sensorType = getSensorType();
 
     if (sensorType && selectedRoom) {
@@ -49,19 +49,17 @@ function Log() {
         const encodedStartDate = startDate ? encodeURIComponent(moment(startDate).format('YYYY-MM-DDTHH:mm:ss')) : null;
         const encodedEndDate = endDate ? encodeURIComponent(moment(endDate).format('YYYY-MM-DDTHH:mm:ss')) : null;
 
-        const url = `/api/sensorData/classroom/betweenDates?sensorTypes=${sensorType}&building=${encodedBuilding}&name=${selectedRoom}&startDate=${encodedStartDate}&endDate=${encodedEndDate}&sortBy=TIMESTAMP&order=DESC&page=${page}&size=10`;
-        
+        const url = `/api/sensorData/classroom/betweenDates?sensorTypes=${sensorType}&building=${encodedBuilding}&name=${selectedRoom}&startDate=${encodedStartDate}&endDate=${encodedEndDate}&order=DESC&page=${page}&size=11`;
+
         const response = await API.get(url);
-        const sensorDataKey = sensorType;
 
-        if (response.data[sensorDataKey] && response.data[sensorDataKey].data) {
-          const fetchedData = response.data[sensorDataKey].data;
+        if (response.data && response.data.data) {
+          const fetchedData = response.data.data;
 
-          // 데이터를 추가하고 페이지를 로드한 후, 데이터가 부족하면 hasMore을 false로 설정
-          setSensorData((prevData) => (page === 0 ? fetchedData : [...prevData, ...fetchedData]));
-          setHasMore(fetchedData.length === 10); // 데이터가 10개 미만이면 더 이상 데이터가 없음
+          setSensorData((prevData) => (reset ? fetchedData : [...prevData, ...fetchedData]));
+          setHasMore(fetchedData.length === 11);
         } else {
-          setHasMore(false); // 데이터를 못 가져오면 더 이상 데이터가 없는 것으로 간주
+          setHasMore(false);
         }
 
         setLoading(false);
@@ -74,19 +72,29 @@ function Log() {
 
   useEffect(() => {
     if (startDate && endDate && selectedRoom) {
-      setSensorData([]);
-      setPage(0);
-      setHasMore(true); // 새로운 조회를 시작할 때 hasMore 초기화
-      fetchSensorData();
+      setSensorData([]); // 기존 데이터 초기화
+      setPage(0); // 페이지를 0으로 초기화
+
+      // 페이지가 0으로 설정된 후에 데이터를 가져오기 위해 비동기적으로 실행
+      fetchSensorData(true);
     }
   }, [selectedRoom, activeTab, startDate, endDate]);
 
   useEffect(() => {
-    if (page > 0 && hasMore) fetchSensorData(); // hasMore이 true일 때만 데이터 가져오기
+    if (page === 0 || (page > 0 && hasMore)) {
+      fetchSensorData(page === 0); // page가 0일 때는 reset으로 데이터 초기화
+    }
   }, [page]);
 
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setPage(0); // 페이지를 0으로 설정
+    setSensorData([]); // 데이터를 초기화하여 새로운 데이터를 시작
+    setHasMore(true); // hasMore을 true로 초기화하여 데이터를 새로 로드할 수 있게 함
+  };
+
   const lastElementRef = useCallback((node) => {
-    if (loading || !hasMore) return; // 로딩 중이거나 hasMore이 false면 observer 중지
+    if (loading || !hasMore) return;
     if (observerRef.current) observerRef.current.disconnect();
 
     observerRef.current = new IntersectionObserver((entries) => {
@@ -176,7 +184,7 @@ function Log() {
                   name="tab"
                   value={tab}
                   checked={activeTab === tab}
-                  onChange={() => setActiveTab(tab)}
+                  onChange={() => handleTabChange(tab)}
                 />
                 {tab}
               </label>
