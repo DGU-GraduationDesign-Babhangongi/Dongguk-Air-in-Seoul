@@ -4,7 +4,7 @@ import ControlBox from '../../common/ControlBoxMg/ControlBoxMg';
 import API from '../../../API/api';
 import Star from '../../common/star/star';
 
-function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId }) {
+function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId,  favorited }) {
   const [sensorData, setSensorData] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -43,7 +43,7 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId }) {
             <h2>{roomNumber}</h2>
           </div>
           <div className={styles.star} >
-            <Star classRoom={roomNumber} building={buildingName}/>
+            <Star classRoom={roomNumber} building={buildingName} selectedFavorited={favorited}/>
           </div>
           <div className={styles.memoEdit} onClick={() => openMemoModal(buildingName, roomNumber)}>
             <img src={require('../../../assets/images/edit.png')} alt="Edit Icon" />
