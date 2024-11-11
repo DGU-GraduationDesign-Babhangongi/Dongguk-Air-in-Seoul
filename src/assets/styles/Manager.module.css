@@ -36,7 +36,7 @@ html, body {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개의 카드 배치 */
   gap: 10px; /* 카드 간 간격 */
-  margin: 20px; /* 그리드 전체 여백 */
+  margin: 10px; /* 그리드 전체 여백 */
   padding-right: 10px; /* 스크롤바와 내용 사이 간격 추가 */
   padding-bottom: 40px; /* 마지막 박스 아래 여백을 더 크게 설정 */
   height: calc(100vh - 180px); /* 헤더와 배너 높이를 제외한 높이 */
