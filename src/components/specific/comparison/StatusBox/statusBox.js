@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import NEBDropdown from '../../figures/NEBDropdown/NEBDropdown';
 import AirQualityIndicator from '../../../common/AirQualityIndicator/AirQualityIndicator';
 import styles from '../StatusBox/statusBox.module.css';
-import { FaRegStar, FaStar } from "react-icons/fa";
+
 import Star from '../../../common/star/star';
 
 const buildingName = "신공학관";
 
 function StatusBox({ id, color, onSelect }) { 
   const [selectedOption, setSelectedOption] = useState('');
-  const [isFavorited, setIsFavorited] = useState(false); // 즐겨찾기 상태 관리
 
   const handleSelect = (value) => {
     setSelectedOption(value);
@@ -23,7 +22,7 @@ function StatusBox({ id, color, onSelect }) {
           <div style={{paddingRight: '0.1vw'}}>비교 강의실 {id}</div>
           <div style={{ position: 'relative', display: 'inline-block', width: 'clamp(4px, 1vw, 16px)' }}>
 
-          <Star class={selectedOption}/>
+          <Star classRoom={selectedOption} building={buildingName}/>
 </div>
 
   </div>
