@@ -11,11 +11,12 @@ import Alarm from "../src/pages/Alarm/Alarm";
 import Contact from "../src/pages/Contact/Contact";
 import FloorCheck from "../src/pages/FloorCheck/FloorCheck";
 import Test from "../src/pages/test";
+import Test2 from "../src/pages/FloorCheck/test2";
 
 import SmartMirrorMain from "../src/smartMirror/pages/main";
 import SmartMirrorClassRoom from "../src/smartMirror/pages/classRoom";
 
-import { SensorDataProvider } from '../src/API/SensorDataContext';
+import { SensorDataProvider } from "../src/API/SensorDataContext";
 
 function App() {
   return (
@@ -37,7 +38,11 @@ function App() {
           {/* 테스트 페이지 */}
           <Route path="/test" element={<Test />} />
           <Route path="/smartM" element={<SmartMirrorMain />} />
-          <Route path="/smartMirror/classRoom/:id" element={<SmartMirrorClassRoom />} />
+          <Route
+            path="/smartMirror/classRoom/:id"
+            element={<SmartMirrorClassRoom />}
+          />
+          <Route path="/test2" element={<Test2 />} />
         </Routes>
       </SensorDataProvider>
     </Router>

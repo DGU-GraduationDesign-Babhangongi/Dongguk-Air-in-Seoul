@@ -128,6 +128,66 @@
 
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }
+.roomId {
+  margin-left: 5px;
+  font-size: 32px;
+  font-weight: bold;
+  color: black;
+  display: block;
+}
+
+.coordinateDot {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: dotAnimation 1s ease-in-out infinite;
+}
+.ring {
+  position: absolute;
+  border: 2px solid rgba(255, 0, 0, 0.5);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  top: 50%;
+  left: 10%;
+  animation: pulse 1.5s infinite;
+  opacity: 0;
+}
+
+.ring:nth-child(2) {
+  width: 52px;
+  height: 52px;
+  animation-delay: 0.75s;
+}
+@keyframes dotAnimation {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+  }
+}
+.dot {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
 
 .redDot,
 .greenDot {

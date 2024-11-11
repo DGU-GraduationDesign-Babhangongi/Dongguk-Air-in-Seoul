@@ -44,38 +44,9 @@ function Main() {
         }
       }
     };
-
-    // useEffect(() => {
-    //   const fetchNickname = async () => {
-    //     const token = localStorage.getItem("authToken");
-
-    //     if (!token) {
-    //       console.error("토큰이 없습니다.");
-    //       return;
-    //     }
-    //     try {
-    //       const token = localStorage.getItem("authToken");
-    //       const response = await fetch("/api/user/nickname", {
-    //         method: "GET",
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //           Authorization: `Bearer ${token}`, // 로그인 후 저장한 토큰 사용
-    //         },
-    //       });
-
-    //       if (response.ok) {
-    //         const nicknameData = await response.text(); // string 형식의 응답을 텍스트로 받기
-    //         setNickname(nicknameData); // nickname 업데이트
-    //       } else {
-    //         console.error("Failed to fetch nickname.");
-    //       }
-    //     } catch (error) {
-    //       console.error("Error fetching nickname:", error);
-    //     }
-    //   };
-
     fetchNickname(); // 페이지 로드 시 nickname 호출
   }, []);
+
   const handleBuildingClick = (building, buildingInfo) => {
     if (building == "신공학관") {
       setIsFadingOut(true);
@@ -226,7 +197,7 @@ function Main() {
             backgroundColor: color,
             borderRadius: "50%",
             transform: "translate(-50%, -50%)", // 중앙 정렬
-            zIndex: 1,
+            zIndex: 100,
             cursor: "pointer",
           }}
           className="animated-shape"

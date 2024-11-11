@@ -1,138 +1,72 @@
 /*층별 강의실 수치 확인*/
-/*사진 위치 C:\Dongguk-Air-in-Seoul\src\assets\images\AirQualityIndicator\humidity.png*/
-import React, { useState, useEffect, useRef } from "react";
+
+import React, { useContext, useState, useEffect, useRef } from "react";
 import Header from "../../components/common/Header/Header";
 import SideBar from "../../components/common/SideBar/SideBar";
 import styles from "./FloorCheck.module.css";
+import { SensorDataContext } from "../../API/SensorDataContext";
 
 function FloorCheck() {
-  const loading = null;
   const [currentFloor, setCurrentFloor] = useState(3);
-  const floorData = {
-    3: [
-      {
-        roomNumber: "3115",
-        temperature: "29°C",
-        humidity: "60%",
-        tvoc: "20",
-        pm25: "120",
-        noise: "75dB",
-        sensorStatus: "정상",
-        score1: 80,
-        score2: 55,
-      },
-      {
-        roomNumber: "3173",
-        temperature: "29°C",
-        humidity: "60%",
-        tvoc: "20",
-        pm25: "120",
-        noise: "75dB",
-        sensorStatus: "정상",
-        score1: 80,
-        score2: 55,
-      },
-    ],
-    4: [
-      {
-        roomNumber: "4142",
-        temperature: "28°C",
-        humidity: "55%",
-        tvoc: "25",
-        pm25: "110",
-        noise: "72dB",
-        sensorStatus: "정상",
-        score1: 82,
-        score2: 60,
-      },
-    ],
-    5: [
-      {
-        roomNumber: "5145",
-        temperature: "30°C",
-        humidity: "50%",
-        tvoc: "22",
-        pm25: "130",
-        noise: "80dB",
-        sensorStatus: "정상",
-        score1: 85,
-        score2: 58,
-      },
-      {
-        roomNumber: "5147",
-        temperature: "30°C",
-        humidity: "50%",
-        tvoc: "22",
-        pm25: "130",
-        noise: "80dB",
-        sensorStatus: "정상",
-        score1: 85,
-        score2: 58,
-      },
-    ],
-    6: [
-      {
-        roomNumber: "6119",
-        temperature: "32°C",
-        humidity: "53%",
-        tvoc: "18",
-        pm25: "100",
-        noise: "78dB",
-        sensorStatus: "정상",
-        score1: 90,
-        score2: 63,
-      },
-      {
-        roomNumber: "6144",
-        temperature: "32°C",
-        humidity: "53%",
-        tvoc: "18",
-        pm25: "100",
-        noise: "78dB",
-        sensorStatus: "정상",
-        score1: 90,
-        score2: 63,
-      },
-    ],
-  };
-  const currentFloorData = floorData[currentFloor] || [];
+  const roomIds = ["3115", "3173", "4142", "5145", "5147", "6119", "6144"];
+  const currentFloorRooms = roomIds.filter((Id) => Id.startsWith(currentFloor)); // 현재 층에 해당하는 강의실 필터링
+  const {
+    data: sensorData,
+    setSelectedSensorName,
+    loading,
+    error,
+  } = useContext(SensorDataContext);
 
-  const canvasRef = useRef(null);
+  // 여러 Room ID의 데이터를 수집하기 위한 객체 상태 생성
+  const [roomSensorData, setRoomSensorData] = useState({});
+
+  // 각 Room ID의 데이터를 받아와 저장
+  useEffect(() => {
+    currentFloorRooms.forEach((roomId) => {
+      setSelectedSensorName(roomId); // Room ID 설정
+    });
+    console.log("Room IDs Set for Sensor Data:", currentFloorRooms);
+  }, [currentFloorRooms, setSelectedSensorName]);
+
+  // sensorData 업데이트 시 roomSensorData에 Room ID별로 저장
+  useEffect(() => {
+    if (sensorData?.name) {
+      setRoomSensorData((prevData) => ({
+        ...prevData,
+        [sensorData.name]: sensorData, // Room ID별 데이터 저장
+      }));
+    }
+  }, [sensorData]);
+
+  const getRoomSensorData = (roomId) => {
+    const data = roomSensorData[roomId];
+    console.log(`Room Data for ${roomId}:`, data);
+    return data || {};
+  };
+
   const coordinates = {
     3: [
-      { id: "3115", x: 36, y: 220 },
-      { id: "3173", x: 205, y: 180 },
+      { id: "3115", x: 32, y: 220 },
+      { id: "3173", x: 200, y: 180 },
     ],
-    4: [{ id: "4142", x: 270, y: 500 }],
+    4: [{ id: "4142", x: 270, y: 490 }],
     5: [
-      { id: "5145", x: 19, y: 500 },
-      { id: "5147", x: 104, y: 500 },
+      { id: "5145", x: 100, y: 490 },
+      { id: "5147", x: 188, y: 490 },
     ],
     6: [
-      { id: "6119", x: 318, y: 40 },
-      { id: "6144", x: 216, y: 500 },
+      { id: "6119", x: 310, y: 30 },
+      { id: "6144", x: 212, y: 490 },
     ],
   };
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const floorCoordinates = coordinates[currentFloor] || [];
-    floorCoordinates.forEach(({ id, x, y }) => {
-      // 동그라미 도형 그리기
-      ctx.beginPath();
-      ctx.arc(x, y, 10, 0, 2 * Math.PI);
-      ctx.fillStyle = "red";
-      ctx.fill();
-
-      // 좌표 값 및 강의실 이름 표시
-      ctx.font = "16px Arial";
-      ctx.fillStyle = "black";
-      ctx.fillText(`${id}`, x + 15, y);
-    });
-  }, [currentFloor]);
+  // IAQIndex 값을 기반으로 이미지 경로 결정
+  const iaqImageSrc =
+    sensorData.IAQIndex?.value >= 86
+      ? require("../../assets/images/smartmirror/good.png")
+      : sensorData.IAQIndex?.value >= 71
+      ? require("../../assets/images/smartmirror/average.png")
+      : require("../../assets/images/smartmirror/bad.png");
 
   return (
     <div>
@@ -149,17 +83,27 @@ function FloorCheck() {
                   alt={`${currentFloor}층 구조도`}
                   className={styles.mapImage}
                 />
-                <canvas
-                  ref={canvasRef}
-                  width={440} // 이미지 크기와 맞추기
-                  height={602.63} // 이미지 크기와 맞추기
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    pointerEvents: "none", // 마우스 이벤트가 이미지로 전달되도록 설정
-                  }}
-                />
+                <div
+                  className={styles.coordinatesContainer}
+                  style={{ position: "absolute", top: 0, left: 0 }}
+                >
+                  {coordinates[currentFloor]?.map(({ id, x, y }) => (
+                    <div
+                      key={id}
+                      className={styles.coordinateDot}
+                      style={{
+                        left: `${x}px`,
+                        top: `${y}px`,
+                        zIndex: 10, // 이미지 위에 표시되도록 설정
+                      }}
+                    >
+                      <div className={styles.ring}></div>
+                      <div className={styles.ring}></div>
+                      <div className={styles.dot}></div>
+                      <span className={styles.roomId}>{id}</span>
+                    </div>
+                  ))}
+                </div>
                 <div
                   className={styles.floorButtons}
                   style={{
@@ -192,206 +136,222 @@ function FloorCheck() {
             </div>
 
             <div className={styles.infoPanels}>
-              {currentFloorData.map((room, index) => (
-                <div className={styles.infoPanel} key={index}>
-                  <h2
-                    style={{
-                      margin: "8px 8px 20px 8px",
-                      fontSize: "28px",
-                    }}
-                  >
-                    {room.roomNumber} 강의실
-                  </h2>
-                  <hr
-                    style={{
-                      border: "0.5px solid black",
-                      margin: "8px 8px 24px 8px",
-                    }}
-                  />
-                  <div
-                    className={styles.infoItem}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <img
-                      src="/Icons/img_temp.png"
-                      alt="온도"
+              {currentFloorRooms.map((roomId, index) => {
+                const roomSensorData = getRoomSensorData(roomId); // 각 강의실에 맞는 센서 데이터 가져오기
+                return (
+                  <div className={styles.infoPanel} key={index}>
+                    <h2
                       style={{
-                        width: "36px",
-                        marginRight: "8px",
-                        marginBottom: "4px",
+                        margin: "8px 8px 20px 8px",
+                        fontSize: "28px",
+                      }}
+                    >
+                      {roomId} 강의실
+                    </h2>
+                    <hr
+                      style={{
+                        border: "0.5px solid black",
+                        margin: "8px 8px 24px 8px",
                       }}
                     />
-                    <span>온도</span>
-                    <span style={{ marginLeft: "auto" }}>
-                      {loading ? "--" : "24°C"}
-                    </span>
-                    <span
-                      className={styles.greenDot}
-                      style={{ marginLeft: "auto" }}
-                    />
-                  </div>
-                  <div
-                    className={styles.infoItem}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <img
-                      src="/Icons/img_mois.png"
-                      alt="습도"
+                    <div
+                      className={styles.infoItem}
                       style={{
-                        width: "36px",
-                        marginRight: "8px",
-                        marginBottom: "4px",
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "6px",
                       }}
-                    />
-                    <span>습도</span>
-                    <span style={{ marginLeft: "auto" }}>
-                      {loading ? "--" : "56%"}
-                    </span>
-                    <span
-                      className={styles.greenDot}
-                      style={{ marginLeft: "auto" }}
-                    />
-                  </div>
+                    >
+                      <img
+                        src="/Icons/img_temp.png"
+                        alt="온도"
+                        style={{
+                          width: "36px",
+                          marginRight: "8px",
+                          marginBottom: "4px",
+                        }}
+                      />
+                      <span>온도</span>
+                      <span style={{ marginLeft: "auto" }}>
+                        {loading ? "--" : `${sensorData.Temperature?.value}°C`}
+                      </span>
+                      <span
+                        className={styles.greenDot}
+                        style={{ marginLeft: "auto" }}
+                      />
+                    </div>
+                    <div
+                      className={styles.infoItem}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "6px",
+                      }}
+                    >
+                      <img
+                        src="/Icons/img_mois.png"
+                        alt="습도"
+                        style={{
+                          width: "36px",
+                          marginRight: "8px",
+                          marginBottom: "4px",
+                        }}
+                      />
+                      <span>습도</span>
+                      <span style={{ marginLeft: "auto" }}>
+                        {loading
+                          ? "--"
+                          : `${sensorData.Humidity?.value || "--"}%`}
+                      </span>
+                      <span
+                        className={styles.greenDot}
+                        style={{ marginLeft: "auto" }}
+                      />
+                    </div>
 
-                  <div
-                    className={styles.infoItem}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <img
-                      src="/Icons/img_tvoc.png"
-                      alt="TVOC"
+                    <div
+                      className={styles.infoItem}
                       style={{
-                        width: "36px",
-                        marginRight: "8px",
-                        marginBottom: "4px",
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "6px",
                       }}
-                    />
-                    <span>TVOC</span>
-                    <span style={{ marginLeft: "auto" }}>
-                      {loading ? "--" : "23"}
-                    </span>
-                    <span
-                      className={styles.greenDot}
-                      style={{ marginLeft: "auto" }}
-                    />
-                  </div>
+                    >
+                      <img
+                        src="/Icons/img_tvoc.png"
+                        alt="TVOC"
+                        style={{
+                          width: "36px",
+                          marginRight: "8px",
+                          marginBottom: "4px",
+                        }}
+                      />
+                      <span>TVOC</span>
+                      <span style={{ marginLeft: "auto" }}>
+                        {loading
+                          ? "--"
+                          : `${sensorData.TVOC?.value || "--"} ㎍/㎥`}
+                      </span>
+                      <span
+                        className={styles.greenDot}
+                        style={{ marginLeft: "auto" }}
+                      />
+                    </div>
 
-                  <div
-                    className={styles.infoItem}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <img
-                      src="/Icons/img_pm2.5.png"
-                      alt="PM2.5"
+                    <div
+                      className={styles.infoItem}
                       style={{
-                        width: "36px",
-                        marginRight: "8px",
-                        marginBottom: "4px",
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "6px",
                       }}
-                    />
-                    <span>PM 2.5</span>
-                    <span style={{ marginLeft: "auto" }}>
-                      {loading ? "--" : "150um"}
-                    </span>
-                    <span
-                      className={styles.greenDot}
-                      style={{ marginLeft: "auto" }}
-                    />
-                  </div>
+                    >
+                      <img
+                        src="/Icons/img_pm2.5.png"
+                        alt="PM2.5"
+                        style={{
+                          width: "36px",
+                          marginRight: "8px",
+                          marginBottom: "4px",
+                        }}
+                      />
+                      <span>PM 2.5</span>
+                      <span style={{ marginLeft: "auto" }}>
+                        {loading
+                          ? "--"
+                          : `${
+                              sensorData.PM2_5MassConcentration?.value || "--"
+                            } ㎛`}
+                      </span>
+                      <span
+                        className={styles.greenDot}
+                        style={{ marginLeft: "auto" }}
+                      />
+                    </div>
 
-                  <div
-                    className={styles.infoItem}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <img
-                      src="/Icons/img_noise.png"
-                      alt="소음"
+                    <div
+                      className={styles.infoItem}
                       style={{
-                        width: "36px",
-                        marginRight: "8px",
-                        marginBottom: "4px",
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "6px",
+                      }}
+                    >
+                      <img
+                        src="/Icons/img_noise.png"
+                        alt="소음"
+                        style={{
+                          width: "36px",
+                          marginRight: "8px",
+                          marginBottom: "4px",
+                        }}
+                      />
+                      <span>소음</span>
+                      <span style={{ marginLeft: "auto" }}>
+                        {loading
+                          ? "--"
+                          : `${sensorData.AmbientNoise?.value || "--"} dB`}
+                      </span>
+                      <span
+                        className={styles.greenDot}
+                        style={{ marginLeft: "auto" }}
+                      />
+                    </div>
+                    <div
+                      className={styles.infoItem}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "6px",
+                      }}
+                    >
+                      <img
+                        src="/Icons/img_sensor.png"
+                        alt="센서 상태"
+                        style={{
+                          width: "36px",
+                          marginRight: "8px",
+                          marginBottom: "4px",
+                        }}
+                      />
+                      <span>센서 상태</span>
+                      <span style={{ marginLeft: "auto" }}>
+                        {loading ? "--" : "ON"}
+                      </span>
+                      <span
+                        className={styles.greenDot}
+                        style={{ marginLeft: "auto" }}
+                      />
+                    </div>
+                    <hr
+                      style={{
+                        border: "0.5px solid #9c9c9c",
+                        margin: "24px 4px 12px 4px",
                       }}
                     />
-                    <span>소음</span>
-                    <span style={{ marginLeft: "auto" }}>
-                      {loading ? "--" : "89dB"}
-                    </span>
-                    <span
-                      className={styles.greenDot}
-                      style={{ marginLeft: "auto" }}
-                    />
-                  </div>
-                  <div
-                    className={styles.infoItem}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <img
-                      src="/Icons/img_sensor.png"
-                      alt="센서 상태"
+                    <div
+                      className={styles.infoScore}
                       style={{
-                        width: "36px",
-                        marginRight: "8px",
-                        marginBottom: "4px",
+                        display: "flex",
+                        alignItems: "center",
+                        marginTop: "4%",
                       }}
-                    />
-                    <span>센서 상태</span>
-                    <span
-                      className={styles.greenDot}
-                      style={{ marginLeft: "auto" }}
-                    />
+                    >
+                      <span>{}</span>
+                      <img
+                        src="/Icons/good.png"
+                        alt="평균값"
+                        style={{
+                          width: "120px",
+                          marginRight: "1%",
+                          marginLeft: "4%",
+                          marginBottom: "4px",
+                        }}
+                      />
+                    </div>
                   </div>
-                  <hr
-                    style={{
-                      border: "0.5px solid #9c9c9c",
-                      margin: "24px 4px 12px 4px",
-                    }}
-                  />
-                  <div
-                    className={styles.infoScore}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginTop: "4%",
-                    }}
-                  >
-                    <span>{room.score1}</span>
-                    <img
-                      src="/Icons/good.png"
-                      alt="평균값"
-                      style={{
-                        width: "120px",
-                        marginRight: "1%",
-                        marginLeft: "4%",
-                        marginBottom: "4px",
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
