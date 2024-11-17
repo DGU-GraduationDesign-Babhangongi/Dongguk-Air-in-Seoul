@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import styles from './whatDropdown.module.css';
 
@@ -10,7 +10,21 @@ const options = [
   { value: 'AMBIENTNOISE', label: '소음' },
 ];
 
-const whatDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px', width = '100%', height = 'auto' }) => {
+const WhatDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px', width = '100%', height = 'auto', noPM25A, noPM25B }) => {
+  const [filteredOptions, setFilteredOptions] = useState(options);
+
+  useEffect(() => {
+    // 'PM 2.5' 옵션을 제거하거나 추가하는 조건
+    if (noPM25A === false || noPM25B === false) {
+      setFilteredOptions(options.filter(option => option.value !== 'PM2_5MASSCONCENTRATION'));
+    } else {
+      // 두 값이 모두 true일 때 'PM 2.5' 옵션을 다시 추가
+      setFilteredOptions(options);
+    }
+  }, [noPM25A, noPM25B]);
+
+
+  console.log(noPM25A, noPM25B);
   const customStyles = {
     control: (provided) => ({
       ...provided,
@@ -62,7 +76,7 @@ const whatDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px', 
 
   return (
     <Select 
-      options={options}
+      options={filteredOptions}
       onChange={option => onSelect(option.value)}
       styles={customStyles}
       placeholder={<span className={styles.customPlaceholder}>속성 선택</span>}
@@ -71,4 +85,4 @@ const whatDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px', 
   );
 };
 
-export default whatDropdown;
+export default WhatDropdown;

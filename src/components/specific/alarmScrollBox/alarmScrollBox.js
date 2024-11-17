@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import styles from './alarmScrollBox.module.css'; // CSS 모듈 import
+import styles from './alarmScrollBox.module.css';
 import API from '../../../API/api';
 import moment from 'moment';
 import debounce from 'lodash.debounce';
+const token = localStorage.getItem("token");
 
 const AlarmScrollBox = ({ title, classRoom }) => {
   const [data, setData] = useState([]);
@@ -22,7 +23,12 @@ const AlarmScrollBox = ({ title, classRoom }) => {
     const endpoint = `/api/sensorData/classroom/betweenDates?sensorTypes=ALL&building=${encodedBuilding}&name=${classRoom}&order=ASC&startDate=${encodeURIComponent(startDate.format('YYYY-MM-DDTHH:mm:ss'))}&endDate=${encodeURIComponent(endDate.format('YYYY-MM-DDTHH:mm:ss'))}&page=0&size=1000000000`;
 
     try {
-      const response = await API.get(endpoint);
+      const response = await API.get(endpoint, null, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'accept': '*/*',
+        },
+      });
       const formattedData = [];
 
       const timestamps = response.data.data ? response.data.data.map(item => item.timestamp) : [];
@@ -86,35 +92,36 @@ const AlarmScrollBox = ({ title, classRoom }) => {
     const humidity = item.humidity !== 'N/A' && getColorByRange('humidity', item.humidity) ? `습도 ${item.humidity}% 수치 이상\n` : '';
     const tvoc = item.tvoc !== 'N/A' && getColorByRange('tvoc', item.tvoc) ? `TVOC ${item.tvoc}㎍/m³ 수치 이상\n` : '';
   
-    // 모든 값이 없으면 null 반환
     if (!pm25 && !noise && !temperature && !humidity && !tvoc) {
       return null;
     }
   
-    // 항목이 있는 경우에만 메시지 생성
     const message = `[${item.name}]\n${pm25}${noise}${temperature}${humidity}${tvoc}`;
-    return message.trim(); // 메시지가 비어 있으면 null 반환
+    return message.trim();
   };
-  
 
   return (
     <div className={styles.Container}>
       <div style={{ marginLeft: '5%' }}>{title}</div>
       <div className={styles.scrollableContainer}>
         {loading ? (
-          <div>Loading...</div>
-        ) : (
-          data.map((item, index) => {
-            const message = formatMessage(item);
-            return message ? (
-              <div key={index}>
-                {message.split("\n").map((line, i) => (
-                  <span key={i}>{line}<br /></span>
+            <div style={{margin:'0 25%', width: '50%', height:"100%", display:'flex', alignItems:'center', textAlign:'center'}}>Loading...</div>
 
-                ))} <br/>
-              </div>
-            ) : null;
-          })
+        ) : (
+          data.every(item => !formatMessage(item)) ? (
+            <div style={{margin:'0 1%', width: '98%', height:"100%", display:'flex', alignItems:'center'}}>24시간 내 이상 수치가 없습니다</div>
+          ) : (
+            data.map((item, index) => {
+              const message = formatMessage(item);
+              return message ? (
+                <div key={index}>
+                  {message.split("\n").map((line, i) => (
+                    <span key={i}>{line}<br /></span>
+                  ))} <br/>
+                </div>
+              ) : null;
+            })
+          )
         )}
       </div>
     </div>

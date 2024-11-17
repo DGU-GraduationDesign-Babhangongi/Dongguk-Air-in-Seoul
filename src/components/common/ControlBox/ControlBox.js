@@ -21,11 +21,10 @@ function ControlBox({ color }) {
 
   return (
     <div className={styles.box} style={{ border: '1.5px solid'+ color }} >
-      <div className={styles.top}>
-        <IoMdSettings className={styles.topImg} style={{ color: color }} /> {/* color 속성 직접 적용 */}
-      </div>
+
 
       <div className={styles.table}>
+
         {toggleStates.map((state, index) => (
           <div key={index} className={styles.tableRow}>
             {deviceNames[index]} 

@@ -27,8 +27,14 @@
 }
 
 .table {
+  display: flex;
+  height: 94%;
+  flex-direction: column; /* 자식 요소를 세로로 정렬 */
+  align-items: center;
+  justify-content: center;
   width: 100%;
 }
+
 
 .tableRow {
   display: grid;

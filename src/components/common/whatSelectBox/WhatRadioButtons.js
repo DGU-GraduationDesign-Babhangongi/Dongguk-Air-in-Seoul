@@ -5,19 +5,26 @@ const options = [
   { value: 'temperature', label: '온도' },
   { value: 'humidity', label: '습도' },
   { value: 'TVOC', label: 'TVOC' },
-  { value: 'PM2.5', label: 'PM2_5' }, // 여기에서 value 수정
   { value: 'noise', label: '소음' },
+  { value: 'PM2.5', label: 'PM2_5' }, // 여기에서 value 수정
+
 ];
 
 const colors = [
   '#96C0E8', // 온도
   '#F1B5FB', // 습도
-  '#19E6A0', // TVOC
+  '#19E6A0', // TVOC  
+  '#FF8484', // 소음
   '#FFDC82', // PM 2.5
-  '#FF8484'  // 소음
+
 ];
 
-const WhatCheckBoxes = ({ selectedValues, onSelect, borderColor = '#A5A5A5', borderWidth = '1px', width = '100%' }) => {
+const WhatCheckBoxes = ({ selectedValues, onSelect, borderColor = '#A5A5A5', borderWidth = '1px', width = '100%', isPM2_5 = false }) => {
+  // isPM2_5가 false일 경우 'noise' 항목 제거
+  const filteredOptions = isPM2_5 
+    ? options 
+    : options.filter(option => option.value !== 'PM2.5');
+
   const handleChange = (value, index) => {
     if (selectedValues.includes(value)) {
       onSelect(selectedValues.filter(v => v !== value), null); // 인덱스는 null로 설정
@@ -31,7 +38,7 @@ const WhatCheckBoxes = ({ selectedValues, onSelect, borderColor = '#A5A5A5', bor
       className={styles.checkboxGroup} 
       style={{ borderColor, borderWidth }} // width 추가
     >
-      {options.map((option, index) => (
+      {filteredOptions.map((option, index) => (
         <label 
           key={option.value} 
           className={styles.checkboxLabel} 

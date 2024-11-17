@@ -1,80 +1,75 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { FaStar, FaRegStar } from 'react-icons/fa';
-import axios from 'axios';  // axios 사용
+import API from '../../../API/api';
 import debounce from 'lodash.debounce';
 
 const Star = ({ width = '100%', height = '100%', building = '신공학관', classRoom, selectedFavorited = false }) => {
-  // selectedFavorited가 true이면 즐겨찾기가 되어있고, false이면 그렇지 않다고 가정
-  const [isFavorited, setIsFavorited] = useState(selectedFavorited); // selectedFavorited에 따라 초기값 설정
+  const [isFavorited, setIsFavorited] = useState(selectedFavorited);
   const [loading, setLoading] = useState(false);
 
-  // building을 제대로 URL에 인코딩
   const encodedBuilding = encodeURIComponent(building);
+  const token = localStorage.getItem("token");
 
   const fetchData = async (classRoom) => {
-    const token = localStorage.getItem("token"); // 로컬스토리지에서 토큰 가져오기
-    const endpoint = `https://donggukseoul.com/api/classrooms/favorite?building=${encodedBuilding}&name=${encodeURIComponent(classRoom)}`; // 클래스룸 URL 파라미터 추가
+    if (loading) return; // 요청 중이라면 실행하지 않음
+
+    const endpoint = `/api/classrooms/favorite?building=${encodedBuilding}&name=${encodeURIComponent(classRoom)}`;
 
     try {
-      setLoading(true);  // 요청 시작
-
-      // axios를 사용하여 API POST 요청
-      const response = await axios.post(endpoint, null, {
+      setLoading(true);
+      const response = await API.post(endpoint, null, {
         headers: {
-          'Authorization': `Bearer ${token}`, // Authorization 헤더 추가
-          'accept': '*/*', // accept 헤더 추가
+          'Authorization': `Bearer ${token}`,
+          'accept': '*/*',
         },
       });
 
-      console.log('API 요청 성공:', response); // 성공적으로 요청이 완료되었을 경우 콘솔 출력
+      console.log('API 요청 성공:', response);
     } catch (e) {
-      console.error("API 오류: ", e); // 오류 발생 시 콘솔에 출력
+      console.error("API 오류: ", e);
     } finally {
-      setLoading(false); // 요청 완료 후 로딩 상태 변경
+      setLoading(false);
     }
   };
 
-  // debounce된 함수 정의 (useCallback을 통해 메모이제이션)
-  const fetchDataDebounced = useCallback(debounce(fetchData, 300), [encodedBuilding]);
-
-  // 즐겨찾기 버튼 클릭 시 색상 변경 및 fetchData 호출 함수
   const handleFavoriteClick = () => {
-    setIsFavorited((prev) => !prev); // 상태를 반전시켜 색상 변경
-    fetchDataDebounced(classRoom); // 클릭 시에만 API 호출
+    setIsFavorited((prev) => !prev);
+
+    // 현재 요청이 없고, 클릭 이벤트가 발생했을 때만 API 호출
+    if (!loading) {
+      fetchData(classRoom);
+    }
   };
 
-  // selectedFavorited 값이 변경될 때마다 isFavorited 상태를 업데이트
   useEffect(() => {
     setIsFavorited(selectedFavorited);
   }, [selectedFavorited]);
 
   return (
     <div style={{ width, height, position: 'relative' }}>
-      {/* 메인 아이콘 */}
       <FaStar
-        size={'68%'} // 실제 아이콘 크기
-        color={isFavorited ? '#FFD700' : '#A5A5A5'} // 메인 색상 (노란색 또는 회색)
+        size={'68%'}
+        color={isFavorited ? '#FFD700' : '#A5A5A5'}
         onClick={handleFavoriteClick}
         style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
-          transform: 'translate(-50%, -50%)', // 중앙으로 이동
+          transform: 'translate(-50%, -50%)',
           cursor: 'pointer',
           transition: 'color 0.3s ease',
           zIndex: 1,
         }}
       />
 
-      {/* 테두리 역할을 하는 아이콘 */}
       <FaRegStar
-        size={'100%'} // 테두리 크기, 부모 요소의 크기에 맞춰 설정
-        color="#000000" // 테두리 색상
+        size={'100%'}
+        color="#000000"
         style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
-          transform: 'translate(-50%, -50%)', // 중앙으로 이동
+          transform: 'translate(-50%, -50%)',
           zIndex: 0,
         }}
       />
