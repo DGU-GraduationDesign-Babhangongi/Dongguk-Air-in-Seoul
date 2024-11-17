@@ -24,8 +24,12 @@ function App() {
         <Routes>
           {/* 기본 페이지들 */}
           <Route path="/" element={<Main />} />
+
           <Route path="/figures" element={<Figures />} />
+          <Route path="/figures/:id" element={<Figures />} />
+          
           <Route path="/comparison" element={<Comparison />} />
+          <Route path="/comparison/:id" element={<Comparison />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/log" element={<Log />} />

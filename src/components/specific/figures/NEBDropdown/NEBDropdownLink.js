@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';  // useLocation 추가
 import Select from 'react-select';
-import styles from './NEBDropdown.module.css';
 import API from '../../../../API/api';
 
-const CustomDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px', width = '100%', oppositeClassroom }) => {
+const CustomDropdown = ({ onSelect, selectedInitialValue, borderColor = '#A5A5A5', borderWidth = '1px', width = '100%' }) => {
   const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedValue, setSelectedValue] = useState(null);
+  const navigate = useNavigate();  // React Router의 useNavigate 사용
+  const location = useLocation();  // useLocation 추가
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -19,9 +22,8 @@ const CustomDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px'
           },
         });
 
-        // oppositeClassroom과 비교 시 대소문자 및 공백을 제거하고 비교하는 방법을 추가
         const formattedData = responses.data
-          .filter(room => room.sensorType === 'Air' && room.name.trim().toLowerCase() !== (oppositeClassroom?.trim().toLowerCase() || '').toLowerCase()) // 필터링 로직 수정
+          .filter(room => room.sensorType === 'Air')
           .map(room => ({
             value: room.name,
             label: room.name,
@@ -38,7 +40,17 @@ const CustomDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px'
     };
 
     fetchData();
-  }, [oppositeClassroom]);  // oppositeClassroom이 변경될 때마다 실행
+  }, []);
+
+  useEffect(() => {
+    if (selectedInitialValue && options.length > 0) {
+      const defaultOption = options.find(option => option.value === selectedInitialValue);
+      if (defaultOption) {
+        setSelectedValue(defaultOption);
+        onSelect(defaultOption.value, defaultOption.favorited);
+      }
+    }
+  }, [options, selectedInitialValue, onSelect]);
 
   const customStyles = {
     control: (provided) => ({
@@ -88,15 +100,39 @@ const CustomDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px'
     }),
   };
 
+  const removeIdAndUpdate = (newValue) => {
+    let newPath = location.pathname;
+
+    // 경로 맨 뒤에 숫자가 있으면 이를 제거하고 새 값 추가
+    const pathParts = newPath.split('/');
+    const lastPart = pathParts[pathParts.length - 1];
+
+    if (!isNaN(lastPart)) {
+      // 마지막 부분이 숫자라면 제거하고 새 값 추가
+      pathParts.pop(); 
+      newPath = `${pathParts.join('/')}/${newValue}`;
+    } else {
+      // 숫자가 아니면 기존 경로 뒤에 추가
+      newPath = `${newPath}/${newValue}`;
+    }
+
+    navigate(newPath);  // 새 경로로 이동
+  };
+
+  const handleChange = (option) => {
+    setSelectedValue(option);  // 선택된 값으로 상태 업데이트
+    onSelect(option.value, option.favorited);  // onSelect 호출
+    removeIdAndUpdate(option.value);  // 새 경로로 업데이트
+  };
+
   return (
     <Select
       options={options}
-      onChange={option => onSelect(option.value, option.favorited)}  // 선택된 강의실과 favorited 값 함께 전달
+      value={selectedValue}  // 상태로 관리된 value 사용
+      onChange={handleChange}  // 선택 시 주소 변경
       styles={customStyles}
-      placeholder={<span className={styles.customPlaceholder}>강의실 선택</span>}
-      className={styles.NEBDropdown}
-      classNamePrefix="custom-select"
       isLoading={loading}
+      placeholder="Select Class"
     />
   );
 };
