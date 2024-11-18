@@ -1,26 +1,24 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react'; // useState, useEffect 가져오기
 import { FaStar, FaRegStar } from 'react-icons/fa';
-import API from '../../../API/api';
+import API from '../../../API/api'; // API 가져오기
 
-const Star = ({ width = '100%', height = '100%', building = '신공학관', classRoom }) => {
-  const [isFavorited, setIsFavorited] = useState(false); // 초기값 false
+const Star = ({ width = '100%', height = '100%', building = '신공학관', classRoom, toggleRefresh }) => {
+  const [isFavorited, setIsFavorited] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const encodedBuilding = encodeURIComponent(building);
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
 
   const fetchDataInit = async () => {
     const endpoint = `/api/classrooms/favorite/status?building=${encodedBuilding}&name=${encodeURIComponent(classRoom)}`;
     try {
       setLoading(true);
-      const response = await API.get(endpoint,{
+      const response = await API.get(endpoint, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-    
-  
-      // API 응답에 따라 즐겨찾기 상태 업데이트
+
       setIsFavorited(response.data);
     } catch (e) {
       console.error('API 오류: ', e);
@@ -30,7 +28,7 @@ const Star = ({ width = '100%', height = '100%', building = '신공학관', clas
   };
 
   const fetchData = async () => {
-    if (loading) return; // 요청 중이라면 실행하지 않음
+    if (loading) return;
 
     const endpoint = `/api/classrooms/favorite?building=${encodedBuilding}&name=${encodeURIComponent(classRoom)}`;
     try {
@@ -42,6 +40,8 @@ const Star = ({ width = '100%', height = '100%', building = '신공학관', clas
         },
       });
       console.log('API 요청 성공:', response);
+
+      toggleRefresh(); // 새로고침 상태 변경 호출
     } catch (e) {
       console.error('API 오류: ', e);
     } finally {
@@ -56,10 +56,9 @@ const Star = ({ width = '100%', height = '100%', building = '신공학관', clas
     }
   };
 
-  // 컴포넌트 초기 렌더링 시 fetchDataInit 호출
   useEffect(() => {
     fetchDataInit();
-  }, [classRoom]); // classRoom이 변경될 때도 초기화
+  }, [classRoom]);
 
   return (
     <div style={{ width, height, position: 'relative' }}>
