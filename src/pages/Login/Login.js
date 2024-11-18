@@ -149,25 +149,6 @@ const Login = () => {
                 className={styles.inputField}
               />
             </div>
-
-            <div className={styles.extraOptions}>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                <input type="checkbox" id="rememberMe" />
-                <label
-                  htmlFor="rememberMe"
-                  style={{ marginLeft: "8px", marginBottom: "16px" }}
-                >
-                  아이디 기억하기
-                </label>
-              </div>
-            </div>
-
             <button type="submit" className={styles.loginButton}>
               로그인
             </button>

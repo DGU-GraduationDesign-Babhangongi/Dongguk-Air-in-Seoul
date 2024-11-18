@@ -100,8 +100,9 @@
 }
 
 .infoPanel {
-  height: 540px;
-  width: 380px;
+  flex: 1;
+  min-height: 540px;
+  min-width: 380px;
   padding: 6%; /* 내부 여백을 줄임 */
   background-color: white;
   border: 1px solid #ddd;
