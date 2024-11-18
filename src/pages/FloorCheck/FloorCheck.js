@@ -6,6 +6,7 @@ import Header from "../../components/common/Header/Header";
 import SideBar from "../../components/common/SideBar/SideBar";
 import styles from "./FloorCheck.module.css";
 import { SensorDataContext } from "../../API/SensorDataContext";
+import AirQualityIndicator from "../../components/common/AirQualityIndicator/AirQualityIndicator";
 
 function FloorCheck() {
   const { floor } = useParams(); // URL에서 floor 값을 가져옴
@@ -13,35 +14,49 @@ function FloorCheck() {
   const currentFloor = parseInt(floor, 10); // floor 값을 정수로 변환
   const roomIds = ["3115", "3173", "4142", "5145", "5147", "6119", "6144"];
   const currentFloorRooms = roomIds.filter((Id) => Id.startsWith(currentFloor)); // 현재 층에 해당하는 강의실 필터링
+  const [averageIAQ, setAverageIAQ] = useState(null);
+  const [iaqValues, setIaqValues] = useState([]); // IAQ 점수 저장
 
   const {
     data: sensorData,
     setSelectedSensorName,
-    loading, // loading 추가
+    loading,
   } = useContext(SensorDataContext);
 
-  // // Room ID별 데이터를 저장
-  // useEffect(() => {
-  //   currentFloorRooms.forEach((roomId) => {
-  //     setSelectedSensorName(roomId);
-  //   });
-  // }, [currentFloorRooms, setSelectedSensorName]);
+  // 평균 IAQ 계산
+  useEffect(() => {
+    if (!sensorData || loading || !currentFloorRooms.length) return;
 
-  // // sensorData 업데이트 시 roomSensorData에 Room ID별로 저장
-  // useEffect(() => {
-  //   if (sensorData?.name) {
-  //     setRoomSensorData((prevData) => ({
-  //       ...prevData,
-  //       [sensorData.name]: sensorData, // Room ID별 데이터 저장
-  //     }));
-  //   }
-  // }, [sensorData]);
+    const values = currentFloorRooms.map((roomId) => {
+      const iaq = sensorData[roomId]?.IAQIndex?.value || 0; // 데이터가 없으면 0으로 대체
+      console.log(`Room ${roomId} IAQIndex value:`, iaq);
+      return iaq;
+    });
 
-  // const getRoomSensorData = (roomId) => {
-  //   const data = roomSensorData[roomId];
-  //   console.log(`Room Data for ${roomId}:`, data);
-  //   return data || {};
-  // };
+    if (values.length > 0) {
+      setIaqValues(values);
+      const avg = values.reduce((sum, value) => sum + value, 0) / values.length;
+      setAverageIAQ(avg);
+      console.log(`Average IAQ for floor ${floor}:`, avg);
+    } else {
+      setAverageIAQ(null);
+    }
+  }, [sensorData, loading, currentFloorRooms]);
+
+  // 좌표별 색상 결정 함수 추가
+  const getColor = (IAQvalue) => {
+    if (IAQvalue === null) return "gray";
+    if (IAQvalue >= 90) return "green";
+    if (IAQvalue >= 80) return "orange";
+    else return "red";
+  };
+
+  useEffect(() => {
+    if (!loading) {
+      console.log("sensorData:", sensorData);
+      console.log("IAQIndex value:", sensorData?.IAQIndex?.value);
+    }
+  }, [sensorData, loading]);
 
   const coordinates = {
     3: [
@@ -65,12 +80,13 @@ function FloorCheck() {
   };
 
   // IAQIndex 값을 기반으로 이미지 경로 결정
-  const iaqImageSrc =
-    sensorData.IAQIndex?.value >= 86
-      ? require("../../assets/images/smartmirror/good.png")
-      : sensorData.IAQIndex?.value >= 71
-      ? require("../../assets/images/smartmirror/average.png")
-      : require("../../assets/images/smartmirror/bad.png");
+  const iaqImageSrc = loading
+    ? ". . .Loading . . ."
+    : sensorData.IAQIndex?.value >= 86
+    ? require("../../assets/images/smartmirror/good.png")
+    : sensorData.IAQIndex?.value >= 71
+    ? require("../../assets/images/smartmirror/average.png")
+    : require("../../assets/images/smartmirror/bad.png");
 
   return (
     <div>
@@ -157,173 +173,12 @@ function FloorCheck() {
                     }}
                   />
                   <div
-                    className={styles.infoItem}
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: "6px",
+                      width: "180%",
+                      margin: "5%",
                     }}
                   >
-                    <img
-                      src="/Icons/img_temp.png"
-                      alt="온도"
-                      style={{
-                        width: "36px",
-                        marginRight: "8px",
-                        marginBottom: "4px",
-                      }}
-                    />
-                    <span>온도</span>
-                    <span style={{ marginLeft: "auto" }}>
-                      {loading ? "--" : `${sensorData.Temperature?.value}°C`}
-                    </span>
-                    <span
-                      className={styles.greenDot}
-                      style={{ marginLeft: "auto" }}
-                    />
-                  </div>
-                  <div
-                    className={styles.infoItem}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <img
-                      src="/Icons/img_mois.png"
-                      alt="습도"
-                      style={{
-                        width: "36px",
-                        marginRight: "8px",
-                        marginBottom: "4px",
-                      }}
-                    />
-                    <span>습도</span>
-                    <span style={{ marginLeft: "auto" }}>
-                      {loading
-                        ? "--"
-                        : `${sensorData.Humidity?.value || "--"}%`}
-                    </span>
-                    <span
-                      className={styles.greenDot}
-                      style={{ marginLeft: "auto" }}
-                    />
-                  </div>
-
-                  <div
-                    className={styles.infoItem}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <img
-                      src="/Icons/img_tvoc.png"
-                      alt="TVOC"
-                      style={{
-                        width: "36px",
-                        marginRight: "8px",
-                        marginBottom: "4px",
-                      }}
-                    />
-                    <span>TVOC</span>
-                    <span style={{ marginLeft: "auto" }}>
-                      {loading
-                        ? "--"
-                        : `${sensorData.TVOC?.value || "--"} ㎍/㎥`}
-                    </span>
-                    <span
-                      className={styles.greenDot}
-                      style={{ marginLeft: "auto" }}
-                    />
-                  </div>
-
-                  <div
-                    className={styles.infoItem}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <img
-                      src="/Icons/img_pm2.5.png"
-                      alt="PM2.5"
-                      style={{
-                        width: "36px",
-                        marginRight: "8px",
-                        marginBottom: "4px",
-                      }}
-                    />
-                    <span>PM 2.5</span>
-                    <span style={{ marginLeft: "auto" }}>
-                      {loading
-                        ? "--"
-                        : `${
-                            sensorData.PM2_5MassConcentration?.value || "--"
-                          } ㎛`}
-                    </span>
-                    <span
-                      className={styles.greenDot}
-                      style={{ marginLeft: "auto" }}
-                    />
-                  </div>
-
-                  <div
-                    className={styles.infoItem}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <img
-                      src="/Icons/img_noise.png"
-                      alt="소음"
-                      style={{
-                        width: "36px",
-                        marginRight: "8px",
-                        marginBottom: "4px",
-                      }}
-                    />
-                    <span>소음</span>
-                    <span style={{ marginLeft: "auto" }}>
-                      {loading
-                        ? "--"
-                        : `${sensorData.AmbientNoise?.value || "--"} dB`}
-                    </span>
-                    <span
-                      className={styles.greenDot}
-                      style={{ marginLeft: "auto" }}
-                    />
-                  </div>
-                  <div
-                    className={styles.infoItem}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <img
-                      src="/Icons/img_sensor.png"
-                      alt="센서 상태"
-                      style={{
-                        width: "36px",
-                        marginRight: "8px",
-                        marginBottom: "4px",
-                      }}
-                    />
-                    <span>센서 상태</span>
-                    <span style={{ marginLeft: "auto" }}>
-                      {loading ? "--" : "ON"}
-                    </span>
-                    <span
-                      className={styles.greenDot}
-                      style={{ marginLeft: "auto" }}
-                    />
+                    <AirQualityIndicator classRoom={roomId} />
                   </div>
                   <hr
                     style={{
@@ -339,20 +194,24 @@ function FloorCheck() {
                       marginTop: "4%",
                     }}
                   >
-                    <span>{}</span>
-                    <img
-                      src="/Icons/good.png"
-                      alt="평균값"
-                      style={{
-                        width: "120px",
-                        marginRight: "1%",
-                        marginLeft: "4%",
-                        marginBottom: "4px",
-                      }}
-                    />
+                    <span>
+                      {loading
+                        ? "--"
+                        : sensorData[roomId]?.IAQIndex?.value || "데이터 없음"}
+                    </span>
                   </div>
                 </div>
               ))}
+              <div className={styles.averageIAQ}>
+                <h3>평균 IAQ 값</h3>
+                <span>
+                  {loading
+                    ? "로딩 중..."
+                    : averageIAQ !== null
+                    ? averageIAQ.toFixed(2)
+                    : "데이터 없음"}
+                </span>
+              </div>
             </div>
           </div>
         </div>

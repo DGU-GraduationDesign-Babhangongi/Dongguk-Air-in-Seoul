@@ -102,7 +102,7 @@ const Login = () => {
 
   return (
     <div>
-      <Header />
+      <Header i={"0"} />
       <div className={styles.loginContainer}>
         <div className={styles.loginContent}>
           <h2 className={styles.heading}>Get’s started.</h2>
