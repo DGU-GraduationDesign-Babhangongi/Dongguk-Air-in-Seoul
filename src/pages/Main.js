@@ -35,6 +35,7 @@ function Main() {
   const [forecast, setForecast] = useState(null);
   const [forecast2, setForecast2] = useState(null);
   const [loadingdata, setLoading] = useState(true);
+  const [hoveredFloor, setHoveredFloor] = useState(null); // 현재 호버 중인 층
   const navigate = useNavigate();
 
   const [nickname, setNickname] = useState("관리자");
@@ -154,14 +155,28 @@ function Main() {
 
   // 좌표 저장
   const coordinates = [
-    { building: "신공학관", id: "6144", x: 137, y: 116 },
-    { building: "신공학관", id: "6119", x: 366, y: 125 },
-    { building: "신공학관", id: "5147", x: 184, y: 213 },
-    { building: "신공학관", id: "5145", x: 192, y: 237 },
-    { building: "신공학관", id: "4142", x: 262, y: 388 },
     { building: "신공학관", id: "3115", x: 464, y: 442 },
     { building: "신공학관", id: "3173", x: 488, y: 482 },
+    { building: "신공학관", id: "4142", x: 262, y: 388 },
+    { building: "신공학관", id: "5145", x: 192, y: 237 },
+    { building: "신공학관", id: "5147", x: 184, y: 213 },
+    { building: "신공학관", id: "6119", x: 366, y: 125 },
+    { building: "신공학관", id: "6144", x: 137, y: 116 },
   ];
+
+  const handleClick = (id) => {
+    // 클릭 시 해당 강의실 페이지로 이동
+    navigate(`/figures/${id}`);
+  };
+  const floorcoordinates = [
+    { floor: 3, x: 28, y: 520 },
+    { floor: 4, x: 28, y: 390 },
+    { floor: 5, x: 28, y: 260 },
+    { floor: 6, x: 28, y: 128 },
+  ];
+  const handleFloorClick = (floor) => {
+    navigate(`/floorcheck/${floor}`);
+  };
 
   useEffect(() => {
     const fetchSensorData = async () => {
@@ -189,11 +204,6 @@ function Main() {
     };
     fetchSensorData();
   }, [hoveredIndex]); // hoveredIndex 변경 시마다 데이터 요청
-
-  const handleClick = (id) => {
-    // 클릭 시 해당 강의실 페이지로 이동
-    navigate(`/floorcheck/${id}`);
-  };
 
   const getTemperatureColor = (value) => {
     if (value < 16.5 || value > 27.5) return "red";
@@ -283,6 +293,7 @@ function Main() {
     if (IAQvalue >= 80) return "orange";
     else return "red";
   };
+
   // 도형을 표시하는 함수
   const renderShapes = () => {
     return coordinates.map((coord, index) => {
@@ -291,7 +302,7 @@ function Main() {
 
       return (
         <div
-          key={index}
+          key={`coord-${index}`}
           onMouseEnter={() => setHoveredIndex(index)} // 마우스 진입 시 인덱스 설정
           onMouseLeave={() => setHoveredIndex(null)} // 마우스 나가면 초기화
           onClick={() => handleClick(coord.id)}
@@ -483,6 +494,45 @@ function Main() {
       );
     });
   };
+  const renderFloorCoordinates = () => {
+    return floorcoordinates.map(({ floor, x, y }, index) => (
+      <div
+        key={`floor-${index}`}
+        onMouseEnter={() => setHoveredFloor(floor)} // 호버 시 층 설정
+        onMouseLeave={() => setHoveredFloor(null)} // 호버 종료 시 초기화
+        onClick={() => handleFloorClick(floor)}
+        style={{
+          position: "absolute",
+          top: `${y}px`,
+          left: `${x}px`,
+          width: "20px",
+          height: "20px",
+          cursor: "pointer",
+          zIndex: "101",
+        }}
+        title={`Go to Floor ${floor}`}
+      >
+        {hoveredFloor === floor && (
+          <div
+            style={{
+              position: "absolute",
+              top: "-30px", // 좌표 기준 위에 표시
+              left: "50%",
+              transform: "translateX(-50%)",
+              backgroundColor: "black",
+              color: "white",
+              padding: "4px 8px",
+              borderRadius: "4px",
+              fontSize: "12px",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {floor}층으로 이동하기
+          </div>
+        )}
+      </div>
+    ));
+  };
 
   return (
     <div>
@@ -649,6 +699,7 @@ function Main() {
                     }}
                   />
                   {renderShapes()}
+                  {renderFloorCoordinates()}
                 </div>
               </div>
             )}

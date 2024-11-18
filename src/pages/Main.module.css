@@ -337,6 +337,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 10;
 }
 .popup p {
   font-size: 16px;
@@ -346,7 +347,7 @@
   background-color: white;
   padding: 20px 40px 0px 40px; /* 박스 내부 여백 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.261); /* 부드러운 그림자 */
-  width: 14%; /* 박스가 부모의 너비를 차지하도록 */
+  width: 16%; /* 박스가 부모의 너비를 차지하도록 */
   border-radius: 20px 20px 20px 20px; /* 모서리 */
   text-align: center;
   animation: slideDown 0.5s ease-in-out;
