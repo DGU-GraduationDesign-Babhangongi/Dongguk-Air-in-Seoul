@@ -2,9 +2,11 @@ import React from "react";
 import styles from "./Popup.module.css"; // CSS 모듈 스타일을 가져옵니다.
 
 const Popup = ({ popupContent, onClose, registerLink, buttonText }) => {
+  const navigate = useNavigate();
+
   const handleRegister = () => {
     if (registerLink) {
-      window.location.href = registerLink; // 링크로 이동
+      navigate(registerLink); // React Router로 경로 이동
     }
   };
 

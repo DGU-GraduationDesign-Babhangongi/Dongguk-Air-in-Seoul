@@ -13,7 +13,7 @@ import SignificantScrollBox from '../../components/specific/significantScrollBox
 import { useParams } from 'react-router-dom';
 import { SensorDataContext } from '../../API/SensorDataContext';
 import Star from '../../components/common/star/star';
-localStorage.removeItem("token");
+
 const buildingName = "신공학관";
 const token = localStorage.getItem("token");
 
