@@ -4,7 +4,7 @@ import SideBar from '../../components/common/SideBar/SideBar';
 import ManageAll from '../../components/common/ManageAll/ManageAll';
 import Memo from '../../components/common/Memo/Memo';
 import styles from '../../assets/styles/Manager.module.css';
-import { GoPerson } from "react-icons/go";
+import { GoPerson } from 'react-icons/go';
 import axios from 'axios';
 
 function Manager() {
@@ -15,6 +15,7 @@ function Manager() {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [nickname, setNickname] = useState(''); // 닉네임 상태 추가
+  const [refresh, setRefresh] = useState(false); // 새로고침 상태 추가
 
   const openModal = (building, room) => {
     setSelectedBuilding(building);
@@ -30,10 +31,10 @@ function Manager() {
   };
 
   const fetchNickname = async () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (token) {
       try {
-        const response = await axios.get("/api/user/nickname", {
+        const response = await axios.get('/api/user/nickname', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -41,10 +42,10 @@ function Manager() {
         if (response.status === 200) {
           setNickname(response.data); // nickname 설정
         } else {
-          console.error("닉네임을 불러오는데 실패했습니다.");
+          console.error('닉네임을 불러오는데 실패했습니다.');
         }
       } catch (error) {
-        console.error("오류 발생:", error);
+        console.error('오류 발생:', error);
       }
     }
   };
@@ -53,45 +54,49 @@ function Manager() {
     fetchNickname();
   }, []);
 
+  const fetchRooms = async () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('https://donggukseoul.com/api/classrooms/myFavorites', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          building: '신공학관',
+          favoriteFirst: true,
+          orderDirection: 'ASC',
+        },
+      });
+
+      const formattedData = response.data
+        .filter((room) => room.sensorType === 'Air')
+        .map((room) => ({
+          id: room.id,
+          building: room.building,
+          roomNumber: room.name,
+          sensorId: room.sensorId,
+          favorited: room.favorited,
+          value: room.name,
+          label: room.name,
+        }))
+        .sort((a, b) => b.favorited - a.favorited || a.roomNumber.localeCompare(b.roomNumber, 'en', { numeric: true }));
+
+      setRooms(formattedData);
+    } catch (error) {
+      console.error('강의실 정보를 가져오는 데 실패했습니다:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchRooms = async () => {
-      setLoading(true);
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get('https://donggukseoul.com/api/classrooms/myFavorites', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            building: '신공학관',
-            favoriteFirst: true,
-            orderDirection: 'ASC'
-          }
-        });
-
-        const formattedData = response.data
-          .filter(room => room.sensorType === 'Air')
-          .map(room => ({
-            id: room.id,
-            building: room.building,
-            roomNumber: room.name,
-            sensorId: room.sensorId,
-            favorited: room.favorited,
-            value: room.name,
-            label: room.name
-          }))
-          .sort((a, b) => b.favorited - a.favorited || a.roomNumber.localeCompare(b.roomNumber, 'en', { numeric: true }));
-
-        setRooms(formattedData);
-      } catch (error) {
-        console.error("강의실 정보를 가져오는 데 실패했습니다:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchRooms();
-  }, []);
+  }, [refresh]); // 새로고침 상태가 변경될 때 데이터 다시 불러오기
+
+  const handleRefresh = () => {
+    setRefresh((prev) => !prev); // 새로고침 상태 변경
+  };
 
   return (
     <div>
@@ -115,6 +120,7 @@ function Manager() {
                   roomNumber={room.roomNumber}
                   sensorId={room.sensorId}
                   favorited={room.favorited}
+                  toggleRefresh={handleRefresh} // 새로고침 상태 변경 함수 전달
                 />
               ))}
             </div>
@@ -123,12 +129,7 @@ function Manager() {
       </div>
 
       {isModalOpen && (
-        <Memo
-          closeModal={closeModal}
-          selectedBuilding={selectedBuilding}
-          selectedRoom={selectedRoom}
-          selectedMemo={selectedMemo}
-        />
+        <Memo closeModal={closeModal} selectedBuilding={selectedBuilding} selectedRoom={selectedRoom} selectedMemo={selectedMemo} />
       )}
     </div>
   );

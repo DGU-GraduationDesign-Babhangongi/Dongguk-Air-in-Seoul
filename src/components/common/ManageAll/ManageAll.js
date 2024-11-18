@@ -4,7 +4,7 @@ import ControlBox from '../../common/ControlBoxMg/ControlBoxMg';
 import API from '../../../API/api';
 import Star from '../../common/star/star';
 
-function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorited, toggleFavorite }) {
+function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorited, toggleRefresh }) {
   const [sensorData, setSensorData] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -14,7 +14,7 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorite
       const response = await API.get(`/api/sensorData/recent/${encodeURIComponent(sensorId)}`);
       setSensorData(response.data);
     } catch (error) {
-      console.error("API 오류:", error);
+      console.error('API 오류:', error);
       setSensorData({});
     } finally {
       setLoading(false);
@@ -42,8 +42,13 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorite
             <h3>{buildingName}</h3>
             <h2>{roomNumber}</h2>
           </div>
-          <div className={styles.star} onClick={toggleFavorite}>
-            <Star classRoom={roomNumber} building={buildingName} selectedFavorited={favorited} />
+          <div className={styles.star}>
+            <Star
+              classRoom={roomNumber}
+              building={buildingName}
+              selectedFavorited={favorited}
+              toggleRefresh={toggleRefresh} // 새로고침 함수 전달
+            />
           </div>
           <div className={styles.memoEdit} onClick={() => openMemoModal(buildingName, roomNumber)}>
             <img src={require('../../../assets/images/edit.png')} alt="Edit Icon" />
@@ -54,19 +59,28 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorite
         <div className={styles.SecondSection}>
           <div className={styles.sensorSection}>
             <div className={styles.sensorItem}>
-              <img src={require('../../../assets/images/AirQualityIndicator/temperature.png')} alt="Temperature Icon" />
+              <img
+                src={require('../../../assets/images/AirQualityIndicator/temperature.png')}
+                alt="Temperature Icon"
+              />
               <span>온도</span>
               <span>{loading ? '--' : `${sensorData.Temperature?.value}°C`}</span>
             </div>
 
             <div className={styles.sensorItem}>
-              <img src={require('../../../assets/images/AirQualityIndicator/humidity.png')} alt="Humidity Icon" />
+              <img
+                src={require('../../../assets/images/AirQualityIndicator/humidity.png')}
+                alt="Humidity Icon"
+              />
               <span>습도</span>
               <span>{loading ? '--' : `${sensorData.Humidity?.value}%`}</span>
             </div>
 
             <div className={styles.sensorItem}>
-              <img src={require('../../../assets/images/AirQualityIndicator/TVOC.png')} alt="TVOC Icon" />
+              <img
+                src={require('../../../assets/images/AirQualityIndicator/TVOC.png')}
+                alt="TVOC Icon"
+              />
               <span>TVOC</span>
               <span>
                 {loading ? '--' : `${sensorData.TVOC?.value}`}
@@ -75,7 +89,10 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorite
             </div>
 
             <div className={styles.sensorItem}>
-              <img src={require('../../../assets/images/AirQualityIndicator/PM2.5.png')} alt="PM 2.5 Icon" />
+              <img
+                src={require('../../../assets/images/AirQualityIndicator/PM2.5.png')}
+                alt="PM 2.5 Icon"
+              />
               <span>PM 2.5</span>
               <span>
                 {loading ? '--' : `${sensorData.PM2_5MassConcentration?.value}`}
@@ -84,7 +101,10 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorite
             </div>
 
             <div className={styles.sensorItem}>
-              <img src={require('../../../assets/images/AirQualityIndicator/noise.png')} alt="Noise Icon" />
+              <img
+                src={require('../../../assets/images/AirQualityIndicator/noise.png')}
+                alt="Noise Icon"
+              />
               <span>소음</span>
               <span>{loading ? '--' : `${sensorData.AmbientNoise?.value}dB`}</span>
             </div>
