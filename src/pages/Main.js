@@ -541,8 +541,10 @@ function Main() {
               isFadingOut ? styles.fadeOutMessage : ""
             }`}
           >
-            <h2>{nickname}님 환영합니다!</h2>
-            <p>공기질을 확인할 강의실을 선택해주세요</p>
+            <h2 style={{
+                    fontSize:'clamp(18px, 2vw, 28px)',}}>{nickname}님 환영합니다!</h2>
+            <p style={{
+                    fontSize:'clamp(12px, 1.5vw, 20px)',}}>공기질을 확인할 강의실을 선택해주세요</p>
           </div>
         )}
         {selectedBuilding === "신공학관" && (
@@ -708,14 +710,15 @@ function Main() {
             style={{ position: "relative" }}
           >
             <div className={styles.weatherInfo}>
-              <h2>
+              <h2 style={{
+                    fontSize:'clamp(15px, 1.6vw, 20px)',}}>
                 <img
                   src={weatherlocation}
                   alt="위치 아이콘"
                   style={{
-                    width: "28px",
-                    height: "28px",
-                    marginRight: "8px",
+                    fontSize:'clamp(15px, 1.6vw, 25px)',
+                    width: "clamp(20px, 2vw, 50px)",
+                    marginRight: "0.5vw",
                     marginBottom: "-4px",
                   }} // 이미지 크기와 간격 조절
                 />
@@ -746,15 +749,15 @@ function Main() {
                       }
                       alt="날씨 이미지"
                       style={{
-                        width: "100px", // 이미지 크기 조정
-                        height: "100px",
+                        width: "clamp(70px, 7vw, 200px)", // 이미지 크기 조정
+                       
                         filter: "drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.2))",
                       }}
                     />
                     <h1
                       className={styles.weatherTemperature}
                       style={{
-                        fontSize: "4rem",
+                        fontSize: "clamp(25px, 3vw, 100px)",
                         fontWeight: "bold",
                         textAlign: "right",
                       }}
@@ -766,7 +769,7 @@ function Main() {
                   <p
                     className={styles.weatherRain}
                     style={{
-                      fontSize: "28px",
+                      fontSize: "2vw",
                       textAlign: "center",
                     }}
                   >
@@ -781,21 +784,21 @@ function Main() {
                   <p
                     className={styles.weatherMinMax}
                     style={{
-                      fontSize: "20px",
+                      fontSize: "clamp(9px, 1vw, 13px)",
                       textAlign: "right",
                       fontWeight: "600",
                       marginTop: "10px",
                     }}
                   >
                     최고 {forecast2.maxTemp}°C / 최저 {forecast2.minTemp}°C
-                    <span style={{ marginLeft: "16px" }}>
+                    <span style={{ marginLeft: "0.5vw" }}>
                       습도 {forecast.humidity}%
                     </span>
                   </p>
                   <p
                     style={{
                       textAlign: "right",
-                      fontSize: "12px",
+                      fontSize: "clamp(9px, 1vw, 13px)",
                       marginBottom: "10px",
                     }}
                   >
@@ -813,7 +816,7 @@ function Main() {
                       style={{
                         textAlign: "right",
                         whiteSpace: "pre-line", // 줄바꿈 적용
-                        fontSize: "20px",
+                        fontSize: "clamp(11px, 1.2vw, 18px)",
                       }}
                     >
                       {getWeatherAdvice()}
@@ -826,13 +829,14 @@ function Main() {
             </div>
 
             <div className={styles.sensorLogs}>
-              <h3>
+              <h3 style={{
+                    fontSize:'clamp(15px, 1.6vw, 20px)',}}>
                 <img
                   src={logsensor}
                   alt="센서 아이콘"
                   style={{
-                    width: "28px",
-                    height: "28px",
+                    width: "clamp(20px, 2vw, 50px)",
+               
                     marginRight: "8px",
                     marginBottom: "-8px",
                   }} // 이미지 크기와 간격 조절
