@@ -6,7 +6,7 @@ import debounce from 'lodash.debounce';
 
 // currentTime을 fetchData 호출 시마다 최신 값으로 업데이트
 const currentTime = moment();
-
+const token = localStorage.getItem("token");
 const LineChartComponent = ({ selectedAttribute, classroomA, classroomB, width, height, period }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -44,7 +44,19 @@ const LineChartComponent = ({ selectedAttribute, classroomA, classroomB, width, 
       const endpoint1 = `/api/sensorData/classroom/betweenDates?sensorTypes=${encodeURIComponent(selectedAttribute)}&building=신공학관&name=${classroomA}&order=DESC&startDate=${encodeURIComponent(startDate.format('YYYY-MM-DDTHH:mm:ss'))}&endDate=${encodeURIComponent(endDate.format('YYYY-MM-DDTHH:mm:ss'))}&page=0&size=1000000000`;
       const endpoint2 = `/api/sensorData/classroom/betweenDates?sensorTypes=${encodeURIComponent(selectedAttribute)}&building=신공학관&name=${classroomB}&order=DESC&startDate=${encodeURIComponent(startDate.format('YYYY-MM-DDTHH:mm:ss'))}&endDate=${encodeURIComponent(endDate.format('YYYY-MM-DDTHH:mm:ss'))}&page=0&size=1000000000`;
 
-      const [response1, response2] = await Promise.all([API.get(endpoint1), API.get(endpoint2)]);
+      const [response1, response2] = await Promise.all([
+        API.get(endpoint1, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        }),
+        API.get(endpoint2, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        }),
+      ]);
+      
 
       const timestamps = response1.data.data.map(item => item.timestamp);
       const formattedData = timestamps.map((timestamp, index) => {

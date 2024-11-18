@@ -4,7 +4,7 @@ import Header from '../../components/common/Header/Header';
 import SideBar from '../../components/common/SideBar/SideBar';
 import styles from '../../assets/styles/Log.module.css';
 import API from '../../API/api';
-
+import { useNavigate, useParams } from 'react-router-dom'; 
 function Alarm() {
   const [selectedRoom, setSelectedRoom] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -12,7 +12,13 @@ function Alarm() {
   const [activeSensors, setActiveSensors] = useState([]);
   const [sensorData, setSensorData] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate(); // useNavigate 초기화
+useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate('/'); // token 없으면 '/'로 리다이렉트
+    }
+  }, [navigate]);
   const roomList = [
     { id: 1, name: "3115" },
     { id: 2, name: "3173" },
@@ -95,7 +101,12 @@ function Alarm() {
 
         const url = `/api/sensorData/classroom/betweenDates?${sensorTypesParams}&building=${encodedBuilding}&name=${selectedRoom}&startDate=${encodedStartDate}&endDate=${encodedEndDate}&order=DESC&page=${currentPage}&size=10`;
 
-        const response = await API.get(url);
+        const token = localStorage.getItem("token");
+const response = await API.get(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
 
         if (response.data && response.data.data) {
           const fetchedData = response.data.data;

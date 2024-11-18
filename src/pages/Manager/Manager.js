@@ -6,6 +6,7 @@ import Memo from '../../components/common/Memo/Memo';
 import styles from '../../assets/styles/Manager.module.css';
 import { GoPerson } from 'react-icons/go';
 import axios from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function Manager() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,7 +17,13 @@ function Manager() {
   const [loading, setLoading] = useState(true);
   const [nickname, setNickname] = useState(''); // 닉네임 상태 추가
   const [refresh, setRefresh] = useState(false); // 새로고침 상태 추가
-
+  const navigate = useNavigate(); // useNavigate 초기화
+useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate('/'); // token 없으면 '/'로 리다이렉트
+    }
+  }, [navigate]);
   const openModal = (building, room) => {
     setSelectedBuilding(building);
     setSelectedRoom(room);

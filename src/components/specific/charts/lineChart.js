@@ -62,12 +62,16 @@ const LineChartComponent = ({ width = '34vw', height = '56vh', selectedValues, c
         startDate = moment().startOf('day'); // startDate는 오늘의 시작 시간
         break;
     }
-
+    const token = localStorage.getItem("token");
     const encodedBuilding = encodeURIComponent('신공학관');
     try {
       const promises = sensorTypes.map(type => {
         const endpoint = `/api/sensorData/classroom/betweenDates?sensorTypes=${encodeURIComponent(type)}&building=${encodedBuilding}&name=${classRoom}&order=DESC&startDate=${encodeURIComponent(startDate.format('YYYY-MM-DDTHH:mm:ss'))}&endDate=${encodeURIComponent(endDate.format('YYYY-MM-DDTHH:mm:ss'))}&page=0&size=1000000000`;
-        return API.get(endpoint);
+        return API.get(endpoint, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
       });
 
       const responses = await Promise.all(promises);

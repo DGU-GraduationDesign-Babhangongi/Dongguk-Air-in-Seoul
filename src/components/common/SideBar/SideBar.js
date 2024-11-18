@@ -88,10 +88,12 @@ const SideBar = ({ i }) => {
                   강의실 수치비교
                 </Link>
               </li>
-              <li className={styles.navItem}>
+              <li
+                className={`${styles.navItem} ${i === "5" ? styles.bold : ""}`}
+              >
                 <FiCpu className={styles.icon} />
                 <Link to="/contact" className={styles.navLink}>
-                  관리실 페이지
+                  관리자 페이지
                 </Link>
               </li>
             </ul>
