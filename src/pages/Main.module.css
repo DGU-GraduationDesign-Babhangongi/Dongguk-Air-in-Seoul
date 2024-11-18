@@ -7,69 +7,6 @@
   justify-content: center; /* 수직 중앙 정렬 */
 }
 
-/* 모바일 화면용 스타일 */
-@media (max-width: 600px) {
-  .mainContainer {
-    padding: 10px;
-    height: auto;
-  }
-
-  .content {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .buildings {
-    grid-template-columns: 1fr;
-    width: 100%;
-    margin: 0;
-  }
-
-  .weatherAndLogs {
-    width: 100%;
-    margin-top: 20px;
-  }
-
-  .popupContent {
-    width: 80%;
-    padding: 10px;
-  }
-}
-/* 태블릿 화면용 스타일 */
-@media (min-width: 601px) and (max-width: 1024px) {
-  .mainContainer {
-    padding: 15px;
-  }
-
-  .content {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .buildings {
-    grid-template-columns: 1fr 1fr;
-    width: 90%;
-    margin-top: -100px;
-    margin-left: 0;
-  }
-
-  .weatherAndLogs {
-    width: 80%;
-    margin-top: 20px;
-  }
-
-  .popupContent {
-    width: 60%;
-  }
-}
-/* 데스크톱 기본 스타일 유지 */
-@media (min-width: 1025px) {
-  .buildings {
-    grid-template-columns: 1fr 1fr 1fr;
-    width: 70%;
-  }
-}
-
 /* 애니메이션 1 */
 @keyframes fadeInAndGrow {
   0% {
@@ -137,6 +74,77 @@
   animation: fadeInLeft 1.5s;
   align-items: center; /* 아이콘과 텍스트 수직 중앙 정렬 */
 }
+
+/*호버링 시 보일 박스 내 스타일*/
+.sensorImg {
+  width: 20px;
+  margin-right: 8px;
+  margin-bottom: 4px;
+}
+.sensorText {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.statusLight {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin-left: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.261) /* 부드러운 그림자 */;
+}
+
+/* 도형 주위의 확산 링 */
+.ring {
+  position: absolute;
+  border: 2px solid; /* 색상은 JavaScript에서 설정 */
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse 1.5s infinite;
+  opacity: 1;
+  z-index: 1;
+}
+
+/* 두 번째 링을 조금 더 크게 설정하고 딜레이 추가 */
+.ring:nth-child(2) {
+  width: 52px;
+  height: 52px;
+  animation-delay: 0.75s;
+  z-index: 1;
+}
+
+.animated-shape {
+  position: relative;
+  z-index: 10;
+}
+/* 확산 효과 애니메이션 */
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+  }
+}
+
+.hoverBox {
+  position: absolute;
+  left: 260%;
+  width: 260px;
+  padding: 160%;
+  background-color: #f0fbeb;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  z-index: 1000;
+}
+
+/**/
 
 .topMessageDetail {
   font-size: 1.5rem;
@@ -302,27 +310,13 @@
   animation: fadeIn 1s forwards 1s; /* 새로운 정보가 서서히 나타남 */
 }
 
-/* 오버레이 컨테이너
-.overlayContainer {
-  display: flex;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 10px 20px;
-  border-radius: 8px;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-}*/
-
 .selectedBuildingImage {
   position: absolute;
   top: 20%;
   left: 35%;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* 다른 요소 위에 배치 */
+  z-index: 10; /* 다른 요소 위에 배치 */
   cursor: pointer;
 }
 
