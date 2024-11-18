@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import moment from 'moment';
 import Header from '../../components/common/Header/Header';
 import SideBar from '../../components/common/SideBar/SideBar';
@@ -11,10 +11,7 @@ function Alarm() {
   const [endDate, setEndDate] = useState('');
   const [activeSensors, setActiveSensors] = useState([]);
   const [sensorData, setSensorData] = useState([]);
-  const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const observerRef = useRef();
 
   const roomList = [
     { id: 1, name: "3115" },
@@ -48,106 +45,33 @@ function Alarm() {
     }
   };
 
-  const fetchSensorData = async (reset = false) => {
-    if (activeSensors.length > 0 && selectedRoom) {
-      try {
-        setLoading(true);
-        const encodedBuilding = encodeURIComponent('신공학관');
-        const encodedStartDate = startDate ? encodeURIComponent(moment(startDate).format('YYYY-MM-DDTHH:mm:ss')) : null;
-        const encodedEndDate = endDate ? encodeURIComponent(moment(endDate).format('YYYY-MM-DDTHH:mm:ss')) : null;
-
-        const sensorTypesParams = activeSensors.map(sensor => `sensorTypes=${getSensorType(sensor)}`).join('&');
-
-        const url = `/api/sensorData/classroom/betweenDates?${sensorTypesParams}&building=${encodedBuilding}&name=${selectedRoom}&startDate=${encodedStartDate}&endDate=${encodedEndDate}&order=DESC&page=${page}&size=10`;
-
-        const response = await API.get(url);
-
-        if (response.data && response.data.data) {
-          const fetchedData = response.data.data;
-          setSensorData((prevData) => (reset ? fetchedData : [...prevData, ...fetchedData]));
-          setHasMore(fetchedData.length === 10);
-        } else {
-          setHasMore(false);
-        }
-
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching sensor data:", error);
-        setLoading(false);
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (startDate && endDate && selectedRoom) {
-      setSensorData([]);
-      setPage(0);
-      fetchSensorData(true);
-    }
-  }, [selectedRoom, activeSensors, startDate, endDate]);
-
-  useEffect(() => {
-    if (page === 0 || (page > 0 && hasMore)) {
-      fetchSensorData(page === 0);
-    }
-  }, [page]);
-
-  const handleSensorChange = (sensor) => {
-    setActiveSensors((prevSensors) =>
-      prevSensors.includes(sensor)
-        ? prevSensors.filter((s) => s !== sensor)
-        : [...prevSensors, sensor]
-    );
-    setPage(0);
-    setSensorData([]);
-    setHasMore(true);
-  };
-
-  const lastElementRef = useCallback((node) => {
-    if (loading || !hasMore) return;
-    if (observerRef.current) observerRef.current.disconnect();
-
-    observerRef.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        setPage((prevPage) => prevPage + 1);
-      }
-    });
-
-    if (node) observerRef.current.observe(node);
-  }, [loading, hasMore]);
-
   const getBorderColor = (value, type) => {
     switch (type) {
       case 'Temperature':
         if (value < 16.5 || value > 27.5) return 'red';
         if ((value >= 16.5 && value < 17.6) || (value > 26.4 && value <= 27.5)) return 'orange';
         if ((value >= 17.6 && value < 18.7) || (value > 25.3 && value <= 26.4)) return '#FFFA00';
-        if ((value >= 18.7 && value < 19.8) || (value > 24.2 && value <= 25.3)) return 'green';
-        return 'blue';
+        return 'green';
       case 'Humidity':
         if (value < 10 || value > 90) return 'red';
         if ((value >= 10 && value < 20) || (value > 80 && value <= 90)) return 'orange';
         if ((value >= 20 && value < 30) || (value > 70 && value <= 80)) return '#FFFA00';
-        if ((value >= 30 && value < 40) || (value > 60 && value <= 70)) return 'green';
-        return 'blue';
+        return 'green';
       case 'TVOC':
         if (value > 10000) return 'red';
         if (value > 3000 && value <= 10000) return 'orange';
         if (value > 1000 && value <= 3000) return '#FFFA00';
-        if (value > 300 && value <= 1000) return 'green';
-        return 'blue';
+        return 'green';
       case 'PM2_5MassConcentration':
         if (value > 64) return 'red';
         if (value > 53 && value <= 64) return 'orange';
         if (value > 41 && value <= 53) return '#FFFA00';
-        if (value > 23 && value <= 41) return 'green';
-        return 'blue';
+        return 'green';
       case 'AmbientNoise':
         if (value > 80) return 'red';
         if (value > 70 && value <= 80) return 'orange';
         if (value > 60 && value <= 70) return '#FFFA00';
-        if (value > 50 && value <= 60) return 'green';
-        return 'blue';
+        return 'green';
       default:
         return 'black';
     }
@@ -155,9 +79,69 @@ function Alarm() {
 
   const getDataValue = (data) => data.value !== null ? data.value : '--';
 
+  const fetchAllSensorData = async () => {
+    let allData = [];
+    let currentPage = 0;
+    let hasMoreData = true;
+
+    try {
+      setLoading(true);
+
+      while (hasMoreData) {
+        const encodedBuilding = encodeURIComponent('신공학관');
+        const encodedStartDate = startDate ? encodeURIComponent(moment(startDate).format('YYYY-MM-DDTHH:mm:ss')) : null;
+        const encodedEndDate = endDate ? encodeURIComponent(moment(endDate).format('YYYY-MM-DDTHH:mm:ss')) : null;
+        const sensorTypesParams = activeSensors.map(sensor => `sensorTypes=${getSensorType(sensor)}`).join('&');
+
+        const url = `/api/sensorData/classroom/betweenDates?${sensorTypesParams}&building=${encodedBuilding}&name=${selectedRoom}&startDate=${encodedStartDate}&endDate=${encodedEndDate}&order=DESC&page=${currentPage}&size=10`;
+
+        const response = await API.get(url);
+
+        if (response.data && response.data.data) {
+          const fetchedData = response.data.data;
+
+          allData = [...allData, ...fetchedData];
+          hasMoreData = fetchedData.length === 10; // 다음 페이지로 이동할 조건
+          currentPage += 1; // 페이지 증가
+        } else {
+          hasMoreData = false;
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching all sensor data:", error);
+    } finally {
+      setLoading(false);
+    }
+
+    return allData;
+  };
+
+  const fetchAndFilterSensorData = async () => {
+    const allSensorData = await fetchAllSensorData();
+    const filteredData = allSensorData.filter((data) => {
+      const color = getBorderColor(getDataValue(data), data.sensorType);
+      return ['red', 'orange', '#FFFA00'].includes(color); // 빨강, 주황, 노랑만 필터링
+    });
+    setSensorData(filteredData);
+  };
+
+  useEffect(() => {
+    if (startDate && endDate && selectedRoom) {
+      fetchAndFilterSensorData();
+    }
+  }, [selectedRoom, activeSensors, startDate, endDate]);
+
+  const handleSensorChange = (sensor) => {
+    setActiveSensors((prevSensors) =>
+      prevSensors.includes(sensor)
+        ? prevSensors.filter((s) => s !== sensor)
+        : [...prevSensors, sensor]
+    );
+  };
+
   return (
     <div>
-      <Header i={"1"}/>
+      <Header i={"1"} />
       <div className={styles.container}>
         <SideBar />
         <div className={styles.content}>
@@ -200,22 +184,19 @@ function Alarm() {
           </div>
 
           <div className={styles.sensorData}>
-            {sensorData
-              .filter(data => ['red', 'orange', '#FFFA00'].includes(getBorderColor(getDataValue(data), data.sensorType)))
-              .map((data, index) => (
-                <div
-                  key={index}
-                  className={styles.sensorItem}
-                  style={{
-                    borderColor: getBorderColor(getDataValue(data), data.sensorType),
-                  }}
-                  ref={index === sensorData.length - 1 ? lastElementRef : null}
-                >
-                  <span>{`[${moment(data.timestamp).format("YYYY-MM-DDTHH:mm:ss")}]`}</span>
-                  <span>{`${selectedRoom} 강의실`}</span>
-                  <span>{`${getSensorNameInKorean(data.sensorType)}: ${getDataValue(data)}`}</span>
-                </div>
-              ))}
+            {sensorData.map((data, index) => (
+              <div
+                key={index}
+                className={styles.sensorItem}
+                style={{
+                  borderColor: getBorderColor(getDataValue(data), data.sensorType),
+                }}
+              >
+                <span>{`[${moment(data.timestamp).format("YYYY-MM-DDTHH:mm:ss")}]`}</span>
+                <span>{`${selectedRoom} 강의실`}</span>
+                <span>{`${getSensorNameInKorean(data.sensorType)}: ${getDataValue(data)}`}</span>
+              </div>
+            ))}
           </div>
           {loading && <p>Loading...</p>}
         </div>
