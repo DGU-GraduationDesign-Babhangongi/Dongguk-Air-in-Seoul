@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import Header from '../../components/common/Header/Header';
 import SideBar from '../../components/common/SideBar/SideBar';
 import StatusBox from '../../components/specific/comparison/StatusBox/statusBox';
@@ -8,15 +8,25 @@ import WhatDropdown from '../../components/common/whatDropdown/whatDropdown';
 import styles from '../../assets/styles/figures.module.css';
 import bottomStyles from '../../assets/styles/comparison.module.css';
 import LineChart from '../../components/specific/charts/lineChartCompare';
+import { useNavigate, useParams } from 'react-router-dom'; // useNavigate 추가
 
 const Comparison = () => {
+
+  const navigate = useNavigate(); // useNavigate 초기화
   const [selectedClassroomA, setSelectedClassroomA] = useState('');
   const [selectedClassroomB, setSelectedClassroomB] = useState('');
   const [selectedOption1, setSelectedOption1] = useState('');
   const [selectedOption2, setSelectedOption2] = useState('');
   const [noPM25A, setNoPM25A] = useState(); // Classroom A PM2.5 데이터 상태
   const [noPM25B, setNoPM25B] = useState(); // Classroom B PM2.5 데이터 상태
-
+  
+  // token 확인 및 리다이렉션
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate('/'); // token 없으면 '/'로 리다이렉트
+    }
+  }, [navigate]);
   const handleSelectClassroomA = (value) => {
     setSelectedClassroomA(value);
     if (selectedClassroomB === value) {
