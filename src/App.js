@@ -28,7 +28,7 @@ function App() {
 
           <Route path="/figures" element={<Figures />} />
           <Route path="/figures/:id" element={<Figures />} />
-          
+
           <Route path="/comparison" element={<Comparison />} />
           <Route path="/comparison/:id" element={<Comparison />} />
           <Route path="/login" element={<Login />} />
@@ -37,7 +37,7 @@ function App() {
           <Route path="/manager" element={<Manager />} />
           <Route path="/alarm" element={<Alarm />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/floorcheck" element={<FloorCheck />} />
+          <Route path="/floorcheck/:floor" element={<FloorCheck />} />
 
           {/* 테스트 페이지 */}
           <Route path="/test" element={<Test />} />
