@@ -17,6 +17,13 @@ import pm25 from "../assets/images/main/hoverBoxIcons/img_pm2.5.png";
 import sensor from "../assets/images/main/hoverBoxIcons/img_sensor.png";
 import temperature from "../assets/images/main/hoverBoxIcons/img_temp.png";
 import tvoc from "../assets/images/main/hoverBoxIcons/img_tvoc.png";
+import weatherlocation from "../assets/images/main/location_icon.png";
+import logsensor from "../assets/images/main/sensor_icon.png";
+import currentbuilding from "../assets/images/main/currentBuilding_icon.png";
+import floorplan from "../assets/images/main/floorplan.png";
+import singong from "../assets/images/main/singong.png";
+import wonheung from "../assets/images/main/wonheung.png";
+import jungbo from "../assets/images/main/jungboP.png";
 
 function Main() {
   const [popupContent, setPopupContent] = useState(null);
@@ -494,7 +501,7 @@ function Main() {
         {selectedBuilding === "신공학관" && (
           <div className={styles.topMessage} style={{ width: "400px" }}>
             <img
-              src="/Main/currentBuilding_icon.png"
+              src={currentbuilding}
               alt="현재 건물"
               style={{ width: "80px", height: "84px", marginRight: "16px" }}
             />
@@ -560,7 +567,7 @@ function Main() {
                 )
               }
             >
-              <img src="/Main/jungboP.png" alt="정보문화관 P" />
+              <img src={jungbo} alt="정보문화관 P" />
               <h2>정보문화관 P</h2>
               <div className={styles.sensorInfo}>
                 <p>설치된 센서</p>
@@ -586,7 +593,7 @@ function Main() {
                 }
               }}
             >
-              <img src="/Main/singong.png" alt="신공학관" />
+              <img src={singong} alt="신공학관" />
               <h2>신공학관</h2>
               <div className={styles.sensorInfo}>
                 <p>설치된 센서</p>
@@ -616,7 +623,7 @@ function Main() {
                 )
               }
             >
-              <img src="/Main/wonheung.png" alt="원흥관" />
+              <img src={wonheung} alt="원흥관" />
               <h2>원흥관</h2>
               <div className={styles.sensorInfo}>
                 <p>설치된 센서</p>
@@ -633,7 +640,7 @@ function Main() {
               <div className={styles.additionalContent}>
                 <div className={styles.selectedBuildingImage}>
                   <img
-                    src="/Main/floorplan.png"
+                    src={floorplan}
                     alt="신공학관 도면도"
                     ref={imageRef}
                     style={{
@@ -655,7 +662,7 @@ function Main() {
             <div className={styles.weatherInfo}>
               <h2>
                 <img
-                  src="/Main/location_icon.png"
+                  src={weatherlocation}
                   alt="위치 아이콘"
                   style={{
                     width: "28px",
@@ -773,7 +780,7 @@ function Main() {
             <div className={styles.sensorLogs}>
               <h3>
                 <img
-                  src="/Main/sensor_icon.png"
+                  src={logsensor}
                   alt="센서 아이콘"
                   style={{
                     width: "28px",
