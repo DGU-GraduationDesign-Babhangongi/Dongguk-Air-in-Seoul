@@ -11,7 +11,7 @@
 /* 기본 폰트 설정 */
 body {
   font-family: 'NanumBarunGothic', Arial, sans-serif;
-  background-color: #f5f5f5; /* 전체 페이지 배경색 */
+  background-color: #ffffff; /* 전체 페이지 배경색 */
   margin: 0;
   padding: 0;
 }
@@ -45,6 +45,7 @@ h1 {
   flex-direction: column;
   font-family: 'NanumBarunGothic', Arial, sans-serif;
   width: 100%;
+  background-color: #F0F0F0;
 }
 
 .registerSection {
