@@ -4,6 +4,10 @@ import FloorBox from '../components/floorBox/floorBox';
 import { fetchForeCast, fetchForeCast2 } from '../../pages/forecast';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import sunIcon from "../../assets/images/main/sun_icon.png";
+import cloudyIcon from "../../assets/images/main/cloudy_icon.png";
+import semicloudyIcon from "../../assets/images/main/semicloudy_icon.png";
+import cloudyrainIcon from "../../assets/images/main/cloudyrain_icon.png";
 
 function Main() {
   const [dateTime, setDateTime] = useState(new Date());
@@ -206,7 +210,8 @@ function Main() {
           {loading ? (
             <p>Loading weather data...</p>
           ) : (
-            <>
+            <div className={styles.weatherBoxALL}>
+              <div className={styles.weatherBoxLeft}>
               <p className={styles.weatherTemperature}>{forecast.temperature}°C</p>
               <p className={styles.weatherRain}>
                 {forecast.rain >= '1' ? '흐리고 비' : forecast.cloudy === '1' ? '맑음' : forecast.cloudy === '3' ? '구름많음' : '흐림'}
@@ -220,7 +225,28 @@ function Main() {
               <p className={styles.weatherAdvice}>
                 {getWeatherAdvice()}
               </p>
-            </>
+              </div>
+              <div className={styles.weatherBoxRight}>
+              <img
+                      src={
+                        forecast.rain >= "1"
+                          ? cloudyrainIcon
+                          : forecast.cloudy === "1"
+                          ? sunIcon
+                          : forecast.cloudy === "3"
+                          ? semicloudyIcon
+                          : cloudyIcon
+                      }
+                      alt="날씨 이미지"
+                      style={{
+                        width: "clamp(80px, 10vw, 200px)", // 이미지 크기 조정
+                        alignSelf:'right',
+                        filter: "drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.2))",
+                      }}
+                    />
+              </div>
+            </div>
+   
           )}
         </div>
         <div className={styles.blackBox}></div>

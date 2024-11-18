@@ -15,7 +15,7 @@
 
 .header {
     width: 100%;
-    padding: 3% 3%;
+    padding: 2% 3%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -122,6 +122,7 @@
 
 
 .bottomContainer {
+    
     margin-top: 5%;
     width: 100%;
     font-size: 4vw;
@@ -131,13 +132,17 @@
     justify-content: center;    /* 수평 가운데 정렬 */
     align-items: center;        /* 수직 가운데 정렬 */
 }
-
+@media (max-width: 500px) {
+    .blackBox {
+      display: none;
+    }
+  }
 
 .whiteBox{
     width: 90%;
     height: 45vw;
     font-weight: 600;
-    padding: auto;
+    padding: 3vw;
     background-color: #FFFFFF;
     border-radius: 3vw;
     text-align: left;
@@ -155,7 +160,9 @@
     text-align: left;
     box-shadow: 0px 0.4vw 0.4vw rgba(0, 0, 0, 0.25);
 }
-
+.weatherBoxRight{
+    display: none;
+}
 .weatherBox {
     width: 50%;
     height: 38vw;
@@ -168,7 +175,25 @@
     font-size: 2.5vw;
     line-height: 1.2;
 }
-
+@media (max-width: 500px) {
+    .weatherBox {
+        width: 90%;
+        margin:auto;
+    }
+    .weatherBoxLeft{
+        width: 90%;
+    }
+    .checkContainer{
+        display: none;
+    }
+    .weatherBoxALL{
+        display: flex;
+        width: 100%;
+    }
+    .weatherBoxRight{
+        display: block;
+    }
+  }
 .weatherDateContainer {
     display: flex;
     align-items: center;

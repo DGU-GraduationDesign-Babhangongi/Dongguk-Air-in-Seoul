@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import styles from './classRoom.module.css'; 
+import style from './main.module.css'; 
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ClassRoomButton from '../components/classRoomButton/classRoomButton';  
 import ShowBox from '../components/showBox/showBox';  
@@ -51,7 +52,7 @@ function ClassRoom() {
   return (
     <div className={styles.container}>
       <div className={styles.topContainer}>
-        <div className={styles.header}>
+        <div className={style.header} >
           <div className={styles.topButton}>
             <Link to="/smartM">
               <img
