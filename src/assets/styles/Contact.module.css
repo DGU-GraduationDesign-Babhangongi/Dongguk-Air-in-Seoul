@@ -45,6 +45,7 @@ h1 {
   flex-direction: column;
   font-family: 'NanumBarunGothic', Arial, sans-serif;
   width: 100%;
+  background-color: #F0F0F0;
 }
 
 .registerSection {
