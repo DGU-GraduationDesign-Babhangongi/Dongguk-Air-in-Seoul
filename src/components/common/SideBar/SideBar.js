@@ -1,13 +1,30 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import classNames from "classnames";
-import styles from "./SideBar.module.css";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Popup from "../../../components/common/Popup/Popup";
+
 import { FiGrid, FiLayers, FiCpu, FiLogOut } from "react-icons/fi";
-import { SensorDataContext } from '../../../API/SensorDataContext';
+import styles from "./SideBar.module.css";
 
 var buildingName = "신공학관";
 
 const SideBar = ({ i }) => {
+  const navigate = useNavigate();
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  // 로그아웃 함수
+  const logout = () => {
+    // localStorage에서 토큰 제거
+    localStorage.removeItem("token");
+    // 로그아웃 후 메인 페이지로 이동
+    navigate("/");
+    console.log("User logged out");
+  };
+
+  // 팝업 닫기 함수
+  const handleClosePopup = () => {
+    setIsPopupVisible(false);
+  };
+
   return (
     <div className={styles.sidebarContainer} style={{ marginTop: "0" }}>
       <aside className={styles.sidebar}>
@@ -79,12 +96,32 @@ const SideBar = ({ i }) => {
             </ul>
           </nav>
         </div>
-        <div className={styles.navItem} style={{ justifyContent: "center" }}>
+        <div
+          className={styles.navItem}
+          style={{
+            justifyContent: "center",
+            paddingRight: "clamp(20px, 2%, 32px)",
+          }}
+          onClick={() => setIsPopupVisible(true)} // 팝업 띄우기
+        >
           <FiLogOut className={styles.logoutIcon} />
-          <div className={styles.navLink}> 로그아웃</div>
+          <div className={styles.navLink} style={{ padding: "5px" }}>
+            로그아웃
+          </div>
         </div>
       </aside>
       <hr className={styles.separator} />
+
+      {/* 팝업 컴포넌트 */}
+      {isPopupVisible && (
+        <Popup
+          popupContent="정말 로그아웃 하시겠습니까?"
+          registerLink='/'
+          onClose={handleClosePopup}
+          buttonText="로그아웃"
+          doit={logout}
+        />
+      )}
     </div>
   );
 };

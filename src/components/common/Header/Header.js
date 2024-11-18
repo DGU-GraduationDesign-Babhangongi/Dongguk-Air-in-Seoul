@@ -43,7 +43,8 @@ const Header = ({ i }) => {
                 alt="user"
                 className={styles.icon}
               />
-              <div className={styles.font}>로그인</div>
+              <div className={styles.font}
+              style={{ fontWeight: i === "0" ? "bold" : "normal" }}>로그인</div>
             </Link>
           </div>
         ) : (
