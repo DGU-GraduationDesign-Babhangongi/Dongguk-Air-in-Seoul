@@ -53,7 +53,7 @@
   align-items: center; /* 도면과 문구를 가운데 정렬 */
   margin-right: 4%;
   height: fit-content;
-  margin-left: 11%;
+  margin-left: 6%;
 }
 
 .floorMap {
@@ -71,12 +71,11 @@
 
 .floorTitle {
   margin-top: 4%;
-  margin-left: 20%;
+  margin-left: 16%;
   font-size: 32px; /* 문구 크기 */
   font-weight: bold;
   height: fit-content;
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
-  text-shadow: 0 0 gray;
 }
 
 .roomPin {
@@ -91,6 +90,23 @@
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }
 
+.floorButtons {
+  display: flex;
+  gap: 16px;
+  margin-left: 8%;
+  margin-top: 6%;
+}
+
+.floorButton {
+  width: 24%;
+  height: 50%;
+  font-size: 90%;
+  font-weight: bold;
+  text-align: center;
+  font-size: 110%;
+  color: #5f5f5f;
+}
+
 /* 우측 정보 패널 */
 .infoPanels {
   display: flex;
@@ -101,8 +117,8 @@
 
 .infoPanel {
   flex: 1;
-  min-height: 540px;
-  min-width: 380px;
+  width: clamp(380px, 2vh, 500px);
+  height: clamp(540px, 2vw, 800px);
   padding: 6%; /* 내부 여백을 줄임 */
   background-color: white;
   border: 1px solid #ddd;
@@ -126,12 +142,22 @@
   width: 100%;
   align-items: center;
   margin-bottom: 8px; /* 항목 간 간격을 줄임 */
-
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }
+.infoItems {
+  width: 14%;
+  margin-right: 8px;
+  margin-bottom: 4px;
+}
+.statusAkko {
+  width: clamp(80px, 2vw, 112px);
+  margin-right: 1%;
+  margin-left: 4%;
+}
+
 .roomId {
-  margin-left: 5px;
-  font-size: 32px;
+  margin-left: 1%;
+  font-size: 28px;
   font-weight: bold;
   color: black;
   display: block;
