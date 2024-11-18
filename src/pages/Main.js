@@ -6,6 +6,17 @@ import { fetchForeCast, fetchForeCast2 } from "../pages/forecast";
 import { SensorDataContext } from "./../API/SensorDataContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import API from "../API/api";
+/*images*/
+import sunIcon from "../assets/images/main/sun_icon.png";
+import cloudyIcon from "../assets/images/main/cloudy_icon.png";
+import semicloudyIcon from "../assets/images/main/semicloudy_icon.png";
+import cloudyrainIcon from "../assets/images/main/cloudyrain_icon.png";
+import moisture from "../assets/images/main/hoverBoxIcons/img_mois.png";
+import noise from "../assets/images/main/hoverBoxIcons/img_noise.png";
+import pm25 from "../assets/images/main/hoverBoxIcons/img_pm2.5.png";
+import sensor from "../assets/images/main/hoverBoxIcons/img_sensor.png";
+import temperature from "../assets/images/main/hoverBoxIcons/img_temp.png";
+import tvoc from "../assets/images/main/hoverBoxIcons/img_tvoc.png";
 
 function Main() {
   const [popupContent, setPopupContent] = useState(null);
@@ -124,45 +135,135 @@ function Main() {
     return () => clearInterval(timer);
   }, []);
 
+  const location = useLocation();
+  const Id = location.pathname.split("/").pop(); // URL에서 ID 가져오기
+
   const imageRef = useRef(null);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [sensorData, setSensorData] = useState(null); // 센서 데이터 상태 추가
 
   const { data, setSelectedSensorName, loading, error } =
     useContext(SensorDataContext);
 
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-
-  const location = useLocation();
-  const Id = location.pathname.split("/").pop(); // URL에서 ID 가져오기
-
-  useEffect(() => {
-    if (Id) {
-      setSelectedSensorName(Id); // 선택된 강의실 ID로 센서 데이터 업데이트
-    }
-    console.log("현재 센서 ID:", Id); // URL에서 가져온 ID 확인
-  }, [Id, setSelectedSensorName]);
-
-  // **sensorData 구조 확인 로그 추가**
-  useEffect(() => {
-    console.log("Main.js - sensorData 전체 구조 확인:", data); // 전체 데이터를 출력
-  }, [data]);
-
   // 좌표 저장
   const coordinates = [
-    { id: "6144", x: 137, y: 116 },
-    { id: "6119", x: 366, y: 125 },
-    { id: "5147", x: 184, y: 213 },
-    { id: "5145", x: 192, y: 237 },
-    { id: "4142", x: 262, y: 388 },
-    { id: "3115", x: 464, y: 442 },
-    { id: "3173", x: 488, y: 482 },
+    { building: "신공학관", id: "6144", x: 137, y: 116 },
+    { building: "신공학관", id: "6119", x: 366, y: 125 },
+    { building: "신공학관", id: "5147", x: 184, y: 213 },
+    { building: "신공학관", id: "5145", x: 192, y: 237 },
+    { building: "신공학관", id: "4142", x: 262, y: 388 },
+    { building: "신공학관", id: "3115", x: 464, y: 442 },
+    { building: "신공학관", id: "3173", x: 488, y: 482 },
   ];
+
+  useEffect(() => {
+    const fetchSensorData = async () => {
+      if (hoveredIndex !== null) {
+        const hoveredCoord = coordinates[hoveredIndex];
+        if (!hoveredCoord) return; // hoveredCoord가 없을 경우 반환
+        try {
+          const endpoint = `/api/sensorData/recent/classroom?building=${encodeURIComponent(
+            hoveredCoord.building
+          )}&name=${encodeURIComponent(hoveredCoord.id)}`;
+          console.log("API 요청 URL: ", endpoint);
+          const response = await API.get(endpoint);
+          setSensorData(response.data); // API에서 가져온 데이터 설정
+          console.log(
+            `Fetched sensor data for ${hoveredCoord.id}`,
+            response.data
+          );
+        } catch (error) {
+          console.error("Error fetching sensor data:", error);
+          setSensorData(null);
+        }
+      } else {
+        setSensorData(null);
+      }
+    };
+    fetchSensorData();
+  }, [hoveredIndex]); // hoveredIndex 변경 시마다 데이터 요청
 
   const handleClick = (id) => {
     // 클릭 시 해당 강의실 페이지로 이동
-    navigate(`/floorcheck`);
+    navigate(`/floorcheck/${id}`);
   };
 
+  const getTemperatureColor = (value) => {
+    if (value < 16.5 || value > 27.5) return "red";
+    if ((value >= 16.5 && value < 17.6) || (value > 26.4 && value <= 27.5))
+      return "orange";
+    if ((value >= 17.6 && value < 18.7) || (value > 25.3 && value <= 26.4))
+      return "yellow";
+    if ((value >= 18.7 && value < 19.8) || (value > 24.2 && value <= 25.3))
+      return "green";
+    return "blue";
+  };
+
+  const getHumidityColor = (value) => {
+    if (value < 10 || value > 90) return "red";
+    if ((value >= 10 && value < 20) || (value > 80 && value <= 90))
+      return "orange";
+    if ((value >= 20 && value < 30) || (value > 70 && value <= 80))
+      return "yellow";
+    if ((value >= 30 && value < 40) || (value > 60 && value <= 70))
+      return "green";
+    return "blue";
+  };
+
+  const getTVOCColor = (value) => {
+    if (value > 10000) return "red";
+    if (value > 3000 && value <= 10000) return "orange";
+    if (value > 1000 && value <= 3000) return "yellow";
+    if (value > 300 && value <= 1000) return "green";
+    return "blue";
+  };
+
+  const getPM25Color = (value) => {
+    if (value > 64) return "red";
+    if (value > 53 && value <= 64) return "orange";
+    if (value > 41 && value <= 53) return "yellow";
+    if (value > 23 && value <= 41) return "green";
+    return "blue";
+  };
+
+  const getNoiseColor = (value) => {
+    if (value > 80) return "red";
+    if (value > 70 && value <= 80) return "orange";
+    if (value > 60 && value <= 70) return "yellow";
+    if (value > 50 && value <= 60) return "green";
+    return "blue";
+  };
+
+  // 센서 타입에 따라 적절한 색상 반환
+  const getStatusColor = (value, type) => {
+    if (type === "temperature") return getTemperatureColor(value);
+    if (type === "humidity") return getHumidityColor(value);
+    if (type === "tvoc") return getTVOCColor(value);
+    if (type === "pm25") return getPM25Color(value);
+    if (type === "noise") return getNoiseColor(value);
+    return "blue"; // 기본값
+  };
+
+  // 각 항목에 해당하는 상태 색상을 가져오는 함수
+  const renderSensorItem = (label, value, iconSrc, type) => (
+    <div className={styles.sensorText}>
+      <img src={iconSrc} alt={label} className={styles.sensorImg} />
+      <span>{label}</span>
+      <span style={{ marginLeft: "auto" }}>{value ?? "--"}</span>
+      <span
+        className={styles.statusLight}
+        style={{
+          backgroundColor: getStatusColor(value, type), // 상태에 따라 색상 변경
+        }}
+      ></span>
+    </div>
+  );
+
   const getSensorIAQValue = (id) => {
+    if (!Array.isArray(data)) {
+      console.warn("data가 배열이 아님:", data);
+      return "--";
+    }
     const sensor = data.find((sensor) => sensor.name === id); // `name` 속성으로 매칭
     console.log(`강의실 ID: ${id}, 센서 데이터:`, sensor); // 각 강의실 ID별 데이터 확인
     return sensor ? sensor.IAQIndex?.value || "--" : "--"; // 데이터가 없으면 "--" 반환
@@ -179,8 +280,7 @@ function Main() {
   const renderShapes = () => {
     return coordinates.map((coord, index) => {
       const IAQvalue = getSensorIAQValue(coord.id); // 강의실 번호에 맞는 IAQ 값 가져오기
-      const color = getColor(IAQvalue);
-      console.log(`ID: ${coord.id}, IAQIndex: ${IAQvalue}, Color: ${color}`); // 디버그 출력
+      const ringColor = getStatusColor(IAQvalue, "iaq"); // IAQ 값에 따라 링 색상 설정
 
       return (
         <div
@@ -194,36 +294,52 @@ function Main() {
             left: `${coord.x}px`,
             width: "16px",
             height: "16px",
-            backgroundColor: color,
+            backgroundColor: getStatusColor(IAQvalue, "iaq"),
             borderRadius: "50%",
             transform: "translate(-50%, -50%)", // 중앙 정렬
-            zIndex: 100,
             cursor: "pointer",
+            zIndex: "100",
           }}
           className="animated-shape"
         >
-          <div className="ring"></div>
-          <div className="ring"></div>
+          <div
+            className={styles.ring}
+            style={{
+              borderColor: ringColor, // IAQ 값에 맞는 색상 적용
+            }}
+          ></div>
+          <div
+            className={styles.ring}
+            style={{
+              borderColor: ringColor, // IAQ 값에 맞는 색상 적용
+              width: "52px",
+              height: "52px",
+              animationDelay: "0.75s",
+            }}
+          ></div>
           {/* 호버 시 표시할 박스 */}
           {hoveredIndex === index && (
             <div
+              className={styles.hoverBox}
               style={{
-                top: "30px",
-                left: "50px",
-                width: "220px",
-                padding: "20px",
-                backgroundColor: "rgba(255, 251, 216, 0.85)",
-                border: "1px solid #ccc",
-                boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
-                borderRadius: "16px",
-                zIndex: 100,
+                [coord.id === "6144" ||
+                coord.id === "6119" ||
+                coord.id === "5145"
+                  ? "bottom"
+                  : "bottom"]:
+                  coord.id === "6144" ||
+                  coord.id === "6119" ||
+                  coord.id === "5145"
+                    ? "20%"
+                    : "-100%",
               }}
             >
               {/* 강의실 이름 */}
               <div
                 style={{
-                  fontWeight: "bold",
-                  fontSize: "20px",
+                  fontWeight: "500",
+                  textShadow: "1.5px 1.5px 1.5px lightgray",
+                  fontSize: "1.5rem",
                   marginBottom: "16px",
                   textAlign: "center",
                 }}
@@ -232,137 +348,128 @@ function Main() {
               </div>
               <hr
                 style={{
-                  border: "0.5px solid #FFD8A0",
-                  margin: "8px 8px 16px 8px",
+                  margin: "4px 4px 20px 4px",
                 }}
               />
               {/* 각 항목 표시 */}
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: "6px",
-                }}
-              >
-                <img
-                  src="/Icons/img_temp.png"
-                  alt="온도"
-                  style={{
-                    width: "20px",
-                    marginRight: "8px",
-                    marginBottom: "4px",
-                  }}
-                />
-                <span>온도</span>
-                <span style={{ marginLeft: "auto" }}>
-                  {loading ? "--" : "24°C"}
-                </span>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: "6px",
-                }}
-              >
-                <img
-                  src="/Icons/img_mois.png"
-                  alt="습도"
-                  style={{
-                    width: "20px",
-                    marginRight: "8px",
-                    marginBottom: "4px",
-                  }}
-                />
-                <span>습도</span>
-                <span style={{ marginLeft: "auto" }}>
-                  {loading ? "--" : "56%"}
-                </span>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: "6px",
-                }}
-              >
-                <img
-                  src="/Icons/img_tvoc.png"
-                  alt="TVOC"
-                  style={{
-                    width: "20px",
-                    marginRight: "8px",
-                    marginBottom: "4px",
-                  }}
-                />
-                <span>TVOC</span>
-                <span style={{ marginLeft: "auto" }}>
-                  {loading ? "--" : "23"}
-                </span>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: "6px",
-                }}
-              >
-                <img
-                  src="/Icons/img_pm2.5.png"
-                  alt="PM2.5"
-                  style={{
-                    width: "20px",
-                    marginRight: "8px",
-                    marginBottom: "4px",
-                  }}
-                />
-                <span>PM 2.5</span>
-                <span style={{ marginLeft: "auto" }}>
-                  {loading ? "--" : "150um"}
-                </span>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: "6px",
-                }}
-              >
-                <img
-                  src="/Icons/img_noise.png"
-                  alt="소음"
-                  style={{
-                    width: "20px",
-                    marginRight: "8px",
-                    marginBottom: "4px",
-                  }}
-                />
-                <span>소음</span>
-                <span style={{ marginLeft: "auto" }}>
-                  {loading ? "--" : "89dB"}
-                </span>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: "6px",
-                }}
-              >
-                <img
-                  src="/Icons/img_sensor.png"
-                  alt="센서 상태"
-                  style={{
-                    width: "20px",
-                    marginRight: "8px",
-                    marginBottom: "4px",
-                  }}
-                />
-                <span>센서 상태</span>
-                <span style={{ marginLeft: "auto" }}>
-                  {loading ? "--" : "ON"}
-                </span>
-              </div>
+              {sensorData ? (
+                <>
+                  <div className={styles.sensorText}>
+                    <img
+                      src={temperature}
+                      alt="온도"
+                      className={styles.sensorImg}
+                    />
+                    <span>온도</span>
+                    <span style={{ marginLeft: "auto" }}>
+                      {loading ? "--" : `${sensorData.Temperature?.value}°C`}
+                    </span>
+                    <span
+                      className={styles.statusLight}
+                      style={{
+                        backgroundColor: getStatusColor(
+                          sensorData.Temperature?.value,
+                          "temperature"
+                        ),
+                      }}
+                    ></span>
+                  </div>
+                  <div className={styles.sensorText}>
+                    <img
+                      src={moisture}
+                      alt="습도"
+                      className={styles.sensorImg}
+                    />
+                    <span>습도</span>
+                    <span style={{ marginLeft: "auto" }}>
+                      {loading ? "--" : `${sensorData.Humidity?.value}%`}
+                    </span>
+                    <span
+                      className={styles.statusLight}
+                      style={{
+                        backgroundColor: getStatusColor(
+                          sensorData.Humidity?.value,
+                          "humidity"
+                        ),
+                      }}
+                    ></span>
+                  </div>
+                  <div className={styles.sensorText}>
+                    <img src={tvoc} alt="TVOC" className={styles.sensorImg} />
+                    <span>TVOC</span>
+                    <span style={{ marginLeft: "auto" }}>
+                      {loading ? "--" : `${sensorData.TVOC?.value}㎍/m³`}
+                    </span>
+                    <span
+                      className={styles.statusLight}
+                      style={{
+                        backgroundColor: getStatusColor(
+                          sensorData.TVOC?.value,
+                          "tvoc"
+                        ),
+                      }}
+                    ></span>
+                  </div>
+                  <div className={styles.sensorText}>
+                    <img src={pm25} alt="PM2.5" className={styles.sensorImg} />
+                    <span>PM 2.5</span>
+                    <span style={{ marginLeft: "auto" }}>
+                      {loading
+                        ? "--"
+                        : `${sensorData.PM2_5MassConcentration?.value}㎍/m³`}
+                    </span>
+                    <span
+                      className={styles.statusLight}
+                      style={{
+                        backgroundColor: getStatusColor(
+                          sensorData.PM2_5MassConcentration?.value,
+                          "pm2.5"
+                        ),
+                      }}
+                    ></span>
+                  </div>
+                  <div className={styles.sensorText}>
+                    <img src={noise} alt="소음" className={styles.sensorImg} />
+                    <span>소음</span>
+                    <span style={{ marginLeft: "auto" }}>
+                      {loading ? "--" : `${sensorData.AmbientNoise?.value}db`}
+                    </span>
+                    <span
+                      className={styles.statusLight}
+                      style={{
+                        backgroundColor: getStatusColor(
+                          sensorData.AmbientNoise?.value,
+                          "noise"
+                        ),
+                      }}
+                    ></span>
+                  </div>
+                  <div className={styles.sensorText}>
+                    <img
+                      src={sensor}
+                      alt="센서 상태"
+                      className={styles.sensorImg}
+                    />
+                    <span>센서 상태</span>
+                    <span style={{ marginLeft: "auto" }}>
+                      {loading ? "--" : "ON"}
+                    </span>
+                    <span
+                      style={{
+                        backgroundColor: "green",
+                        width: "14px",
+                        height: "14px",
+                        borderRadius: "50%",
+                        marginLeft: "16px", // 왼쪽에 간격 추가
+                        boxShadow:
+                          "0 4px 8px rgba(0, 0, 0, 0.261)" /* 부드러운 그림자 */,
+                      }}
+                    ></span>
+                  </div>
+                </>
+              ) : (
+                <>센서 값을 불러오는 중 . . .</>
+              )}
             </div>
           )}
         </div>
@@ -538,41 +645,6 @@ function Main() {
                 </div>
               </div>
             )}
-            <style jsx>{`
-              .animated-shape {
-                position: relative;
-              }
-              /* 도형 주위의 확산 링 */
-              .ring {
-                position: absolute;
-                border: 2px solid rgba(255, 0, 0, 0.5);
-                border-radius: 50%;
-                width: 36px;
-                height: 36px;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                animation: pulse 1.5s infinite;
-                opacity: 0;
-              }
-              /* 두 번째 링을 조금 더 크게 설정하고 딜레이 추가 */
-              .ring:nth-child(2) {
-                width: 52px;
-                height: 52px;
-                animation-delay: 0.75s;
-              }
-              /* 확산 효과 애니메이션 */
-              @keyframes pulse {
-                0% {
-                  transform: translate(-50%, -50%) scale(0.5);
-                  opacity: 1;
-                }
-                100% {
-                  transform: translate(-50%, -50%) scale(1.5);
-                  opacity: 0;
-                }
-              }
-            `}</style>
           </div>
 
           {/* 오른쪽 날씨 및 로그 섹션 */}
@@ -610,12 +682,12 @@ function Main() {
                     <img
                       src={
                         forecast.rain >= "1"
-                          ? "/Main/cloudyrain_icon.png"
+                          ? cloudyrainIcon
                           : forecast.cloudy === "1"
-                          ? "/Main/sun_icon.png"
+                          ? sunIcon
                           : forecast.cloudy === "3"
-                          ? "/Main/semicloudy_icon.png"
-                          : "/Main/cloudy_icon.png"
+                          ? semicloudyIcon
+                          : cloudyIcon
                       }
                       alt="날씨 이미지"
                       style={{
