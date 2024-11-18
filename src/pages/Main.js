@@ -342,14 +342,11 @@ function Main() {
               style={{
                 [coord.id === "6144" ||
                 coord.id === "6119" ||
-                coord.id === "3173"
+                coord.id === "3173" ||
+                coord.id === "3115"
                   ? "bottom"
                   : "top"]:
-                  coord.id === "5147" ||
-                  coord.id === "4142" ||
-                  coord.id === "3115"
-                    ? "20%"
-                    : "-100%",
+                  coord.id === "5147" || coord.id === "4142" ? "20%" : "-100%",
               }}
             >
               {/* 강의실 이름 */}
