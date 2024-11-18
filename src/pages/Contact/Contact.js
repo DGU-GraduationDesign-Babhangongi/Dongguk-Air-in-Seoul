@@ -8,17 +8,82 @@ import building from "../../assets/images/main/building.png";
 
 function Contact() {
   const [buildingName, setBuildingName] = useState('');
-  const [roomBuildingName, setRoomBuildingName] = useState(''); // Separate state for room building
+  const [roomBuildingName, setRoomBuildingName] = useState('');
   const [maxFloors, setMaxFloors] = useState('');
   const [drawings, setDrawings] = useState({});
+  const [buildingOptions, setBuildingOptions] = useState([
+    { value: '신공학관', label: '신공학관' },
+    { value: '원흥관', label: '원흥관' },
+    { value: '정보문화관 P', label: '정보문화관 P' },
+    { value: '정보문화관 Q', label: '정보문화관 Q' },
+    { value: '명진관', label: '명진관' },
+  ]);
   const [selectedRoom, setSelectedRoom] = useState('');
   const [serialNum, setSerialNum] = useState('');
   const [removeBuilding, setRemoveBuilding] = useState('');
   const [removeRoom, setRemoveRoom] = useState('');
   const [removeReason, setRemoveReason] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleRegisterBuilding = () => {
-    console.log('Building Registered:', buildingName, maxFloors, drawings);
+  // 새 건물 등록 API 호출
+  const handleRegisterBuilding = async () => {
+    if (!buildingName || !maxFloors || Object.keys(drawings).length === 0) {
+      alert("모든 필드를 채워주세요.");
+      return;
+    }
+
+    if (loading) return; // 중복 호출 방지
+    setLoading(true);
+
+    // FormData 생성
+    const formData = new FormData();
+    formData.append('name', buildingName);
+    formData.append('maxFloor', maxFloors);
+    Object.keys(drawings).forEach((floor) => {
+      formData.append('floorPlans', drawings[floor]);
+    });
+
+    try {
+      const response = await fetch(
+        `https://donggukseoul.com/api/buildings?name=${encodeURIComponent(buildingName)}&maxFloor=${maxFloors}`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+
+        // 중복 제거
+        const uniqueNames = Array.from(new Set(result.name.split(',')));
+
+        // Dropbutton에 새 건물 추가
+        uniqueNames.forEach((name) => {
+          if (!buildingOptions.find((option) => option.value === name)) {
+            setBuildingOptions((prevOptions) => [
+              ...prevOptions,
+              { value: name, label: name },
+            ]);
+          }
+        });
+
+        alert(`건물 "${uniqueNames.join(', ')}"이 성공적으로 등록되었습니다!`);
+
+        // 입력값 초기화
+        setBuildingName('');
+        setMaxFloors('');
+        setDrawings({});
+      } else {
+        const errorData = await response.json();
+        alert(`등록 실패: ${errorData.message || '알 수 없는 오류'}`);
+      }
+    } catch (error) {
+      console.error('API 호출 에러:', error);
+      alert('건물 등록 중 문제가 발생했습니다.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   // 새 강의실 등록 API 호출
@@ -30,10 +95,10 @@ function Contact() {
 
     const payload = {
       name: selectedRoom,
-      floor: 0, // 필요한 경우 실제 층 정보를 입력
+      floor: 0,
       building: roomBuildingName,
       sensorId: serialNum,
-      sensorType: "default", // 필요한 경우 적절한 센서 타입 설정
+      sensorType: "default",
     };
 
     try {
@@ -143,11 +208,12 @@ function Contact() {
               <p>원하시는 건물이 없다면 건물 등록</p>
               <label>Building</label>
               <Dropbutton 
-                onSelect={(value) => setRoomBuildingName(value)} // Use separate state
+                onSelect={(value) => setRoomBuildingName(value)}
                 width="100%" 
                 height="auto"
                 borderColor="#A5A5A5" 
                 borderWidth="1px"
+                options={buildingOptions} // Dropbutton 옵션 전달
               />
               <label>Room</label>
               <input
@@ -180,6 +246,7 @@ function Contact() {
                 height="auto"
                 borderColor="#A5A5A5" 
                 borderWidth="1px"
+                options={buildingOptions} // Dropbutton 옵션 전달
               />
               
               <label>Room</label>
@@ -192,7 +259,7 @@ function Contact() {
               
               <label>Reason</label>
               <textarea
-                className={styles.reasonTextarea} // 스크롤이 가능한 텍스트 영역
+                className={styles.reasonTextarea}
                 value={removeReason}
                 placeholder="삭제를 원하시는 이유를 작성해주세요"
                 onChange={(e) => setRemoveReason(e.target.value)}
