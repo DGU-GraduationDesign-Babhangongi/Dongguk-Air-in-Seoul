@@ -100,7 +100,7 @@ function Manager() {
 
   return (
     <div>
-      <Header />
+      <Header i={"3"}/>
       <div className={styles.layout}>
         <SideBar />
         <div className={styles.container}>

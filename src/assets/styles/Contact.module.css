@@ -3,89 +3,79 @@
   font-style: normal;
   font-weight: 400;
   src: url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot');
-  src: url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix') format('embedded-opentype'), url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff') format('woff'), url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf') format('truetype');
+  src: url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix') format('embedded-opentype'), 
+       url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff') format('woff'), 
+       url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf') format('truetype');
 }
 
 /* 기본 폰트 설정 */
 body {
   font-family: 'NanumBarunGothic', Arial, sans-serif;
+  background-color: #f5f5f5; /* 전체 페이지 배경색 */
+  margin: 0;
+  padding: 0;
 }
 
 .banner {
   display: flex;
   align-items: center;
-  background-color: #FFB841; /* Matches the yellow banner in your design */
+  background-color: #FFB841; /* 노란색 배너 */
   padding: 10px 20px;
-  margin-bottom: 20px; /* Adjust the size as needed */
+  margin-bottom: 20px;
   width: 100%;
-  height: clamp(80px, 18vw, 100px);
+  height: clamp(80px, 18vw, 100px); /* 반응형 높이 */
   padding: clamp(9px, 1vw, 13px) 2%;
 }
 
 .bannerIcon {
-  width: 40px; /* Adjust the size as needed */
+  width: 40px;
   height: 40px;
-  margin-right: 10px;
+  margin-right: 15px;
 }
 
 h1 {
   margin-left: 15px;
-  font-size: 20px;
+  font-size: 24px;
   color: #333;
   font-weight: bold;
-  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
 }
 
 .container {
   display: flex;
   flex-direction: column;
-  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 기본 폰트 적용 */
+  font-family: 'NanumBarunGothic', Arial, sans-serif;
   width: 100%;
-  background-color: #f5f5f5; /* Light background to match the card contrast */
 }
 
 .registerSection {
   display: flex;
   justify-content: space-between;
-  gap: 20px; /* Increased spacing for a more open look */
-  margin-top: 5px;
-  margin-left: 20px;
-  margin-right: 20px;
+  gap: 20px;
+  margin: 20px;
 }
 
-.registerRoom, .removeRoom {
-  background-color: #fff;
-  padding: 25px; /* Increase padding for better visual space */
-  border-radius: 10px;
-  height: 580px; /* 고정된 높이 */
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Enhance shadow for depth */
-  width: 32%; /* Slightly adjust the width to give more space between */
-  border: 2px solid #FFB841;
-}
-
-.registerBuilding {
+.registerRoom, .removeRoom, .registerBuilding {
   background-color: #fff;
   padding: 25px;
   border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 32%;
-  height: 580px; /* 고정된 높이 */
-  overflow-y: auto; /* 스크롤을 허용 */
+  height: 580px;
   border: 2px solid #FFB841;
+  overflow-y: auto; /* 내부 내용이 많을 경우 스크롤 허용 */
 }
 
 h2 {
   font-size: 22px;
   font-weight: bold;
   margin-bottom: 5px;
-  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
 }
 
 p {
   margin-top: 8px;
-  margin-bottom: 35px;
-  margin-left: 5px;
-  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: #555;
 }
 
 label {
@@ -95,62 +85,61 @@ label {
   display: block;
 }
 
-input, select {
+input, textarea, select {
   width: 95%;
   padding: 10px;
-  margin-bottom: 20px; /* Increase margin for spacing */
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 14px; /* Make the font slightly bigger */
-  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
-}
-
-.title {
-  display: flex;
-  align-items: center;
-}
-
-.reasonTextarea {
-  width: 95%;
-  height: 50px; /* 고정된 높이 */
-  padding: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 14px;
-  resize: none; /* 사용자가 크기를 조정하지 못하게 설정 */
-  overflow-y: auto; /* 텍스트가 넘칠 경우 스크롤바 표시 */
-  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
+  font-family: 'NanumBarunGothic', Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+textarea {
+  height: 80px;
+  resize: none; /* 크기 조정 불가능 */
 }
 
 button {
   width: 100%;
-  background-color: #FFCC80; /* Change button color to match the image */
-  color: white;
+  background-color: #FFCC80; /* 버튼 색상 */
+  color: #fff;
   padding: 12px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
 }
 
 button:hover {
-  background-color: #FFB841; /* Slightly darker on hover */
-  font-family: 'NanumBarunGothic', Arial, sans-serif; /* 폰트 적용 */
+  background-color: #FFB841; /* Hover 시 색상 */
 }
 
-.floorDrawings div {
-  margin-bottom: 12px;
+.floorDrawings div, .Contact_registerBuilding__map {
+  margin-bottom: 15px;
 }
 
-.Contact_registerBuilding__map {
-  margin-bottom: 12px;
+.Contact_registerBuilding__map label {
+  margin-bottom: 5px;
 }
 
 .mapPreview img {
   width: 100%;
   height: auto;
   border: 1px solid #ddd;
+  border-radius: 5px;
   margin-bottom: 10px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .registerSection {
+    flex-direction: column;
+  }
+
+  .registerRoom, .removeRoom, .registerBuilding {
+    width: 100%;
+    margin-bottom: 20px;
+  }
 }
