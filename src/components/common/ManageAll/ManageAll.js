@@ -52,7 +52,7 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorite
           </div>
           <div className={styles.memoEdit} onClick={() => openMemoModal(buildingName, roomNumber)}>
             <img src={require('../../../assets/images/edit.png')} alt="Edit Icon" />
-            <span>메모수정</span>
+            <span>메모등록</span>
           </div>
         </div>
 
