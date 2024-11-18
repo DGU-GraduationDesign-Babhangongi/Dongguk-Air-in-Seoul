@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../../components/common/Header/Header';
 import SideBar from '../../components/common/SideBar/SideBar';
 import styles from '../../assets/styles/Contact.module.css';
@@ -24,6 +24,38 @@ function Contact() {
   const [removeRoom, setRemoveRoom] = useState('');
   const [removeReason, setRemoveReason] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // API를 통해 건물 목록을 불러오는 함수
+  useEffect(() => {
+    const fetchBuildings = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('https://donggukseoul.com/api/buildings', {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          // 받은 데이터로 buildingOptions 업데이트
+          const options = data.map((building) => ({
+            value: building,
+            label: building,
+          }));
+          setBuildingOptions(options);
+        } else {
+          console.error('Failed to fetch building data');
+        }
+      } catch (error) {
+        console.error('Error fetching building data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBuildings();
+  }, []);
 
   const handleRegisterBuilding = async () => {
     if (!buildingName || !maxFloors || Object.keys(drawings).length === 0) {
@@ -116,8 +148,35 @@ function Contact() {
     }
   };
 
-  const handleRemoveRoom = () => {
-    console.log('Room Removed:', removeBuilding, removeRoom, removeReason);
+  const handleRemoveRoom = async () => {
+    if (!removeBuilding || !removeRoom || !removeReason) {
+      alert("모든 필드를 채워주세요.");
+      return;
+    }
+
+    const url = `https://donggukseoul.com/api/classrooms/name?building=${encodeURIComponent(removeBuilding)}&name=${encodeURIComponent(removeRoom)}&reason=${encodeURIComponent(removeReason)}`;
+
+    try {
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'accept': '*/*',
+        },
+      });
+
+      if (response.ok) {
+        alert('강의실이 성공적으로 삭제되었습니다!');
+        setRemoveBuilding('');
+        setRemoveRoom('');
+        setRemoveReason('');
+      } else {
+        const errorData = await response.json();
+        alert(`삭제 실패: ${errorData.message || '알 수 없는 오류'}`);
+      }
+    } catch (error) {
+      console.error('API 호출 에러:', error);
+      alert('강의실 삭제 중 문제가 발생했습니다.');
+    }
   };
 
   const handleDrawingChange = (floor, file) => {
@@ -190,14 +249,18 @@ function Contact() {
               </div>
               <p>원하시는 건물이 없다면 건물 등록</p>
               <label>Building</label>
-              <Dropbutton 
-                onSelect={(value) => setRoomBuildingName(value)}
-                width="100%" 
-                height="auto"
-                borderColor="#A5A5A5" 
-                borderWidth="1px"
-                options={buildingOptions}
-              />
+              {loading ? (
+                <p>로딩 중...</p>
+              ) : (
+                <Dropbutton
+                  onSelect={(value) => setRoomBuildingName(value)}
+                  width="100%"
+                  height="auto"
+                  borderColor="#A5A5A5"
+                  borderWidth="1px"
+                  options={buildingOptions}
+                />
+              )}
               <label>Room</label>
               <input
                 type="text"
@@ -221,11 +284,11 @@ function Contact() {
               </div>
               <p>최대 1일의 시간이 소요될 수 있습니다.</p>
               <label>Building</label>
-              <Dropbutton 
-                onSelect={(value) => setRemoveBuilding(value)} 
-                width="100%" 
+              <Dropbutton
+                onSelect={(value) => setRemoveBuilding(value)}
+                width="100%"
                 height="auto"
-                borderColor="#A5A5A5" 
+                borderColor="#A5A5A5"
                 borderWidth="1px"
                 options={buildingOptions}
               />
