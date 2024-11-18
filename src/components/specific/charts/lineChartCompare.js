@@ -75,7 +75,7 @@ const LineChartComponent = ({ selectedAttribute, classroomA, classroomB, width, 
   return (
     <div style={{ width: width, height: height }}>
       {loading && <div style={{ marginLeft: '5%' }}>로딩 중...</div>}
-      {data.length === 0 && !loading && <div style={{ fontSize: '16px', marginLeft: '5%' }}>기간과 강의실을 선택해주세요.</div>}
+      {data.length === 0 && !loading && <div style={{ fontSize: '16px', marginLeft: '5%' , fontSize:'1.2vw'}}>기간과 강의실을 선택해주세요.</div>}
 
       <ResponsiveContainer width="100%" height="95%">
         <LineChart data={data} margin={{ top: 0, right: 30, left: 20, bottom: 0 }}>

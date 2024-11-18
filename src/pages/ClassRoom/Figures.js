@@ -15,6 +15,7 @@ import { SensorDataContext } from '../../API/SensorDataContext';
 import Star from '../../components/common/star/star';
 
 const buildingName = "신공학관";
+const token = localStorage.getItem("token");
 
 function Figures() {
   const { id } = useParams();
@@ -24,7 +25,7 @@ function Figures() {
   const [selectedValues, setSelectedValues] = useState([]);
   const [highlightedIndex, setHighlightedIndex] = useState(null);
   const [isPM2_5, setIsPM2_5] = useState(true);
-
+ 
   const { data: sensorData, setSelectedSensorName, loading, error } = useContext(SensorDataContext);
 
   useEffect(() => {
@@ -41,6 +42,8 @@ function Figures() {
     }
   }, [sensorData]);
 
+
+
   const handleNEBSelect = (value, favorited) => {
     setSelectedOption(value);
     setSelectedFavorited(favorited);
@@ -52,6 +55,8 @@ function Figures() {
     setHighlightedIndex(index);
   };
 
+
+
   return (
     <div className={styles.fullScreenContainer}>
       <Header />
@@ -60,14 +65,14 @@ function Figures() {
         <div className={styles.content}>
           <div className={styles.top}>
             <div className={styles.currentRoom}>
-            <div className={styles.titleTop}>
-  <div style={{ paddingRight: '0.1vw' }}>현재 강의실</div>
-  {selectedOption && (
-    <div style={{ position: 'relative', display: 'inline-block', width: 'clamp(4px, 1.2vw, 20px)' }}>
-      <Star classRoom={selectedOption} building={buildingName} selectedFavorited={selectedFavorited} />
-    </div>
-  )}
-</div>
+              <div className={styles.titleTop}>
+                <div style={{ paddingRight: '0.1vw' }}>현재 강의실</div>
+                {selectedOption && (
+                  <div style={{ position: 'relative', display: 'inline-block', width: 'clamp(4px, 1.2vw, 20px)' }}>
+                    <Star classRoom={selectedOption} building={buildingName} selectedFavorited={selectedFavorited} />
+                  </div>
+                )}
+              </div>
 
               <div className={styles.title}>
                 <img src={require('../../assets/images/building.png')} alt="building" className={styles.titleImg} />
@@ -111,6 +116,8 @@ function Figures() {
           </div>
         </div>
       </div>
+
+
     </div>
   );
 }

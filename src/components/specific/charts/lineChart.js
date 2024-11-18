@@ -116,7 +116,7 @@ const LineChartComponent = ({ width = '34vw', height = '56vh', selectedValues, c
   return (
     <div style={{ width, height }}>
       {loading && <div style={{ marginLeft: '5%' }}>로딩 중...</div>}
-      {data.length === 0 && !loading && <div style={{ marginLeft: '5%' }}>기간과 강의실을 선택해주세요.</div>}
+      {data.length === 0 && !loading && <div style={{ marginLeft: '5%', fontSize:'1.2vw' }}>기간과 강의실을 선택해주세요.</div>}
 
       <ResponsiveContainer>
         <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
