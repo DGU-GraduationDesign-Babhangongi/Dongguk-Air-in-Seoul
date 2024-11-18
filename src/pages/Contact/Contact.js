@@ -5,26 +5,28 @@ import styles from '../../assets/styles/Contact.module.css';
 import Dropbutton from '../../components/common/Dropbutton/Dropbutton';
 import { FiCpu } from "react-icons/fi";
 import building from "../../assets/images/main/building.png";
+import { useNavigate, useParams } from 'react-router-dom'; 
 
 function Contact() {
   const [buildingName, setBuildingName] = useState('');
   const [roomBuildingName, setRoomBuildingName] = useState('');
   const [maxFloors, setMaxFloors] = useState('');
   const [drawings, setDrawings] = useState({});
-  const [buildingOptions, setBuildingOptions] = useState([
-    { value: '신공학관', label: '신공학관' },
-    { value: '원흥관', label: '원흥관' },
-    { value: '정보문화관 P', label: '정보문화관 P' },
-    { value: '정보문화관 Q', label: '정보문화관 Q' },
-    { value: '명진관', label: '명진관' },
-  ]);
+  const [buildingOptions, setBuildingOptions] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState('');
   const [serialNum, setSerialNum] = useState('');
   const [removeBuilding, setRemoveBuilding] = useState('');
   const [removeRoom, setRemoveRoom] = useState('');
   const [removeReason, setRemoveReason] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate(); // useNavigate 초기화
+  const token = localStorage.getItem("token");
+useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate('/'); // token 없으면 '/'로 리다이렉트
+    }
+  }, [navigate]);
   // API를 통해 건물 목록을 불러오는 함수
   useEffect(() => {
     const fetchBuildings = async () => {
@@ -34,6 +36,7 @@ function Contact() {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`,
           },
         });
         if (response.ok) {
@@ -76,6 +79,9 @@ function Contact() {
     try {
       const response = await fetch('https://donggukseoul.com/api/buildings', {
         method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
         body: formData,
       });
 
@@ -129,6 +135,7 @@ function Contact() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(payload),
       });
@@ -160,6 +167,7 @@ function Contact() {
       const response = await fetch(url, {
         method: 'DELETE',
         headers: {
+          'Authorization': `Bearer ${token}`,
           'accept': '*/*',
         },
       });
@@ -199,7 +207,7 @@ function Contact() {
     <div>
       <Header />
       <div style={{ display: 'flex' }}>
-        <SideBar />
+        <SideBar i='5'/>
         <div className={styles.container}>
           <div className={styles.banner}>
             <FiCpu size={36} color="#333" />

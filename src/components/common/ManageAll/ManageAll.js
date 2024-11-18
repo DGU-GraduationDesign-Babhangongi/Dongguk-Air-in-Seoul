@@ -7,11 +7,15 @@ import Star from '../../common/star/star';
 function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorited, toggleRefresh }) {
   const [sensorData, setSensorData] = useState({});
   const [loading, setLoading] = useState(true);
-
+  const token = localStorage.getItem("token");
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await API.get(`/api/sensorData/recent/${encodeURIComponent(sensorId)}`);
+      const response = await API.get(`/api/sensorData/recent/${encodeURIComponent(sensorId)}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
       setSensorData(response.data);
     } catch (error) {
       console.error('API 오류:', error);

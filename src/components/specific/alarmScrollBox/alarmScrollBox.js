@@ -23,10 +23,9 @@ const AlarmScrollBox = ({ title, classRoom }) => {
     const endpoint = `/api/sensorData/classroom/betweenDates?sensorTypes=ALL&building=${encodedBuilding}&name=${classRoom}&order=ASC&startDate=${encodeURIComponent(startDate.format('YYYY-MM-DDTHH:mm:ss'))}&endDate=${encodeURIComponent(endDate.format('YYYY-MM-DDTHH:mm:ss'))}&page=0&size=1000000000`;
 
     try {
-      const response = await API.get(endpoint, null, {
+      const response = await API.get(endpoint, {
         headers: {
           'Authorization': `Bearer ${token}`,
-          'accept': '*/*',
         },
       });
       const formattedData = [];

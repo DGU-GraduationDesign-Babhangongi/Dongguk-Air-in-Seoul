@@ -8,6 +8,7 @@ import styles from "./FloorCheck.module.css";
 import { SensorDataContext } from "../../API/SensorDataContext";
 import AirQualityIndicator from "../../components/common/AirQualityIndicator/AirQualityIndicator";
 
+
 function FloorCheck() {
   const { floor } = useParams(); // URL에서 floor 값을 가져옴
   const navigate = useNavigate(); // navigate 사용
@@ -17,6 +18,12 @@ function FloorCheck() {
   const [averageIAQ, setAverageIAQ] = useState(null);
   const [iaqValues, setIaqValues] = useState([]); // IAQ 점수 저장
 
+useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate('/'); // token 없으면 '/'로 리다이렉트
+    }
+  }, [navigate]);
   const {
     data: sensorData,
     setSelectedSensorName,
@@ -92,7 +99,7 @@ function FloorCheck() {
     <div>
       <Header /> {/* 헤더 */}
       <div style={{ display: "flex" }}>
-        <SideBar /> {/* 사이드바 */}
+        <SideBar i='3'/> {/* 사이드바 */}
         <div className={styles.container}>
           <h2 className={styles.floorTitle}>{currentFloor}층 강의실 구조도</h2>
           <div className={styles.main}>
