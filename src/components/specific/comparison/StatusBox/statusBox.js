@@ -33,9 +33,12 @@ function StatusBox({ id, color, onSelect, oppositeClassroom, status, onNoPm25Dat
       <div style={{ width: 'clamp(10px, 36%, 144px)' }}>
         <div className={styles.titleTop}>
           <div style={{ paddingRight: '0.1vw' }}>비교 강의실 {id}</div>
+          {selectedOption && (
           <div style={{ position: 'relative', display: 'inline-block', width: 'clamp(4px, 1.2vw, 20px)' }}>
             <Star classRoom={selectedOption} building={buildingName} selectedFavorited={selectedFavorited} />
           </div>
+  )}
+
         </div>
         <div className={styles.title}>
           <img src={require('../../../../assets/images/building.png')} alt="building" className={styles.titleImg} />
