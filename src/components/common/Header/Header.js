@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Header.module.css";
+import API from "../../../API/api";
 
 const Header = ({ i }) => {
   const navigate = useNavigate();
   const [token, setToken] = useState(localStorage.getItem("token")); // token 상태 관리
-
+  const [nickname, setNickname] = useState("");
   useEffect(() => {
     const handleStorageChange = () => {
       setToken(localStorage.getItem("token"));
@@ -23,7 +24,31 @@ const Header = ({ i }) => {
     navigate("/");
     window.location.reload();
   };
+  useEffect(() => {
+    const fetchNickname = async () => {
+      const token = localStorage.getItem("token");
 
+      if (token) {
+        try {
+          const response = await API.get("/api/user/nickname", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (response.status === 200) {
+            const nicknameData = response.data;
+            setNickname(nicknameData);
+          } else {
+            console.error("닉네임을 불러오는데 실패했습니다.");
+          }
+        } catch (error) {
+          console.error("오류 발생:", error);
+        }
+      }
+    };
+    fetchNickname(); // 페이지 로드 시 nickname 호출
+  }, []);
   return (
     <div className={styles.all}> {/* 전체 높이 설정 */}
       <header className={styles.header}>
@@ -85,7 +110,7 @@ const Header = ({ i }) => {
                 className={styles.font}
                 style={{ fontWeight: i === "3" ? "bold" : "normal" }}
               >
-                이수민 관리자
+                {nickname} 관리자
               </div>
             </Link>
           </nav>
