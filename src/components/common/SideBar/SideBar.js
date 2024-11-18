@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import classNames from "classnames";
 import styles from "./SideBar.module.css";
 import { FiGrid, FiLayers, FiCpu, FiLogOut } from "react-icons/fi";
-import { SensorDataContext } from '../../../API/SensorDataContext';
+import { SensorDataContext } from "../../../API/SensorDataContext";
 
 var buildingName = "신공학관";
 
@@ -54,7 +54,7 @@ const SideBar = ({ i }) => {
                 className={`${styles.navItem} ${i === "3" ? styles.bold : ""}`}
               >
                 <FiLayers className={styles.icon} />
-                <Link to="/floorcheck" className={styles.navLink}>
+                <Link to="/floorcheck/3" className={styles.navLink}>
                   층별 강의실 수치 확인
                 </Link>
               </li>
