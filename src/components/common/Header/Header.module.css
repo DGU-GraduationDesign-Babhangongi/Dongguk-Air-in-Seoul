@@ -19,7 +19,7 @@
 }
 
 .nav {
-  width: clamp(120px,36vw,450px); /* 고정 너비로 설정 */
+  width: clamp(360px,40vw,540px); /* 고정 너비로 설정 */
   display: flex;
   align-items: center; /* 세로 가운데 정렬 */
   justify-content: space-around;

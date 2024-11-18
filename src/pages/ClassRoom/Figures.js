@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom'; // useNavigate 추가
 import Header from '../../components/common/Header/Header';
 import SideBar from '../../components/common/SideBar/SideBar';
 import NEBDropdown from '../../components/specific/figures/NEBDropdown/NEBDropdownLink';
@@ -10,23 +11,30 @@ import LineChart from '../../components/specific/charts/lineChart';
 import ControlBox from '../../components/specific/ControlBox/ControlBox';
 import AlarmScrollBox from '../../components/specific/alarmScrollBox/alarmScrollBox';
 import SignificantScrollBox from '../../components/specific/significantScrollBox/significantScrollBox';
-import { useParams } from 'react-router-dom';
 import { SensorDataContext } from '../../API/SensorDataContext';
 import Star from '../../components/common/star/star';
 
 const buildingName = "신공학관";
-const token = localStorage.getItem("token");
 
 function Figures() {
   const { id } = useParams();
+  const navigate = useNavigate(); // useNavigate 초기화
   const [selectedOption, setSelectedOption] = useState('');
   const [selectedFavorited, setSelectedFavorited] = useState(false);
   const [selectedValue, setSelectedValue] = useState('');
   const [selectedValues, setSelectedValues] = useState([]);
   const [highlightedIndex, setHighlightedIndex] = useState(null);
   const [isPM2_5, setIsPM2_5] = useState(true);
- 
+
   const { data: sensorData, setSelectedSensorName, loading, error } = useContext(SensorDataContext);
+
+  // token 확인 및 리다이렉션
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate('/'); // token 없으면 '/'로 리다이렉트
+    }
+  }, [navigate]);
 
   useEffect(() => {
     if (selectedOption) {
@@ -42,8 +50,6 @@ function Figures() {
     }
   }, [sensorData]);
 
-
-
   const handleNEBSelect = (value, favorited) => {
     setSelectedOption(value);
     setSelectedFavorited(favorited);
@@ -54,8 +60,6 @@ function Figures() {
     setSelectedValues(values);
     setHighlightedIndex(index);
   };
-
-
 
   return (
     <div className={styles.fullScreenContainer}>
@@ -116,8 +120,6 @@ function Figures() {
           </div>
         </div>
       </div>
-
-
     </div>
   );
 }
