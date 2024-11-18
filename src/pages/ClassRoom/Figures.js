@@ -60,12 +60,15 @@ function Figures() {
         <div className={styles.content}>
           <div className={styles.top}>
             <div className={styles.currentRoom}>
-              <div className={styles.titleTop}>
-                <div style={{ paddingRight: '0.1vw' }}>현재 강의실</div>
-                <div style={{ position: 'relative', display: 'inline-block', width: 'clamp(4px, 1.2vw, 20px)' }}>
-                  <Star classRoom={selectedOption} building={buildingName} selectedFavorited={selectedFavorited} />
-                </div>
-              </div>
+            <div className={styles.titleTop}>
+  <div style={{ paddingRight: '0.1vw' }}>현재 강의실</div>
+  {selectedOption && (
+    <div style={{ position: 'relative', display: 'inline-block', width: 'clamp(4px, 1.2vw, 20px)' }}>
+      <Star classRoom={selectedOption} building={buildingName} selectedFavorited={selectedFavorited} />
+    </div>
+  )}
+</div>
+
               <div className={styles.title}>
                 <img src={require('../../assets/images/building.png')} alt="building" className={styles.titleImg} />
                 <div>{buildingName}</div>
