@@ -25,17 +25,15 @@ function Contact() {
   const [removeReason, setRemoveReason] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // 새 건물 등록 API 호출
   const handleRegisterBuilding = async () => {
     if (!buildingName || !maxFloors || Object.keys(drawings).length === 0) {
       alert("모든 필드를 채워주세요.");
       return;
     }
 
-    if (loading) return; // 중복 호출 방지
+    if (loading) return;
     setLoading(true);
 
-    // FormData 생성
     const formData = new FormData();
     formData.append('name', buildingName);
     formData.append('maxFloor', maxFloors);
@@ -44,13 +42,10 @@ function Contact() {
     });
 
     try {
-      const response = await fetch(
-        `https://donggukseoul.com/api/buildings?name=${encodeURIComponent(buildingName)}&maxFloor=${maxFloors}`,
-        {
-          method: 'POST',
-          body: formData,
-        }
-      );
+      const response = await fetch('https://donggukseoul.com/api/buildings', {
+        method: 'POST',
+        body: formData,
+      });
 
       if (response.ok) {
         const result = await response.json();
@@ -58,7 +53,6 @@ function Contact() {
         // 중복 제거
         const uniqueNames = Array.from(new Set(result.name.split(',')));
 
-        // Dropbutton에 새 건물 추가
         uniqueNames.forEach((name) => {
           if (!buildingOptions.find((option) => option.value === name)) {
             setBuildingOptions((prevOptions) => [
@@ -69,8 +63,6 @@ function Contact() {
         });
 
         alert(`건물 "${uniqueNames.join(', ')}"이 성공적으로 등록되었습니다!`);
-
-        // 입력값 초기화
         setBuildingName('');
         setMaxFloors('');
         setDrawings({});
@@ -86,7 +78,6 @@ function Contact() {
     }
   };
 
-  // 새 강의실 등록 API 호출
   const handleRegisterRoom = async () => {
     if (!roomBuildingName || !selectedRoom || !serialNum) {
       alert("모든 필드를 채워주세요.");
@@ -147,23 +138,20 @@ function Contact() {
 
   return (
     <div>
-      <Header /> {/* 헤더 */}
+      <Header />
       <div style={{ display: 'flex' }}>
-        <SideBar /> {/* 사이드바 */}
+        <SideBar />
         <div className={styles.container}>
-          
-          {/* 노란 배너와 아이콘 */}
           <div className={styles.banner}>
             <FiCpu size={36} color="#333" />
             <h1>관리자 페이지</h1>
           </div>
           <div className={styles.registerSection}>
-            
-            {/* 새 건물 등록 */}
             <div className={styles.registerBuilding}>
               <div className={styles.title}>
-              <img src={building} className={styles.bannerIcon} alt="Building" />
-              <h2>새 건물 등록</h2></div>
+                <img src={building} className={styles.bannerIcon} alt="Building" />
+                <h2>새 건물 등록</h2>
+              </div>
               <p>최대 7일의 시간이 소요될 수 있습니다.</p>
               <label>Building Name</label>
               <input
@@ -172,7 +160,6 @@ function Contact() {
                 value={buildingName}
                 onChange={(e) => setBuildingName(e.target.value)}
               />
-              
               <label>Max Floors</label>
               <input
                 type="text"
@@ -180,8 +167,6 @@ function Contact() {
                 value={maxFloors}
                 onChange={handleMaxFloorsChange}
               />
-              
-              {/* maxFloors 값에 따라 동적으로 층 입력 필드 생성 */}
               {Number(maxFloors) > 0 && (
                 <div className={styles.floorDrawings}>
                   <label>Register the drawing</label>
@@ -196,15 +181,13 @@ function Contact() {
                   ))}
                 </div>
               )}
-              
               <button onClick={handleRegisterBuilding}>등록</button>
             </div>
-
-            {/* 새 강의실 등록 */}
             <div className={styles.registerRoom}>
-            <div className={styles.title}>
-              <img src={building} className={styles.bannerIcon} alt="Building" />
-              <h2>새 강의실 등록</h2></div>
+              <div className={styles.title}>
+                <img src={building} className={styles.bannerIcon} alt="Building" />
+                <h2>새 강의실 등록</h2>
+              </div>
               <p>원하시는 건물이 없다면 건물 등록</p>
               <label>Building</label>
               <Dropbutton 
@@ -213,7 +196,7 @@ function Contact() {
                 height="auto"
                 borderColor="#A5A5A5" 
                 borderWidth="1px"
-                options={buildingOptions} // Dropbutton 옵션 전달
+                options={buildingOptions}
               />
               <label>Room</label>
               <input
@@ -231,14 +214,12 @@ function Contact() {
               />
               <button onClick={handleRegisterRoom}>등록</button>
             </div>
-
-            {/* 강의실 삭제 */}
             <div className={styles.removeRoom}>
               <div className={styles.title}>
-              <img src={building} className={styles.bannerIcon} alt="Building" />
-              <h2>강의실 삭제</h2></div>
+                <img src={building} className={styles.bannerIcon} alt="Building" />
+                <h2>강의실 삭제</h2>
+              </div>
               <p>최대 1일의 시간이 소요될 수 있습니다.</p>
-              
               <label>Building</label>
               <Dropbutton 
                 onSelect={(value) => setRemoveBuilding(value)} 
@@ -246,9 +227,8 @@ function Contact() {
                 height="auto"
                 borderColor="#A5A5A5" 
                 borderWidth="1px"
-                options={buildingOptions} // Dropbutton 옵션 전달
+                options={buildingOptions}
               />
-              
               <label>Room</label>
               <input
                 type="text"
@@ -256,7 +236,6 @@ function Contact() {
                 value={removeRoom}
                 onChange={(e) => setRemoveRoom(e.target.value)}
               />
-              
               <label>Reason</label>
               <textarea
                 className={styles.reasonTextarea}
@@ -264,7 +243,6 @@ function Contact() {
                 placeholder="삭제를 원하시는 이유를 작성해주세요"
                 onChange={(e) => setRemoveReason(e.target.value)}
               />
-              
               <button onClick={handleRemoveRoom}>삭제</button>
             </div>
           </div>

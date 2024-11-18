@@ -158,7 +158,7 @@ function Log() {
 
   return (
     <div>
-      <Header/>
+      <Header i={"2"}/>
       <div className={styles.container}>
         <SideBar />
         <div className={styles.content}>

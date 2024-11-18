@@ -157,7 +157,7 @@ function Alarm() {
 
   return (
     <div>
-      <Header />
+      <Header i={"1"}/>
       <div className={styles.container}>
         <SideBar />
         <div className={styles.content}>
