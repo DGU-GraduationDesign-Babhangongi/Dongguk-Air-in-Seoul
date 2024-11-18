@@ -316,7 +316,7 @@ function Main() {
             borderRadius: "50%",
             transform: "translate(-50%, -50%)", // 중앙 정렬
             cursor: "pointer",
-            zIndex: "100",
+            zIndex: "11",
           }}
           className="animated-shape"
         >
@@ -342,12 +342,12 @@ function Main() {
               style={{
                 [coord.id === "6144" ||
                 coord.id === "6119" ||
-                coord.id === "5145"
+                coord.id === "3173"
                   ? "bottom"
-                  : "bottom"]:
-                  coord.id === "6144" ||
-                  coord.id === "6119" ||
-                  coord.id === "5145"
+                  : "top"]:
+                  coord.id === "5147" ||
+                  coord.id === "4142" ||
+                  coord.id === "3115"
                     ? "20%"
                     : "-100%",
               }}
