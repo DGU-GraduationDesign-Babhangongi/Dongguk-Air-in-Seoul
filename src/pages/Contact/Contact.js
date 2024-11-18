@@ -21,8 +21,43 @@ function Contact() {
     console.log('Building Registered:', buildingName, maxFloors, drawings);
   };
 
-  const handleRegisterRoom = () => {
-    console.log('Room Registered:', roomBuildingName, selectedRoom, serialNum);
+  // 새 강의실 등록 API 호출
+  const handleRegisterRoom = async () => {
+    if (!roomBuildingName || !selectedRoom || !serialNum) {
+      alert("모든 필드를 채워주세요.");
+      return;
+    }
+
+    const payload = {
+      name: selectedRoom,
+      floor: 0, // 필요한 경우 실제 층 정보를 입력
+      building: roomBuildingName,
+      sensorId: serialNum,
+      sensorType: "default", // 필요한 경우 적절한 센서 타입 설정
+    };
+
+    try {
+      const response = await fetch('/api/classrooms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        alert('강의실이 성공적으로 등록되었습니다!');
+        setRoomBuildingName('');
+        setSelectedRoom('');
+        setSerialNum('');
+      } else {
+        const errorData = await response.json();
+        alert(`등록 실패: ${errorData.message || '알 수 없는 오류'}`);
+      }
+    } catch (error) {
+      console.error('API 호출 에러:', error);
+      alert('강의실 등록 중 문제가 발생했습니다.');
+    }
   };
 
   const handleRemoveRoom = () => {
