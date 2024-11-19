@@ -4,7 +4,8 @@ import Header from '../../components/common/Header/Header';
 import SideBar from '../../components/common/SideBar/SideBar';
 import styles from '../../assets/styles/Log.module.css';
 import API from '../../API/api';
-import { useNavigate, useParams } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
+
 function Log() {
   const [selectedRoom, setSelectedRoom] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -14,24 +15,41 @@ function Log() {
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [roomList, setRoomList] = useState([]);
   const observerRef = useRef();
+  const navigate = useNavigate();
 
-  const navigate = useNavigate(); // useNavigate 초기화
-useEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
       navigate('/'); // token 없으면 '/'로 리다이렉트
     }
   }, [navigate]);
-  const roomList = [
-    { id: 1, name: "3115" },
-    { id: 2, name: "3173" },
-    { id: 3, name: "4142" },
-    { id: 4, name: "5145" },
-    { id: 5, name: "5147" },
-    { id: 6, name: "6119" },
-    { id: 7, name: "6144" },
-  ];
+
+  // 강의실 목록 API 호출
+  useEffect(() => {
+    const fetchRoomList = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const encodedBuilding = encodeURIComponent('신공학관');
+        const response = await API.get(`/api/classrooms/myFavorites?building=${encodedBuilding}&favoriteFirst=false&orderDirection=asc`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const rooms = response.data.map(room => ({
+          id: room.id,
+          name: room.name,
+        }));
+        setRoomList(rooms);
+      } catch (error) {
+        console.error("Error fetching room list:", error);
+        setRoomList([]);
+      }
+    };
+
+    fetchRoomList();
+  }, []);
 
   const getSensorType = (tab) => {
     switch (tab) {
@@ -44,7 +62,6 @@ useEffect(() => {
     }
   };
 
-  // 센서 타입을 한국어로 변환하는 함수
   const getSensorNameInKorean = (sensorType) => {
     switch (sensorType) {
       case 'Temperature': return '온도';
@@ -63,26 +80,29 @@ useEffect(() => {
         const encodedBuilding = encodeURIComponent('신공학관');
         const encodedStartDate = startDate ? encodeURIComponent(moment(startDate).format('YYYY-MM-DDTHH:mm:ss')) : null;
         const encodedEndDate = endDate ? encodeURIComponent(moment(endDate).format('YYYY-MM-DDTHH:mm:ss')) : null;
-
+  
         const sensorTypesParams = activeSensors.map(sensor => `sensorTypes=${getSensorType(sensor)}`).join('&');
-
         const url = `/api/sensorData/classroom/betweenDates?${sensorTypesParams}&building=${encodedBuilding}&name=${selectedRoom}&startDate=${encodedStartDate}&endDate=${encodedEndDate}&order=DESC&page=${page}&size=10`;
-
+  
         const token = localStorage.getItem("token");
-const response = await API.get(url, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
+        const response = await API.get(url, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+  
         if (response.data && response.data.data) {
-          const fetchedData = response.data.data;
+          // sensorType이 'WaterDetection'인 데이터를 제외
+          const fetchedData = response.data.data.filter(
+            data => data.sensorType !== 'WaterDetection' // 정확히 'WaterDetection'만 필터링
+          );
+  
           setSensorData((prevData) => (reset ? fetchedData : [...prevData, ...fetchedData]));
           setHasMore(fetchedData.length === 10);
         } else {
           setHasMore(false);
         }
-
+  
         setLoading(false);
       } catch (error) {
         console.error("Error fetching sensor data:", error);
@@ -170,7 +190,7 @@ const response = await API.get(url, {
 
   return (
     <div>
-      <Header i={"2"}/>
+      <Header i={"2"} />
       <div className={styles.container}>
         <SideBar />
         <div className={styles.content}>
@@ -213,20 +233,26 @@ const response = await API.get(url, {
           </div>
 
           <div className={styles.sensorData}>
-            {sensorData.map((data, index) => (
-              <div
-                key={index}
-                className={styles.sensorItem}
-                style={{
-                  borderColor: getBorderColor(getDataValue(data), data.sensorType),
-                }}
-                ref={index === sensorData.length - 1 ? lastElementRef : null}
-              >
-                <span>{`[${moment(data.timestamp).format("YYYY-MM-DDTHH:mm:ss")}]`}</span>
-                <span>{`${selectedRoom} 강의실`}</span>
-                <span>{`${getSensorNameInKorean(data.sensorType)}: ${getDataValue(data)}`}</span>
+            {activeSensors.includes('PM2.5') && sensorData.length === 0 ? (
+              <div className={styles.noData}>
+                <span>{`해당 강의실은 PM2.5 값을 측정하지 않습니다.`}</span>
               </div>
-            ))}
+            ) : (
+              sensorData.map((data, index) => (
+                <div
+                  key={index}
+                  className={styles.sensorItem}
+                  style={{
+                    borderColor: getBorderColor(getDataValue(data), data.sensorType),
+                  }}
+                  ref={index === sensorData.length - 1 ? lastElementRef : null}
+                >
+                  <span>{`[${moment(data.timestamp).format("YYYY-MM-DDTHH:mm:ss")}]`}</span>
+                  <span>{`${selectedRoom} 강의실`}</span>
+                  <span>{`${getSensorNameInKorean(data.sensorType)}: ${getDataValue(data)}`}</span>
+                </div>
+              ))
+            )}
           </div>
           {loading && <p>Loading...</p>}
         </div>
