@@ -6,6 +6,7 @@ import ClassRoomButton from '../components/classRoomButton/classRoomButton';
 import ShowBox from '../components/showBox/showBox';  
 import Map from '../components/map'; 
 import TipsSlide from '../components/tipsSlide/tipsSlide';
+import BannerSlide from '../components/BannerSlide/BannerSlide';
 import { SensorDataContext } from '../../API/SensorDataContext';
 
 function ClassRoom() {
@@ -158,38 +159,7 @@ function ClassRoom() {
           Tips
         </div>
         <TipsSlide contents={sensorData.AQMScores}/>
-        <div className={styles.whiteBox} style={{ fontSize: '3vw', display:'flex',  alignItems: 'center', justifyContent: 'space-between'}}>
-          <div style={{ width: '128%' }}> 
-            종합설계2 밥한공기 임시운영 중입니다.
-            <div style={{
-              display: "flex", width: '100%',
-              alignItems: 'center',
-              justifyContent: 'space-around',
-              marginTop: '2%'
-            }}>
-              <img
-                src={require("../../assets/images/smartmirror/personIcons/person1.png")}
-                alt="person1"
-                style={{ width: '12vw' }}
-              />
-              <img
-                src={require("../../assets/images/smartmirror/personIcons/person2.png")}
-                alt="person2"
-                style={{ width: '12vw' }}
-              />
-              <img
-                src={require("../../assets/images/smartmirror/personIcons/person3.png")}
-                alt="person3"
-                style={{ width: '12vw' }}
-              />
-              <img
-                src={require("../../assets/images/smartmirror/personIcons/person4.png")}
-                alt="person4"
-                style={{ width: '12vw' }}
-              />
-            </div>
-          </div>
-        </div>
+       <BannerSlide/>
       </div>
     </div>
   );
