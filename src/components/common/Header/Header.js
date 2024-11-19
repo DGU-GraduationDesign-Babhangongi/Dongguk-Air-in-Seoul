@@ -7,6 +7,7 @@ const Header = ({ i }) => {
   const navigate = useNavigate();
   const [token, setToken] = useState(localStorage.getItem("token")); // token 상태 관리
   const [nickname, setNickname] = useState("");
+
   useEffect(() => {
     const handleStorageChange = () => {
       setToken(localStorage.getItem("token"));
@@ -24,6 +25,7 @@ const Header = ({ i }) => {
     navigate("/");
     window.location.reload();
   };
+
   useEffect(() => {
     const fetchNickname = async () => {
       const token = localStorage.getItem("token");
@@ -49,6 +51,20 @@ const Header = ({ i }) => {
     };
     fetchNickname(); // 페이지 로드 시 nickname 호출
   }, []);
+
+  // 브라우저 창 닫힘 또는 새로 고침 시 토큰 삭제
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      localStorage.removeItem("token");
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
   return (
     <div className={styles.all}> {/* 전체 높이 설정 */}
       <header className={styles.header}>
@@ -68,8 +84,9 @@ const Header = ({ i }) => {
                 alt="user"
                 className={styles.icon}
               />
-              <div className={styles.font}
-              style={{ fontWeight: i === "0" ? "bold" : "normal" }}>로그인</div>
+              <div className={styles.font} style={{ fontWeight: i === "0" ? "bold" : "normal" }}>
+                로그인
+              </div>
             </Link>
           </div>
         ) : (
