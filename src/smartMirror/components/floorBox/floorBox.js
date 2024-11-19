@@ -46,7 +46,10 @@ const borderColor = (() => {
     return styles.Border3; // 70 ~ 84
   } else if (averageIAQ >= 50) {
     return styles.Border4; // 50 ~ 69
-  } else {
+  }else if(averageIAQ===0){
+    return null;
+  } 
+  else {
     return styles.Border5; // 50 미만
   }
 })();
