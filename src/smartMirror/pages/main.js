@@ -269,14 +269,14 @@ function Main() {
           <img
             src={require("../../assets/images/smartmirror/TipsIcon.png")}
             alt="detail"
-            style={{ width: '3vw', height: '3vw', paddingRight: '1.5vw' }}
+            style={{ width: '2.4vw', height: '2.4vw', marginRight: '0.5vw' }}
           />
-          원하는 층을 선택하여 현재 공기질 상태를 확인하세요
+          원하는 층을 선택하여 현재 공기질 상태를 확인하세요.
         </div></div>
       </div>
 
       <div className={styles.detailContainer}>
-        <FloorBox floor="3rd" rooms={['3115', '3173']}  />
+        <FloorBox floor="3rd" rooms={['3115', '3173']} click={true} />
         <FloorBox floor="4th" rooms={['4142']}  />
         <FloorBox floor="5th" rooms={['5145', '5147']} />
         <FloorBox floor="6th" rooms={['6119', '6144']}  />

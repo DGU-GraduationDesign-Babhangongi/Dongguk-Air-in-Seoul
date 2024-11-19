@@ -10,18 +10,27 @@
     margin-bottom: 2%;
 
     background-color: #FFFFFF;
-    border: 0.2vw solid #90EE90; /* 기본 초록색 테두리 */
+    border: 0.2vw solid #9E9E9E; /* 기본 초록색 테두리 */
     border-radius: 2.7vw;
     box-shadow: 0px 0.37vw 0.37vw rgba(0, 0, 0, 0.25);
     transition: all 0.3s ease;
 }
 
-.redBorder {
-    border: 2px solid red;
+.Border1 {
+    border: 2px solid #4CAF50;
   }
   
-  .greenBorder {
-    border: 2px solid #90EE90;
+  .Border2 {
+    border: 2px solid #8BC34A;
+  }
+  .Border3 {
+    border: 2px solid #FFEB3B;
+  }
+  .Border4 {
+    border: 2px solid #FF9800;
+  }
+  .Border5 {
+    border: 2px solid #F44336;
   }
   
 .floorInfo {
@@ -67,3 +76,36 @@
     background-color: #ccc; /* Light gray color for the divider */
     margin: 1vw 0; /* Space above and below the line */
 }
+
+
+
+.blinking-icon {
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    transform: translate(-50%, -50%); /* 중앙 정렬 */
+    width: 50px; /* 원하는 크기로 설정 */
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: blink 1s infinite; /* 깜빡임 효과 */
+  }
+  
+  .blinking-icon img {
+    width: 100%; /* 이미지 크기 조정 */
+    height: auto;
+  }
+  
+  /* 깜빡임 효과 */
+  @keyframes blink {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.5;
+    }
+  }
+  
