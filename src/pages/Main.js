@@ -163,10 +163,10 @@ function Main() {
     navigate(`/figures/${id}`);
   };
   const floorcoordinates = [
-    { floor: 3, x: 28, y: 520 },
-    { floor: 4, x: 28, y: 390 },
-    { floor: 5, x: 28, y: 260 },
-    { floor: 6, x: 28, y: 128 },
+    { floor: 3, top: "480px" },
+    { floor: 4, top: "350px" },
+    { floor: 5, top: "220px" },
+    { floor: 6, top: "90px" },
   ];
   const handleFloorClick = (floor) => {
     navigate(`/floorcheck/${floor}`);
@@ -486,7 +486,7 @@ function Main() {
     });
   };
   const renderFloorCoordinates = () => {
-    return floorcoordinates.map(({ floor, x, y }, index) => (
+    return floorcoordinates.map(({ floor, top, left }, index) => (
       <div
         key={`floor-${index}`}
         onMouseEnter={() => setHoveredFloor(floor)} // 호버 시 층 설정
@@ -494,10 +494,10 @@ function Main() {
         onClick={() => handleFloorClick(floor)}
         style={{
           position: "absolute",
-          top: `${y}px`,
-          left: `${x}px`,
-          width: "20px",
-          height: "20px",
+          top: top,
+          left: left,
+          width: "100px",
+          height: "100px",
           cursor: "pointer",
           zIndex: "101",
         }}
@@ -510,12 +510,13 @@ function Main() {
               top: "-30px", // 좌표 기준 위에 표시
               left: "50%",
               transform: "translateX(-50%)",
-              backgroundColor: "black",
-              color: "white",
-              padding: "4px 8px",
-              borderRadius: "4px",
-              fontSize: "12px",
+              backgroundColor: "rgba(251, 244, 228, 0.8)",
+              color: "black",
+              padding: "10%",
+              borderRadius: "8px",
+              fontSize: "20px",
               whiteSpace: "nowrap",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.261)",
             }}
           >
             {floor}층으로 이동하기
