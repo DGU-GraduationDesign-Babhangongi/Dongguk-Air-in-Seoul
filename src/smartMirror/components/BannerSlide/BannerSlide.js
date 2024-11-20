@@ -26,6 +26,13 @@ const BannerSlide = () => {
     },
     {
       id: 2,
+      name: '대학연합동아리 쌍투스코러스',
+      image: 'TwinChorus.jpg',
+      content:
+        "우리들은 노래로 사랑을 심어요!\n 쌍투스코러스는 노래와 사람을 사랑하는 사람들이 모인 \"대학 연합 합창 뮤지컬 동아리\"입니다.",
+    },    
+    {
+      id: 3,
       name: '동아리 홍보 신청하기',
       image: 'qr.png',
       content:
@@ -104,7 +111,7 @@ const BannerSlide = () => {
           <img
             src={getImage(slides[currentIndex]?.image)} // 이미지 경로 처리 함수 사용
             alt={slides[currentIndex]?.name}
-            style={{ width: '100%', height: '100%' }}
+            style={{ width: '100%' }}
           />
           <br />
           <p style={{ display: 'flex', alignItems: 'center', fontSize: '2.6vw', textAlign: 'left', margin: 'auto' }}>
