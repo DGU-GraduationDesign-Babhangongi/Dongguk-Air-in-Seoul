@@ -37,13 +37,11 @@ function Main() {
   const [loadingdata, setLoading] = useState(true);
   const [hoveredFloor, setHoveredFloor] = useState(null); // 현재 호버 중인 층
   const navigate = useNavigate();
+  const [nickname, setNickname] = useState("사용자"); // 닉네임 기본값 설정
 
-  const [nickname, setNickname] = useState("관리자");
-  //
   useEffect(() => {
     const fetchNickname = async () => {
       const token = localStorage.getItem("token");
-
       if (token) {
         try {
           const response = await API.get("/api/user/nickname", {
@@ -51,20 +49,16 @@ function Main() {
               Authorization: `Bearer ${token}`,
             },
           });
-
           if (response.status === 200) {
-            const nicknameData = response.data;
-            setNickname(nicknameData);
-          } else {
-            console.error("닉네임을 불러오는데 실패했습니다.");
+            setNickname(response.data || "사용자");
           }
         } catch (error) {
-          console.error("오류 발생:", error);
+          console.error("닉네임을 불러오는 데 실패했습니다:", error);
         }
       }
     };
-    fetchNickname(); // 페이지 로드 시 nickname 호출
-  }, []);
+    fetchNickname();
+}, []);
 
   const handleBuildingClick = (building, buildingInfo) => {
     if (building == "신공학관") {
@@ -535,16 +529,19 @@ function Main() {
     <div>
       <Header />
       <div className={styles.mainContainer}>
-        {nickname && showMessage && (
+        {/* 환영 메시지 */}
+        {showMessage && (
           <div
             className={`${styles.welcomeMessage} ${
               isFadingOut ? styles.fadeOutMessage : ""
             }`}
           >
-            <h2 style={{
-                    fontSize:'clamp(18px, 2vw, 28px)',}}>{nickname}님 환영합니다!</h2>
-            <p style={{
-                    fontSize:'clamp(12px, 1.5vw, 20px)',}}>공기질을 확인할 강의실을 선택해주세요</p>
+            <h2 style={{ fontSize: "clamp(18px, 2vw, 28px)" }}>
+              {nickname}님 환영합니다!
+            </h2>
+            <p style={{ fontSize: "clamp(12px, 1.5vw, 20px)" }}>
+              공기질을 확인할 강의실을 선택해주세요.
+            </p>
           </div>
         )}
         {selectedBuilding === "신공학관" && (
