@@ -54,8 +54,15 @@ const Header = ({ i }) => {
 
   // 브라우저 창 닫힘 또는 새로 고침 시 토큰 삭제
   useEffect(() => {
-    const handleBeforeUnload = () => {
-      localStorage.removeItem("token");
+    const handleBeforeUnload = (event) => {
+      const entries = performance.getEntriesByType("navigation");
+    const navigationEntry = entries.length > 0 ? entries[0] : null;
+
+      // 브라우저 창이 완전히 닫힐 때만 토큰 삭제
+      if (navigationEntry && navigationEntry.type !== "reload") {
+        // 새로 고침(type === 1)이 아닐 경우에만 실행
+        localStorage.removeItem("token");
+      }
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);

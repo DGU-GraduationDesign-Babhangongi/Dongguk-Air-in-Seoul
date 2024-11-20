@@ -76,7 +76,7 @@ function Map({ classRoom, x, y }) {
           fontWeight:'bold'
         }}
       >
-        <div>{classRoom}</div>
+        <div style={{zIndex:'9999'}}>{classRoom}</div>
       </div>
     </div>
   );
