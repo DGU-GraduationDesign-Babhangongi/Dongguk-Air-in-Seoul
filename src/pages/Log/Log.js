@@ -92,9 +92,8 @@ function Log() {
         });
   
         if (response.data && response.data.data) {
-          // sensorType이 'WaterDetection'인 데이터를 제외
           const fetchedData = response.data.data.filter(
-            data => data.sensorType !== 'WaterDetection' // 정확히 'WaterDetection'만 필터링
+            data => data.sensorType !== 'WaterDetection'
           );
   
           setSensorData((prevData) => (reset ? fetchedData : [...prevData, ...fetchedData]));
@@ -194,30 +193,33 @@ function Log() {
       <div className={styles.container}>
         <SideBar />
         <div className={styles.content}>
-          <div className={styles.filters}>
-            <div className={styles.filterItem}>
-              <label>강의실: </label>
-              <select value={selectedRoom} onChange={(e) => setSelectedRoom(e.target.value)}>
-                <option value="" disabled>강의실 선택</option>
-                {roomList.map((room) => (
-                  <option key={room.id} value={room.name}>{room.name}</option>
-                ))}
-              </select>
-            </div>
-            <div className={styles.filterItem}>
-              <label>기간: </label>
-              <input
-                type="datetime-local"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-              />
-              <input
-                type="datetime-local"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-              />
-            </div>
-          </div>
+        <div className={styles.filters}>
+  <div className={styles.filterItem}>
+    <label>강의실: </label>
+    <select value={selectedRoom} onChange={(e) => setSelectedRoom(e.target.value)}>
+      <option value="" disabled>강의실 선택</option>
+      {roomList
+        .filter((room) => !/[\uAC00-\uD7AF]/.test(room.name)) // 한글이 포함된 이름 필터링
+        .map((room) => (
+          <option key={room.id} value={room.name}>{room.name}</option>
+        ))}
+    </select>
+  </div>
+  <div className={styles.filterItem}>
+    <label>기간: </label>
+    <input
+      type="datetime-local"
+      value={startDate}
+      onChange={(e) => setStartDate(e.target.value)}
+    />
+    <input
+      type="datetime-local"
+      value={endDate}
+      onChange={(e) => setEndDate(e.target.value)}
+    />
+  </div>
+</div>
+
 
           <div className={styles.tabs}>
             {['온도', '습도', 'TVOC', 'PM2.5', '소음'].map((sensor) => (
@@ -233,10 +235,27 @@ function Log() {
           </div>
 
           <div className={styles.sensorData}>
-            {activeSensors.includes('PM2.5') && sensorData.length === 0 ? (
-              <div className={styles.noData}>
-                <span>{`해당 강의실은 PM2.5 값을 측정하지 않습니다.`}</span>
-              </div>
+            {activeSensors.includes('PM2.5') && selectedRoom && startDate && endDate ? (
+              sensorData.filter((data) => data.sensorType === 'PM2_5MassConcentration').length === 0 ? (
+                <div className={styles.noData}>
+                  <span>{`해당 강의실은 PM2.5 값을 측정하지 않습니다.`}</span>
+                </div>
+              ) : (
+                sensorData.map((data, index) => (
+                  <div
+                    key={index}
+                    className={styles.sensorItem}
+                    style={{
+                      borderColor: getBorderColor(getDataValue(data), data.sensorType),
+                    }}
+                    ref={index === sensorData.length - 1 ? lastElementRef : null}
+                  >
+                    <span>{`[${moment(data.timestamp).format("YYYY-MM-DDTHH:mm:ss")}]`}</span>
+                    <span>{`${selectedRoom} 강의실`}</span>
+                    <span>{`${getSensorNameInKorean(data.sensorType)}: ${getDataValue(data)}`}</span>
+                  </div>
+                ))
+              )
             ) : (
               sensorData.map((data, index) => (
                 <div
@@ -253,8 +272,8 @@ function Log() {
                 </div>
               ))
             )}
+            {loading && <p>Loading...</p>}
           </div>
-          {loading && <p>Loading...</p>}
         </div>
       </div>
     </div>
