@@ -113,7 +113,10 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorite
               <span>{loading ? '--' : `${sensorData.AmbientNoise?.value}dB`}</span>
             </div>
           </div>
-          <ControlBox />
+          
+          <ControlBox room={roomNumber} building={buildingName}   // 건물 이름
+
+/>
         </div>
       </div>
     </div>
