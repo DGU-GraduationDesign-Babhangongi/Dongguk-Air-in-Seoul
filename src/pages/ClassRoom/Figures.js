@@ -8,7 +8,7 @@ import WhatCheckBoxes from '../../components/common/whatSelectBox/WhatRadioButto
 import TopBox from '../../components/specific/figures/TopBox/TopBox';
 import styles from '../../assets/styles/figures.module.css';
 import LineChart from '../../components/specific/charts/lineChart';
-import ControlBox from '../../components/specific/ControlBox/ControlBox';
+import ControlBox from '../../components/common/ControlBox/ControlBox';
 import AlarmScrollBox from '../../components/specific/alarmScrollBox/alarmScrollBox';
 import SignificantScrollBox from '../../components/specific/significantScrollBox/significantScrollBox';
 import { SensorDataContext } from '../../API/SensorDataContext';
@@ -115,7 +115,7 @@ function Figures() {
             <div className={styles.rightContainer}>
               <AlarmScrollBox title="alarms" classRoom={selectedOption} />
               <SignificantScrollBox title="significant" classRoom={selectedOption} />
-              <ControlBox title="facility control" />
+              <ControlBox title="facility control" room={selectedOption}/>
             </div>
           </div>
         </div>

@@ -13,6 +13,7 @@ const AlarmScrollBox = ({ title, classRoom }) => {
 
   const fetchData = async (classRoom) => {
     if (!classRoom) return;
+
     setLoading(true);
 
     const currentTime = moment();
@@ -56,7 +57,9 @@ const AlarmScrollBox = ({ title, classRoom }) => {
   const fetchDataDebounced = debounce(fetchData, 300);
 
   useEffect(() => {
-    fetchDataDebounced(classRoom);
+    if (classRoom) {
+      fetchDataDebounced(classRoom);
+    }
   }, [classRoom]);
 
   const getColorByRange = (type, value) => {
@@ -102,12 +105,11 @@ const AlarmScrollBox = ({ title, classRoom }) => {
   return (
     <div className={styles.Container}>
       <div style={{ marginLeft: '5%' }}>{title}</div>
-      <div className={styles.scrollableContainer}>
+      <div className={`${styles.scrollableContainer} ${loading ? styles.loading : ''}`}>
         {loading ? (
-            <div style={{margin:'0 25%', width: '50%', height:"100%", display:'flex', alignItems:'center', textAlign:'center'}}>Loading...</div>
-
+          <div style={{margin:'0 25%', width: '50%', height:"100%", display:'flex', alignItems:'center', textAlign:'center'}}>Loading...</div>
         ) : (
-          data.every(item => !formatMessage(item)) ? (
+          data.length === 0 ? (
             <div style={{margin:'0 1%', width: '98%', height:"100%", display:'flex', alignItems:'center'}}>24시간 내 이상 수치가 없습니다</div>
           ) : (
             data.map((item, index) => {

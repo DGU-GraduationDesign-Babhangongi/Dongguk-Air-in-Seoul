@@ -51,7 +51,7 @@ const Comparison = () => {
         <SideBar i="4" />
         <div style={{ width: '100%' }}>
           <div className={styles.top2}>
-            <ControlBox width="1vw" color="#1FE5A3" height="90%" />
+            <ControlBox width="60%" color="#1FE5A3" height="100%" maxWidth='180px' room={selectedClassroomA}/>
             <StatusBox 
               id={1}
               color="#1FE5A3" 
@@ -69,7 +69,7 @@ const Comparison = () => {
               oppositeClassroom={selectedClassroomA} 
               status={selectedClassroomB} 
             />
-            <ControlBox width="60%" height="auto" color="#1A9AFB" />
+            <ControlBox width="60%" height="100%" color="#1A9AFB" maxWidth='175px' room={selectedClassroomB}/>
           </div>
           <div className={bottomStyles.bottom}>
             <div className={bottomStyles.box}>
