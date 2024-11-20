@@ -58,7 +58,7 @@ function Main() {
       }
     };
     fetchNickname();
-}, []);
+  }, []);
 
   const handleBuildingClick = (building, buildingInfo) => {
     if (building == "신공학관") {
@@ -707,13 +707,16 @@ function Main() {
             style={{ position: "relative" }}
           >
             <div className={styles.weatherInfo}>
-              <h2 style={{
-                    fontSize:'clamp(15px, 1.6vw, 20px)',}}>
+              <h2
+                style={{
+                  fontSize: "clamp(15px, 1.6vw, 20px)",
+                }}
+              >
                 <img
                   src={weatherlocation}
                   alt="위치 아이콘"
                   style={{
-                    fontSize:'clamp(15px, 1.6vw, 25px)',
+                    fontSize: "clamp(15px, 1.6vw, 25px)",
                     width: "clamp(20px, 2vw, 50px)",
                     marginRight: "0.5vw",
                     marginBottom: "-4px",
@@ -747,7 +750,6 @@ function Main() {
                       alt="날씨 이미지"
                       style={{
                         width: "clamp(70px, 7vw, 200px)", // 이미지 크기 조정
-                       
                         filter: "drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.2))",
                       }}
                     />
@@ -768,6 +770,7 @@ function Main() {
                     style={{
                       fontSize: "2vw",
                       textAlign: "center",
+                      color: "black",
                     }}
                   >
                     {forecast.rain >= "1"
@@ -785,6 +788,7 @@ function Main() {
                       textAlign: "right",
                       fontWeight: "600",
                       marginTop: "10px",
+                      color: "black",
                     }}
                   >
                     최고 {forecast2.maxTemp}°C / 최저 {forecast2.minTemp}°C
@@ -797,6 +801,7 @@ function Main() {
                       textAlign: "right",
                       fontSize: "clamp(9px, 1vw, 13px)",
                       marginBottom: "10px",
+                      color: "black",
                     }}
                   >
                     {" "}
@@ -814,6 +819,7 @@ function Main() {
                         textAlign: "right",
                         whiteSpace: "pre-line", // 줄바꿈 적용
                         fontSize: "clamp(11px, 1.2vw, 18px)",
+                        color: "black",
                       }}
                     >
                       {getWeatherAdvice()}
@@ -826,14 +832,16 @@ function Main() {
             </div>
 
             <div className={styles.sensorLogs}>
-              <h3 style={{
-                    fontSize:'clamp(15px, 1.6vw, 20px)',}}>
+              <h3
+                style={{
+                  fontSize: "clamp(15px, 1.6vw, 20px)",
+                }}
+              >
                 <img
                   src={logsensor}
                   alt="센서 아이콘"
                   style={{
                     width: "clamp(20px, 2vw, 50px)",
-               
                     marginRight: "8px",
                     marginBottom: "-8px",
                   }} // 이미지 크기와 간격 조절
