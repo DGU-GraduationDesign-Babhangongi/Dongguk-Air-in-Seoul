@@ -37,13 +37,11 @@ function Main() {
   const [loadingdata, setLoading] = useState(true);
   const [hoveredFloor, setHoveredFloor] = useState(null); // 현재 호버 중인 층
   const navigate = useNavigate();
+  const [nickname, setNickname] = useState("사용자"); // 닉네임 기본값 설정
 
-  const [nickname, setNickname] = useState("관리자");
-  //
   useEffect(() => {
     const fetchNickname = async () => {
       const token = localStorage.getItem("token");
-
       if (token) {
         try {
           const response = await API.get("/api/user/nickname", {
@@ -51,19 +49,15 @@ function Main() {
               Authorization: `Bearer ${token}`,
             },
           });
-
           if (response.status === 200) {
-            const nicknameData = response.data;
-            setNickname(nicknameData);
-          } else {
-            console.error("닉네임을 불러오는데 실패했습니다.");
+            setNickname(response.data || "사용자");
           }
         } catch (error) {
-          console.error("오류 발생:", error);
+          console.error("닉네임을 불러오는 데 실패했습니다:", error);
         }
       }
     };
-    fetchNickname(); // 페이지 로드 시 nickname 호출
+    fetchNickname();
   }, []);
 
   const handleBuildingClick = (building, buildingInfo) => {
@@ -169,10 +163,10 @@ function Main() {
     navigate(`/figures/${id}`);
   };
   const floorcoordinates = [
-    { floor: 3, x: 28, y: 520 },
-    { floor: 4, x: 28, y: 390 },
-    { floor: 5, x: 28, y: 260 },
-    { floor: 6, x: 28, y: 128 },
+    { floor: 3, top: "480px" },
+    { floor: 4, top: "350px" },
+    { floor: 5, top: "220px" },
+    { floor: 6, top: "90px" },
   ];
   const handleFloorClick = (floor) => {
     navigate(`/floorcheck/${floor}`);
@@ -492,7 +486,7 @@ function Main() {
     });
   };
   const renderFloorCoordinates = () => {
-    return floorcoordinates.map(({ floor, x, y }, index) => (
+    return floorcoordinates.map(({ floor, top, left }, index) => (
       <div
         key={`floor-${index}`}
         onMouseEnter={() => setHoveredFloor(floor)} // 호버 시 층 설정
@@ -500,10 +494,10 @@ function Main() {
         onClick={() => handleFloorClick(floor)}
         style={{
           position: "absolute",
-          top: `${y}px`,
-          left: `${x}px`,
-          width: "20px",
-          height: "20px",
+          top: top,
+          left: left,
+          width: "100px",
+          height: "100px",
           cursor: "pointer",
           zIndex: "101",
         }}
@@ -516,12 +510,13 @@ function Main() {
               top: "-30px", // 좌표 기준 위에 표시
               left: "50%",
               transform: "translateX(-50%)",
-              backgroundColor: "black",
-              color: "white",
-              padding: "4px 8px",
-              borderRadius: "4px",
-              fontSize: "12px",
+              backgroundColor: "rgba(251, 244, 228, 0.8)",
+              color: "black",
+              padding: "10%",
+              borderRadius: "8px",
+              fontSize: "20px",
               whiteSpace: "nowrap",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.261)",
             }}
           >
             {floor}층으로 이동하기
@@ -535,16 +530,19 @@ function Main() {
     <div>
       <Header />
       <div className={styles.mainContainer}>
-        {nickname && showMessage && (
+        {/* 환영 메시지 */}
+        {showMessage && (
           <div
             className={`${styles.welcomeMessage} ${
               isFadingOut ? styles.fadeOutMessage : ""
             }`}
           >
-            <h2 style={{
-                    fontSize:'clamp(18px, 2vw, 28px)',}}>{nickname}님 환영합니다!</h2>
-            <p style={{
-                    fontSize:'clamp(12px, 1.5vw, 20px)',}}>공기질을 확인할 강의실을 선택해주세요</p>
+            <h2 style={{ fontSize: "clamp(18px, 2vw, 28px)" }}>
+              {nickname}님 환영합니다!
+            </h2>
+            <p style={{ fontSize: "clamp(12px, 1.5vw, 20px)" }}>
+              공기질을 확인할 강의실을 선택해주세요.
+            </p>
           </div>
         )}
         {selectedBuilding === "신공학관" && (
@@ -710,13 +708,16 @@ function Main() {
             style={{ position: "relative" }}
           >
             <div className={styles.weatherInfo}>
-              <h2 style={{
-                    fontSize:'clamp(15px, 1.6vw, 20px)',}}>
+              <h2
+                style={{
+                  fontSize: "clamp(15px, 1.6vw, 20px)",
+                }}
+              >
                 <img
                   src={weatherlocation}
                   alt="위치 아이콘"
                   style={{
-                    fontSize:'clamp(15px, 1.6vw, 25px)',
+                    fontSize: "clamp(15px, 1.6vw, 25px)",
                     width: "clamp(20px, 2vw, 50px)",
                     marginRight: "0.5vw",
                     marginBottom: "-4px",
@@ -750,7 +751,6 @@ function Main() {
                       alt="날씨 이미지"
                       style={{
                         width: "clamp(70px, 7vw, 200px)", // 이미지 크기 조정
-                       
                         filter: "drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.2))",
                       }}
                     />
@@ -771,6 +771,7 @@ function Main() {
                     style={{
                       fontSize: "2vw",
                       textAlign: "center",
+                      color: "black",
                     }}
                   >
                     {forecast.rain >= "1"
@@ -788,6 +789,7 @@ function Main() {
                       textAlign: "right",
                       fontWeight: "600",
                       marginTop: "10px",
+                      color: "black",
                     }}
                   >
                     최고 {forecast2.maxTemp}°C / 최저 {forecast2.minTemp}°C
@@ -800,6 +802,7 @@ function Main() {
                       textAlign: "right",
                       fontSize: "clamp(9px, 1vw, 13px)",
                       marginBottom: "10px",
+                      color: "black",
                     }}
                   >
                     {" "}
@@ -817,6 +820,7 @@ function Main() {
                         textAlign: "right",
                         whiteSpace: "pre-line", // 줄바꿈 적용
                         fontSize: "clamp(11px, 1.2vw, 18px)",
+                        color: "black",
                       }}
                     >
                       {getWeatherAdvice()}
@@ -829,14 +833,16 @@ function Main() {
             </div>
 
             <div className={styles.sensorLogs}>
-              <h3 style={{
-                    fontSize:'clamp(15px, 1.6vw, 20px)',}}>
+              <h3
+                style={{
+                  fontSize: "clamp(15px, 1.6vw, 20px)",
+                }}
+              >
                 <img
                   src={logsensor}
                   alt="센서 아이콘"
                   style={{
                     width: "clamp(20px, 2vw, 50px)",
-               
                     marginRight: "8px",
                     marginBottom: "-8px",
                   }} // 이미지 크기와 간격 조절

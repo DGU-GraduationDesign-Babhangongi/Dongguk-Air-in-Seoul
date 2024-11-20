@@ -5,6 +5,7 @@ import SideBar from '../../components/common/SideBar/SideBar';
 import styles from '../../assets/styles/Log.module.css';
 import API from '../../API/api';
 import { useNavigate, useParams } from 'react-router-dom'; 
+
 function Alarm() {
   const [selectedRoom, setSelectedRoom] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -12,22 +13,42 @@ function Alarm() {
   const [activeSensors, setActiveSensors] = useState([]);
   const [sensorData, setSensorData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // useNavigate 초기화
-useEffect(() => {
+  const [hasMore, setHasMore] = useState(true);
+  const [roomList, setRoomList] = useState([]);
+  const observerRef = useRef();
+  const navigate = useNavigate();
+
+  useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
       navigate('/'); // token 없으면 '/'로 리다이렉트
     }
   }, [navigate]);
-  const roomList = [
-    { id: 1, name: "3115" },
-    { id: 2, name: "3173" },
-    { id: 3, name: "4142" },
-    { id: 4, name: "5145" },
-    { id: 5, name: "5147" },
-    { id: 6, name: "6119" },
-    { id: 7, name: "6144" },
-  ];
+
+  // 강의실 목록 API 호출
+  useEffect(() => {
+    const fetchRoomList = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const encodedBuilding = encodeURIComponent('신공학관');
+        const response = await API.get(`/api/classrooms/myFavorites?building=${encodedBuilding}&favoriteFirst=false&orderDirection=asc`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const rooms = response.data.map(room => ({
+          id: room.id,
+          name: room.name,
+        }));
+        setRoomList(rooms);
+      } catch (error) {
+        console.error("Error fetching room list:", error);
+        setRoomList([]);
+      }
+    };
+
+    fetchRoomList();
+  }, []);
 
   const getSensorType = (tab) => {
     switch (tab) {
@@ -156,30 +177,32 @@ const response = await API.get(url, {
       <div className={styles.container}>
         <SideBar />
         <div className={styles.content}>
-          <div className={styles.filters}>
-            <div className={styles.filterItem}>
-              <label>강의실: </label>
-              <select value={selectedRoom} onChange={(e) => setSelectedRoom(e.target.value)}>
-                <option value="" disabled>강의실 선택</option>
-                {roomList.map((room) => (
-                  <option key={room.id} value={room.name}>{room.name}</option>
-                ))}
-              </select>
-            </div>
-            <div className={styles.filterItem}>
-              <label>기간: </label>
-              <input
-                type="datetime-local"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-              />
-              <input
-                type="datetime-local"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-              />
-            </div>
-          </div>
+        <div className={styles.filters}>
+  <div className={styles.filterItem}>
+    <label>강의실: </label>
+    <select value={selectedRoom} onChange={(e) => setSelectedRoom(e.target.value)}>
+      <option value="" disabled>강의실 선택</option>
+      {roomList
+        .filter((room) => !/[\uAC00-\uD7AF]/.test(room.name)) // 한글이 포함된 이름 필터링
+        .map((room) => (
+          <option key={room.id} value={room.name}>{room.name}</option>
+        ))}
+    </select>
+  </div>
+  <div className={styles.filterItem}>
+    <label>기간: </label>
+    <input
+      type="datetime-local"
+      value={startDate}
+      onChange={(e) => setStartDate(e.target.value)}
+    />
+    <input
+      type="datetime-local"
+      value={endDate}
+      onChange={(e) => setEndDate(e.target.value)}
+    />
+  </div>
+</div>
 
           <div className={styles.tabs}>
             {['온도', '습도', 'TVOC', 'PM2.5', '소음'].map((sensor) => (

@@ -110,20 +110,23 @@
 /* 우측 정보 패널 */
 .infoPanels {
   display: flex;
-  /*overflow-x: auto; /* 가로로 넘칠 경우 스크롤 추가 */
-  gap: 8%; /* 패널 간 간격 */
-  padding: 10px; /* 패널이 가장자리에 붙지 않도록 여백 추가 */
+  margin-top: 4%;
+  justify-content: flex-start;
+  gap: 8%;
+  margin-top: -2%;
+  align-items: stretch; /* 세로 크기를 동일하게 유지 */
+
+  width: 100%; /* 컨테이너 전체 너비 사용 */
 }
 
 .infoPanel {
-  flex: 1;
-  width: clamp(380px, 2vh, 500px);
-  height: clamp(540px, 2vw, 800px);
-  padding: 6%; /* 내부 여백을 줄임 */
+  width: clamp(320px, 2vh, 500px);
+  height: clamp(440px, 2vw, 800px);
+  padding: 4% 2% 4% 2%;
   background-color: white;
   border: 1px solid #ddd;
   border-radius: 8%;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 10px 2px rgb(0, 0, 0, 0.1);
   align-items: center;
   margin-top: 16%;
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
