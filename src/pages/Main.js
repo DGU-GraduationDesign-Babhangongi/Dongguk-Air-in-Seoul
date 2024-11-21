@@ -38,6 +38,80 @@ function Main() {
   const [hoveredFloor, setHoveredFloor] = useState(null); // 현재 호버 중인 층
   const navigate = useNavigate();
   const [nickname, setNickname] = useState("사용자"); // 닉네임 기본값 설정
+  const [sensorLogs, setSensorLogs] = useState([]); //이상수치값
+
+  const getLevelColor = (level) => {
+    switch (level) {
+      case "RED":
+        return "red";
+      case "ORANGE":
+        return "red";
+      case "YELLOW":
+        return "red";
+      default:
+        return "black"; // 기본 색상
+    }
+  };
+
+  const fetchSensorLogs = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("토큰이 없습니다. 로그인 후 다시 시도하세요.");
+      return;
+    }
+    try {
+      const response = await API.get("/api/sensorData/abnormalValues", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setSensorLogs(response.data);
+    } catch (error) {
+      console.error("Error fetching sensor logs:", error.response || error);
+    }
+  };
+
+  // 컴포넌트가 마운트될 때 데이터 가져오기
+  useEffect(() => {
+    fetchSensorLogs();
+  }, []);
+
+  // 센서 수치 이상 로그 렌더링 함수
+  const renderSensorLogs = () => (
+    <div
+      style={{
+        maxHeight: "200px",
+        overflowY: "auto",
+      }}
+    >
+      {sensorLogs.length > 0 ? (
+        sensorLogs.map((log, index) => (
+          <div key={index} style={{ marginBottom: "10px" }}>
+            <strong>
+              [{new Date(log.timestamp).toLocaleString()}]
+            </strong>
+            <br />
+            <span>
+              {log.building} {log.name} 
+              <span style={{
+                color: getLevelColor(log.level), // level에 따른 색상 적용
+                fontWeight: "bold",
+                marginLeft: "10px",
+              }}
+            >
+              {log.sensorType} {log.value}
+            </span>
+            </span>
+            <br />
+          </div>
+        ))
+      ) : (
+        <div>로그인하시면 이상 수치 로그를 확인할 수 있습니다</div>
+      )}
+    </div>
+  );
+  
+  
 
   useEffect(() => {
     const fetchNickname = async () => {
@@ -833,38 +907,25 @@ function Main() {
             </div>
 
             <div className={styles.sensorLogs}>
-              <h3
-                style={{
-                  fontSize: "clamp(15px, 1.6vw, 20px)",
-                }}
-              >
-                <img
-                  src={logsensor}
-                  alt="센서 아이콘"
-                  style={{
-                    width: "clamp(20px, 2vw, 50px)",
-                    marginRight: "8px",
-                    marginBottom: "-8px",
-                  }} // 이미지 크기와 간격 조절
-                />
-                센서 수치 이상 로그 기록
-              </h3>
-              <p>
-                [2024.07.20 PM23:56]
-                <br />
-                신공학관 4147 PM 2.5 수치 이상
-              </p>
-              <p>
-                [2024.07.21 AM02:23]
-                <br />
-                신공학관 3173 PM 2.5, 소음 수치 이상
-              </p>
-              <p>
-                [2024.07.21 AM08:18]
-                <br />
-                신공학관 3173 소음 수치 이상
-              </p>
-            </div>
+      <h3
+        style={{
+          fontSize: "clamp(15px, 1.6vw, 20px)",
+        }}
+      >
+        <img
+          src={logsensor}
+          alt="센서 아이콘"
+          style={{
+            width: "clamp(20px, 2vw, 50px)",
+            marginRight: "8px",
+            marginBottom: "-8px",
+          }}
+        />
+        센서 수치 이상 로그 기록
+      </h3>
+      {renderSensorLogs()}
+    </div>
+
           </div>
         </div>
         {popupContent && (
