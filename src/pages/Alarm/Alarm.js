@@ -218,21 +218,38 @@ const response = await API.get(url, {
           </div>
 
           <div className={styles.sensorData}>
-            {sensorData.map((data, index) => (
-              <div
-                key={index}
-                className={styles.sensorItem}
-                style={{
-                  borderColor: getBorderColor(getDataValue(data), data.sensorType),
-                }}
-              >
-                <span>{`[${moment(data.timestamp).format("YYYY-MM-DDTHH:mm:ss")}]`}</span>
-                <span>{`${selectedRoom} 강의실`}</span>
-                <span>{`${getSensorNameInKorean(data.sensorType)}: ${getDataValue(data)}`}</span>
-              </div>
-            ))}
-          </div>
-          {loading && <p>Loading...</p>}
+  {loading ? (
+    <div className={styles.loadingBox}>
+      <p>Loading...</p>
+    </div>
+  ) : startDate && endDate && selectedRoom && activeSensors.length > 0 ? (
+    sensorData.length > 0 ? (
+      sensorData.map((data, index) => (
+        <div
+          key={index}
+          className={styles.sensorItem}
+          style={{
+            borderColor: getBorderColor(getDataValue(data), data.sensorType),
+          }}
+        >
+          <span>{`[${moment(data.timestamp).format("YYYY-MM-DDTHH:mm:ss")}]`}</span>
+          <span>{`${selectedRoom} 강의실`}</span>
+          <span>{`${getSensorNameInKorean(data.sensorType)}: ${getDataValue(data)}`}</span>
+        </div>
+      ))
+    ) : (
+      <div className={styles.noDataBox}>
+        <p>이상 수치값 로그가 존재하지 않습니다</p>
+      </div>
+    )
+  ) : (
+    <div className={styles.noDataBox}>
+      <p>정상 범위를 벗어난 이상 수치만 필터링하여 보여줍니다</p><p>강의실, 기간, 센서 종류를 선택하세요</p>
+    </div>
+  )}
+</div>
+
+
         </div>
       </div>
     </div>
