@@ -33,6 +33,13 @@ const BannerSlide = () => {
     },    
     {
       id: 3,
+      name: '중앙동아리 동굴탐험연구회',
+      image: 'Caving.jpg',
+      content:
+        "인생에서 쉽게 경험하기 힘든 동굴탐험, 암벽등반, 스쿠버다이빙, 스키캠프, 해외여행 등 다양한 활동을 해보고 싶다면 동굴탐험연구회로 오세요!",
+    },
+    {
+      id: 4,
       name: '동아리 홍보 신청하기',
       image: 'qr.png',
       content:
