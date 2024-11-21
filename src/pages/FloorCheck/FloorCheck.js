@@ -8,6 +8,7 @@ import styles from "./FloorCheck.module.css";
 import { SensorDataContext } from "../../API/SensorDataContext";
 import AirQualityIndicator from "../../components/common/AirQualityIndicator/AirQualityIndicator";
 import axios from "axios";
+import api from "../../API/api";
 
 function FloorCheck() {
   const { floor } = useParams(); // URL에서 floor 값을 가져옴
@@ -26,7 +27,7 @@ function FloorCheck() {
       // 강의실별 IAQ 데이터 가져오기
       const iaqData = await Promise.all(
         currentFloorRooms.map(async (roomId) => {
-          const response = await axios.get(
+          const response = await api.get(
             `/api/sensorData/recent/classroom?building=신공학관&name=${encodeURIComponent(
               roomId
             )}`,
@@ -50,6 +51,16 @@ function FloorCheck() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchData(); // 컴포넌트가 마운트될 때 데이터를 한 번 가져옵니다.
+
+    const interval = setInterval(() => {
+      fetchData(); // 10초마다 fetchData를 호출합니다.
+    }, 5000); // 10,000ms = 10초
+
+    return () => clearInterval(interval); // 컴포넌트가 언마운트될 때 인터벌을 정리합니다.
+  }, [currentFloorRooms]);
 
   const getImageSrc = (iaq) =>
     iaq >= 86
