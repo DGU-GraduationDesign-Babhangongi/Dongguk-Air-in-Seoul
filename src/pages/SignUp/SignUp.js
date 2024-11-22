@@ -32,9 +32,16 @@ const SignUp = () => {
       // 성공적으로 이메일이 전송되면 상태 변경
       setEmailSent(true);
       alert("인증 코드가 이메일로 전송되었습니다.");
-    } catch (e) {
-      console.error("API 오류: ", e);
-      alert("코드 전송 중 오류가 발생했습니다. 다시 시도해주세요.");
+    } catch (error) {
+      console.error("API 오류: ", error);
+      if(error.response && error.response.status===400){
+        alert("허가되지 않은 이메일 입니다. 관리자 이메일로 가입해주세요.");
+      }else if(error.response && error.response.status===403){
+        alert("입력하신 이메일은 이미 사용 중입니다. 다른 이메일을 입력해주세요.");
+      }
+      else{
+        alert("코드 전송 중 오류가 발생했습니다. 다시 시도해주세요.");
+      }
     } finally {
       setLoading(false);
     }
@@ -42,7 +49,10 @@ const SignUp = () => {
 
   const handleSignUp = async (event) => {
     event.preventDefault();
-
+    if (!emailSent) {
+      alert("인증 코드를 받으신 후 회원가입을 진행해 주세요.");
+      return;
+    }
     const endpoint = "/api/join";
     try {
       const requestData = {
@@ -83,9 +93,13 @@ const SignUp = () => {
       console.error("회원가입 처리 중 오류:", error);
 
       // 서버에서 반환한 오류 코드에 따라 메시지 분기 처리
-      if (error.response && error.response.status === 400) {
+      if (error.response && error.response.status === 401) {
         alert("인증 코드가 유효하지 않습니다.");
-      } else {
+      } else if (error.response && error.response.status === 409) {
+        alert("이미 등록된 아이디입니다. 다른 아이디를 입력해주세요.");
+      }else if (error.response && error.response.status === 400) {
+        alert("허가되지 않은 이메일 입니다. 관리자 이메일로 가입해주세요.");
+      }else {
         alert("회원가입 중 오류가 발생했습니다.");
       }
     }
@@ -211,7 +225,7 @@ const SignUp = () => {
             </div>
           </div>
 
-          <button type="submit" className={styles.signupButton}>
+          <button type="submit" className={styles.signupButton} >
             회원가입
           </button>
         </form>
