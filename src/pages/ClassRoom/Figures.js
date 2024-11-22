@@ -1,65 +1,53 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'; // useNavigate 추가
+import { useNavigate, useParams } from 'react-router-dom'; 
+
+// Components
 import Header from '../../components/common/Header/Header';
 import SideBar from '../../components/common/SideBar/SideBar';
 import NEBDropdown from '../../components/specific/figures/NEBDropdown/NEBDropdownLink';
 import PeriodDropdown from '../../components/common/periodDropdown/periodDropdown';
 import WhatCheckBoxes from '../../components/common/whatSelectBox/WhatRadioButtons';
 import TopBox from '../../components/specific/figures/TopBox/TopBox';
-import styles from '../../assets/styles/figures.module.css';
 import LineChart from '../../components/specific/charts/lineChart';
 import ControlBox from '../../components/common/ControlBox/ControlBox';
 import AlarmScrollBox from '../../components/specific/alarmScrollBox/alarmScrollBox';
 import SignificantScrollBox from '../../components/specific/significantScrollBox/significantScrollBox';
-import { SensorDataContext } from '../../API/SensorDataContext';
 import Star from '../../components/common/star/star';
+
+// Styles
+import styles from '../../assets/styles/figures.module.css';
+
+// Context
+import { SensorDataContext } from '../../API/SensorDataContext';
 
 const buildingName = "신공학관";
 
 function Figures() {
   const { id } = useParams();
-  const navigate = useNavigate(); // useNavigate 초기화
+  const navigate = useNavigate(); 
   const [selectedOption, setSelectedOption] = useState('');
-  const [selectedFavorited, setSelectedFavorited] = useState(false);
   const [selectedValue, setSelectedValue] = useState('');
   const [selectedValues, setSelectedValues] = useState([]);
   const [highlightedIndex, setHighlightedIndex] = useState(null);
   const [isPM2_5, setIsPM2_5] = useState(true);
 
-  const { data: sensorData, setSelectedSensorName, loading, error } = useContext(SensorDataContext);
+  const { data: sensorData, setSelectedSensorName, loading} = useContext(SensorDataContext);
 
   // token 확인 및 리다이렉션
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      navigate('/'); // token 없으면 '/'로 리다이렉트
-    }
+    if (!token) navigate('/'); 
   }, [navigate]);
 
+  // selectedOption 변경 시 센서 이름 설정
   useEffect(() => {
-    if (selectedOption) {
-      setSelectedSensorName(selectedOption);
-    }
-  }, [selectedOption, setSelectedSensorName]);
+    if (selectedOption) setSelectedSensorName(selectedOption);
+  }, [selectedOption]);
 
+  // 센서 데이터 확인 후 PM2.5 여부 설정
   useEffect(() => {
-    if (sensorData && !sensorData.PM2_5MassConcentration) {
-      setIsPM2_5(false);
-    } else {
-      setIsPM2_5(true);
-    }
+    setIsPM2_5(sensorData?.PM2_5MassConcentration ? true : false);
   }, [sensorData]);
-
-  const handleNEBSelect = (value, favorited) => {
-    setSelectedOption(value);
-    setSelectedFavorited(favorited);
-  };
-
-  const handlePeriodSelect = (value) => setSelectedValue(value);
-  const handleCheckboxSelect = (values, index) => {
-    setSelectedValues(values);
-    setHighlightedIndex(index);
-  };
 
   return (
     <div className={styles.fullScreenContainer}>
@@ -73,16 +61,15 @@ function Figures() {
                 <div style={{ paddingRight: '0.1vw' }}>현재 강의실</div>
                 {selectedOption && (
                   <div style={{ position: 'relative', display: 'inline-block', width: 'clamp(4px, 1.2vw, 20px)' }}>
-                    <Star classRoom={selectedOption} building={buildingName} selectedFavorited={selectedFavorited} />
+                    <Star classRoom={selectedOption} building={buildingName} />
                   </div>
                 )}
               </div>
-
               <div className={styles.title}>
                 <img src={require('../../assets/images/building.png')} alt="building" className={styles.titleImg} />
                 <div>{buildingName}</div>
               </div>
-              <NEBDropdown onSelect={handleNEBSelect} selectedInitialValue={id} />
+              <NEBDropdown onSelect={setSelectedOption} selectedInitialValue={id} />
             </div>
             <TopBox image="tempIcon.png" value={loading ? '--' : sensorData.Temperature?.value} unit="℃" name="temp" />
             <TopBox image="humidIcon.png" value={loading ? '--' : sensorData.Humidity?.value} unit="%" name="humidity" />
@@ -94,20 +81,21 @@ function Figures() {
               <div className={styles.leftBox}>
                 <div className={styles.select}>
                   <div style={{ width: '100%' }}>
-                    <PeriodDropdown height='clamp(10px, 5vw, 56px)' onSelect={handlePeriodSelect} />
+                    <PeriodDropdown height='clamp(10px, 5vw, 56px)' onSelect={setSelectedValue} />
                   </div>
-
                   <div style={{ width: '100%' }}>
                     <WhatCheckBoxes
                       selectedValues={selectedValues}
-                      onSelect={handleCheckboxSelect}
+                      onSelect={(values, index) => {
+                        setSelectedValues(values);
+                        setHighlightedIndex(index);
+                      }}
                       borderColor="#A5A5A5"
                       borderWidth="2px"
                       isPM2_5={isPM2_5}
                     />
                   </div>
                 </div>
-
                 <hr className={styles.verticalLine} />
                 <LineChart width='100%' selectedValues={selectedValues} highlightedIndex={highlightedIndex} classRoom={selectedOption} period={selectedValue} isPM2_5={isPM2_5} />
               </div>
