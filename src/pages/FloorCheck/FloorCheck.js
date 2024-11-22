@@ -5,10 +5,8 @@ import { useParams, useNavigate } from "react-router-dom"; // useParams와 useNa
 import Header from "../../components/common/Header/Header";
 import SideBar from "../../components/common/SideBar/SideBar";
 import styles from "./FloorCheck.module.css";
-import { SensorDataContext } from "../../API/SensorDataContext";
 import AirQualityIndicator from "../../components/common/AirQualityIndicator/AirQualityIndicator";
-import axios from "axios";
-import api from "../../API/api";
+import API from "../../API/api";
 
 function FloorCheck() {
   const { floor } = useParams(); // URL에서 floor 값을 가져옴
@@ -17,50 +15,7 @@ function FloorCheck() {
   const roomIds = ["3115", "3173", "4142", "5145", "5147", "6119", "6144"];
   const currentFloorRooms = roomIds.filter((Id) => Id.startsWith(currentFloor)); // 현재 층에 해당하는 강의실 필터링
   const [iaqValues, setIaqValues] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-
-      // 강의실별 IAQ 데이터 가져오기
-      const iaqData = await Promise.all(
-        currentFloorRooms.map(async (roomId) => {
-          const response = await api.get(
-            `/api/sensorData/recent/classroom?building=신공학관&name=${encodeURIComponent(
-              roomId
-            )}`,
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`, // 필요 시 인증 토큰 추가
-              },
-            }
-          );
-          const iaq = response.data.IAQIndex?.value || 0; // 데이터가 없으면 0으로 대체
-          console.log(`Room ${roomId} IAQIndex:`, iaq);
-          return { roomId, iaq };
-        })
-      );
-
-      setIaqValues(iaqData); // 강의실별 IAQ 데이터 저장
-    } catch (err) {
-      console.error("API 호출 오류:", err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData(); // 컴포넌트가 마운트될 때 데이터를 한 번 가져옵니다.
-
-    const interval = setInterval(() => {
-      fetchData(); // 10초마다 fetchData를 호출합니다.
-    }, 5000); // 10,000ms = 10초
-
-    return () => clearInterval(interval); // 컴포넌트가 언마운트될 때 인터벌을 정리합니다.
-  }, [currentFloorRooms]);
+  const [allSensorData, setAllSensorData] = useState([]); // 모든 강의실 데이터 저장
 
   const getImageSrc = (iaq) =>
     iaq >= 86
@@ -68,10 +23,6 @@ function FloorCheck() {
       : iaq >= 71
       ? require("../../assets/images/smartmirror/average.png")
       : require("../../assets/images/smartmirror/bad.png");
-
-  useEffect(() => {
-    fetchData();
-  }, [currentFloorRooms]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -112,6 +63,44 @@ function FloorCheck() {
       { id: "6119", x: 306, y: 22 },
       { id: "6144", x: 208, y: 482 },
     ],
+  };
+
+  useEffect(() => {
+    const fetchAllSensorData = async () => {
+      try {
+        // 모든 강의실 데이터를 가져오기
+        const allCoords = Object.values(coordinates).flat(); // 모든 좌표를 하나의 배열로 합침
+        const responses = await Promise.all(
+          allCoords.map(async (coord) => {
+            const endpoint = `/api/sensorData/recent/classroom?building=신공학관&name${encodeURIComponent()}&name=${encodeURIComponent(
+              coord.id
+            )}`;
+            const response = await API.get(endpoint);
+            return {
+              roomId: coord.id,
+              IAQIndex: response.data?.IAQIndex?.value || "--",
+            };
+          })
+        );
+        setAllSensorData(responses);
+        console.log("모든 센서 데이터:", responses);
+      } catch (error) {
+        console.error("Error fetching all sensor data:", error);
+      }
+    };
+
+    fetchAllSensorData();
+  }, []);
+
+  const getSensorIAQValue = (roomId) => {
+    const sensor = allSensorData.find((data) => data.roomId === roomId);
+    if (!sensor || sensor.IAQIndex === "--") {
+      console.warn(`ID: ${roomId}에 대한 IAQIndex 데이터 없음.`);
+      return "--";
+    }
+
+    console.log(`강의실 ID: ${roomId}, IAQIndex:`, sensor.IAQIndex);
+    return sensor.IAQIndex;
   };
 
   // 버튼 클릭 시 URL 변경
@@ -174,14 +163,14 @@ function FloorCheck() {
             </div>
 
             <div className={styles.infoPanels}>
-              {currentFloorRooms.map((roomId, index) => {
+              {currentFloorRooms.map((roomId) => {
                 // iaqValues에서 해당 roomId의 데이터를 찾기
                 const roomData = iaqValues.find(
                   (data) => data.roomId === roomId
                 );
 
                 // iaq 값이 없을 경우 기본값 설정
-                const iaq = roomData ? roomData.iaq : 0;
+                const IAQIndex = getSensorIAQValue(roomId);
                 return (
                   <div className={styles.infoPanel} key={roomId}>
                     <h2
@@ -212,15 +201,21 @@ function FloorCheck() {
                     />
                     <div className={styles.averageIAQ}>
                       <img
-                        src={getImageSrc(iaq)} // 평균값에 따라 이미지 설정
-                        alt={iaq >= 86 ? "good" : iaq >= 71 ? "average" : "bad"}
+                        src={getImageSrc(IAQIndex)} // 평균값에 따라 이미지 설정
+                        alt={
+                          IAQIndex >= 86
+                            ? "good"
+                            : IAQIndex >= 71
+                            ? "average"
+                            : "bad"
+                        }
                         style={{ width: "40%" }}
                       />
                       <div
                         className={styles.IAQscore}
-                        style={{ color: getColor(iaq) }}
+                        style={{ color: getColor(IAQIndex) }}
                       >
-                        {iaq}점
+                        {IAQIndex}점
                       </div>
                     </div>
                   </div>
