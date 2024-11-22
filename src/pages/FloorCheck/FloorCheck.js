@@ -32,12 +32,12 @@ function FloorCheck() {
 
   // 좌표별 색상 결정 함수 추가
   const getColor = (iaq) => {
-    if (iaq === null) return "gray";
+    if (iaq === null) return "#9E9E9E";
     if (iaq >= 90) return "#5C82F5";
     if (iaq >= 80) return "#8BC34A";
-    if (iaq >= 70) return "yellow";
-    if (iaq >= 60) return "orange";
-    else return "red";
+    if (iaq >= 70) return "#FFEB3B";
+    if (iaq >= 60) return "#FF9800";
+    else return "#F44336";
   };
 
   // 층별 이미지 경로 정의
