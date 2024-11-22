@@ -18,16 +18,6 @@
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 기본 폰트 적용 */
   width: 100%;
 }
-/* 헤더와 사이드바 제외한 메인 컨텐츠 */
-.content {
-  display: flex;
-  flex-direction: column; /* 사이드바와 메인 컨텐츠 수평 배치 */
-  width: 96%;
-  padding: 20px;
-  /*height: calc(100% - 60px); /* 헤더 높이만큼 뺌 */
-  /*box-sizing: border-box;*/
-  font-family: "NanumBarunGothic", sans-serif; /* 폰트 변경 */
-}
 
 .SideBar {
   width: 220px; /* 사이드바 너비 고정 */
@@ -75,7 +65,7 @@
   font-size: 32px; /* 문구 크기 */
   font-weight: bold;
   height: fit-content;
-  text-shadow: 0px 2px 10px 2px rgb(0, 0, 0, 0.1);
+  text-shadow: 2px 4px 2px rgb(0, 0, 0, 0.1);
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }
 
@@ -170,32 +160,31 @@
 }
 
 .roomId {
-  margin-left: 1%;
+  margin-top: 20%;
   font-size: 28px;
   font-weight: bold;
   color: black;
   display: block;
+  text-shadow: 1px 1px 1px #5f5f5f;
 }
-
 .coordinateDot {
   position: absolute;
-  display: flex;
+  display: grid;
+  justify-items: center;
   align-items: center;
   justify-content: center;
+  align-content: center;
   animation: dotAnimation 1s ease-in-out infinite;
 }
 .ring {
   position: absolute;
   border: 2px solid rgba(255, 0, 0, 0.5);
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  top: 50%;
-  left: 10%;
+  left: 50%;
+  top: 16%;
   animation: pulse 1.5s infinite;
   opacity: 0;
 }
-
 .ring:nth-child(2) {
   width: 52px;
   height: 52px;
@@ -228,21 +217,6 @@
   background-color: red;
   border-radius: 50%;
   transition: transform 0.3s ease;
-}
-
-.redDot,
-.greenDot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-
-.redDot {
-  background-color: red;
-}
-
-.greenDot {
-  background-color: green;
 }
 
 /* 수치 정보 */
