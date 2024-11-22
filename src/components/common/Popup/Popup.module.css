@@ -12,7 +12,7 @@
   }
   
   .popupContent {
-    
+
     background-color: white;
     padding: 20px 40px 0px 40px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.261);
@@ -90,6 +90,4 @@
     box-shadow: 0 0 0 3px rgba(255, 165, 38, 0.6);  /* 포커스 시 윤곽선 효과 추가 */
   }
   
-  .buttonContainer{
-    display: flex;
-  }
+  

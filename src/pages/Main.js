@@ -24,13 +24,8 @@ import floorplan from "../assets/images/main/floorplan.png";
 import singong from "../assets/images/main/singong.png";
 import wonheung from "../assets/images/main/wonheung.png";
 import jungbo from "../assets/images/main/jungboP.png";
-import Popup from "../components/common/Popup/Popup";
-
 
 function Main() {
-  const [token, setToken] = useState(localStorage.getItem("token"));
-  const [showPopup, setShowPopup] = useState(false);
-  const [showNoSensorPopup, setshowNoSensorPopup] = useState(false);
   const [popupContent, setPopupContent] = useState(null);
   const [selectedBuilding, setSelectedBuilding] = useState(null);
   const [fadeOut, setFadeOut] = useState(false);
@@ -60,7 +55,7 @@ function Main() {
   };
 
   const fetchSensorLogs = async () => {
-
+    const token = localStorage.getItem("token");
     if (!token) {
       console.error("토큰이 없습니다. 로그인 후 다시 시도하세요.");
       return;
@@ -81,22 +76,7 @@ function Main() {
   useEffect(() => {
     fetchSensorLogs();
   }, []);
-// 팝업을 열고 닫는 함수
-const openPopup = () => {
-  setShowPopup(true);
-};
 
-const closePopupHandler = () => {
-  setShowPopup(false);
-};
-// 팝업을 열고 닫는 함수
-const openshowNoSensorPopup = () => {
-  setshowNoSensorPopup(true);
-};
-
-const closeshowNoSensorPopupHandler = () => {
-  setshowNoSensorPopup(false);
-};
   // 센서 수치 이상 로그 렌더링 함수
   const renderSensorLogs = () => (
     <div
@@ -427,13 +407,7 @@ const closeshowNoSensorPopupHandler = () => {
           key={`coord-${index}`}
           onMouseEnter={() => setHoveredIndex(index)} // 마우스 진입 시 인덱스 설정
           onMouseLeave={() => setHoveredIndex(null)} // 마우스 나가면 초기화
-          onClick={() => {
-            if (token) {
-              handleClick(coord.id); // 로그인 상태에서 클릭 처리
-            } else {
-              openPopup(); // 로그인 필요 팝업 열기
-            }
-          }}
+          onClick={() => handleClick(coord.id)}
           style={{
             position: "absolute",
             top: `${coord.y}px`,
@@ -453,8 +427,7 @@ const closeshowNoSensorPopupHandler = () => {
             style={{
               borderColor: ringColor, // IAQ 값에 맞는 색상 적용
             }}
-          >
-          </div>
+          ></div>
           <div
             className={styles.ring}
             style={{
@@ -626,13 +599,7 @@ const closeshowNoSensorPopupHandler = () => {
         key={`floor-${index}`}
         onMouseEnter={() => setHoveredFloor(floor)} // 호버 시 층 설정
         onMouseLeave={() => setHoveredFloor(null)} // 호버 종료 시 초기화
-        onClick={() => {
-          if (token) {
-            handleFloorClick(floor); // 로그인 상태에서 클릭 처리
-          } else {
-            openPopup(); // 로그인 필요 팝업 열기
-          }
-        }}
+        onClick={() => handleFloorClick(floor)}
         style={{
           position: "absolute",
           top: top,
@@ -799,7 +766,16 @@ const closeshowNoSensorPopupHandler = () => {
                 selectedBuilding === "신공학관" ? styles.fadeOut : ""
               }`}
               onClick={() =>
-                openshowNoSensorPopup()
+                handleBuildingClick(
+                  "원흥관",
+                  <p>
+                    현재 원흥관에는
+                    <br />
+                    등록된 센서가 없습니다.
+                    <br />
+                    센서를 등록하시겠습니까?
+                  </p>
+                )
               }
             >
               <img src={wonheung} alt="원흥관" />
@@ -830,7 +806,6 @@ const closeshowNoSensorPopupHandler = () => {
                   {renderShapes()}
                   {renderFloorCoordinates()}
                 </div>
-                
               </div>
             )}
           </div>
@@ -1016,33 +991,6 @@ const closeshowNoSensorPopupHandler = () => {
           </div>
         )}
       </div>
-      {showPopup && (
-                  <Popup
-                    popupContent="로그인이 필요한 서비스입니다."
-                    onClose={closePopupHandler} // 팝업 닫기 함수
-                  registerLink="/login"
-                  buttonText="로그인"
-                  />
-      )}
-      {showNoSensorPopup && (
-  token ? (
-    <Popup
-  popupContent="해당 건물에 등록된 센서가 없습니다.등록하시겠습니까?"
-  onClose={closeshowNoSensorPopupHandler} // 팝업 닫기 함수
-  registerLink="/manager"  // 센서 등록 페이지로 링크
-  buttonText="등록하기"
-/>
-
-  ) : (
-    <Popup
-      popupContent="해당 건물에 등록된 센서가 없습니다.등록을 원하시면 로그인해주세요"
-      onClose={closeshowNoSensorPopupHandler} // 팝업 닫기 함수
-      registerLink="/login"  // 홈 페이지로 링크
-      buttonText="로그인"
-    />
-  )
-)}
-
     </div>
   );
 }
