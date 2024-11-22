@@ -93,33 +93,6 @@
   align-items: center; /* 아이콘과 텍스트 수직 중앙 정렬 */
 }
 
-/*호버링 시 보일 박스 내 스타일*/
-.sensorImg {
-  width: 20px;
-  margin-right: 8px;
-  margin-bottom: 4px;
-}
-.sensorText {
-  display: flex;
-  align-items: center;
-  margin-bottom: 6px;
-}
-.statusLight {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  margin-left: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.261) /* 부드러운 그림자 */;
-}
-.sensorStatus {
-  background-color: #8bc34a;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  margin-left: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.261);
-}
-
 /* 도형 주위의 확산 링 */
 .ring {
   position: absolute;

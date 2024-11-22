@@ -9,7 +9,62 @@ import pm25 from "../../../assets/images/main/hoverBoxIcons/img_pm2.5.png";
 import noise from "../../../assets/images/main/hoverBoxIcons/img_noise.png";
 import sensor from "../../../assets/images/main/hoverBoxIcons/img_sensor.png";
 
-const SensorDetail = ({ coord, getStatusColor, hoveredIndex }) => {
+// 색상 계산 함수들
+const getTemperatureColor = (value) => {
+  if (value < 16.5 || value > 27.5) return "#F44336";
+  if ((value >= 16.5 && value < 17.6) || (value > 26.4 && value <= 27.5))
+    return "#FF9800";
+  if ((value >= 17.6 && value < 18.7) || (value > 25.3 && value <= 26.4))
+    return "#FFEB3B";
+  if ((value >= 18.7 && value < 19.8) || (value > 24.2 && value <= 25.3))
+    return "#8BC34A";
+  return "#5C82F5";
+};
+
+const getHumidityColor = (value) => {
+  if (value < 10 || value > 90) return "#F44336";
+  if ((value >= 10 && value < 20) || (value > 80 && value <= 90))
+    return "#FF9800";
+  if ((value >= 20 && value < 30) || (value > 70 && value <= 80))
+    return "#FFEB3B";
+  if ((value >= 30 && value < 40) || (value > 60 && value <= 70))
+    return "#8BC34A";
+  return "#5C82F5";
+};
+
+const getTVOCColor = (value) => {
+  if (value > 10000) return "#F44336";
+  if (value > 3000 && value <= 10000) return "#FF9800";
+  if (value > 1000 && value <= 3000) return "#FFEB3B";
+  if (value > 300 && value <= 1000) return "#8BC34A";
+  return "#5C82F5";
+};
+
+const getPM25Color = (value) => {
+  if (value > 64) return "#F44336";
+  if (value > 53 && value <= 64) return "#FF9800";
+  if (value > 41 && value <= 53) return "#FFEB3B";
+  if (value > 23 && value <= 41) return "#8BC34A";
+  return "#5C82F5";
+};
+
+const getNoiseColor = (value) => {
+  if (value > 80) return "#F44336";
+  if (value > 70 && value <= 80) return "#FF9800";
+  if (value > 60 && value <= 70) return "#FFEB3B";
+  if (value > 50 && value <= 60) return "#8BC34A";
+  return "#5C82F5";
+};
+
+const getStatusColor = (value, type) => {
+  if (type === "temperature") return getTemperatureColor(value);
+  if (type === "humidity") return getHumidityColor(value);
+  if (type === "tvoc") return getTVOCColor(value);
+  if (type === "pm25") return getPM25Color(value);
+  if (type === "noise") return getNoiseColor(value);
+};
+
+const SensorDetail = ({ coord, hoveredIndex }) => {
   const [sensorData, setSensorData] = useState(null);
   const [loading, setLoading] = useState(true);
 
