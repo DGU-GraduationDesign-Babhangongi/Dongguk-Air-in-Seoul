@@ -42,7 +42,7 @@ function Figures() {
   // selectedOption 변경 시 센서 이름 설정
   useEffect(() => {
     if (selectedOption) setSelectedSensorName(selectedOption);
-  }, [selectedOption]);
+  }, [selectedOption, setSelectedSensorName]);  
 
   // 센서 데이터 확인 후 PM2.5 여부 설정
   useEffect(() => {
@@ -71,10 +71,10 @@ function Figures() {
               </div>
               <NEBDropdown onSelect={setSelectedOption} selectedInitialValue={id} />
             </div>
-            <TopBox image="tempIcon.png" value={loading ? '--' : sensorData.Temperature?.value} unit="℃" name="temp" />
-            <TopBox image="humidIcon.png" value={loading ? '--' : sensorData.Humidity?.value} unit="%" name="humidity" />
-            <TopBox image="TVOCIcon.png" value={loading ? '--' : sensorData.TVOC?.value} unit="㎍/m³" name="TVOC" />
-            <TopBox image="PM25Icon.png" value={loading ? '--' : sensorData.PM2_5MassConcentration?.value} unit="㎍/m³" name="PM2.5" />
+            <TopBox image="tempIcon.png" value={loading ? '-' : sensorData.Temperature?.value} unit="℃" name="temp" />
+            <TopBox image="humidIcon.png" value={loading ? '-' : sensorData.Humidity?.value} unit="%" name="humidity" />
+            <TopBox image="TVOCIcon.png" value={loading ? '-' : sensorData.TVOC?.value} unit="㎍/m³" name="TVOC" />
+            <TopBox image="PM25Icon.png" value={loading ? '-' : sensorData.PM2_5MassConcentration?.value} unit="㎍/m³" name="PM2.5" />
           </div>
           <div className={styles.bottom}>
             <div className={styles.leftContainer}>
@@ -101,7 +101,7 @@ function Figures() {
               </div>
             </div>
             <div className={styles.rightContainer}>
-              <AlarmScrollBox title="alarms" classRoom={selectedOption} />
+              <AlarmScrollBox title="alarms(24H)" classRoom={selectedOption} />
               <SignificantScrollBox title="significant" classRoom={selectedOption} />
               <ControlBox title="facility control" room={selectedOption}/>
             </div>

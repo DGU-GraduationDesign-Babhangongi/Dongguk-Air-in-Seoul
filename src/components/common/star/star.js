@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'; // useState, useEffect 가져오기
+import React, { useState, useEffect } from 'react'; 
 import { FaStar, FaRegStar } from 'react-icons/fa';
-import API from '../../../API/api'; // API 가져오기
+import API from '../../../API/api'; 
 
 const Star = ({ width = '100%', height = '100%', building = '신공학관', classRoom, toggleRefresh }) => {
   const [isFavorited, setIsFavorited] = useState(false);
