@@ -53,10 +53,11 @@
   transform: translateY(-81%);
   height: 58%;
   width: 20%;
-  border: 1px gray;
+  border: 1px black;
   border-radius: 4px;
   background-color: #ffe2b2;
-  font-size: 13px;
+  font-size: 11px;
+  font-weight: bold;
   cursor: pointer;
   color: #535353;
   display: flex;

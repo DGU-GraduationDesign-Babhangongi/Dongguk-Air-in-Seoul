@@ -1,11 +1,8 @@
-// src/pages/SignUp/SignUp.js
 import React, { useState } from "react";
 import styles from "./SignUp.module.css"; // 스타일 적용
 import Header from "../../components/common/Header/Header";
 import { useNavigate } from "react-router-dom";
 import API from "../../API/api";
-
-
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -15,44 +12,52 @@ const SignUp = () => {
   const [responsibility, setResponsibility] = useState("");
   const [securityCode, setSecurityCode] = useState("");
   const [alarmStatus, setAlarmStatus] = useState(false); // 알림 상태 추가
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false); // 이메일 전송 상태 추가
+  const navigate = useNavigate();
+
   const sendEmail = async (email) => {
     if (loading) return;
-  
+
     const endpoint = `/api/sendSecurityCode?email=${encodeURIComponent(email)}`;
     try {
       setLoading(true);
       const response = await API.post(endpoint, null, {
         headers: {
-          //Authorization: `Bearer ${token}`,
-          accept: '*/*',
+          Accept: "*/*",
         },
       });
-      console.log('API 요청 성공:', response);
-  
+      console.log("API 요청 성공:", response);
+
+      // 성공적으로 이메일이 전송되면 상태 변경
+      setEmailSent(true);
+      alert("인증 코드가 이메일로 전송되었습니다.");
     } catch (e) {
-      console.error('API 오류: ', e);
+      console.error("API 오류: ", e);
+      alert("코드 전송 중 오류가 발생했습니다. 다시 시도해주세요.");
     } finally {
       setLoading(false);
     }
   };
+
   const handleSignUp = async (event) => {
     event.preventDefault();
 
-    
     const endpoint = "/api/join";
     try {
-      const response = await API.post(endpoint, 
-        JSON.stringify({
-          username,
-          password,
-          nickname,
-          email,
-          areaOfResponsibility: responsibility,
-          securityCode,
-          alarmStatus,
-        }), 
+      const requestData = {
+        username,
+        password,
+        nickname,
+        email,
+        areaOfResponsibility: responsibility,
+        securityCode,
+        alarmStatus,
+      };
+
+      const response = await API.post(
+        endpoint,
+        JSON.stringify(requestData),
         {
           headers: {
             "Content-Type": "application/json",
@@ -60,29 +65,14 @@ const SignUp = () => {
           },
         }
       );
-      
+
       console.log("회원가입 Response:", response);
-      console.log("end" + endpoint);
-      //console.log(body);
-      // const response = await API.post("/api/join", requestData)
-      // .then((response) => {
-      //   if (response.status === 200) {
-      //     console.log("로그인 성공", response.data);
-      //   }
-      // })
-      // .catch((error) => {
-      //   console.error("회원가입 처리 중 오류:", error);
-      //   alert("회원가입 중 오류가 발생했습니다.");
-      // });
+      console.log("endpoint:", endpoint);
 
       if (response.status === 200) {
-        alert("회원가입이 완료되었습니다 로그인 페이지로 이동합니다");
+        alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
         navigate("/login");
-      } else if(response.status===400){
-        alert("인증 코드가 유효하지 않습니다.");
-      }
-      else {
-        // 오류 처리
+      } else {
         const errorText = await response.text();
         const errorData = errorText
           ? JSON.parse(errorText)
@@ -91,7 +81,13 @@ const SignUp = () => {
       }
     } catch (error) {
       console.error("회원가입 처리 중 오류:", error);
-      alert("회원가입 중 오류가 발생했습니다.");
+
+      // 서버에서 반환한 오류 코드에 따라 메시지 분기 처리
+      if (error.response && error.response.status === 400) {
+        alert("인증 코드가 유효하지 않습니다.");
+      } else {
+        alert("회원가입 중 오류가 발생했습니다.");
+      }
     }
   };
 
@@ -136,7 +132,6 @@ const SignUp = () => {
               width: "100%",
             }}
           />
-          {/* <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}></div> */}
           <div
             style={{
               position: "relative",
@@ -154,10 +149,14 @@ const SignUp = () => {
                 width: "100%",
               }}
             />
-          <button type="button" className={styles.smallButton} onClick={() => sendEmail(email)}>
-            코드 받기
-          </button>
-
+            <button
+              type="button"
+              className={styles.smallButton}
+              onClick={() => sendEmail(email)}
+              disabled={loading}
+            >
+              {emailSent ? "재전송" : "코드 받기"}
+            </button>
           </div>
           <div
             style={{
@@ -169,15 +168,13 @@ const SignUp = () => {
               type="text"
               placeholder="보안 코드  Security code"
               value={securityCode}
+              required
               onChange={(e) => setSecurityCode(e.target.value)}
               style={{
                 position: "relative",
                 width: "100%",
               }}
             />
-            <button type="button" className={styles.smallButton}>
-              코드 인증
-            </button>
           </div>
 
           <input
