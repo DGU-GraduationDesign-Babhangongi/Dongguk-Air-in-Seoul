@@ -14,6 +14,23 @@ const Header = ({ i }) => {
   const [alertMessage, setAlertMessage] = useState({}); // Toast에 표시할 알림 메시지
   const [toastDismissed, setToastDismissed] = useState(false); // Toast 닫힘 상태
 
+  const getUnit = (sensorType) => {
+    switch (sensorType) {
+      case "Temperature":
+        return "°C";
+      case "Humidity":
+        return "%";
+      case "TVOC":
+        return "㎍/m³";
+      case "PM2_5MASSCONCENTRATION":
+        return "㎍/m³";
+      case "AmbientNoise":
+        return "dB";
+      default:
+        return ""; // 단위가 없는 경우
+    }
+  };
+  
   // localStorage 변경 감지
   useEffect(() => {
     const handleStorageChange = () => setToken(localStorage.getItem("token"));
@@ -101,17 +118,22 @@ const Header = ({ i }) => {
               </Link>
               {/* Toast 알림 표시 */}
               {showToast && !toastDismissed && (
-                <div className={styles.toast}>
-                  <div className={styles.toastHeader}>
-                    <span>상태 알림 </span>
-                    <span>{new Date(alertMessage.timestamp).toLocaleString()}</span>
-                  </div>
-                  <hr className={styles.toastSeparator} />
-                  <div className={styles.toastContent}>
-                    <p>{alertMessage.building} {alertMessage.name} 강의실 <br />{alertMessage.sensorType} {alertMessage.value}</p>
-                  </div>
-                </div>
-              )}
+  <div className={styles.toast}>
+    <div className={styles.toastHeader}>
+      <span>상태 알림 </span>
+      <span>{new Date(alertMessage.timestamp).toLocaleString()}</span>
+    </div>
+    <hr className={styles.toastSeparator} />
+    <div className={styles.toastContent}>
+      <p>
+        {alertMessage.building} {alertMessage.name} 강의실 <br />
+        {alertMessage.sensorType} {alertMessage.value}
+        {getUnit(alertMessage.sensorType)}
+      </p>
+    </div>
+  </div>
+)}
+
             </div>
 
             <Link to="/log" className={styles.navLink}>

@@ -115,6 +115,26 @@ function Main() {
             .getSeconds()
             .toString()
             .padStart(2, "0")}`;
+  
+          // 센서 타입에 따른 단위 설정
+          const getUnit = (sensorType) => {
+            switch (sensorType) {
+              case "Temperature":
+                return "°C";
+              case "Humidity":
+                return "%";
+              case "TVOC":
+              case "PM2_5MASSCONCENTRATION":
+                return "㎍/m³";
+              case "AmbientNoise":
+                return "dB";
+              default:
+                return ""; // 단위가 없는 경우
+            }
+          };
+  
+          const unit = getUnit(log.sensorType);
+  
           return (
             <div key={index} style={{ marginBottom: "10px" }}>
               <strong>[{formattedDate}]</strong>
@@ -129,6 +149,7 @@ function Main() {
                   }}
                 >
                   {log.sensorType} {log.value}
+                  {unit && `${unit}`}
                 </span>
               </span>
               <br />
