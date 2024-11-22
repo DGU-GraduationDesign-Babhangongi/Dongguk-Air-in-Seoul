@@ -5,6 +5,8 @@ import Header from "../../components/common/Header/Header";
 import { useNavigate } from "react-router-dom";
 import API from "../../API/api";
 
+
+
 const SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -14,27 +16,54 @@ const SignUp = () => {
   const [securityCode, setSecurityCode] = useState("");
   const [alarmStatus, setAlarmStatus] = useState(false); // 알림 상태 추가
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false);
+  const sendEmail = async (email) => {
+    if (loading) return;
+  
+    const endpoint = `/api/sendSecurityCode?email=${encodeURIComponent(email)}`;
+    try {
+      setLoading(true);
+      const response = await API.post(endpoint, null, {
+        headers: {
+          //Authorization: `Bearer ${token}`,
+          accept: '*/*',
+        },
+      });
+      console.log('API 요청 성공:', response);
+  
+    } catch (e) {
+      console.error('API 오류: ', e);
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleSignUp = async (event) => {
     event.preventDefault();
 
-    const body = `username=${encodeURIComponent(
-      username
-    )}&password=${encodeURIComponent(password)}&email=${encodeURIComponent(
-      email
-    )}&nickname=${encodeURIComponent(
-      nickname
-    )}&areaOfResponsibility=${encodeURIComponent(
-      responsibility
-    )}&securityCode=${encodeURIComponent(
-      securityCode
-    )}&alarmStatus=${encodeURIComponent(alarmStatus)}`;
-    const endpoint = "/api/join?" + body;
+    
+    const endpoint = "/api/join";
     try {
-      const response = await API.post(endpoint);
+      const response = await API.post(endpoint, 
+        JSON.stringify({
+          username,
+          password,
+          nickname,
+          email,
+          areaOfResponsibility: responsibility,
+          securityCode,
+          alarmStatus,
+        }), 
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "*/*",
+          },
+        }
+      );
+      
       console.log("회원가입 Response:", response);
       console.log("end" + endpoint);
-
+      //console.log(body);
       // const response = await API.post("/api/join", requestData)
       // .then((response) => {
       //   if (response.status === 200) {
@@ -49,7 +78,10 @@ const SignUp = () => {
       if (response.status === 200) {
         alert("회원가입이 완료되었습니다 로그인 페이지로 이동합니다");
         navigate("/login");
-      } else {
+      } else if(response.status===400){
+        alert("인증 코드가 유효하지 않습니다.");
+      }
+      else {
         // 오류 처리
         const errorText = await response.text();
         const errorData = errorText
@@ -122,9 +154,10 @@ const SignUp = () => {
                 width: "100%",
               }}
             />
-            <button type="button" className={styles.smallButton}>
-              코드 받기
-            </button>
+          <button type="button" className={styles.smallButton} onClick={() => sendEmail(email)}>
+            코드 받기
+          </button>
+
           </div>
           <div
             style={{
