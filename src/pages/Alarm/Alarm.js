@@ -78,29 +78,29 @@ function Alarm() {
         if (value < 16.5 || value > 27.5) return '#F44336';
         if ((value >= 16.5 && value < 17.6) || (value > 26.4 && value <= 27.5)) return '#FF9800';
         if ((value >= 17.6 && value < 18.7) || (value > 25.3 && value <= 26.4)) return '#FFEB3B';
-        return 'black';
+        return '#9E9E9E';
       case 'Humidity':
         if (value < 10 || value > 90) return '#F44336';
         if ((value >= 10 && value < 20) || (value > 80 && value <= 90)) return '#FF9800';
         if ((value >= 20 && value < 30) || (value > 70 && value <= 80)) return '#FFEB3B';
-        return 'black';
+        return '#9E9E9E';
       case 'TVOC':
         if (value > 10000) return '#F44336';
         if (value > 3000 && value <= 10000) return '#FF9800';
         if (value > 1000 && value <= 3000) return '#FFEB3B';
-        return 'black';
+        return '#9E9E9E';
       case 'PM2_5MassConcentration':
         if (value > 64) return '#F44336';
         if (value > 53 && value <= 64) return '#FF9800';
         if (value > 41 && value <= 53) return '#FFEB3B';
-        return 'black';
+        return '#9E9E9E';
       case 'AmbientNoise':
         if (value > 80) return '#F44336';
         if (value > 70 && value <= 80) return '#FF9800';
         if (value > 60 && value <= 70) return '#FFEB3B';
-        return 'black';
+        return '#9E9E9E';
       default:
-        return 'black';
+        return '#9E9E9E';
     }
   };
 

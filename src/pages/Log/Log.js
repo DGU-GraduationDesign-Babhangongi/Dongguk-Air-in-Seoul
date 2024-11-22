@@ -106,7 +106,7 @@ function Log() {
         if (value > 50 && value <= 60) return '#8BC34A';
         else if (value <=50) return '#5C82F5';
       default:
-        return 'black';
+        return '#9E9E9E';
     }
   };
 
