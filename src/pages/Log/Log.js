@@ -76,30 +76,35 @@ function Log() {
   const getBorderColor = (value, type) => {
     switch (type) {
       case 'Temperature':
-        if (value < 16.5 || value > 27.5) return 'red';
-        if ((value >= 16.5 && value < 17.6) || (value > 26.4 && value <= 27.5)) return 'orange';
-        if ((value >= 17.6 && value < 18.7) || (value > 25.3 && value <= 26.4)) return '#FFFA00';
-        return 'green';
+        if (value < 16.5 || value > 27.5) return '#F44336';
+        if ((value >= 16.5 && value < 17.6) || (value > 26.4 && value <= 27.5)) return '#FF9800';
+        if ((value >= 17.6 && value < 18.7) || (value > 25.3 && value <= 26.4)) return '#FFEB3B';
+        if ((value >= 18.7 && value < 19.8) || (value > 24.2 && value <= 25.3)) return '#8BC34A0';
+        else if (value >= 19.8 && value <= 2.2) return '#5C82F5';
       case 'Humidity':
-        if (value < 10 || value > 90) return 'red';
-        if ((value >= 10 && value < 20) || (value > 80 && value <= 90)) return 'orange';
-        if ((value >= 20 && value < 30) || (value > 70 && value <= 80)) return '#FFFA00';
-        return 'green';
+        if (value < 10 || value > 90) return '#F44336';
+        if ((value >= 10 && value < 20) || (value > 80 && value <= 90)) return '#FF9800';
+        if ((value >= 20 && value < 30) || (value > 70 && value <= 80)) return '#FFEB3B';
+        if ((value >= 30 && value < 40) || (value > 60 && value <= 70)) return '#8BC34A';
+        else if (value >= 40 && value < 60) return '#5C82F5';
       case 'TVOC':
-        if (value > 10000) return 'red';
-        if (value > 3000 && value <= 10000) return 'orange';
-        if (value > 1000 && value <= 3000) return '#FFFA00';
-        return 'green';
+        if (value > 10000) return '#F44336';
+        if (value > 3000 && value <= 10000) return '#FF9800';
+        if (value > 1000 && value <= 3000) return '#FFEB3B';
+        if (value > 300 && value <= 1000) return '#8BC34A';
+        else if (value <= 300) return '#5C82F5';
       case 'PM2_5MassConcentration':
-        if (value > 64) return 'red';
-        if (value > 53 && value <= 64) return 'orange';
-        if (value > 41 && value <= 53) return '#FFFA00';
-        return 'green';
+        if (value > 64) return '#F44336';
+        if (value > 53 && value <= 64) return '#FF9800';
+        if (value > 41 && value <= 53) return '#FFEB3B';
+        if (value > 23 && value <= 41) return '#8BC34A';
+        else if (value <=23) return '#5C82F5';
       case 'AmbientNoise':
-        if (value > 80) return 'red';
-        if (value > 70 && value <= 80) return 'orange';
-        if (value > 60 && value <= 70) return '#FFFA00';
-        return 'green';
+        if (value > 80) return '#F44336';
+        if (value > 70 && value <= 80) return '#FF9800';
+        if (value > 60 && value <= 70) return '#FFEB3B';
+        if (value > 50 && value <= 60) return '#8BC34A';
+        else if (value <=50) return '#5C82F5';
       default:
         return 'black';
     }

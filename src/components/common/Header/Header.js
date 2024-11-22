@@ -66,7 +66,7 @@ const Header = ({ i }) => {
               localStorage.setItem("hasAlert", true);
 
               // 1분 후 Toast 자동 닫힘
-              setTimeout(() => setShowToast(false), 60000);
+              setTimeout(() => setShowToast(false), 15000);
             }
           }
         }

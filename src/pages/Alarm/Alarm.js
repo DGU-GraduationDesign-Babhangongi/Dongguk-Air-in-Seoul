@@ -75,30 +75,30 @@ function Alarm() {
   const getBorderColor = (value, type) => {
     switch (type) {
       case 'Temperature':
-        if (value < 16.5 || value > 27.5) return 'red';
-        if ((value >= 16.5 && value < 17.6) || (value > 26.4 && value <= 27.5)) return 'orange';
-        if ((value >= 17.6 && value < 18.7) || (value > 25.3 && value <= 26.4)) return '#FFFA00';
-        return 'green';
+        if (value < 16.5 || value > 27.5) return '#F44336';
+        if ((value >= 16.5 && value < 17.6) || (value > 26.4 && value <= 27.5)) return '#FF9800';
+        if ((value >= 17.6 && value < 18.7) || (value > 25.3 && value <= 26.4)) return '#FFEB3B';
+        return 'black';
       case 'Humidity':
-        if (value < 10 || value > 90) return 'red';
-        if ((value >= 10 && value < 20) || (value > 80 && value <= 90)) return 'orange';
-        if ((value >= 20 && value < 30) || (value > 70 && value <= 80)) return '#FFFA00';
-        return 'green';
+        if (value < 10 || value > 90) return '#F44336';
+        if ((value >= 10 && value < 20) || (value > 80 && value <= 90)) return '#FF9800';
+        if ((value >= 20 && value < 30) || (value > 70 && value <= 80)) return '#FFEB3B';
+        return 'black';
       case 'TVOC':
-        if (value > 10000) return 'red';
-        if (value > 3000 && value <= 10000) return 'orange';
-        if (value > 1000 && value <= 3000) return '#FFFA00';
-        return 'green';
+        if (value > 10000) return '#F44336';
+        if (value > 3000 && value <= 10000) return '#FF9800';
+        if (value > 1000 && value <= 3000) return '#FFEB3B';
+        return 'black';
       case 'PM2_5MassConcentration':
-        if (value > 64) return 'red';
-        if (value > 53 && value <= 64) return 'orange';
-        if (value > 41 && value <= 53) return '#FFFA00';
-        return 'green';
+        if (value > 64) return '#F44336';
+        if (value > 53 && value <= 64) return '#FF9800';
+        if (value > 41 && value <= 53) return '#FFEB3B';
+        return 'black';
       case 'AmbientNoise':
-        if (value > 80) return 'red';
-        if (value > 70 && value <= 80) return 'orange';
-        if (value > 60 && value <= 70) return '#FFFA00';
-        return 'green';
+        if (value > 80) return '#F44336';
+        if (value > 70 && value <= 80) return '#FF9800';
+        if (value > 60 && value <= 70) return '#FFEB3B';
+        return 'black';
       default:
         return 'black';
     }

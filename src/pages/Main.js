@@ -26,7 +26,6 @@ import wonheung from "../assets/images/main/wonheung.png";
 import jungbo from "../assets/images/main/jungboP.png";
 import Popup from "../components/common/Popup/Popup";
 
-
 function Main() {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [showPopup, setShowPopup] = useState(false);
@@ -49,18 +48,17 @@ function Main() {
   const getLevelColor = (level) => {
     switch (level) {
       case "RED":
-        return "red";
+        return "#F44336";
       case "ORANGE":
-        return "red";
+        return "#FF9800";
       case "YELLOW":
-        return "red";
+        return "#FFEB3B";
       default:
         return "black"; // 기본 색상
     }
   };
 
   const fetchSensorLogs = async () => {
-
     if (!token) {
       console.error("토큰이 없습니다. 로그인 후 다시 시도하세요.");
       return;
@@ -81,22 +79,22 @@ function Main() {
   useEffect(() => {
     fetchSensorLogs();
   }, []);
-// 팝업을 열고 닫는 함수
-const openPopup = () => {
-  setShowPopup(true);
-};
+  // 팝업을 열고 닫는 함수
+  const openPopup = () => {
+    setShowPopup(true);
+  };
 
-const closePopupHandler = () => {
-  setShowPopup(false);
-};
-// 팝업을 열고 닫는 함수
-const openshowNoSensorPopup = () => {
-  setshowNoSensorPopup(true);
-};
+  const closePopupHandler = () => {
+    setShowPopup(false);
+  };
+  // 팝업을 열고 닫는 함수
+  const openshowNoSensorPopup = () => {
+    setshowNoSensorPopup(true);
+  };
 
-const closeshowNoSensorPopupHandler = () => {
-  setshowNoSensorPopup(false);
-};
+  const closeshowNoSensorPopupHandler = () => {
+    setshowNoSensorPopup(false);
+  };
   // 센서 수치 이상 로그 렌더링 함수
   const renderSensorLogs = () => (
     <div
@@ -320,57 +318,57 @@ const closeshowNoSensorPopupHandler = () => {
   }, [hoveredIndex]); // hoveredIndex 변경 시마다 데이터 요청
 
   const getTemperatureColor = (value) => {
-    if (value < 16.5 || value > 27.5) return "red";
+    if (value < 16.5 || value > 27.5) return "#F44336";
     if ((value >= 16.5 && value < 17.6) || (value > 26.4 && value <= 27.5))
-      return "orange";
+      return "#FF9800";
     if ((value >= 17.6 && value < 18.7) || (value > 25.3 && value <= 26.4))
-      return "yellow";
+      return "#FFEB3B";
     if ((value >= 18.7 && value < 19.8) || (value > 24.2 && value <= 25.3))
-      return "green";
-    return "blue";
+      return "#8BC34A";
+    return "#5C82F5";
   };
 
   const getHumidityColor = (value) => {
-    if (value < 10 || value > 90) return "red";
+    if (value < 10 || value > 90) return "#F44336";
     if ((value >= 10 && value < 20) || (value > 80 && value <= 90))
-      return "orange";
+      return "#FF9800";
     if ((value >= 20 && value < 30) || (value > 70 && value <= 80))
-      return "yellow";
+      return "#FFEB3B";
     if ((value >= 30 && value < 40) || (value > 60 && value <= 70))
-      return "green";
-    return "blue";
+      return "#8BC34A";
+    return "#5C82F5";
   };
 
   const getTVOCColor = (value) => {
-    if (value > 10000) return "red";
-    if (value > 3000 && value <= 10000) return "orange";
-    if (value > 1000 && value <= 3000) return "yellow";
-    if (value > 300 && value <= 1000) return "green";
-    return "blue";
+    if (value > 10000) return "#F44336";
+    if (value > 3000 && value <= 10000) return "#FF9800";
+    if (value > 1000 && value <= 3000) return "#FFEB3B";
+    if (value > 300 && value <= 1000) return "#8BC34A";
+    return "#5C82F5";
   };
 
   const getPM25Color = (value) => {
-    if (value > 64) return "red";
-    if (value > 53 && value <= 64) return "orange";
-    if (value > 41 && value <= 53) return "yellow";
-    if (value > 23 && value <= 41) return "green";
-    return "blue";
+    if (value > 64) return "#F44336";
+    if (value > 53 && value <= 64) return "#FF9800";
+    if (value > 41 && value <= 53) return "#FFEB3B";
+    if (value > 23 && value <= 41) return "#8BC34A";
+    return "#5C82F5";
   };
 
   const getNoiseColor = (value) => {
-    if (value > 80) return "red";
-    if (value > 70 && value <= 80) return "orange";
-    if (value > 60 && value <= 70) return "yellow";
-    if (value > 50 && value <= 60) return "green";
-    return "blue";
+    if (value > 80) return "#F44336";
+    if (value > 70 && value <= 80) return "#FF9800";
+    if (value > 60 && value <= 70) return "#FFEB3B";
+    if (value > 50 && value <= 60) return "#8BC34A";
+    return "#5C82F5";
   };
 
   const getIAQColor = (value) => {
     if (value > 90) return "#5C82F5";
-    if (value > 80 && value <= 90) return "green";
-    if (value > 70 && value <= 80) return "yellow";
-    if (value > 60 && value <= 70) return "orange";
-    return "red";
+    if (value > 80 && value <= 90) return "#8BC34A";
+    if (value > 70 && value <= 80) return "#FFEB3B";
+    if (value > 60 && value <= 70) return "#FF9800";
+    return "#F44336";
   };
 
   // 센서 타입에 따라 적절한 색상 반환
@@ -411,9 +409,9 @@ const closeshowNoSensorPopupHandler = () => {
   // 좌표별 색상 결정 함수 추가
   const getColor = (IAQvalue) => {
     if (IAQvalue === null) return "gray";
-    if (IAQvalue >= 90) return "green";
-    if (IAQvalue >= 80) return "orange";
-    else return "red";
+    if (IAQvalue >= 90) return "#8BC34A";
+    if (IAQvalue >= 80) return "#FF9800";
+    else return "#F44336";
   };
 
   // 도형을 표시하는 함수
@@ -453,8 +451,7 @@ const closeshowNoSensorPopupHandler = () => {
             style={{
               borderColor: ringColor, // IAQ 값에 맞는 색상 적용
             }}
-          >
-          </div>
+          ></div>
           <div
             className={styles.ring}
             style={{
@@ -600,7 +597,7 @@ const closeshowNoSensorPopupHandler = () => {
                     </span>
                     <span
                       style={{
-                        backgroundColor: "green",
+                        backgroundColor: "#8BC34A",
                         width: "14px",
                         height: "14px",
                         borderRadius: "50%",
@@ -798,9 +795,7 @@ const closeshowNoSensorPopupHandler = () => {
               className={`${styles.building} ${
                 selectedBuilding === "신공학관" ? styles.fadeOut : ""
               }`}
-              onClick={() =>
-                openshowNoSensorPopup()
-              }
+              onClick={() => openshowNoSensorPopup()}
             >
               <img src={wonheung} alt="원흥관" />
               <h2>원흥관</h2>
@@ -830,7 +825,6 @@ const closeshowNoSensorPopupHandler = () => {
                   {renderShapes()}
                   {renderFloorCoordinates()}
                 </div>
-                
               </div>
             )}
           </div>
@@ -1017,13 +1011,14 @@ const closeshowNoSensorPopupHandler = () => {
         )}
       </div>
       {showPopup && (
-                  <Popup
-                    popupContent="로그인이 필요한 서비스입니다."
-                    onClose={closePopupHandler} // 팝업 닫기 함수
-                  registerLink="/login"
-                  buttonText="로그인"
-                  />
+        <Popup
+          popupContent="로그인이 필요한 서비스입니다."
+          onClose={closePopupHandler} // 팝업 닫기 함수
+          registerLink="/login"
+          buttonText="로그인"
+        />
       )}
+
       {showNoSensorPopup && (
   token ? (
     <Popup
@@ -1042,6 +1037,7 @@ const closeshowNoSensorPopupHandler = () => {
     />
   )
 )}
+
 
     </div>
   );
