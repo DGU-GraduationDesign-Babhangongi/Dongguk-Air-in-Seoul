@@ -8,7 +8,7 @@ function AirQualityIndicator({ classRoom, onNoPm25Data }) {
   const [selectedSensorName, setSelectedSensorName] = useState(classRoom || '');
 
   const statusColorMap = {
-    Excellent: '#4CAF50',  // 상록수 색상
+    Excellent: '#5C82F5',  // 상록수 색상
     Good: '#8BC34A',       // 라임 색상
     Fair: '#FFEB3B',       // 밝은 노란색
     Poor: '#FF9800',       // 주황색
