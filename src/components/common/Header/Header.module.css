@@ -65,3 +65,45 @@
   margin-left: 1%;
   margin-right: 1%;
 }
+
+.toast {
+  position: absolute;
+  top: 100%; /* 버튼 바로 아래 */
+  left: 0;
+  transform: translateY(10px); /* 살짝 아래로 이동 */
+  background-color: #ffe3c4;
+  padding: 10px;
+  border-radius: 0 8px 8px 8px; /* 왼쪽 위 모서리를 각지게 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+  width: 300px;
+  height: 100px;
+}
+
+.toastHeader {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.toastSeparator {
+  border: none;
+  border-top: 1px solid #d3d3d3;
+  margin: 5px 0;
+}
+
+.toastContent {
+  font-size: 14px; /* 폰트 크기 지정 */
+  line-height: 1.5; /* 줄 간격 설정 */
+}
+
+.toast::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 10px 10px 10px;
+  border-color: transparent transparent #ffe3c4 transparent;
+}
