@@ -4,38 +4,34 @@ import Select from 'react-select';
 import API from '../../../../API/api';
 
 const CustomDropdown = ({ onSelect, selectedInitialValue, borderColor = '#A5A5A5', borderWidth = '1px', width = '100%' }) => {
-  const [options, setOptions] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedValue, setSelectedValue] = useState(null);
-  const navigate = useNavigate();  // React Router의 useNavigate 사용
-  const location = useLocation();  // useLocation 추가
+  const navigate = useNavigate(); // React Router의 useNavigate 사용
+  const location = useLocation(); // 현재 경로 정보
+
+  const [options, setOptions] = useState([]); // 옵션 상태
+  const [loading, setLoading] = useState(true); // 로딩 상태
+  const [selectedValue, setSelectedValue] = useState(null); // 선택된 값 상태
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const building = '신공학관';  // building name 선언
+
     const fetchData = async () => {
-      const encodedBuilding = encodeURIComponent('신공학관');
-      try {
-        const endpoint = `/api/classrooms/myFavorites?building=${encodedBuilding}&favoriteFirst=false&orderDirection=asc`;
-        const responses = await API.get(endpoint, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        try {
+          const endpoint = `/api/classrooms/myFavorites?building=${encodeURIComponent(building)}&favoriteFirst=false&orderDirection=asc`;
+          const responses = await API.get(endpoint, {
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         const formattedData = responses.data
           .filter(room => room.sensorType === 'Air')
-          .map(room => ({
-            value: room.name,
-            label: room.name,
-            favorited: room.favorited
-          }));
+          .map(room => ({ value: room.name, label: room.name, favorited: room.favorited }));
 
         setOptions(formattedData);
       } catch (e) {
-        console.error("API 오류: ", e);
-        setOptions([]);
+        //console.error("API 오류: ", e);
+        setOptions([]); 
       } finally {
-        setLoading(false);
+        setLoading(false); 
       }
     };
 
@@ -59,7 +55,6 @@ const CustomDropdown = ({ onSelect, selectedInitialValue, borderColor = '#A5A5A5
       borderRadius: '10px',
       borderColor: borderColor,
       borderWidth: borderWidth,
-      borderStyle: 'solid',
       fontSize: 'clamp(10px, 1.6vw, 32px)',
       fontWeight: 'bold',
       textAlign: 'center',
@@ -68,14 +63,13 @@ const CustomDropdown = ({ onSelect, selectedInitialValue, borderColor = '#A5A5A5
     }),
     placeholder: (provided) => ({
       ...provided,
-      fontWeight: 'normal',
       fontSize: 'clamp(5px, 0.8vw, 24px)',
-      color: '#999'
+      color: '#999',
     }),
     singleValue: (provided) => ({
       ...provided,
       fontSize: 'clamp(10px, 1.6vw, 32px)',
-      textAlign: 'center'
+      textAlign: 'center',
     }),
     menu: (provided) => ({
       ...provided,
@@ -83,56 +77,50 @@ const CustomDropdown = ({ onSelect, selectedInitialValue, borderColor = '#A5A5A5
       fontWeight: 'bold',
       borderColor: borderColor,
       borderWidth: borderWidth,
-      borderStyle: 'solid'
     }),
     dropdownIndicator: (provided) => ({
       ...provided,
       paddingRight: '8px',
-      paddingLeft: 0,
-      fontSize: 'clamp(5px, 1.4vw, 32px)',
       svg: {
         width: 'clamp(5px, 1.4vw, 32px)',
-        height: 'clamp(5px, 1.4vw, 32px)'
-      }
+        height: 'clamp(5px, 1.4vw, 32px)',
+      },
     }),
     indicatorSeparator: () => ({
       display: 'none',
     }),
   };
 
+  // 경로 변경 함수
   const removeIdAndUpdate = (newValue) => {
     let newPath = location.pathname;
-
-    // 경로 맨 뒤에 숫자가 있으면 이를 제거하고 새 값 추가
     const pathParts = newPath.split('/');
     const lastPart = pathParts[pathParts.length - 1];
 
-    if (!isNaN(lastPart)) {
-      // 마지막 부분이 숫자라면 제거하고 새 값 추가
-      pathParts.pop(); 
+    if (!isNaN(lastPart)) {  // 경로 끝에 숫자가 있으면 제거하고 새 값 추가
+      pathParts.pop();
       newPath = `${pathParts.join('/')}/${newValue}`;
-    } else {
-      // 숫자가 아니면 기존 경로 뒤에 추가
+    } else {  // 숫자가 아니면 경로 뒤에 값 추가
       newPath = `${newPath}/${newValue}`;
     }
 
-    navigate(newPath);  // 새 경로로 이동
+    navigate(newPath); // 새 경로로 이동
   };
 
   const handleChange = (option) => {
-    setSelectedValue(option);  // 선택된 값으로 상태 업데이트
-    onSelect(option.value, option.favorited);  // onSelect 호출
-    removeIdAndUpdate(option.value);  // 새 경로로 업데이트
+    setSelectedValue(option); // 선택된 값 상태 업데이트
+    onSelect(option.value, option.favorited); // 부모 컴포넌트에 값 전달
+    removeIdAndUpdate(option.value); // 경로 업데이트
   };
 
   return (
     <Select
       options={options}
-      value={selectedValue}  // 상태로 관리된 value 사용
-      onChange={handleChange}  // 선택 시 주소 변경
+      value={selectedValue} // 상태로 관리된 선택 값 사용
+      onChange={handleChange} // 선택 시 경로 업데이트 및 값 전달
       styles={customStyles}
-      isLoading={loading}
-      placeholder="Select Class"
+      isLoading={loading} // 로딩 상태 표시
+      placeholder="강의실 선택" // 플레이스홀더
     />
   );
 };

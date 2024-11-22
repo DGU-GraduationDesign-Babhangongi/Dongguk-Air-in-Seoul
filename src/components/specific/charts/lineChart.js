@@ -1,8 +1,9 @@
 import { LineChart, Line, XAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import React, { useState, useEffect } from 'react';
-import API from '../../../API/api';
 import moment from 'moment';
 import debounce from 'lodash.debounce';
+
+import API from '../../../API/api';
 
 const LineChartComponent = ({ width = '34vw', height = '56vh', selectedValues, classRoom, period, isPM2_5 = false }) => {
   const [data, setData] = useState([]);
@@ -10,13 +11,14 @@ const LineChartComponent = ({ width = '34vw', height = '56vh', selectedValues, c
   const [drawEffect, setDrawEffect] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // 디바운스를 적용하여 fetchData가 너무 자주 호출되지 않도록 함
+  // 디바운스를 적용하여 fetchData 호출 간격 조정
   const fetchDataDebounced = debounce((classRoom, period) => fetchData(classRoom, period), 300);
 
   useEffect(() => {
     const addedLines = selectedValues.filter(value => !prevSelectedValues.includes(value));
     const removedLines = prevSelectedValues.filter(value => !selectedValues.includes(value));
 
+    // 추가/삭제된 라인 애니메이션 처리
     setDrawEffect(prev => ({
       ...prev,
       ...addedLines.reduce((acc, value) => ({ ...acc, [value]: true }), {}),
@@ -30,47 +32,33 @@ const LineChartComponent = ({ width = '34vw', height = '56vh', selectedValues, c
   const fetchData = async (classRoom, period) => {
     if (!classRoom || !period) return null;
 
-    // isPM2_5가 false일 경우 PM2_5MASSCONCENTRATION을 제외한 sensorTypes 설정
-    const sensorTypes = isPM2_5
-      ? ['PM2_5MASSCONCENTRATION', 'TEMPERATURE', 'HUMIDITY', 'TVOC', 'AMBIENTNOISE']
+    // PM2.5 여부에 따른 센서 종류 설정
+    const sensorTypes = isPM2_5 ?
+       ['PM2_5MASSCONCENTRATION', 'TEMPERATURE', 'HUMIDITY', 'TVOC', 'AMBIENTNOISE']
       : ['TEMPERATURE', 'HUMIDITY', 'TVOC', 'AMBIENTNOISE'];
-    
+
     setLoading(true);
 
-    const currentTime = moment();
-
     let startDate, endDate;
+
+    // 기간에 따른 날짜 계산
     switch (period) {
-      case '1':
-        endDate = moment(); // endDate는 현재 시간
-        startDate = moment().subtract(1, 'hours'); // startDate는 1시간 전
-        break;
-      case '24':
-        endDate = moment(); // endDate는 현재 시간
-        startDate = moment().subtract(1, 'days'); // startDate는 1일 전
-        break;
-      case '168':
-        endDate = moment(); // endDate는 현재 시간
-        startDate = moment().subtract(1, 'weeks'); // startDate는 1주일 전
-        break;
-      case '720':
-        endDate = moment(); // endDate는 현재 시간
-        startDate = moment().subtract(1, 'months'); // startDate는 1개월 전
-        break;
-      default:
-        endDate = moment(); // endDate는 현재 시간
-        startDate = moment().startOf('day'); // startDate는 오늘의 시작 시간
-        break;
+      case '1': endDate = moment(); startDate = moment().subtract(1, 'hours'); break;
+      case '24': endDate = moment(); startDate = moment().subtract(1, 'days'); break;
+      case '168': endDate = moment(); startDate = moment().subtract(1, 'weeks'); break;
+      case '720': endDate = moment(); startDate = moment().subtract(1, 'months'); break;
+      default: endDate = moment(); startDate = moment().startOf('day'); break;
     }
+
     const token = localStorage.getItem("token");
-    const encodedBuilding = encodeURIComponent('신공학관');
+    const buildingName='신공학관';
+    const encodedBuilding = encodeURIComponent(buildingName);
+
     try {
       const promises = sensorTypes.map(type => {
         const endpoint = `/api/sensorData/classroom/betweenDates?sensorTypes=${encodeURIComponent(type)}&building=${encodedBuilding}&name=${classRoom}&order=DESC&startDate=${encodeURIComponent(startDate.format('YYYY-MM-DDTHH:mm:ss'))}&endDate=${encodeURIComponent(endDate.format('YYYY-MM-DDTHH:mm:ss'))}&page=0&size=1000000000`;
         return API.get(endpoint, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
+          headers: { 'Authorization': `Bearer ${token}` },
         });
       });
 
@@ -78,6 +66,7 @@ const LineChartComponent = ({ width = '34vw', height = '56vh', selectedValues, c
       const formattedData = [];
       const timestamps = responses[0]?.data.data ? responses[0].data.data.map(item => item.timestamp) : [];
 
+      // 데이터를 시간별로 포맷팅
       timestamps.forEach((timestamp, index) => {
         const formattedTimestamp = timestamp.replace('T', ' ');
         const dataPoint = { name: formattedTimestamp };
@@ -96,7 +85,7 @@ const LineChartComponent = ({ width = '34vw', height = '56vh', selectedValues, c
         formattedData.push(dataPoint);
       });
 
-      // 데이터가 없다면 빈 배열 대신 기본 구조로 데이터 설정
+      // 데이터가 없으면 기본 구조 설정
       if (formattedData.length === 0) {
         formattedData.push({
           name: 'No Data',
@@ -110,7 +99,7 @@ const LineChartComponent = ({ width = '34vw', height = '56vh', selectedValues, c
 
       setData(formattedData.reverse());
     } catch (e) {
-      console.error("API 오류: ", e);
+      //console.error("API 오류: ", e);
       setData([]);
     } finally {
       setLoading(false);
@@ -126,9 +115,8 @@ const LineChartComponent = ({ width = '34vw', height = '56vh', selectedValues, c
         <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
           <XAxis dataKey="name" interval={0} axisLine={false} tickLine={false} tick={false} />
           <CartesianGrid strokeDasharray="3 3" />
-          <Tooltip formatter={(value, name) => value !== null ? value : '-'} />
+          <Tooltip formatter={(value) => value !== null ? value : '-'} />
 
-          {/* temperature, humidity, TVOC, noise에 대한 라인 */}
           {selectedValues.includes('temperature') && data.some(d => d['temperature']) && (
             <Line
               type="natural"
@@ -163,8 +151,7 @@ const LineChartComponent = ({ width = '34vw', height = '56vh', selectedValues, c
               dot={false}
             />
           )}
-
-          {/* PM2.5가 존재하는 경우 라인 그리기 */}
+          
           {selectedValues.includes('PM2.5') && data.some(d => d['pm2_5'] !== null) && (
             <Line
               type="natural"
@@ -176,13 +163,7 @@ const LineChartComponent = ({ width = '34vw', height = '56vh', selectedValues, c
               dot={false}
             />
           )}
-
-          {/* PM2.5가 없을 경우 해당 데이터가 없을 때 라인 그리기 */}
-          {(!data.some(d => d['pm2_5'])) && (
-            <div style={{ marginLeft: '5%' }}>PM2.5 데이터가 없습니다.</div>
-          )}
-
-          {/* 다른 데이터가 있을 경우 라인 그리기 */}
+          
           {selectedValues.includes('noise') && data.some(d => d['noise']) && (
             <Line
               type="natural"

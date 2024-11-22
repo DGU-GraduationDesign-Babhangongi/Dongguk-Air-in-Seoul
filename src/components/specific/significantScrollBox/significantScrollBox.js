@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import styles from '../alarmScrollBox/alarmScrollBox.module.css';
-import API from '../../../API/api';
 import moment from 'moment';
 import debounce from 'lodash.debounce';
+import API from '../../../API/api';
+
+// Styles
+import styles from '../alarmScrollBox/alarmScrollBox.module.css';
 
 const token = localStorage.getItem("token");
 const buildingName='신공학관';
@@ -12,7 +14,7 @@ const SignificantScrollBox = ({ title, classRoom }) => {
   const [loading, setLoading] = useState(false); // 로딩 상태
   const [error, setError] = useState(null); // 오류 상태
 
-  // 데이터 Fetch 함수
+  //메모 가져오기
   const fetchData = async (classRoom) => {
     if (!classRoom) return;
     setLoading(true);

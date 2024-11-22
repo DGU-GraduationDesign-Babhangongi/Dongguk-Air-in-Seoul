@@ -4,10 +4,6 @@
   padding: 0;
 }
 
-.container {
-  display: flex;
-}
-
 .box{
   background-color: white;
   width: clamp(10px, 24vw, 400px);
@@ -40,10 +36,4 @@
   width: 26%; /* 아이콘 크기를 고정합니다. */
   aspect-ratio: 1 / 1.1;
   margin-right: 0.1%; /* 아이콘과 텍스트 사이의 간격 */
-}
-
-.titleTopImg {
-  width: 10%; /* 아이콘 크기를 고정합니다. */
-  height: auto;
-  margin-left: 0.1%; /* 아이콘과 텍스트 사이의 간격 */
 }

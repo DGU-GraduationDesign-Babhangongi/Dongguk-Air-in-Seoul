@@ -12,20 +12,18 @@
   border-radius: clamp(10px, 1vw, 32px);
   border: 1px solid #FE9535;
 
-  /* Grid 설정 */
   display: grid;
-  align-items: center;    /* 세로 중앙 정렬 */
-  justify-items: start;   /* 가로 왼쪽 정렬 */
+  align-items: center;    
+  justify-items: start;   
   margin: auto;
   padding: 0 clamp(8px, 20%, 12px);
 }
 
-.dot3{
-  width: 100%;
-  color: #5F6368;
-  font-size: clamp(8px, 2vw, 32px);
-  text-align: end;
+.inline {
+  display: flex;
+  align-items: center;
 }
+
 .IconCircle {
   display: flex;
   align-items: center;
@@ -45,17 +43,6 @@
   opacity: 0.66;
 }
 
-.inline {
-  display: flex;
-  align-items: center;
-}
-.image {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    border-radius: 10px;
-    border-color: #A5A5A5;
-  }
-  
 .text{
   text-align: left;  
   font-weight: bold;
