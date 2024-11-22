@@ -1018,22 +1018,27 @@ function Main() {
           buttonText="로그인"
         />
       )}
-      {showNoSensorPopup &&
-        (token ? (
-          <Popup
-            popupContent="해당 건물에 등록된 센서가 없습니다.등록하시겠습니까?"
-            onClose={closeshowNoSensorPopupHandler} // 팝업 닫기 함수
-            registerLink="/manager" // 센서 등록 페이지로 링크
-            buttonText="등록하기"
-          />
-        ) : (
-          <Popup
-            popupContent="해당 건물에 등록된 센서가 없습니다.등록을 원하시면 로그인해주세요"
-            onClose={closeshowNoSensorPopupHandler} // 팝업 닫기 함수
-            registerLink="/login" // 홈 페이지로 링크
-            buttonText="로그인"
-          />
-        ))}
+
+      {showNoSensorPopup && (
+  token ? (
+    <Popup
+  popupContent="해당 건물에 등록된 센서가 없습니다.등록하시겠습니까?"
+  onClose={closeshowNoSensorPopupHandler} // 팝업 닫기 함수
+  registerLink="/manager"  // 센서 등록 페이지로 링크
+  buttonText="등록하기"
+/>
+
+  ) : (
+    <Popup
+      popupContent="해당 건물에 등록된 센서가 없습니다.등록을 원하시면 로그인해주세요."
+      onClose={closeshowNoSensorPopupHandler} // 팝업 닫기 함수
+      registerLink="/login"  // 홈 페이지로 링크
+      buttonText="로그인"
+    />
+  )
+)}
+
+
     </div>
   );
 }
