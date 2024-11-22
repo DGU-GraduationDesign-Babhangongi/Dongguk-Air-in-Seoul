@@ -73,7 +73,7 @@
   transform: translateY(10px); /* 살짝 아래로 이동 */
   background-color: #ffe3c4;
   padding: 10px;
-  border-radius: 0 8px 8px 8px; /* 왼쪽 위 모서리를 각지게 */
+  border-radius: 8px; /* 왼쪽 위 모서리를 각지게 */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 9999;
   width: 300px;

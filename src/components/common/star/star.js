@@ -21,7 +21,7 @@ const Star = ({ width = '100%', height = '100%', building = '신공학관', clas
 
       setIsFavorited(response.data);
     } catch (e) {
-      console.error('API 오류: ', e);
+     // console.error('API 오류: ', e);
     } finally {
       setLoading(false);
     }
@@ -33,17 +33,16 @@ const Star = ({ width = '100%', height = '100%', building = '신공학관', clas
     const endpoint = `/api/classrooms/favorite?building=${encodedBuilding}&name=${encodeURIComponent(classRoom)}`;
     try {
       setLoading(true);
-      const response = await API.post(endpoint, null, {
+      await API.post(endpoint, null, {
         headers: {
           Authorization: `Bearer ${token}`,
           accept: '*/*',
         },
       });
-      console.log('API 요청 성공:', response);
-
+      
       toggleRefresh(); // 새로고침 상태 변경 호출
     } catch (e) {
-      console.error('API 오류: ', e);
+     // console.error('API 오류: ', e);
     } finally {
       setLoading(false);
     }

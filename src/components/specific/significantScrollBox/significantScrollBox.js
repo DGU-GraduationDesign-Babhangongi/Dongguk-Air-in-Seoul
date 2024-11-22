@@ -5,58 +5,49 @@ import moment from 'moment';
 import debounce from 'lodash.debounce';
 
 const token = localStorage.getItem("token");
+const buildingName='신공학관';
 
 const SignificantScrollBox = ({ title, classRoom }) => {
-  const [data, setData] = useState([]); // API로부터 받아온 데이터
+  const [data, setData] = useState([]); // 데이터 상태
   const [loading, setLoading] = useState(false); // 로딩 상태
   const [error, setError] = useState(null); // 오류 상태
 
   // 데이터 Fetch 함수
   const fetchData = async (classRoom) => {
     if (!classRoom) return;
-    setLoading(true); // 로딩 시작
-    setError(null); // 오류 초기화
+    setLoading(true);
+    setError(null);
 
-    const encodedBuilding = encodeURIComponent('신공학관');
-    const endpoint = `/api/memo/classroom?building=${encodedBuilding}&name=${classRoom}`;
+    const endpoint = `/api/memo/classroom?building=${encodeURIComponent(buildingName)}&name=${classRoom}`;
 
     try {
       const response = await API.get(endpoint, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
+        headers: { 'Authorization': `Bearer ${token}` },
       });
-
-      // 받은 데이터를 포맷팅하여 setData로 업데이트
-      const formattedData = response.data
-        ? response.data.map((item) => {
-            const formattedTimestamp = moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss');
-            return {
-              timestamp: formattedTimestamp,
-              nickname: item.nickname,
-              content: item.content,
-            };
-          })
-        : [];
-
-      setData(formattedData.reverse()); // 최신 데이터가 위로 오도록 reverse
+      // 받은 데이터 포맷팅
+      const formattedData = response.data ? response.data.map(item => ({
+        timestamp: moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+        nickname: item.nickname,
+        content: item.content,
+      })) : [];
+      setData(formattedData.reverse());
     } catch (e) {
-      console.error("API 오류: ", e);
-      setError('데이터를 불러오는 중 오류가 발생했습니다.\n 다시 시도해 주세요.');
-      setData([]); // 오류 시 빈 배열로 초기화
+      //console.error("API 오류: ", e);
+      setError('데이터를 불러오는 중 오류가 발생했습니다.');
+      setData([]);
     } finally {
-      setLoading(false); // 로딩 끝
+      setLoading(false);
     }
   };
 
-  // debounce를 사용하여 API 호출 최적화 (300ms)
+  // debounce로 API 호출 최적화 (300ms)
   const fetchDataDebounced = debounce(fetchData, 300);
 
   useEffect(() => {
-    fetchDataDebounced(classRoom); // classRoom이 변경되면 데이터 다시 로드
+    fetchDataDebounced(classRoom); // classRoom 변경 시 데이터 새로 로드
   }, [classRoom]);
 
-  // 데이터 포맷팅 함수
+  // 메시지 포맷 함수
   const formatMessage = (item) => {
     return `${item.timestamp}<br/> ${item.nickname}: ${item.content}`;
   };
@@ -73,13 +64,12 @@ const SignificantScrollBox = ({ title, classRoom }) => {
           <div>{error}</div>
         ) : data.length === 0 ? (
           <div style={{ margin: '0 1%', width: '98%', height: "100%", display: 'flex', alignItems: 'center' }}>
-            강의실의 메모가 존재하지 않습니다.
+            강의실 메모가 존재하지 않습니다.
           </div>
         ) : (
-          data.map((item, index) => {
-            const message = formatMessage(item);
-            return <div key={index} dangerouslySetInnerHTML={{ __html: message }} />;
-          })
+          data.map((item, index) => (
+            <div key={index} dangerouslySetInnerHTML={{ __html: formatMessage(item) }} />
+          ))
         )}
       </div>
     </div>
