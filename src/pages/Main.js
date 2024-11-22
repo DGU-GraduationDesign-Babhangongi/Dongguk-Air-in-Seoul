@@ -52,7 +52,7 @@ function Main() {
       case "ORANGE":
         return "#FF9800";
       case "YELLOW":
-        return "#FFEB3B";
+        return "#FFBD2E";
       default:
         return "black"; // 기본 색상
     }
@@ -79,22 +79,19 @@ function Main() {
   useEffect(() => {
     fetchSensorLogs();
   }, []);
-  // 팝업을 열고 닫는 함수
   const openPopup = () => {
     setShowPopup(true);
   };
-
   const closePopupHandler = () => {
     setShowPopup(false);
   };
-  // 팝업을 열고 닫는 함수
   const openshowNoSensorPopup = () => {
     setshowNoSensorPopup(true);
   };
-
   const closeshowNoSensorPopupHandler = () => {
     setshowNoSensorPopup(false);
   };
+
   // 센서 수치 이상 로그 렌더링 함수
   const renderSensorLogs = () => (
     <div
@@ -227,8 +224,7 @@ function Main() {
     return () => clearInterval(timer);
   }, []);
 
-  const location = useLocation();
-  const Id = location.pathname.split("/").pop(); // URL에서 ID 가져오기
+  // const location = useLocation();
 
   const imageRef = useRef(null);
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -380,38 +376,14 @@ function Main() {
     if (type === "noise") return getNoiseColor(value);
   };
 
-  // 각 항목에 해당하는 상태 색상을 가져오는 함수
-  const renderSensorItem = (label, value, iconSrc, type) => (
-    <div className={styles.sensorText}>
-      <img src={iconSrc} alt={label} className={styles.sensorImg} />
-      <span>{label}</span>
-      <span style={{ marginLeft: "auto" }}>{value ?? "--"}</span>
-      <span
-        className={styles.statusLight}
-        style={{
-          backgroundColor: getStatusColor(value, type), // 상태에 따라 색상 변경
-        }}
-      ></span>
-    </div>
-  );
-
   const getSensorIAQValue = (id) => {
     const sensor = allSensorData.find((data) => data.id === id);
     if (!sensor || sensor.IAQIndex === "--") {
       console.warn(`ID: ${id}에 대한 IAQIndex 데이터 없음.`);
       return "--";
     }
-
     console.log(`강의실 ID: ${id}, IAQIndex:`, sensor.IAQIndex);
     return sensor.IAQIndex;
-  };
-
-  // 좌표별 색상 결정 함수 추가
-  const getColor = (IAQvalue) => {
-    if (IAQvalue === null) return "gray";
-    if (IAQvalue >= 90) return "#8BC34A";
-    if (IAQvalue >= 80) return "#FF9800";
-    else return "#F44336";
   };
 
   // 도형을 표시하는 함수
@@ -419,7 +391,6 @@ function Main() {
     return coordinates.map((coord, index) => {
       const IAQIndex = getSensorIAQValue(coord.id);
       const ringColor = getIAQColor(IAQIndex); // 색상 결정
-
       return (
         <div
           key={`coord-${index}`}
@@ -456,9 +427,6 @@ function Main() {
             className={styles.ring}
             style={{
               borderColor: ringColor, // IAQ 값에 맞는 색상 적용
-              width: "52px",
-              height: "52px",
-              animationDelay: "0.75s",
             }}
           ></div>
           {/* 호버 시 표시할 박스 */}
@@ -477,6 +445,7 @@ function Main() {
             >
               {/* 강의실 이름 */}
               <div
+                className={styles.roomName}
                 style={{
                   fontWeight: "500",
                   textShadow: "1.5px 1.5px 1.5px lightgray",
@@ -1019,26 +988,22 @@ function Main() {
         />
       )}
 
-      {showNoSensorPopup && (
-  token ? (
-    <Popup
-  popupContent="해당 건물에 등록된 센서가 없습니다.등록하시겠습니까?"
-  onClose={closeshowNoSensorPopupHandler} // 팝업 닫기 함수
-  registerLink="/manager"  // 센서 등록 페이지로 링크
-  buttonText="등록하기"
-/>
-
-  ) : (
-    <Popup
-      popupContent="해당 건물에 등록된 센서가 없습니다.등록을 원하시면 로그인해주세요."
-      onClose={closeshowNoSensorPopupHandler} // 팝업 닫기 함수
-      registerLink="/login"  // 홈 페이지로 링크
-      buttonText="로그인"
-    />
-  )
-)}
-
-
+      {showNoSensorPopup &&
+        (token ? (
+          <Popup
+            popupContent="해당 건물에 등록된 센서가 없습니다.등록하시겠습니까?"
+            onClose={closeshowNoSensorPopupHandler} // 팝업 닫기 함수
+            registerLink="/manager" // 센서 등록 페이지로 링크
+            buttonText="등록하기"
+          />
+        ) : (
+          <Popup
+            popupContent="해당 건물에 등록된 센서가 없습니다.등록을 원하시면 로그인해주세요."
+            onClose={closeshowNoSensorPopupHandler} // 팝업 닫기 함수
+            registerLink="/login" // 홈 페이지로 링크
+            buttonText="로그인"
+          />
+        ))}
     </div>
   );
 }
