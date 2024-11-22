@@ -162,8 +162,6 @@
   z-index: 1000;
 }
 
-/**/
-
 .topMessageDetail {
   font-size: 1.5rem;
   font-weight: bold;
@@ -203,7 +201,6 @@
   top: 40%;
 }
 
-/**/
 .building {
   position: absolute;
   text-align: center;
@@ -270,6 +267,49 @@
   width: 100%; /* 박스가 부모의 너비를 차지하도록 */
   color: black;
   z-index: 800;
+}
+.weatherMinMax {
+  font-size: clamp(16px, 1vw, 24px);
+  text-align: right;
+  font-weight: 600;
+  color: black;
+}
+.weatherMinMax2 {
+  text-align: right;
+  font-size: clamp(9px, 1vw, 13px);
+  margin-bottom: 10px;
+  color: black;
+}
+.weatherTemperature {
+  font-size: clamp(25px, 3vw, 100px);
+  font-weight: bold;
+  text-align: right;
+}
+.weatherRain {
+  font-size: 2vw;
+  text-align: center;
+  color: black;
+}
+.weatherAdvice {
+  text-align: right;
+  white-space: pre-line;
+  font-size: clamp(12px, 1.2vw, 18px);
+  color: black;
+}
+.weatherlocation {
+  font-size: clamp(15px, 1.6vw, 25px);
+  width: clamp(20px, 2vw, 50px);
+  margin-right: 0.5vw;
+  margin-bottom: -4px;
+}
+.weatherloading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.weatherImg {
+  width: clamp(70px, 7vw, 200px);
+  filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.2));
 }
 /*로그기록*/
 .sensorLogs {
@@ -344,6 +384,12 @@
   border-radius: 8px;
 }
 
+.another {
+  margin: 0;
+  font-size: 16px;
+  margin-top: 10px;
+  z-index: 10;
+}
 /* 팝업 구현 */
 .popup {
   position: fixed;
@@ -383,7 +429,6 @@
 .popupButton:active {
   background-color: #fff3d6; /* 호버 및 클릭 시 배경색 유지 */
   color: black !important; /* 호버 및 클릭 시 텍스트 색상 유지 */
-  /*text-decoration: underline; /* 호버 시 밑줄 */
 }
 
 .divider {
@@ -404,4 +449,10 @@
 }
 .sensorLogs p {
   font-size: clamp(11px, 1.2vw, 18px);
+}
+.signupText {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  margin-left: 16px;
 }
