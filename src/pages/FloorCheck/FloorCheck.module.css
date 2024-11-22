@@ -15,12 +15,12 @@
   justify-content: space-between;
   align-items: stretch;
   align-content: stretch;
-  font-family: "NanumBarunGothic", Arial, sans-serif; /* 기본 폰트 적용 */
+  font-family: "NanumBarunGothic", Arial, sans-serif;
   width: 100%;
 }
 
 .SideBar {
-  width: 220px; /* 사이드바 너비 고정 */
+  width: 220px;
   background-color: #f4f4f4;
   padding: 20px;
   box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.1);
@@ -28,9 +28,9 @@
 
 .main {
   display: flex;
-  flex-direction: row; /* 메인 내용 수평 배치 */
+  flex-direction: row;
   padding: 20px;
-  gap: 4%; /* 도면과 패널 사이의 간격 */
+  gap: 4%;
   margin-top: -6%;
   box-sizing: border-box;
 }
@@ -38,9 +38,9 @@
 /* 도면을 감싸는 영역 */
 .floorMapContainer {
   display: flex;
-  flex-direction: column; /* 세로로 배치 */
+  flex-direction: column;
   justify-content: center;
-  align-items: center; /* 도면과 문구를 가운데 정렬 */
+  align-items: center;
   margin-right: 4%;
   height: fit-content;
   margin-left: 6%;
@@ -50,19 +50,19 @@
   margin-top: 24%;
   position: relative;
   width: 440px;
-  height: auto; /* 도면 크기 적절히 조정 */
+  height: auto;
 }
 
 .mapImage {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* 이미지 크기를 조정하면서 맞춤 */
+  object-fit: contain;
 }
 
 .floorTitle {
   margin-top: 4%;
   margin-left: 16%;
-  font-size: 32px; /* 문구 크기 */
+  font-size: 32px;
   font-weight: bold;
   height: fit-content;
   text-shadow: 2px 4px 2px rgb(0, 0, 0, 0.1);
@@ -78,7 +78,7 @@
   font-size: 14px;
   font-weight: bold;
   transform: translate(-50%, -50%);
-  font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
+  font-family: "NanumBarunGothic", Arial, sans-serif;
 }
 
 .floorButtons {
@@ -92,10 +92,9 @@
   width: 24%;
   height: 50%;
   font-size: 90%;
-  font-weight: bold;
+  font-weight: 600;
   text-align: center;
   font-size: 110%;
-  color: #5f5f5f;
 }
 
 /* 우측 정보 패널 */
@@ -104,9 +103,8 @@
   margin-top: 0%;
   justify-content: flex-start;
   gap: 8%;
-  align-items: stretch; /* 세로 크기를 동일하게 유지 */
-
-  width: 100%; /* 컨테이너 전체 너비 사용 */
+  align-items: stretch;
+  width: 100%;
 }
 
 .infoPanel {
@@ -124,7 +122,7 @@
 
 .infoPanel h2 {
   text-align: center;
-  margin-bottom: 15px; /* 제목 아래 여백 조정 */
+  margin-bottom: 15px;
   font-size: 16px;
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }
@@ -134,9 +132,10 @@
   justify-content: space-between;
   width: 100%;
   align-items: center;
-  margin-bottom: 8px; /* 항목 간 간격을 줄임 */
+  margin-bottom: 8px;
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }
+
 .infoItems {
   width: 14%;
   margin-right: 8px;
@@ -219,12 +218,11 @@
   transition: transform 0.3s ease;
 }
 
-/* 수치 정보 */
 .infoScore {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 36px; /* 수치 글씨 크기 줄임 */
-  margin-top: 15px; /* 수치 위 아래 여백 조정 */
+  font-size: 36px;
+  margin-top: 15px;
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }

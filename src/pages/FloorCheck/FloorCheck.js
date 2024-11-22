@@ -1,6 +1,6 @@
 /*층별 강의실 수치 확인*/
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom"; // useParams와 useNavigate 가져오기
+import { useParams, useNavigate } from "react-router-dom";
 import Header from "../../components/common/Header/Header";
 import SideBar from "../../components/common/SideBar/SideBar";
 import styles from "./FloorCheck.module.css";
@@ -13,8 +13,7 @@ function FloorCheck() {
   const currentFloor = parseInt(floor, 10); // floor 값을 정수로 변환
   const roomIds = ["3115", "3173", "4142", "5145", "5147", "6119", "6144"];
   const currentFloorRooms = roomIds.filter((Id) => Id.startsWith(currentFloor)); // 현재 층에 해당하는 강의실 필터링
-  const [iaqValues, setIaqValues] = useState([]);
-  const [allSensorData, setAllSensorData] = useState([]); // 모든 강의실 데이터 저장
+  const [allSensorData, setAllSensorData] = useState([]);
 
   const getImageSrc = (iaq) =>
     iaq >= 86
@@ -26,18 +25,18 @@ function FloorCheck() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("/"); // token 없으면 '/'로 리다이렉트
+      navigate("/");
     }
   }, [navigate]);
 
-  // 좌표별 색상 결정 함수 추가
+  // 좌표별 색상 결정 함수
   const getColor = (iaq) => {
     if (iaq === null) return "#9E9E9E";
     if (iaq >= 90) return "#5C82F5";
     if (iaq >= 80) return "#8BC34A";
     if (iaq >= 70) return "#FFEB3B";
     if (iaq >= 60) return "#FF9800";
-    else return "#F44336";
+    else return "#9E9E9E";
   };
 
   // 층별 이미지 경로 정의
@@ -64,10 +63,10 @@ function FloorCheck() {
     ],
   };
 
+  // 모든 강의실 데이터를 가져오기
   useEffect(() => {
     const fetchAllSensorData = async () => {
       try {
-        // 모든 강의실 데이터를 가져오기
         const allCoords = Object.values(coordinates).flat(); // 모든 좌표를 하나의 배열로 합침
         const responses = await Promise.all(
           allCoords.map(async (coord) => {
@@ -77,41 +76,33 @@ function FloorCheck() {
             const response = await API.get(endpoint);
             return {
               roomId: coord.id,
-              IAQIndex: response.data?.IAQIndex?.value || "--",
+              IAQIndex: response.data?.IAQIndex?.value || "loading . . .",
             };
           })
         );
         setAllSensorData(responses);
-        console.log("모든 센서 데이터:", responses);
       } catch (error) {
-        console.error("Error fetching all sensor data:", error);
+        // console.error("Error fetching all sensor data:", error);
       }
     };
-
     fetchAllSensorData();
   }, []);
 
   const getSensorIAQValue = (roomId) => {
+    if (!Array.isArray(allSensorData)) return "--";
     const sensor = allSensorData.find((data) => data.roomId === roomId);
-    if (!sensor || sensor.IAQIndex === "--") {
-      console.warn(`ID: ${roomId}에 대한 IAQIndex 데이터 없음.`);
-      return "--";
-    }
-
-    console.log(`강의실 ID: ${roomId}, IAQIndex:`, sensor.IAQIndex);
-    return sensor.IAQIndex;
+    return sensor?.IAQIndex || "loading . . .";
   };
 
-  // 버튼 클릭 시 URL 변경
   const handleFloorChange = (selectedFloor) => {
-    navigate(`/floorcheck/${selectedFloor}`); // 선택한 층으로 URL 변경
+    navigate(`/floorcheck/${selectedFloor}`);
   };
 
   return (
     <div>
       <Header />
       <div style={{ display: "flex" }}>
-        <SideBar i="3" /> {/* 사이드바 */}
+        <SideBar i="3" />
         <div className={styles.container}>
           <div className={styles.floorTitle}>
             {currentFloor}층 강의실 구조도
@@ -120,7 +111,7 @@ function FloorCheck() {
             <div className={styles.floorMapContainer}>
               <div className={styles.floorMap}>
                 <img
-                  src={floorImages[currentFloor]} // 현재 층 이미지
+                  src={floorImages[currentFloor]}
                   alt={`${currentFloor}층 구조도`}
                   className={styles.mapImage}
                 />
@@ -132,7 +123,7 @@ function FloorCheck() {
                       style={{
                         left: `${x}px`,
                         top: `${y}px`,
-                        zIndex: 10, // 이미지 위에 표시되도록 설정
+                        zIndex: 10,
                       }}
                     >
                       <div className={styles.ring} s></div>
@@ -147,10 +138,11 @@ function FloorCheck() {
                     <button
                       key={floor}
                       className={styles.floorButton}
-                      onClick={() => handleFloorChange(floor)} // 버튼 클릭 시 URL 변경
+                      onClick={() => handleFloorChange(floor)}
                       style={{
                         backgroundColor:
-                          currentFloor === floor ? "#ffd690" : "#fff1d9",
+                          currentFloor === floor ? "#FFC557" : "#FFEAC2",
+                        color: currentFloor === floor ? "black" : "#5f5f5f",
                       }}
                     >
                       {floor}층
@@ -162,10 +154,6 @@ function FloorCheck() {
 
             <div className={styles.infoPanels}>
               {currentFloorRooms.map((roomId) => {
-                // iaqValues에서 해당 roomId의 데이터를 찾기
-                const roomData = iaqValues.find(
-                  (data) => data.roomId === roomId
-                );
                 const IAQIndex = getSensorIAQValue(roomId);
                 return (
                   <div className={styles.infoPanel} key={roomId}>
@@ -197,7 +185,7 @@ function FloorCheck() {
                     />
                     <div className={styles.averageIAQ}>
                       <img
-                        src={getImageSrc(IAQIndex)} // 평균값에 따라 이미지 설정
+                        src={getImageSrc(IAQIndex)}
                         alt={
                           IAQIndex >= 86
                             ? "good"
