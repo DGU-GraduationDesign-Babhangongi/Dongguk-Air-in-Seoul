@@ -40,6 +40,13 @@ const BannerSlide = () => {
     },
     {
       id: 4,
+      name: 'AI융합대학 소모임 한소리',
+      image: 'hansori.jpg',
+      content:
+        "동아리 및 다양한 홍보를 원하시면, 아래 QR 코드를 이용해 구글폼을 작성해 주세요!\n 작성해 주신 내용은 해당 위치에 게시됩니다.",
+    },
+    {
+      id: 5,
       name: '동아리 홍보 신청하기',
       image: 'qr.png',
       content:
