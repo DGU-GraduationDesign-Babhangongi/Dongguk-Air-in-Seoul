@@ -1,6 +1,5 @@
 /*층별 강의실 수치 확인*/
-
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // useParams와 useNavigate 가져오기
 import Header from "../../components/common/Header/Header";
 import SideBar from "../../components/common/SideBar/SideBar";
@@ -51,17 +50,17 @@ function FloorCheck() {
 
   const coordinates = {
     3: [
-      { id: "3115", x: 28, y: 212 },
-      { id: "3173", x: 196, y: 172 },
+      { id: "3115", x: 0, y: 212 },
+      { id: "3173", x: 168, y: 172 },
     ],
-    4: [{ id: "4142", x: 266, y: 482 }],
+    4: [{ id: "4142", x: 238, y: 482 }],
     5: [
-      { id: "5145", x: 96, y: 482 },
-      { id: "5147", x: 184, y: 482 },
+      { id: "5145", x: 68, y: 482 },
+      { id: "5147", x: 156, y: 482 },
     ],
     6: [
-      { id: "6119", x: 306, y: 22 },
-      { id: "6144", x: 208, y: 482 },
+      { id: "6119", x: 278, y: 32 },
+      { id: "6144", x: 180, y: 482 },
     ],
   };
 
@@ -110,11 +109,13 @@ function FloorCheck() {
 
   return (
     <div>
-      <Header /> {/* 헤더 */}
+      <Header />
       <div style={{ display: "flex" }}>
         <SideBar i="3" /> {/* 사이드바 */}
         <div className={styles.container}>
-          <h2 className={styles.floorTitle}>{currentFloor}층 강의실 구조도</h2>
+          <div className={styles.floorTitle}>
+            {currentFloor}층 강의실 구조도
+          </div>
           <div className={styles.main}>
             <div className={styles.floorMapContainer}>
               <div className={styles.floorMap}>
@@ -123,10 +124,7 @@ function FloorCheck() {
                   alt={`${currentFloor}층 구조도`}
                   className={styles.mapImage}
                 />
-                <div
-                  className={styles.coordinatesContainer}
-                  style={{ position: "absolute", top: 0, left: 0 }}
-                >
+                <div style={{ position: "absolute", top: 0, left: 0 }}>
                   {coordinates[currentFloor]?.map(({ id, x, y }) => (
                     <div
                       key={id}
@@ -137,7 +135,7 @@ function FloorCheck() {
                         zIndex: 10, // 이미지 위에 표시되도록 설정
                       }}
                     >
-                      <div className={styles.ring}></div>
+                      <div className={styles.ring} s></div>
                       <div className={styles.ring}></div>
                       <div className={styles.dot}></div>
                       <span className={styles.roomId}>{id}</span>
@@ -168,8 +166,6 @@ function FloorCheck() {
                 const roomData = iaqValues.find(
                   (data) => data.roomId === roomId
                 );
-
-                // iaq 값이 없을 경우 기본값 설정
                 const IAQIndex = getSensorIAQValue(roomId);
                 return (
                   <div className={styles.infoPanel} key={roomId}>
