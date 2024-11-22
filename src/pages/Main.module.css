@@ -497,3 +497,8 @@
   white-space: nowrap;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.261);
 }
+.icons {
+  width: clamp(16px, 2vw, 50px);
+  margin-right: 8px;
+  margin-bottom: -8px;
+}
