@@ -103,9 +103,12 @@ function Main() {
       {sensorLogs.length > 0 ? (
         sensorLogs.map((log, index) => {
           const date = new Date(log.timestamp);
-          const formattedDate = `${date.getFullYear()}. ${
-            (date.getMonth() + 1).toString().padStart(2, "0")
-          }. ${date.getDate().toString().padStart(2, "0")}. ${date
+          const formattedDate = `${date.getFullYear()}. ${(date.getMonth() + 1)
+            .toString()
+            .padStart(2, "0")}. ${date
+            .getDate()
+            .toString()
+            .padStart(2, "0")}. ${date
             .getHours()
             .toString()
             .padStart(2, "0")}:${date
@@ -115,7 +118,7 @@ function Main() {
             .getSeconds()
             .toString()
             .padStart(2, "0")}`;
-  
+
           // 센서 타입에 따른 단위 설정
           const getUnit = (sensorType) => {
             switch (sensorType) {
@@ -132,9 +135,9 @@ function Main() {
                 return ""; // 단위가 없는 경우
             }
           };
-  
+
           const unit = getUnit(log.sensorType);
-  
+
           return (
             <div key={index} style={{ marginBottom: "10px" }}>
               <strong>[{formattedDate}]</strong>
@@ -161,7 +164,6 @@ function Main() {
       )}
     </div>
   );
-  
 
   useEffect(() => {
     const fetchNickname = async () => {
@@ -177,7 +179,7 @@ function Main() {
             setNickname(response.data || "사용자");
           }
         } catch (error) {
-          console.error("닉네임을 불러오는 데 실패했습니다:", error);
+          // console.error("닉네임을 불러오는 데 실패했습니다:", error);
         }
       }
     };
@@ -249,26 +251,22 @@ function Main() {
         setForecast2(weatherData2);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching weather data: ", error);
+        // console.error("Error fetching weather data: ", error);
         setLoading(false);
       }
     };
     fetchData();
   }, []);
-  // Update time every minute
   useEffect(() => {
     const timer = setInterval(() => setDateTime(new Date()), 60000);
     return () => clearInterval(timer);
   }, []);
 
-  // const location = useLocation();
-
   const imageRef = useRef(null);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [sensorData, setSensorData] = useState(null); // 센서 데이터 상태 추가
 
-  const { data, setSelectedSensorName, loading, error } =
-    useContext(SensorDataContext);
+  const { loading } = useContext(SensorDataContext);
 
   // 좌표 저장
   const coordinates = [
@@ -311,36 +309,27 @@ function Main() {
             };
           })
         );
-
-        // 데이터를 상태로 저장
         setAllSensorData(responses);
-        console.log("모든 센서 데이터:", responses);
       } catch (error) {
-        console.error("Error fetching all sensor data:", error);
+        // console.error("Error fetching all sensor data:", error);
       }
     };
-
     fetchAllSensorData();
-  }, []); // 컴포넌트 마운트 시 한 번 실행
+  }, []);
 
   useEffect(() => {
     const fetchSensorData = async () => {
       if (hoveredIndex !== null) {
         const hoveredCoord = coordinates[hoveredIndex];
-        if (!hoveredCoord) return; // hoveredCoord가 없을 경우 반환
+        if (!hoveredCoord) return;
         try {
           const endpoint = `/api/sensorData/recent/classroom?building=${encodeURIComponent(
             hoveredCoord.building
           )}&name=${encodeURIComponent(hoveredCoord.id)}`;
-          console.log("API 요청 URL: ", endpoint);
           const response = await API.get(endpoint);
-          setSensorData(response.data); // API에서 가져온 데이터 설정
-          console.log(
-            `Fetched sensor data for ${hoveredCoord.id}`,
-            response.data
-          );
+          setSensorData(response.data);
         } catch (error) {
-          console.error("Error fetching sensor data:", error);
+          // console.error("Error fetching sensor data:", error);
           setSensorData(null);
         }
       } else {
@@ -348,7 +337,7 @@ function Main() {
       }
     };
     fetchSensorData();
-  }, [hoveredIndex]); // hoveredIndex 변경 시마다 데이터 요청
+  }, [hoveredIndex]);
 
   const getTemperatureColor = (value) => {
     if (value < 16.5 || value > 27.5) return "#F44336";
@@ -423,21 +412,20 @@ function Main() {
     return sensor.IAQIndex;
   };
 
-  // 도형을 표시하는 함수
   const renderShapes = () => {
     return coordinates.map((coord, index) => {
       const IAQIndex = getSensorIAQValue(coord.id);
-      const ringColor = getIAQColor(IAQIndex); // 색상 결정
+      const ringColor = getIAQColor(IAQIndex);
       return (
         <div
           key={`coord-${index}`}
-          onMouseEnter={() => setHoveredIndex(index)} // 마우스 진입 시 인덱스 설정
-          onMouseLeave={() => setHoveredIndex(null)} // 마우스 나가면 초기화
+          onMouseEnter={() => setHoveredIndex(index)}
+          onMouseLeave={() => setHoveredIndex(null)}
           onClick={() => {
             if (token) {
-              handleClick(coord.id); // 로그인 상태에서 클릭 처리
+              handleClick(coord.id);
             } else {
-              openPopup(); // 로그인 필요 팝업 열기
+              openPopup();
             }
           }}
           style={{
@@ -448,7 +436,7 @@ function Main() {
             height: "16px",
             backgroundColor: ringColor,
             borderRadius: "50%",
-            transform: "translate(-50%, -50%)", // 중앙 정렬
+            transform: "translate(-50%, -50%)",
             cursor: "pointer",
             zIndex: "11",
           }}
@@ -457,16 +445,15 @@ function Main() {
           <div
             className={styles.ring}
             style={{
-              borderColor: ringColor, // IAQ 값에 맞는 색상 적용
+              borderColor: ringColor,
             }}
           ></div>
           <div
             className={styles.ring}
             style={{
-              borderColor: ringColor, // IAQ 값에 맞는 색상 적용
+              borderColor: ringColor,
             }}
           ></div>
-          {/* 호버 시 표시할 박스 */}
           {hoveredIndex === index && (
             <div
               className={styles.hoverBox}
@@ -480,25 +467,12 @@ function Main() {
                   coord.id === "5147" || coord.id === "4142" ? "20%" : "-100%",
               }}
             >
-              {/* 강의실 이름 */}
-              <div
-                className={styles.roomName}
-                style={{
-                  fontWeight: "500",
-                  textShadow: "1.5px 1.5px 1.5px lightgray",
-                  fontSize: "1.5rem",
-                  marginBottom: "16px",
-                  textAlign: "center",
-                }}
-              >
-                {coord.id} 강의실
-              </div>
+              <div className={styles.roomName}>{coord.id} 강의실</div>
               <hr
                 style={{
                   margin: "4px 4px 20px 4px",
                 }}
               />
-              {/* 각 항목 표시 */}
               {sensorData ? (
                 <>
                   <div className={styles.sensorText}>
@@ -601,17 +575,7 @@ function Main() {
                     <span style={{ marginLeft: "auto" }}>
                       {loading ? "--" : "ON"}
                     </span>
-                    <span
-                      style={{
-                        backgroundColor: "#8BC34A",
-                        width: "14px",
-                        height: "14px",
-                        borderRadius: "50%",
-                        marginLeft: "16px", // 왼쪽에 간격 추가
-                        boxShadow:
-                          "0 4px 8px rgba(0, 0, 0, 0.261)" /* 부드러운 그림자 */,
-                      }}
-                    ></span>
+                    <span className={styles.sensorStatus}></span>
                   </div>
                 </>
               ) : (
@@ -627,44 +591,24 @@ function Main() {
     return floorcoordinates.map(({ floor, top, left }, index) => (
       <div
         key={`floor-${index}`}
-        onMouseEnter={() => setHoveredFloor(floor)} // 호버 시 층 설정
-        onMouseLeave={() => setHoveredFloor(null)} // 호버 종료 시 초기화
+        onMouseEnter={() => setHoveredFloor(floor)}
+        onMouseLeave={() => setHoveredFloor(null)}
         onClick={() => {
           if (token) {
-            handleFloorClick(floor); // 로그인 상태에서 클릭 처리
+            handleFloorClick(floor);
           } else {
-            openPopup(); // 로그인 필요 팝업 열기
+            openPopup();
           }
         }}
+        className={styles.hovered}
         style={{
-          position: "absolute",
           top: top,
           left: left,
-          width: "100px",
-          height: "100px",
-          cursor: "pointer",
-          zIndex: "101",
         }}
         title={`Go to Floor ${floor}`}
       >
         {hoveredFloor === floor && (
-          <div
-            style={{
-              position: "absolute",
-              top: "-30px", // 좌표 기준 위에 표시
-              left: "50%",
-              transform: "translateX(-50%)",
-              backgroundColor: "rgba(251, 244, 228, 0.8)",
-              color: "black",
-              padding: "10%",
-              borderRadius: "8px",
-              fontSize: "20px",
-              whiteSpace: "nowrap",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.261)",
-            }}
-          >
-            {floor}층으로 이동하기
-          </div>
+          <div className={styles.hoveredFloor}>{floor}층으로 이동하기</div>
         )}
       </div>
     ));
@@ -697,26 +641,17 @@ function Main() {
               style={{ width: "80px", height: "84px", marginRight: "16px" }}
             />
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <div
-                className={styles.topMessageDetail}
-                style={{
-                  fontSize: "44px",
-                  textShadow: "3px 3px 1.5px lightgray",
-                  marginTop: "44px",
-                }}
-              >
-                신공학관
-              </div>
+              <div className={styles.topMessageDetail}>신공학관</div>
               <p className={styles.another}>
                 <span
                   onClick={() => (window.location.href = "/")}
                   onMouseEnter={(e) => {
-                    e.target.style.color = "black"; // 호버 시 색상 변경
-                    e.target.style.textDecoration = "underline"; // 호버 시 밑줄 추가
+                    e.target.style.color = "black";
+                    e.target.style.textDecoration = "underline";
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.color = "gray"; // 원래 색상으로 복원
-                    e.target.style.textDecoration = "none"; // 밑줄 제거
+                    e.target.style.color = "gray";
+                    e.target.style.textDecoration = "none";
                   }}
                   style={{
                     color: "gray",
@@ -732,24 +667,12 @@ function Main() {
           </div>
         )}
         <div className={styles.content}>
-          {/* 건물 섹션 */}
           <div className={styles.buildings}>
             <div
               className={`${styles.building} ${
                 selectedBuilding === "신공학관" ? styles.fadeOut : ""
               }`}
-              onClick={() =>
-                handleBuildingClick(
-                  "정보문화관 P",
-                  <p>
-                    현재 정보문화관 P에는
-                    <br />
-                    등록된 센서가 없습니다.
-                    <br />
-                    센서를 등록하시겠습니까?
-                  </p>
-                )
-              }
+              onClick={() => openshowNoSensorPopup()}
             >
               <img src={jungbo} alt="정보문화관 P" />
               <h2>정보문화관 P</h2>
@@ -772,7 +695,7 @@ function Main() {
               onClick={() => handleBuildingClick("신공학관", null)}
               onMouseEnter={(e) => {
                 if (selectedBuilding === "신공학관") {
-                  e.preventDefault(); // hover 방지
+                  e.preventDefault();
                 }
               }}
             >
@@ -807,7 +730,7 @@ function Main() {
                 </p>
               </div>
             </div>
-            {/* 신공학관이 선택되었을 때 이미지 표시 */}
+
             {selectedBuilding === "신공학관" && (
               <div className={styles.additionalContent}>
                 <div className={styles.selectedBuildingImage}>
@@ -826,25 +749,27 @@ function Main() {
               </div>
             )}
           </div>
-
-          {/* 오른쪽 날씨 및 로그 섹션 */}
           <div
             className={styles.weatherAndLogs}
             style={{ position: "relative" }}
           >
             <div className={styles.weatherInfo}>
-              <h2
+              <h3
                 style={{
                   fontSize: "clamp(15px, 1.6vw, 20px)",
                 }}
               >
                 <img
                   src={weatherlocation}
-                  alt="위치 아이콘"
-                  className={styles.weatherlocation}
+                  alt="현재 위치"
+                  style={{
+                    width: "clamp(20px, 2vw, 50px)",
+                    marginRight: "8px",
+                    marginBottom: "-8px",
+                  }}
                 />
                 서울 중구 필동
-              </h2>
+              </h3>
 
               {loadingdata ? (
                 <p>Loading weather data...</p>
