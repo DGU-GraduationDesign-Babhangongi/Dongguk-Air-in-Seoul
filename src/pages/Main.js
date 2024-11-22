@@ -6,17 +6,13 @@ import { fetchForeCast, fetchForeCast2 } from "../pages/forecast";
 import { SensorDataContext } from "./../API/SensorDataContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import API from "../API/api";
+import SensorDetail from "../components/specific/sensorDetail/sensorDetail";
 /*images*/
 import sunIcon from "../assets/images/main/sun_icon.png";
 import cloudyIcon from "../assets/images/main/cloudy_icon.png";
 import semicloudyIcon from "../assets/images/main/semicloudy_icon.png";
 import cloudyrainIcon from "../assets/images/main/cloudyrain_icon.png";
-import moisture from "../assets/images/main/hoverBoxIcons/img_mois.png";
-import noise from "../assets/images/main/hoverBoxIcons/img_noise.png";
-import pm25 from "../assets/images/main/hoverBoxIcons/img_pm2.5.png";
-import sensor from "../assets/images/main/hoverBoxIcons/img_sensor.png";
-import temperature from "../assets/images/main/hoverBoxIcons/img_temp.png";
-import tvoc from "../assets/images/main/hoverBoxIcons/img_tvoc.png";
+
 import weatherlocation from "../assets/images/main/location_icon.png";
 import logsensor from "../assets/images/main/sensor_icon.png";
 import currentbuilding from "../assets/images/main/currentBuilding_icon.png";
@@ -473,114 +469,11 @@ function Main() {
                   margin: "4px 4px 20px 4px",
                 }}
               />
-              {sensorData ? (
-                <>
-                  <div className={styles.sensorText}>
-                    <img
-                      src={temperature}
-                      alt="온도"
-                      className={styles.sensorImg}
-                    />
-                    <span>온도</span>
-                    <span style={{ marginLeft: "auto" }}>
-                      {loading ? "--" : `${sensorData.Temperature?.value}°C`}
-                    </span>
-                    <span
-                      className={styles.statusLight}
-                      style={{
-                        backgroundColor: getStatusColor(
-                          sensorData.Temperature?.value,
-                          "temperature"
-                        ),
-                      }}
-                    ></span>
-                  </div>
-                  <div className={styles.sensorText}>
-                    <img
-                      src={moisture}
-                      alt="습도"
-                      className={styles.sensorImg}
-                    />
-                    <span>습도</span>
-                    <span style={{ marginLeft: "auto" }}>
-                      {loading ? "--" : `${sensorData.Humidity?.value}%`}
-                    </span>
-                    <span
-                      className={styles.statusLight}
-                      style={{
-                        backgroundColor: getStatusColor(
-                          sensorData.Humidity?.value,
-                          "humidity"
-                        ),
-                      }}
-                    ></span>
-                  </div>
-                  <div className={styles.sensorText}>
-                    <img src={tvoc} alt="TVOC" className={styles.sensorImg} />
-                    <span>TVOC</span>
-                    <span style={{ marginLeft: "auto" }}>
-                      {loading ? "--" : `${sensorData.TVOC?.value}㎍/m³`}
-                    </span>
-                    <span
-                      className={styles.statusLight}
-                      style={{
-                        backgroundColor: getStatusColor(
-                          sensorData.TVOC?.value,
-                          "tvoc"
-                        ),
-                      }}
-                    ></span>
-                  </div>
-                  <div className={styles.sensorText}>
-                    <img src={pm25} alt="PM2.5" className={styles.sensorImg} />
-                    <span>PM 2.5</span>
-                    <span style={{ marginLeft: "auto" }}>
-                      {loading
-                        ? "--"
-                        : `${sensorData.PM2_5MassConcentration?.value}㎍/m³`}
-                    </span>
-                    <span
-                      className={styles.statusLight}
-                      style={{
-                        backgroundColor: getStatusColor(
-                          sensorData.PM2_5MassConcentration?.value,
-                          "pm25"
-                        ),
-                      }}
-                    ></span>
-                  </div>
-                  <div className={styles.sensorText}>
-                    <img src={noise} alt="소음" className={styles.sensorImg} />
-                    <span>소음</span>
-                    <span style={{ marginLeft: "auto" }}>
-                      {loading ? "--" : `${sensorData.AmbientNoise?.value}db`}
-                    </span>
-                    <span
-                      className={styles.statusLight}
-                      style={{
-                        backgroundColor: getStatusColor(
-                          sensorData.AmbientNoise?.value,
-                          "noise"
-                        ),
-                      }}
-                    ></span>
-                  </div>
-                  <div className={styles.sensorText}>
-                    <img
-                      src={sensor}
-                      alt="센서 상태"
-                      className={styles.sensorImg}
-                    />
-                    <span>센서 상태</span>
-                    <span style={{ marginLeft: "auto" }}>
-                      {loading ? "--" : "ON"}
-                    </span>
-                    <span className={styles.sensorStatus}></span>
-                  </div>
-                </>
-              ) : (
-                <>센서 값을 불러오는 중 . . .</>
-              )}
+              <SensorDetail
+                coord={coordinates[hoveredIndex]}
+                getStatusColor={getStatusColor}
+                hoveredIndex={hoveredIndex}
+              />
             </div>
           )}
         </div>
@@ -618,7 +511,6 @@ function Main() {
     <div>
       <Header />
       <div className={styles.mainContainer}>
-        {/* 환영 메시지 */}
         {showMessage && (
           <div
             className={`${styles.welcomeMessage} ${
@@ -762,11 +654,7 @@ function Main() {
                 <img
                   src={weatherlocation}
                   alt="현재 위치"
-                  style={{
-                    width: "clamp(20px, 2vw, 50px)",
-                    marginRight: "8px",
-                    marginBottom: "-8px",
-                  }}
+                  className={styles.icons}
                 />
                 서울 중구 필동
               </h3>
@@ -776,7 +664,6 @@ function Main() {
               ) : forecast && forecast2 ? (
                 <>
                   <div className={styles.weatherloading}>
-                    {/* 날씨 상태에 따른 이미지 */}
                     <img
                       src={
                         forecast.rain >= "1"
@@ -836,11 +723,7 @@ function Main() {
                 <img
                   src={logsensor}
                   alt="센서 아이콘"
-                  style={{
-                    width: "clamp(20px, 2vw, 50px)",
-                    marginRight: "8px",
-                    marginBottom: "-8px",
-                  }}
+                  className={styles.icons}
                 />
                 센서 수치 이상 로그 기록
               </h3>
