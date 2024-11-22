@@ -36,8 +36,80 @@ function Main() {
   const [forecast2, setForecast2] = useState(null);
   const [loadingdata, setLoading] = useState(true);
   const [hoveredFloor, setHoveredFloor] = useState(null); // 현재 호버 중인 층
-  const navigate = useNavigate();
+  const [allSensorData, setAllSensorData] = useState([]); // 모든 강의실 데이터 저장
   const [nickname, setNickname] = useState("사용자"); // 닉네임 기본값 설정
+  const [sensorLogs, setSensorLogs] = useState([]); //이상수치값
+  const navigate = useNavigate();
+
+  const getLevelColor = (level) => {
+    switch (level) {
+      case "RED":
+        return "red";
+      case "ORANGE":
+        return "red";
+      case "YELLOW":
+        return "red";
+      default:
+        return "black"; // 기본 색상
+    }
+  };
+
+  const fetchSensorLogs = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("토큰이 없습니다. 로그인 후 다시 시도하세요.");
+      return;
+    }
+    try {
+      const response = await API.get("/api/sensorData/abnormalValues", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setSensorLogs(response.data);
+    } catch (error) {
+      console.error("Error fetching sensor logs:", error.response || error);
+    }
+  };
+
+  // 컴포넌트가 마운트될 때 데이터 가져오기
+  useEffect(() => {
+    fetchSensorLogs();
+  }, []);
+
+  // 센서 수치 이상 로그 렌더링 함수
+  const renderSensorLogs = () => (
+    <div
+      style={{
+        maxHeight: "200px",
+        overflowY: "auto",
+      }}
+    >
+      {sensorLogs.length > 0 ? (
+        sensorLogs.map((log, index) => (
+          <div key={index} style={{ marginBottom: "10px" }}>
+            <strong>[{new Date(log.timestamp).toLocaleString()}]</strong>
+            <br />
+            <span>
+              {log.building} {log.name}
+              <span
+                style={{
+                  color: getLevelColor(log.level), // level에 따른 색상 적용
+                  fontWeight: "bold",
+                  marginLeft: "10px",
+                }}
+              >
+                {log.sensorType} {log.value}
+              </span>
+            </span>
+            <br />
+          </div>
+        ))
+      ) : (
+        <div>로그인하시면 이상 수치 로그를 확인할 수 있습니다</div>
+      )}
+    </div>
+  );
 
   useEffect(() => {
     const fetchNickname = async () => {
@@ -173,6 +245,34 @@ function Main() {
   };
 
   useEffect(() => {
+    const fetchAllSensorData = async () => {
+      try {
+        // 모든 강의실 ID에 대한 데이터를 요청
+        const responses = await Promise.all(
+          coordinates.map(async (coord) => {
+            const endpoint = `/api/sensorData/recent/classroom?building=${encodeURIComponent(
+              coord.building
+            )}&name=${encodeURIComponent(coord.id)}`;
+            const response = await API.get(endpoint);
+            return {
+              id: coord.id,
+              IAQIndex: response.data?.IAQIndex?.value || "--",
+            };
+          })
+        );
+
+        // 데이터를 상태로 저장
+        setAllSensorData(responses);
+        console.log("모든 센서 데이터:", responses);
+      } catch (error) {
+        console.error("Error fetching all sensor data:", error);
+      }
+    };
+
+    fetchAllSensorData();
+  }, []); // 컴포넌트 마운트 시 한 번 실행
+
+  useEffect(() => {
     const fetchSensorData = async () => {
       if (hoveredIndex !== null) {
         const hoveredCoord = coordinates[hoveredIndex];
@@ -245,6 +345,14 @@ function Main() {
     return "blue";
   };
 
+  const getIAQColor = (value) => {
+    if (value > 90) return "#5C82F5";
+    if (value > 80 && value <= 90) return "green";
+    if (value > 70 && value <= 80) return "yellow";
+    if (value > 60 && value <= 70) return "orange";
+    return "red";
+  };
+
   // 센서 타입에 따라 적절한 색상 반환
   const getStatusColor = (value, type) => {
     if (type === "temperature") return getTemperatureColor(value);
@@ -252,7 +360,6 @@ function Main() {
     if (type === "tvoc") return getTVOCColor(value);
     if (type === "pm25") return getPM25Color(value);
     if (type === "noise") return getNoiseColor(value);
-    return "blue"; // 기본값
   };
 
   // 각 항목에 해당하는 상태 색상을 가져오는 함수
@@ -271,13 +378,14 @@ function Main() {
   );
 
   const getSensorIAQValue = (id) => {
-    if (!Array.isArray(data)) {
-      console.warn("data가 배열이 아님:", data);
+    const sensor = allSensorData.find((data) => data.id === id);
+    if (!sensor || sensor.IAQIndex === "--") {
+      console.warn(`ID: ${id}에 대한 IAQIndex 데이터 없음.`);
       return "--";
     }
-    const sensor = data.find((sensor) => sensor.name === id); // `name` 속성으로 매칭
-    console.log(`강의실 ID: ${id}, 센서 데이터:`, sensor); // 각 강의실 ID별 데이터 확인
-    return sensor ? sensor.IAQIndex?.value || "--" : "--"; // 데이터가 없으면 "--" 반환
+
+    console.log(`강의실 ID: ${id}, IAQIndex:`, sensor.IAQIndex);
+    return sensor.IAQIndex;
   };
 
   // 좌표별 색상 결정 함수 추가
@@ -291,8 +399,8 @@ function Main() {
   // 도형을 표시하는 함수
   const renderShapes = () => {
     return coordinates.map((coord, index) => {
-      const IAQvalue = getSensorIAQValue(coord.id); // 강의실 번호에 맞는 IAQ 값 가져오기
-      const ringColor = getStatusColor(IAQvalue, "iaq"); // IAQ 값에 따라 링 색상 설정
+      const IAQIndex = getSensorIAQValue(coord.id);
+      const ringColor = getIAQColor(IAQIndex); // 색상 결정
 
       return (
         <div
@@ -306,7 +414,7 @@ function Main() {
             left: `${coord.x}px`,
             width: "16px",
             height: "16px",
-            backgroundColor: getStatusColor(IAQvalue, "iaq"),
+            backgroundColor: ringColor,
             borderRadius: "50%",
             transform: "translate(-50%, -50%)", // 중앙 정렬
             cursor: "pointer",
@@ -432,7 +540,7 @@ function Main() {
                       style={{
                         backgroundColor: getStatusColor(
                           sensorData.PM2_5MassConcentration?.value,
-                          "pm2.5"
+                          "pm25"
                         ),
                       }}
                     ></span>
@@ -845,25 +953,11 @@ function Main() {
                     width: "clamp(20px, 2vw, 50px)",
                     marginRight: "8px",
                     marginBottom: "-8px",
-                  }} // 이미지 크기와 간격 조절
+                  }}
                 />
                 센서 수치 이상 로그 기록
               </h3>
-              <p>
-                [2024.07.20 PM23:56]
-                <br />
-                신공학관 4147 PM 2.5 수치 이상
-              </p>
-              <p>
-                [2024.07.21 AM02:23]
-                <br />
-                신공학관 3173 PM 2.5, 소음 수치 이상
-              </p>
-              <p>
-                [2024.07.21 AM08:18]
-                <br />
-                신공학관 3173 소음 수치 이상
-              </p>
+              {renderSensorLogs()}
             </div>
           </div>
         </div>

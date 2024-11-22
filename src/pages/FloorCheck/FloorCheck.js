@@ -7,6 +7,8 @@ import SideBar from "../../components/common/SideBar/SideBar";
 import styles from "./FloorCheck.module.css";
 import { SensorDataContext } from "../../API/SensorDataContext";
 import AirQualityIndicator from "../../components/common/AirQualityIndicator/AirQualityIndicator";
+import axios from "axios";
+import api from "../../API/api";
 
 function FloorCheck() {
   const { floor } = useParams(); // URL에서 floor 값을 가져옴
@@ -14,8 +16,62 @@ function FloorCheck() {
   const currentFloor = parseInt(floor, 10); // floor 값을 정수로 변환
   const roomIds = ["3115", "3173", "4142", "5145", "5147", "6119", "6144"];
   const currentFloorRooms = roomIds.filter((Id) => Id.startsWith(currentFloor)); // 현재 층에 해당하는 강의실 필터링
-  const [averageIAQ, setAverageIAQ] = useState(null);
-  const [iaqValues, setIaqValues] = useState([]); // IAQ 점수 저장
+  const [iaqValues, setIaqValues] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+
+      // 강의실별 IAQ 데이터 가져오기
+      const iaqData = await Promise.all(
+        currentFloorRooms.map(async (roomId) => {
+          const response = await api.get(
+            `/api/sensorData/recent/classroom?building=신공학관&name=${encodeURIComponent(
+              roomId
+            )}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`, // 필요 시 인증 토큰 추가
+              },
+            }
+          );
+          const iaq = response.data.IAQIndex?.value || 0; // 데이터가 없으면 0으로 대체
+          console.log(`Room ${roomId} IAQIndex:`, iaq);
+          return { roomId, iaq };
+        })
+      );
+
+      setIaqValues(iaqData); // 강의실별 IAQ 데이터 저장
+    } catch (err) {
+      console.error("API 호출 오류:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData(); // 컴포넌트가 마운트될 때 데이터를 한 번 가져옵니다.
+
+    const interval = setInterval(() => {
+      fetchData(); // 10초마다 fetchData를 호출합니다.
+    }, 5000); // 10,000ms = 10초
+
+    return () => clearInterval(interval); // 컴포넌트가 언마운트될 때 인터벌을 정리합니다.
+  }, [currentFloorRooms]);
+
+  const getImageSrc = (iaq) =>
+    iaq >= 86
+      ? require("../../assets/images/smartmirror/good.png")
+      : iaq >= 71
+      ? require("../../assets/images/smartmirror/average.png")
+      : require("../../assets/images/smartmirror/bad.png");
+
+  useEffect(() => {
+    fetchData();
+  }, [currentFloorRooms]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -23,60 +79,38 @@ function FloorCheck() {
       navigate("/"); // token 없으면 '/'로 리다이렉트
     }
   }, [navigate]);
-  const {
-    data: sensorData,
-    setSelectedSensorName,
-    loading,
-  } = useContext(SensorDataContext);
-
-  // 평균 IAQ 계산
-  useEffect(() => {
-    if (!sensorData || loading || !currentFloorRooms.length) return;
-
-    const values = currentFloorRooms.map((roomId) => {
-      const iaq = sensorData[roomId]?.IAQIndex?.value || 0; // 데이터가 없으면 0으로 대체
-      console.log(`Room ${roomId} IAQIndex value:`, iaq);
-      return iaq;
-    });
-
-    if (values.length > 0) {
-      setIaqValues(values);
-      const avg = values.reduce((sum, value) => sum + value, 0) / values.length;
-      setAverageIAQ(avg);
-      console.log(`Average IAQ for floor ${floor}:`, avg);
-    } else {
-      setAverageIAQ(null);
-    }
-  }, [sensorData, loading, currentFloorRooms]);
 
   // 좌표별 색상 결정 함수 추가
-  const getColor = (IAQvalue) => {
-    if (IAQvalue === null) return "gray";
-    if (IAQvalue >= 90) return "green";
-    if (IAQvalue >= 80) return "orange";
+  const getColor = (iaq) => {
+    if (iaq === null) return "gray";
+    if (iaq >= 90) return "#5C82F5";
+    if (iaq >= 80) return "#8BC34A";
+    if (iaq >= 70) return "yellow";
+    if (iaq >= 60) return "orange";
     else return "red";
   };
 
-  useEffect(() => {
-    if (!loading) {
-      console.log("sensorData:", sensorData);
-      console.log("IAQIndex value:", sensorData?.IAQIndex?.value);
-    }
-  }, [sensorData, loading]);
+  // 층별 이미지 경로 정의
+  const floorImages = {
+    3: "/FloorPlan/3층.png",
+    4: "/FloorPlan/4층.png",
+    5: "/FloorPlan/5층.png",
+    6: "/FloorPlan/6층.png",
+  };
 
   const coordinates = {
     3: [
-      { id: "3115", x: 32, y: 220 },
-      { id: "3173", x: 200, y: 180 },
+      { id: "3115", x: 28, y: 212 },
+      { id: "3173", x: 196, y: 172 },
     ],
-    4: [{ id: "4142", x: 270, y: 490 }],
+    4: [{ id: "4142", x: 266, y: 482 }],
     5: [
-      { id: "5145", x: 100, y: 490 },
-      { id: "5147", x: 188, y: 490 },
+      { id: "5145", x: 96, y: 482 },
+      { id: "5147", x: 184, y: 482 },
     ],
     6: [
-      { id: "6119", x: 310, y: 30 },
-      { id: "6144", x: 212, y: 490 },
+      { id: "6119", x: 306, y: 22 },
+      { id: "6144", x: 208, y: 482 },
     ],
   };
 
@@ -84,15 +118,6 @@ function FloorCheck() {
   const handleFloorChange = (selectedFloor) => {
     navigate(`/floorcheck/${selectedFloor}`); // 선택한 층으로 URL 변경
   };
-
-  // IAQIndex 값을 기반으로 이미지 경로 결정
-  const iaqImageSrc = loading
-    ? ". . .Loading . . ."
-    : sensorData.IAQIndex?.value >= 86
-    ? require("../../assets/images/smartmirror/good.png")
-    : sensorData.IAQIndex?.value >= 71
-    ? require("../../assets/images/smartmirror/average.png")
-    : require("../../assets/images/smartmirror/bad.png");
 
   return (
     <div>
@@ -105,7 +130,7 @@ function FloorCheck() {
             <div className={styles.floorMapContainer}>
               <div className={styles.floorMap}>
                 <img
-                  src={`/FloorPlan/${currentFloor}층.png`}
+                  src={floorImages[currentFloor]} // 현재 층 이미지
                   alt={`${currentFloor}층 구조도`}
                   className={styles.mapImage}
                 />
@@ -130,15 +155,7 @@ function FloorCheck() {
                     </div>
                   ))}
                 </div>
-                <div
-                  className={styles.floorButtons}
-                  style={{
-                    display: "flex",
-                    gap: "16px",
-                    marginLeft: "8%",
-                    marginTop: "6%",
-                  }}
-                >
+                <div className={styles.floorButtons}>
                   {[3, 4, 5, 6].map((floor) => (
                     <button
                       key={floor}
@@ -147,11 +164,6 @@ function FloorCheck() {
                       style={{
                         backgroundColor:
                           currentFloor === floor ? "#ffd690" : "#fff1d9",
-                        width: "20%",
-                        fontSize: "90%",
-                        fontWeight: "bold",
-                        textAlign: "center",
-                        color: "#5f5f5f",
                       }}
                     >
                       {floor}층
@@ -162,62 +174,58 @@ function FloorCheck() {
             </div>
 
             <div className={styles.infoPanels}>
-              {currentFloorRooms.map((roomId, index) => (
-                <div className={styles.infoPanel} key={index}>
-                  <h2
-                    style={{
-                      margin: "8px 8px 20px 8px",
-                      fontSize: "28px",
-                    }}
-                  >
-                    {roomId} 강의실
-                  </h2>
-                  <hr
-                    style={{
-                      border: "0.5px solid black",
-                      margin: "8px 8px 24px 8px",
-                    }}
-                  />
-                  <div
-                    style={{
-                      width: "180%",
-                      margin: "5%",
-                    }}
-                  >
-                    <AirQualityIndicator classRoom={roomId} />
+              {currentFloorRooms.map((roomId, index) => {
+                // iaqValues에서 해당 roomId의 데이터를 찾기
+                const roomData = iaqValues.find(
+                  (data) => data.roomId === roomId
+                );
+
+                // iaq 값이 없을 경우 기본값 설정
+                const iaq = roomData ? roomData.iaq : 0;
+                return (
+                  <div className={styles.infoPanel} key={roomId}>
+                    <h2
+                      style={{
+                        margin: "8px 8px 24px 8px",
+                        fontSize: "28px",
+                      }}
+                    >
+                      {roomId} 강의실
+                    </h2>
+                    <hr
+                      style={{
+                        margin: "8px 8px 24px 8px",
+                      }}
+                    />
+                    <div
+                      style={{
+                        width: "180%",
+                        margin: "6%",
+                      }}
+                    >
+                      <AirQualityIndicator classRoom={roomId} />
+                    </div>
+                    <hr
+                      style={{
+                        margin: "24px 4px 12px 4px",
+                      }}
+                    />
+                    <div className={styles.averageIAQ}>
+                      <img
+                        src={getImageSrc(iaq)} // 평균값에 따라 이미지 설정
+                        alt={iaq >= 86 ? "good" : iaq >= 71 ? "average" : "bad"}
+                        style={{ width: "40%" }}
+                      />
+                      <div
+                        className={styles.IAQscore}
+                        style={{ color: getColor(iaq) }}
+                      >
+                        {iaq}점
+                      </div>
+                    </div>
                   </div>
-                  <hr
-                    style={{
-                      border: "0.5px solid #9c9c9c",
-                      margin: "24px 4px 12px 4px",
-                    }}
-                  />
-                  {/* <div
-                    className={styles.infoScore}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      marginTop: "4%",
-                    }}
-                  >
-                    <span>
-                      {loading
-                        ? "--"
-                        : sensorData[roomId]?.IAQIndex?.value || "데이터 없음"}
-                    </span>
-                  </div> */}
-                </div>
-              ))}
-              {/* <div className={styles.averageIAQ}>
-                <h3>평균 IAQ 값</h3>
-                <span>
-                  {loading
-                    ? "로딩 중..."
-                    : averageIAQ !== null
-                    ? averageIAQ.toFixed(2)
-                    : "데이터 없음"}
-                </span>
-              </div> */}
+                );
+              })}
             </div>
           </div>
         </div>

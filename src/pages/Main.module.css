@@ -1,3 +1,21 @@
+.sensorLogs > div {
+  scrollbar-width: thin;
+  scrollbar-color: gray lightgray;
+}
+
+.sensorLogs > div::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sensorLogs > div::-webkit-scrollbar-thumb {
+  background: gray;
+  border-radius: 4px;
+}
+
+.sensorLogs > div::-webkit-scrollbar-track {
+  background: lightgray;
+}
+
 /*Main.module.css*/
 .mainContainer {
   padding: 20px;

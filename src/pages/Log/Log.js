@@ -12,17 +12,17 @@ function Log() {
   const [endDate, setEndDate] = useState('');
   const [activeSensors, setActiveSensors] = useState([]);
   const [sensorData, setSensorData] = useState([]);
-  const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [roomList, setRoomList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
   const observerRef = useRef();
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate('/'); // token 없으면 '/'로 리다이렉트
+      navigate('/');
     }
   }, [navigate]);
 
@@ -73,56 +73,95 @@ function Log() {
     }
   };
 
-  const fetchSensorData = async (reset = false) => {
-    if (activeSensors.length > 0 && selectedRoom) {
-      try {
-        setLoading(true);
-        const encodedBuilding = encodeURIComponent('신공학관');
-        const encodedStartDate = startDate ? encodeURIComponent(moment(startDate).format('YYYY-MM-DDTHH:mm:ss')) : null;
-        const encodedEndDate = endDate ? encodeURIComponent(moment(endDate).format('YYYY-MM-DDTHH:mm:ss')) : null;
-  
-        const sensorTypesParams = activeSensors.map(sensor => `sensorTypes=${getSensorType(sensor)}`).join('&');
-        const url = `/api/sensorData/classroom/betweenDates?${sensorTypesParams}&building=${encodedBuilding}&name=${selectedRoom}&startDate=${encodedStartDate}&endDate=${encodedEndDate}&order=DESC&page=${page}&size=10`;
-  
-        const token = localStorage.getItem("token");
-        const response = await API.get(url, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-  
-        if (response.data && response.data.data) {
-          const fetchedData = response.data.data.filter(
-            data => data.sensorType !== 'WaterDetection'
-          );
-  
-          setSensorData((prevData) => (reset ? fetchedData : [...prevData, ...fetchedData]));
-          setHasMore(fetchedData.length === 10);
-        } else {
-          setHasMore(false);
-        }
-  
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching sensor data:", error);
-        setLoading(false);
+  const getBorderColor = (value, type) => {
+    switch (type) {
+      case 'Temperature':
+        if (value < 16.5 || value > 27.5) return 'red';
+        if ((value >= 16.5 && value < 17.6) || (value > 26.4 && value <= 27.5)) return 'orange';
+        if ((value >= 17.6 && value < 18.7) || (value > 25.3 && value <= 26.4)) return '#FFFA00';
+        return 'green';
+      case 'Humidity':
+        if (value < 10 || value > 90) return 'red';
+        if ((value >= 10 && value < 20) || (value > 80 && value <= 90)) return 'orange';
+        if ((value >= 20 && value < 30) || (value > 70 && value <= 80)) return '#FFFA00';
+        return 'green';
+      case 'TVOC':
+        if (value > 10000) return 'red';
+        if (value > 3000 && value <= 10000) return 'orange';
+        if (value > 1000 && value <= 3000) return '#FFFA00';
+        return 'green';
+      case 'PM2_5MassConcentration':
+        if (value > 64) return 'red';
+        if (value > 53 && value <= 64) return 'orange';
+        if (value > 41 && value <= 53) return '#FFFA00';
+        return 'green';
+      case 'AmbientNoise':
+        if (value > 80) return 'red';
+        if (value > 70 && value <= 80) return 'orange';
+        if (value > 60 && value <= 70) return '#FFFA00';
+        return 'green';
+      default:
+        return 'black';
+    }
+  };
+
+  const fetchSensorData = async (page) => {
+    try {
+      setLoading(true);
+      const encodedBuilding = encodeURIComponent('신공학관');
+      const encodedStartDate = startDate ? encodeURIComponent(moment(startDate).format('YYYY-MM-DDTHH:mm:ss')) : null;
+      const encodedEndDate = endDate ? encodeURIComponent(moment(endDate).format('YYYY-MM-DDTHH:mm:ss')) : null;
+      const sensorTypesParams = activeSensors.map(sensor => `sensorTypes=${getSensorType(sensor)}`).join('&');
+
+      const url = `/api/sensorData/classroom/betweenDates?${sensorTypesParams}&building=${encodedBuilding}&name=${selectedRoom}&startDate=${encodedStartDate}&endDate=${encodedEndDate}&order=DESC&page=${page}&size=10`;
+      const token = localStorage.getItem("token");
+
+      const response = await API.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data && response.data.data) {
+        const fetchedData = response.data.data;
+        setSensorData((prevData) => [...prevData, ...fetchedData]);
+        setHasMore(fetchedData.length === 10);
+      } else {
+        setHasMore(false);
       }
+    } catch (error) {
+      console.error("Error fetching sensor data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     if (startDate && endDate && selectedRoom) {
       setSensorData([]);
-      setPage(0);
-      fetchSensorData(true);
+      setCurrentPage(0);
+      setHasMore(true);
     }
-  }, [selectedRoom, activeSensors, startDate, endDate]);
+  }, [startDate, endDate, selectedRoom, activeSensors]);
 
   useEffect(() => {
-    if (page === 0 || (page > 0 && hasMore)) {
-      fetchSensorData(page === 0);
+    if (startDate && endDate && selectedRoom && hasMore) {
+      fetchSensorData(currentPage);
     }
-  }, [page]);
+  }, [currentPage, startDate, endDate, selectedRoom, activeSensors]);
+
+  const handleObserver = useCallback((entries) => {
+    const target = entries[0];
+    if (target.isIntersecting && hasMore && !loading) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  }, [hasMore, loading]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleObserver, { threshold: 1.0 });
+    if (observerRef.current) observer.observe(observerRef.current);
+    return () => observer.disconnect();
+  }, [handleObserver]);
 
   const handleSensorChange = (sensor) => {
     setActiveSensors((prevSensors) =>
@@ -130,62 +169,7 @@ function Log() {
         ? prevSensors.filter((s) => s !== sensor)
         : [...prevSensors, sensor]
     );
-    setPage(0);
-    setSensorData([]);
-    setHasMore(true);
   };
-
-  const lastElementRef = useCallback((node) => {
-    if (loading || !hasMore) return;
-    if (observerRef.current) observerRef.current.disconnect();
-
-    observerRef.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        setPage((prevPage) => prevPage + 1);
-      }
-    });
-
-    if (node) observerRef.current.observe(node);
-  }, [loading, hasMore]);
-
-  const getBorderColor = (value, type) => {
-    switch (type) {
-      case 'Temperature':
-        if (value < 16.5 || value > 27.5) return 'red';
-        if ((value >= 16.5 && value < 17.6) || (value > 26.4 && value <= 27.5)) return 'orange';
-        if ((value >= 17.6 && value < 18.7) || (value > 25.3 && value <= 26.4)) return '#FFFA00';
-        if ((value >= 18.7 && value < 19.8) || (value > 24.2 && value <= 25.3)) return 'green';
-        return 'blue';
-      case 'Humidity':
-        if (value < 10 || value > 90) return 'red';
-        if ((value >= 10 && value < 20) || (value > 80 && value <= 90)) return 'orange';
-        if ((value >= 20 && value < 30) || (value > 70 && value <= 80)) return '#FFFA00';
-        if ((value >= 30 && value < 40) || (value > 60 && value <= 70)) return 'green';
-        return 'blue';
-      case 'TVOC':
-        if (value > 10000) return 'red';
-        if (value > 3000 && value <= 10000) return 'orange';
-        if (value > 1000 && value <= 3000) return '#FFFA00';
-        if (value > 300 && value <= 1000) return 'green';
-        return 'blue';
-      case 'PM2_5MassConcentration':
-        if (value > 64) return 'red';
-        if (value > 53 && value <= 64) return 'orange';
-        if (value > 41 && value <= 53) return '#FFFA00';
-        if (value > 23 && value <= 41) return 'green';
-        return 'blue';
-      case 'AmbientNoise':
-        if (value > 80) return 'red';
-        if (value > 70 && value <= 80) return 'orange';
-        if (value > 60 && value <= 70) return '#FFFA00';
-        if (value > 50 && value <= 60) return 'green';
-        return 'blue';
-      default:
-        return 'black';
-    }
-  };
-
-  const getDataValue = (data) => data.value !== null ? data.value : '--';
 
   return (
     <div>
@@ -193,33 +177,31 @@ function Log() {
       <div className={styles.container}>
         <SideBar />
         <div className={styles.content}>
-        <div className={styles.filters}>
-  <div className={styles.filterItem}>
-    <label>강의실: </label>
-    <select value={selectedRoom} onChange={(e) => setSelectedRoom(e.target.value)}>
-      <option value="" disabled>강의실 선택</option>
-      {roomList
-        .filter((room) => !/[\uAC00-\uD7AF]/.test(room.name)) // 한글이 포함된 이름 필터링
+          <div className={styles.filters}>
+            <div className={styles.filterItem}>
+              <label>강의실: </label>
+              <select value={selectedRoom} onChange={(e) => setSelectedRoom(e.target.value)}>
+                <option value="" disabled>강의실 선택</option>
+                {roomList.filter((room) => !/[\uAC00-\uD7AF]/.test(room.name)) // 한글이 포함된 이름 필터링
         .map((room) => (
           <option key={room.id} value={room.name}>{room.name}</option>
-        ))}
-    </select>
-  </div>
-  <div className={styles.filterItem}>
-    <label>기간: </label>
-    <input
-      type="datetime-local"
-      value={startDate}
-      onChange={(e) => setStartDate(e.target.value)}
-    />
-    <input
-      type="datetime-local"
-      value={endDate}
-      onChange={(e) => setEndDate(e.target.value)}
-    />
-  </div>
-</div>
-
+                ))}
+              </select>
+            </div>
+            <div className={styles.filterItem}>
+              <label>기간: </label>
+              <input
+                type="datetime-local"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+              <input
+                type="datetime-local"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </div>
+          </div>
 
           <div className={styles.tabs}>
             {['온도', '습도', 'TVOC', 'PM2.5', '소음'].map((sensor) => (
@@ -235,44 +217,35 @@ function Log() {
           </div>
 
           <div className={styles.sensorData}>
-            {activeSensors.includes('PM2.5') && selectedRoom && startDate && endDate ? (
-              sensorData.filter((data) => data.sensorType === 'PM2_5MassConcentration').length === 0 ? (
-                <div className={styles.noData}>
-                  <span>{`해당 강의실은 PM2.5 값을 측정하지 않습니다.`}</span>
-                </div>
-              ) : (
-                sensorData.map((data, index) => (
-                  <div
-                    key={index}
-                    className={styles.sensorItem}
-                    style={{
-                      borderColor: getBorderColor(getDataValue(data), data.sensorType),
-                    }}
-                    ref={index === sensorData.length - 1 ? lastElementRef : null}
-                  >
-                    <span>{`[${moment(data.timestamp).format("YYYY-MM-DDTHH:mm:ss")}]`}</span>
-                    <span>{`${selectedRoom} 강의실`}</span>
-                    <span>{`${getSensorNameInKorean(data.sensorType)}: ${getDataValue(data)}`}</span>
-                  </div>
-                ))
-              )
+            {!selectedRoom || !startDate || !endDate || activeSensors.length === 0 ? (
+              <div className={styles.noDataBox}>
+                <p>센서 로그값을 확인하고 싶은 강의실, 기간, 센서 종류를 선택하세요</p>
+              </div>
+            ) : sensorData.length === 0 ? (
+              <div className={styles.noDataBox}>
+                <p>{`해당 강의실은 ${activeSensors.join(', ')} 값을 측정하지 않습니다.`}</p>
+              </div>
             ) : (
               sensorData.map((data, index) => (
                 <div
                   key={index}
                   className={styles.sensorItem}
                   style={{
-                    borderColor: getBorderColor(getDataValue(data), data.sensorType),
+                    borderColor: getBorderColor(data.value, data.sensorType),
                   }}
-                  ref={index === sensorData.length - 1 ? lastElementRef : null}
                 >
                   <span>{`[${moment(data.timestamp).format("YYYY-MM-DDTHH:mm:ss")}]`}</span>
                   <span>{`${selectedRoom} 강의실`}</span>
-                  <span>{`${getSensorNameInKorean(data.sensorType)}: ${getDataValue(data)}`}</span>
+                  <span>{`${getSensorNameInKorean(data.sensorType)}: ${data.value !== null ? data.value : '--'}`}</span>
                 </div>
               ))
             )}
-            {loading && <p>Loading...</p>}
+            {loading && (
+              <div className={styles.loadingBox}>
+                <p>Loading...</p>
+              </div>
+            )}
+            <div ref={observerRef}></div>
           </div>
         </div>
       </div>
