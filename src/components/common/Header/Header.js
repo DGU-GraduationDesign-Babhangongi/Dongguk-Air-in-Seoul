@@ -120,8 +120,12 @@ const Header = ({ i }) => {
               {showToast && !toastDismissed && (
   <div className={styles.toast}>
     <div className={styles.toastHeader}>
-      <span>상태 알림 </span>
-      <span>{new Date(alertMessage.timestamp).toLocaleString()}</span>
+      <span>상태 알림 {new Date(alertMessage.timestamp).toLocaleString()}
+      <button 
+        onClick={() => setShowToast(false)}
+        className={styles.toastCloseButton}
+        aria-label="닫기"
+      >×</button></span>
     </div>
     <hr className={styles.toastSeparator} />
     <div className={styles.toastContent}>
@@ -133,6 +137,9 @@ const Header = ({ i }) => {
     </div>
   </div>
 )}
+
+
+
 
             </div>
 
