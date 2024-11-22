@@ -670,14 +670,7 @@ function Main() {
               >
                 신공학관
               </div>
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: "16px",
-                  marginTop: "10px",
-                  zIndex: 10,
-                }}
-              >
+              <p className={styles.another}>
                 <span
                   onClick={() => (window.location.href = "/")}
                   onMouseEnter={(e) => {
@@ -733,7 +726,6 @@ function Main() {
                 </p>
               </div>
             </div>
-
             <div
               className={`${styles.building} ${
                 selectedBuilding !== null && selectedBuilding !== "신공학관"
@@ -812,12 +804,7 @@ function Main() {
                 <img
                   src={weatherlocation}
                   alt="위치 아이콘"
-                  style={{
-                    fontSize: "clamp(15px, 1.6vw, 25px)",
-                    width: "clamp(20px, 2vw, 50px)",
-                    marginRight: "0.5vw",
-                    marginBottom: "-4px",
-                  }} // 이미지 크기와 간격 조절
+                  className={styles.weatherlocation}
                 />
                 서울 중구 필동
               </h2>
@@ -826,13 +813,7 @@ function Main() {
                 <p>Loading weather data...</p>
               ) : forecast && forecast2 ? (
                 <>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
+                  <div className={styles.weatherloading}>
                     {/* 날씨 상태에 따른 이미지 */}
                     <img
                       src={
@@ -845,31 +826,13 @@ function Main() {
                           : cloudyIcon
                       }
                       alt="날씨 이미지"
-                      style={{
-                        width: "clamp(70px, 7vw, 200px)", // 이미지 크기 조정
-                        filter: "drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.2))",
-                      }}
+                      className={styles.weatherImg}
                     />
-                    <h1
-                      className={styles.weatherTemperature}
-                      style={{
-                        fontSize: "clamp(25px, 3vw, 100px)",
-                        fontWeight: "bold",
-                        textAlign: "right",
-                      }}
-                    >
+                    <h1 className={styles.weatherTemperature}>
                       {forecast.temperature}°C
                     </h1>
                   </div>
-
-                  <p
-                    className={styles.weatherRain}
-                    style={{
-                      fontSize: "2vw",
-                      textAlign: "center",
-                      color: "black",
-                    }}
-                  >
+                  <p className={styles.weatherRain}>
                     {forecast.rain >= "1"
                       ? "흐리고 비"
                       : forecast.cloudy === "1"
@@ -878,29 +841,13 @@ function Main() {
                       ? "구름많음"
                       : "흐림"}
                   </p>
-                  <p
-                    className={styles.weatherMinMax}
-                    style={{
-                      fontSize: "clamp(9px, 1vw, 13px)",
-                      textAlign: "right",
-                      fontWeight: "600",
-                      marginTop: "10px",
-                      color: "black",
-                    }}
-                  >
+                  <p className={styles.weatherMinMax}>
                     최고 {forecast2.maxTemp}°C / 최저 {forecast2.minTemp}°C
                     <span style={{ marginLeft: "0.5vw" }}>
                       습도 {forecast.humidity}%
                     </span>
                   </p>
-                  <p
-                    style={{
-                      textAlign: "right",
-                      fontSize: "clamp(9px, 1vw, 13px)",
-                      marginBottom: "10px",
-                      color: "black",
-                    }}
-                  >
+                  <p className={styles.weatherMinMax2}>
                     {" "}
                     {formatDate(dateTime)}
                   </p>
@@ -910,17 +857,7 @@ function Main() {
                       textAlign: "right",
                     }}
                   >
-                    <p
-                      className={styles.weatherAdvice}
-                      style={{
-                        textAlign: "right",
-                        whiteSpace: "pre-line", // 줄바꿈 적용
-                        fontSize: "clamp(11px, 1.2vw, 18px)",
-                        color: "black",
-                      }}
-                    >
-                      {getWeatherAdvice()}
-                    </p>
+                    <p className={styles.weatherAdvice}>{getWeatherAdvice()}</p>
                   </p>
                 </>
               ) : (
@@ -956,15 +893,7 @@ function Main() {
               <div className={styles.dividers}></div>
               <p>{popupContent}</p>
               <div className={styles.divider}></div>
-              <p
-                className={styles.signupText}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  whiteSpace: "nowrap",
-                  marginLeft: "16px",
-                }}
-              >
+              <p className={styles.signupText}>
                 <button
                   onClick={() => (window.location.href = "/contact")}
                   className={styles.popupButton}
@@ -1007,5 +936,4 @@ function Main() {
     </div>
   );
 }
-
 export default Main;
