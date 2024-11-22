@@ -101,30 +101,46 @@ function Main() {
       }}
     >
       {sensorLogs.length > 0 ? (
-        sensorLogs.map((log, index) => (
-          <div key={index} style={{ marginBottom: "10px" }}>
-            <strong>[{new Date(log.timestamp).toLocaleString()}]</strong>
-            <br />
-            <span>
-              {log.building} {log.name}
-              <span
-                style={{
-                  color: getLevelColor(log.level), // level에 따른 색상 적용
-                  fontWeight: "bold",
-                  marginLeft: "10px",
-                }}
-              >
-                {log.sensorType} {log.value}
+        sensorLogs.map((log, index) => {
+          const date = new Date(log.timestamp);
+          const formattedDate = `${date.getFullYear()}. ${
+            (date.getMonth() + 1).toString().padStart(2, "0")
+          }. ${date.getDate().toString().padStart(2, "0")}. ${date
+            .getHours()
+            .toString()
+            .padStart(2, "0")}:${date
+            .getMinutes()
+            .toString()
+            .padStart(2, "0")}:${date
+            .getSeconds()
+            .toString()
+            .padStart(2, "0")}`;
+          return (
+            <div key={index} style={{ marginBottom: "10px" }}>
+              <strong>[{formattedDate}]</strong>
+              <br />
+              <span>
+                {log.building} {log.name}
+                <span
+                  style={{
+                    color: getLevelColor(log.level), // level에 따른 색상 적용
+                    fontWeight: "bold",
+                    marginLeft: "10px",
+                  }}
+                >
+                  {log.sensorType} {log.value}
+                </span>
               </span>
-            </span>
-            <br />
-          </div>
-        ))
+              <br />
+            </div>
+          );
+        })
       ) : (
         <div>로그인하시면 이상 수치 로그를 확인할 수 있습니다</div>
       )}
     </div>
   );
+  
 
   useEffect(() => {
     const fetchNickname = async () => {
