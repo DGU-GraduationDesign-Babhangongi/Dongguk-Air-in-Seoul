@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-import styles from './NEBDropdown.module.css';
 import API from '../../../../API/api';
+
+import styles from './NEBDropdown.module.css';
 
 const CustomDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px', width = '100%', oppositeClassroom }) => {
   const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const buildingName='신공학관';
+  
   useEffect(() => {
     const token = localStorage.getItem("token");
     const fetchData = async () => {
-      const encodedBuilding = encodeURIComponent('신공학관');
+      const encodedBuilding = encodeURIComponent(buildingName);
       try {
         const endpoint = `/api/classrooms/myFavorites?building=${encodedBuilding}&favoriteFirst=false&orderDirection=asc`;
         const responses = await API.get(endpoint, {
