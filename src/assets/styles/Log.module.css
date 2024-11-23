@@ -8,14 +8,12 @@
        url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf') format('truetype');
 }
 
-/* 메인 컨테이너 레이아웃 */
 .container {
   display: flex;
   height: 90vh;
   font-family: 'NanumBarunGothic', sans-serif;
 }
 
-/* 콘텐츠 스타일 */
 .content {
   width: 96%;
   flex-grow: 1;
@@ -25,11 +23,10 @@
   font-family: 'NanumBarunGothic';
 }
 
-/* 필터들을 가로로 동일한 축에 맞추기 위한 수정 */
 .filters {
   display: flex;
   flex-direction: row;
-  align-items: center; /* 필터 항목 전체를 세로 가운데 정렬 */
+  align-items: center; 
   gap: 20px;
   padding: 10px;
   margin-bottom: 20px;
@@ -39,15 +36,15 @@
 
 .filterItem {
   display: flex;
-  align-items: center; /* 요소들을 수평 중앙 정렬 */
+  align-items: center; 
   gap: 10px;
 }
 
 .filterItem label {
   display: inline-block;
-  line-height: 30px; /* 레이블의 높이 조정 */
-  font-size: 16px; /* 필요에 따라 글자 크기 조정 */
-  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  line-height: 30px; 
+  font-size: 16px; 
+  white-space: nowrap; 
 }
 
 .filterItem input, 
@@ -55,11 +52,10 @@
   padding: 5px;
   border-radius: 5px;
   border: 2px solid #888;
-  height: 30px; /* 입력창 높이 고정 */
+  height: 30px; 
   box-sizing: border-box;
 }
 
-/* 탭 스타일 */
 .tabs {
   display: flex;
   justify-content: start;
@@ -71,7 +67,7 @@
 
 .tabLabel {
   display: flex;
-  align-items: center; /* 체크박스와 텍스트를 수평 정렬 */
+  align-items: center; 
   gap: 5px;
   white-space: nowrap;
   font-size: 16px;
@@ -79,10 +75,9 @@
 
 .tabLabel input[type="checkbox"] {
   margin: 0;
-  vertical-align: middle; /* 체크박스 세로 정렬 */
+  vertical-align: middle; 
 }
 
-/* 센서 데이터 목록 */
 .sensorData {
   flex-grow: 1;
   overflow-y: auto;
@@ -109,25 +104,21 @@
   white-space: nowrap;
 }
 
-/* 첫 번째 텍스트 (날짜) */
 .sensorItem span:nth-child(1) {
   width: 150px;
   text-align: left;
 }
 
-/* 두 번째 텍스트 (강의실 정보) */
 .sensorItem span:nth-child(2) {
   flex-grow: 1;
   text-align: center;
 }
 
-/* 세 번째 텍스트 (TVOC 값) */
 .sensorItem span:nth-child(3) {
   width: 150px;
   text-align: right;
 }
 
-/* 하단 스타일 */
 .bottom {
   padding: 2% 4%;
   background-color: #F0F0F0;
@@ -136,7 +127,6 @@
   font-family: 'NanumBarunGothic';
 }
 
-/* 스크롤바 스타일 */
 .sensorData::-webkit-scrollbar {
   width: 10px;
 }

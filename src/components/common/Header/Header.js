@@ -2,17 +2,17 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Header.module.css";
 import API from "../../../API/api";
-import alarmRed from "../../../assets/images/alarmred.png"; // 빨간색 알림 아이콘
-import alarmGray from "../../../assets/images/Header/alarm.png"; // 기본 알림 아이콘
+import alarmRed from "../../../assets/images/alarmred.png";
+import alarmGray from "../../../assets/images/Header/alarm.png";
 
 const Header = ({ i }) => {
   const navigate = useNavigate();
-  const [token, setToken] = useState(localStorage.getItem("token")); // token 상태
-  const [nickname, setNickname] = useState(""); // 사용자 닉네임 상태
-  const [hasAlert, setHasAlert] = useState(JSON.parse(localStorage.getItem("hasAlert")) || false); // 알림 상태
-  const [showToast, setShowToast] = useState(false); // Toast 상태
-  const [alertMessage, setAlertMessage] = useState({}); // Toast에 표시할 알림 메시지
-  const [toastDismissed, setToastDismissed] = useState(false); // Toast 닫힘 상태
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [nickname, setNickname] = useState("");
+  const [hasAlert, setHasAlert] = useState(JSON.parse(localStorage.getItem("hasAlert")) || false);
+  const [showToast, setShowToast] = useState(false);
+  const [alertMessage, setAlertMessage] = useState({});
+  const [toastDismissed, setToastDismissed] = useState(false);
 
   const getUnit = (sensorType) => {
     switch (sensorType) {
@@ -27,10 +27,10 @@ const Header = ({ i }) => {
       case "AmbientNoise":
         return "dB";
       default:
-        return ""; // 단위가 없는 경우
+        return "";
     }
   };
-  
+
   // localStorage 변경 감지
   useEffect(() => {
     const handleStorageChange = () => setToken(localStorage.getItem("token"));
@@ -82,8 +82,8 @@ const Header = ({ i }) => {
 
   // 알림 클릭 시 처리
   const handleAlertClick = () => {
-    setHasAlert(false); 
-    setShowToast(false); 
+    setHasAlert(false);
+    setShowToast(false);
     setToastDismissed(true);
     localStorage.setItem("hasAlert", false);
   };
@@ -118,29 +118,25 @@ const Header = ({ i }) => {
               </Link>
               {/* Toast 알림 표시 */}
               {showToast && !toastDismissed && (
-  <div className={styles.toast}>
-    <div className={styles.toastHeader}>
-      <span>상태 알림 {new Date(alertMessage.timestamp).toLocaleString()}
-      <button 
-        onClick={() => setShowToast(false)}
-        className={styles.toastCloseButton}
-        aria-label="닫기"
-      >×</button></span>
-    </div>
-    <hr className={styles.toastSeparator} />
-    <div className={styles.toastContent}>
-      <p>
-        {alertMessage.building} {alertMessage.name} 강의실 <br />
-        {alertMessage.sensorType} {alertMessage.value}
-        {getUnit(alertMessage.sensorType)}
-      </p>
-    </div>
-  </div>
-)}
-
-
-
-
+                <div className={styles.toast}>
+                  <div className={styles.toastHeader}>
+                    <span>상태 알림 {new Date(alertMessage.timestamp).toLocaleString()}
+                      <button
+                        onClick={() => setShowToast(false)}
+                        className={styles.toastCloseButton}
+                        aria-label="닫기"
+                      >×</button></span>
+                  </div>
+                  <hr className={styles.toastSeparator} />
+                  <div className={styles.toastContent}>
+                    <p>
+                      {alertMessage.building} {alertMessage.name} 강의실 <br />
+                      {alertMessage.sensorType} {alertMessage.value}
+                      {getUnit(alertMessage.sensorType)}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
 
             <Link to="/log" className={styles.navLink}>

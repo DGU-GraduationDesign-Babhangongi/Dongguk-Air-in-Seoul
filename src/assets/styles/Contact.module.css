@@ -8,10 +8,9 @@
        url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf') format('truetype');
 }
 
-/* 기본 폰트 설정 */
 body {
   font-family: 'NanumBarunGothic', Arial, sans-serif;
-  background-color: #ffffff; /* 전체 페이지 배경색 */
+  background-color: #ffffff; 
   margin: 0;
   padding: 0;
 }
@@ -19,11 +18,11 @@ body {
 .banner {
   display: flex;
   align-items: center;
-  background-color: #FFB841; /* 노란색 배너 */
+  background-color: #FFB841; 
   padding: 10px 20px;
   margin-bottom: 20px;
   width: 100%;
-  height: clamp(80px, 18vw, 100px); /* 반응형 높이 */
+  height: clamp(80px, 18vw, 100px); 
   padding: clamp(9px, 1vw, 13px) 2%;
 }
 
@@ -63,7 +62,7 @@ h1 {
   width: 32%;
   height: 580px;
   border: 2px solid #FFB841;
-  overflow-y: auto; /* 내부 내용이 많을 경우 스크롤 허용 */
+  overflow-y: auto;
 }
 
 h2 {
@@ -99,12 +98,12 @@ input, textarea, select {
 
 textarea {
   height: 80px;
-  resize: none; /* 크기 조정 불가능 */
+  resize: none;
 }
 
 button {
   width: 100%;
-  background-color: #FFCC80; /* 버튼 색상 */
+  background-color: #FFCC80; 
   color: #fff;
   padding: 12px;
   border: none;
@@ -114,7 +113,7 @@ button {
 }
 
 button:hover {
-  background-color: #FFB841; /* Hover 시 색상 */
+  background-color: #FFB841; 
 }
 
 .floorDrawings div, .Contact_registerBuilding__map {
@@ -133,7 +132,6 @@ button:hover {
   margin-bottom: 10px;
 }
 
-/* 반응형 디자인 */
 @media (max-width: 768px) {
   .registerSection {
     flex-direction: column;

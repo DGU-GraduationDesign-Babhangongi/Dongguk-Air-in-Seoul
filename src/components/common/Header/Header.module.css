@@ -12,16 +12,16 @@
   width: 96%;
   height: 99%; 
   display: flex;
-  align-items: center; /* 세로 가운데 정렬 */
+  align-items: center; 
   padding: 0;
   justify-content: space-between;
   position: relative;
 }
 
 .nav {
-  width: clamp(360px,40vw,540px); /* 고정 너비로 설정 */
+  width: clamp(360px,40vw,540px); 
   display: flex;
-  align-items: center; /* 세로 가운데 정렬 */
+  align-items: center; 
   justify-content: space-around;
 }
 
@@ -29,8 +29,8 @@
   color: #000000;
   display: flex;
   text-decoration: none;
-  align-items: center; /* 세로 가운데 정렬 */
-  font-size: 18px; /* 고정 크기 설정 */
+  align-items: center; 
+  font-size: 18px; 
   padding: 5px;
   white-space: nowrap;
 }
@@ -40,12 +40,12 @@
 }
 
 .logo {
-  width:  clamp(120px,16vw,12vw); /* 로고 고정 너비 */
+  width:  clamp(120px,16vw,12vw); 
   height: auto;
 }
 
 .icon {
-  width: clamp(10px, 2.8vw, 36px); /* 아이콘 고정 너비 */
+  width: clamp(10px, 2.8vw, 36px);
   height: auto;
   margin-right: 8px;
 }
@@ -53,7 +53,7 @@
 .font {
   font-size: clamp(10px,1.8vw,20px);
   display: flex;
-  align-items: center; /* 세로 가운데 정렬 */
+  align-items: center;
 }
 
 .separator {
@@ -68,12 +68,12 @@
 
 .toast {
   position: absolute;
-  top: 100%; /* 버튼 바로 아래 */
+  top: 100%; 
   left: 0;
-  transform: translateY(10px); /* 살짝 아래로 이동 */
+  transform: translateY(10px); 
   background-color: #ffe3c4;
   padding: 10px;
-  border-radius: 8px; /* 왼쪽 위 모서리를 각지게 */
+  border-radius: 8px; 
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 9999;
   width: 350px;
@@ -87,8 +87,8 @@
 }
 
 .toastContent {
-  font-size: 14px; /* 폰트 크기 지정 */
-  line-height: 1.5; /* 줄 간격 설정 */
+  font-size: 14px; 
+  line-height: 1.5; 
 }
 
 .toast::before {
@@ -104,34 +104,32 @@
 }
 
 .toastHeader {
-  display: flex; /* 수평 정렬을 위한 Flexbox */
-  justify-content: space-between; /* 요소를 양쪽 정렬 */
-  align-items: center; /* 세로 중앙 정렬 */
-  position: relative; /* 상대 위치 */
-  font-weight: bold; /* 글씨 굵게 */
-  gap: 5px; /* 요소 간 간격 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  position: relative; 
+  font-weight: bold; 
+  gap: 5px; 
 }
 
-
-
 .toastCloseButton {
-  position: absolute; /* 절대 위치로 고정 */
-  top: -5px; /* 부모 요소 위쪽에서 10px 떨어짐 */
-  right: 3px; /* 부모 요소 오른쪽에서 10px 떨어짐 */
-  width: 24px; /* 버튼 크기 (텍스트 크기와 맞춤) */
-  height: 24px; /* 버튼 크기 (텍스트 크기와 맞춤) */
-  background: none; /* 배경 제거 */
-  border: none; /* 테두리 제거 */
-  font-size: 20px; /* 글씨 크기 */
-  cursor: pointer; /* 클릭 가능한 커서 */
-  color: gray; /* 기본 글씨 색상 */
-  display: flex; /* 버튼 내부 정렬 */
-  align-items: center; /* 세로 중앙 정렬 */
-  justify-content: center; /* 가로 중앙 정렬 */
+  position: absolute; 
+  top: -5px; 
+  right: 3px; 
+  width: 24px;
+  height: 24px; 
+  background: none; 
+  border: none; 
+  font-size: 20px; 
+  cursor: pointer; 
+  color: gray;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
 }
 
 .toastCloseButton:hover {
-  background-color: #ffe3c4; /* 호버 시 배경색 */
-  font-weight: bold; /* 호버 시 굵기 */
-  color: gray; /* 호버 시 글씨 색상 */
+  background-color: #ffe3c4; 
+  font-weight: bold; 
+  color: gray;
 }

@@ -4,7 +4,7 @@ import Header from '../../components/common/Header/Header';
 import SideBar from '../../components/common/SideBar/SideBar';
 import styles from '../../assets/styles/Log.module.css';
 import API from '../../API/api';
-import { useNavigate, useParams } from 'react-router-dom'; 
+import { useNavigate, useParams } from 'react-router-dom';
 
 function Alarm() {
   const [selectedRoom, setSelectedRoom] = useState('');
@@ -13,29 +13,28 @@ function Alarm() {
   const [activeSensors, setActiveSensors] = useState([]);
   const [sensorData, setSensorData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
   const [roomList, setRoomList] = useState([]);
   const observerRef = useRef();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate('/'); // token 없으면 '/'로 리다이렉트
-    }
-  }, [navigate]);
+    const initialize = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate('/');
+        return;
+      }
 
-  // 강의실 목록 API 호출
-  useEffect(() => {
-    const fetchRoomList = async () => {
       try {
-        const token = localStorage.getItem("token");
         const encodedBuilding = encodeURIComponent('신공학관');
-        const response = await API.get(`/api/classrooms/myFavorites?building=${encodedBuilding}&favoriteFirst=false&orderDirection=asc`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await API.get(
+          `/api/classrooms/myFavorites?building=${encodedBuilding}&favoriteFirst=false&orderDirection=asc`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const rooms = response.data.map(room => ({
           id: room.id,
           name: room.name,
@@ -47,8 +46,22 @@ function Alarm() {
       }
     };
 
-    fetchRoomList();
-  }, []);
+    initialize();
+  }, [navigate]);
+
+  useEffect(() => {
+    if (startDate && endDate && selectedRoom) {
+      fetchAndFilterSensorData();
+    }
+  }, [selectedRoom, activeSensors, startDate, endDate]);
+
+  const handleSensorChange = (sensor) => {
+    setActiveSensors((prevSensors) =>
+      prevSensors.includes(sensor)
+        ? prevSensors.filter((s) => s !== sensor)
+        : [...prevSensors, sensor]
+    );
+  };
 
   const getSensorType = (tab) => {
     switch (tab) {
@@ -123,11 +136,11 @@ function Alarm() {
         const url = `/api/sensorData/classroom/betweenDates?${sensorTypesParams}&building=${encodedBuilding}&name=${selectedRoom}&startDate=${encodedStartDate}&endDate=${encodedEndDate}&order=DESC&page=${currentPage}&size=10`;
 
         const token = localStorage.getItem("token");
-const response = await API.get(url, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
+        const response = await API.get(url, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
 
         if (response.data && response.data.data) {
           const fetchedData = response.data.data;
@@ -152,23 +165,9 @@ const response = await API.get(url, {
     const allSensorData = await fetchAllSensorData();
     const filteredData = allSensorData.filter((data) => {
       const color = getBorderColor(getDataValue(data), data.sensorType);
-      return ['red', 'orange', '#FFFA00'].includes(color); // 빨강, 주황, 노랑만 필터링
+      return ['#F44336', '#FF9800', '#FFEB3B'].includes(color); // 빨강, 주황, 노랑만 필터링
     });
     setSensorData(filteredData);
-  };
-
-  useEffect(() => {
-    if (startDate && endDate && selectedRoom) {
-      fetchAndFilterSensorData();
-    }
-  }, [selectedRoom, activeSensors, startDate, endDate]);
-
-  const handleSensorChange = (sensor) => {
-    setActiveSensors((prevSensors) =>
-      prevSensors.includes(sensor)
-        ? prevSensors.filter((s) => s !== sensor)
-        : [...prevSensors, sensor]
-    );
   };
 
   return (
@@ -177,32 +176,32 @@ const response = await API.get(url, {
       <div className={styles.container}>
         <SideBar />
         <div className={styles.content}>
-        <div className={styles.filters}>
-  <div className={styles.filterItem}>
-    <label>강의실: </label>
-    <select value={selectedRoom} onChange={(e) => setSelectedRoom(e.target.value)}>
-      <option value="" disabled>강의실 선택</option>
-      {roomList
-        .filter((room) => !/[\uAC00-\uD7AF]/.test(room.name)) // 한글이 포함된 이름 필터링
-        .map((room) => (
-          <option key={room.id} value={room.name}>{room.name}</option>
-        ))}
-    </select>
-  </div>
-  <div className={styles.filterItem}>
-    <label>기간: </label>
-    <input
-      type="datetime-local"
-      value={startDate}
-      onChange={(e) => setStartDate(e.target.value)}
-    />
-    <input
-      type="datetime-local"
-      value={endDate}
-      onChange={(e) => setEndDate(e.target.value)}
-    />
-  </div>
-</div>
+          <div className={styles.filters}>
+            <div className={styles.filterItem}>
+              <label>강의실: </label>
+              <select value={selectedRoom} onChange={(e) => setSelectedRoom(e.target.value)}>
+                <option value="" disabled>강의실 선택</option>
+                {roomList
+                  .filter((room) => !/[\uAC00-\uD7AF]/.test(room.name)) // 한글이 포함된 이름 필터링
+                  .map((room) => (
+                    <option key={room.id} value={room.name}>{room.name}</option>
+                  ))}
+              </select>
+            </div>
+            <div className={styles.filterItem}>
+              <label>기간: </label>
+              <input
+                type="datetime-local"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+              <input
+                type="datetime-local"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </div>
+          </div>
 
           <div className={styles.tabs}>
             {['온도', '습도', 'TVOC', 'PM2.5', '소음'].map((sensor) => (
@@ -218,38 +217,36 @@ const response = await API.get(url, {
           </div>
 
           <div className={styles.sensorData}>
-  {loading ? (
-    <div className={styles.loadingBox}>
-      <p>Loading...</p>
-    </div>
-  ) : startDate && endDate && selectedRoom && activeSensors.length > 0 ? (
-    sensorData.length > 0 ? (
-      sensorData.map((data, index) => (
-        <div
-          key={index}
-          className={styles.sensorItem}
-          style={{
-            borderColor: getBorderColor(getDataValue(data), data.sensorType),
-          }}
-        >
-          <span>{`[${moment(data.timestamp).format("YYYY-MM-DDTHH:mm:ss")}]`}</span>
-          <span>{`${selectedRoom} 강의실`}</span>
-          <span>{`${getSensorNameInKorean(data.sensorType)}: ${getDataValue(data)}`}</span>
-        </div>
-      ))
-    ) : (
-      <div className={styles.noDataBox}>
-        <p>이상 수치값 로그가 존재하지 않습니다</p>
-      </div>
-    )
-  ) : (
-    <div className={styles.noDataBox}>
-      <p>정상 범위를 벗어난 이상 수치만 필터링하여 보여줍니다</p><p>강의실, 기간, 센서 종류를 선택하세요</p>
-    </div>
-  )}
-</div>
-
-
+            {loading ? (
+              <div className={styles.loadingBox}>
+                <p>Loading...</p>
+              </div>
+            ) : startDate && endDate && selectedRoom && activeSensors.length > 0 ? (
+              sensorData.length > 0 ? (
+                sensorData.map((data, index) => (
+                  <div
+                    key={index}
+                    className={styles.sensorItem}
+                    style={{
+                      borderColor: getBorderColor(getDataValue(data), data.sensorType),
+                    }}
+                  >
+                    <span>{`[${moment(data.timestamp).format("YYYY-MM-DDTHH:mm:ss")}]`}</span>
+                    <span>{`${selectedRoom} 강의실`}</span>
+                    <span>{`${getSensorNameInKorean(data.sensorType)}: ${getDataValue(data)}`}</span>
+                  </div>
+                ))
+              ) : (
+                <div className={styles.noDataBox}>
+                  <p>이상 수치값 로그가 존재하지 않습니다</p>
+                </div>
+              )
+            ) : (
+              <div className={styles.noDataBox}>
+                <p>정상 범위를 벗어난 이상 수치만 필터링하여 보여줍니다</p><p>강의실, 기간, 센서 종류를 선택하세요</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -257,3 +254,5 @@ const response = await API.get(url, {
 }
 
 export default Alarm;
+
+

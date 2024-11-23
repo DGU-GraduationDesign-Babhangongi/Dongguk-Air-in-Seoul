@@ -3,14 +3,9 @@ import styles from './floorBox.module.css';
 import { useNavigate } from 'react-router-dom';
 import API from '../../../API/api';
 
-function FloorBox({ floor, rooms, click=false }) {
-  const navigate = useNavigate();
+function FloorBox({ floor, rooms, click = false }) {
   const [averageIAQ, setAverageIAQ] = useState(0);
 
-  // SensorDataContext에서 데이터를 가져와 평균 IAQ 계산
-
-
-  // API를 통해 평균 IAQ 계산
   useEffect(() => {
     const fetchIAQData = async () => {
       const encodedBuilding = encodeURIComponent('신공학관');
@@ -21,13 +16,11 @@ function FloorBox({ floor, rooms, click=false }) {
         });
 
         const responses = await Promise.all(promises);
-
-        // 응답 데이터를 합산하여 평균 IAQ 계산
         const iaqValues = responses.map(response => response?.data?.IAQIndex?.value || 0);
         const avg = iaqValues.reduce((sum, value) => sum + value, 0) / iaqValues.length;
 
         setAverageIAQ(avg);
-        //console.log("Average IAQ from API:", avg);
+
       } catch (e) {
         console.error("API 오류: ", e);
       }
@@ -36,23 +29,23 @@ function FloorBox({ floor, rooms, click=false }) {
     fetchIAQData();
   }, [rooms]);
 
-// 조건에 따라 border 색상 설정(기준 변경 자유)
-const borderColor = (() => {
-  if (averageIAQ >= 90) {
-    return styles.Border1; // 95 이상
-  } else if (averageIAQ >= 80) {
-    return styles.Border2; // 85 ~ 94
-  } else if (averageIAQ >= 65) {
-    return styles.Border3; // 70 ~ 84
-  } else if (averageIAQ >= 50) {
-    return styles.Border4; // 50 ~ 69
-  }else if(averageIAQ===0){
-    return null;
-  } 
-  else {
-    return styles.Border5; // 50 미만
-  }
-})();
+  // 조건에 따라 border 색상 설정
+  const borderColor = (() => {
+    if (averageIAQ >= 90) {
+      return styles.Border1; // 95 이상
+    } else if (averageIAQ >= 80) {
+      return styles.Border2; // 85 ~ 94
+    } else if (averageIAQ >= 65) {
+      return styles.Border3; // 70 ~ 84
+    } else if (averageIAQ >= 50) {
+      return styles.Border4; // 50 ~ 69
+    } else if (averageIAQ === 0) {
+      return null;
+    }
+    else {
+      return styles.Border5; // 50 미만
+    }
+  })();
 
   const handleRoomClick = (room) => {
     window.location.href = `https://donggukseoul.com/smartmirror/classroom/${room}`;
@@ -81,15 +74,15 @@ const borderColor = (() => {
           >
             {room}
           </div>
-          
+
         ))}
-        {click&&(
+        {click && (
           <div class="blinking-icon">
-          <img src={require("../../../assets/images/smartmirror/Click.png")} alt="Selection Icon" style={{position: 'absolute', top:'77vw', left: '37vw', width:'6vw'}}/>
-        </div>
-        
-      )}
-        
+            <img src={require("../../../assets/images/smartmirror/Click.png")} alt="Selection Icon" style={{ position: 'absolute', top: '77vw', left: '37vw', width: '6vw' }} />
+          </div>
+
+        )}
+
       </div>
     </div>
   );

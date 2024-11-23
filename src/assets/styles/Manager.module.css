@@ -1,25 +1,22 @@
-/* 기본 HTML 및 BODY 설정 */
 html, body {
   height: 100%;
   margin: 0;
-  overflow: hidden; /* 전체 스크롤 제거 */
+  overflow: hidden; 
 }
 
-/* 전체 레이아웃 설정 */
 .layout {
   display: flex;
-  height: 100vh; /* 전체 화면 높이 */
-  overflow: hidden; /* 전체 스크롤 제거 */
+  height: 100vh; 
+  overflow: hidden; 
 }
 
-/* 헤더 및 사이드바 스타일 */
 .banner {
   display: flex;
   align-items: center;
-  background-color: #FFB841; /* 배너 배경색 */
+  background-color: #FFB841;
   padding: clamp(9px, 1vw, 13px) 2%;
   width: 100%;
-  height: clamp(80px, 18vw, 100px); /* 배너 높이 */
+  height: clamp(80px, 18vw, 100px); 
 }
 
 .container {
@@ -27,34 +24,20 @@ html, body {
   flex-direction: column;
   font-family: 'NanumBarunGothic', Arial, sans-serif;
   width: 100%;
-  background-color: #f5f5f5; /* 카드 대비를 위한 밝은 배경색 */
-  overflow: hidden; /* 전체 스크롤 방지 */
+  background-color: #f5f5f5; 
+  overflow: hidden;
 }
 
-/* 강의실 카드 그리드 */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개의 카드 배치 */
-  gap: 10px; /* 카드 간 간격 */
-  margin: 10px; /* 그리드 전체 여백 */
-  padding-right: 10px; /* 스크롤바와 내용 사이 간격 추가 */
-  padding-bottom: 40px; /* 마지막 박스 아래 여백을 더 크게 설정 */
-  height: calc(100vh - 180px); /* 헤더와 배너 높이를 제외한 높이 */
-  overflow-y: auto; /* 세로 스크롤 활성화 */
-  margin-right: -10px; /* 스크롤바를 오른쪽으로 붙이기 */
-}
-
-/* 강의실 카드 스타일 */
-.card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  border: 2px solid #00FF00; /* 카드 테두리 색상 */
-  border-radius: 15px;
-  background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: 'NanumBarunGothic', Arial, sans-serif;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px; 
+  margin: 10px; 
+  padding-right: 10px; 
+  padding-bottom: 40px; 
+  height: calc(100vh - 180px);
+  overflow-y: auto; 
+  margin-right: -10px; 
 }
 
 .title {

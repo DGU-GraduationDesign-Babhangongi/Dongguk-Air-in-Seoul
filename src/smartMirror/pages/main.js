@@ -17,8 +17,6 @@ function Main() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const navigate = useNavigate();
 
-
-  // 요일별 이미지 배열
   const mapImagesByDay = {
     월: [
       require("../../assets/images/smartmirror/map/13115.PNG"),
@@ -67,40 +65,34 @@ function Main() {
     ],
   };
 
-  // 현재 요일에 맞는 이미지를 선택하는 함수
   const getMapImagesForToday = () => {
     const days = ['일', '월', '화', '수', '목', '금', '토'];
     const today = days[new Date().getDay()];
     return mapImagesByDay[today] || [];
   };
 
-  // 이미지 배열을 요일에 맞춰 설정
-  const [mapImages, setMapImages] = useState(getMapImagesForToday());
+  const [mapImages] = useState(getMapImagesForToday());
 
-  // 주말 여부 확인
   const isWeekend = () => {
     const today = new Date().getDay();
     return today === 0 || today === 6; // 0: 일요일, 6: 토요일
   };
 
-  // 현재 이미지에 따라 floor 텍스트 설정
   const getFloorText = () => {
     const currentImage = mapImages[currentImageIndex];
-    const imageName = currentImage.split('/').pop(); // 파일 이름 추출
-    const floorNumber = imageName[1]; // 두 번째 글자 추출
+    const imageName = currentImage.split('/').pop(); 
+    const floorNumber = imageName[1];
     return `${floorNumber}th floor`;
   };
 
-  // 자동 슬라이드 효과 추가
   useEffect(() => {
     const slideInterval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % mapImages.length);
-    }, 5000); // 5초마다 이미지 변경
+    }, 5000); 
 
     return () => clearInterval(slideInterval);
   }, [mapImages.length]);
 
-  // Fetch weather data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -117,13 +109,11 @@ function Main() {
     fetchData();
   }, []);
 
-  // Update time every minute
   useEffect(() => {
     const timer = setInterval(() => setDateTime(new Date()), 60000);
     return () => clearInterval(timer);
   }, []);
 
-  // Format the date and time
   const formatDate = (date) => {
     const days = ['일', '월', '화', '수', '목', '금', '토'];
     const dayOfWeek = days[date.getDay()];
@@ -135,7 +125,6 @@ function Main() {
     return `${year}년 ${month}월 ${day}일 ${dayOfWeek} PM ${hours}:${minutes}`;
   };
 
-  // 날씨 안내 멘트 생성 함수
   const getWeatherAdvice = () => {
     if (forecast.rain === '1') {
       return "오늘은 하루 종일 비가 예상됩니다. 외출 시 우산을 챙기세요.";
@@ -239,7 +228,7 @@ function Main() {
                       }
                       alt="날씨 이미지"
                       style={{
-                        width: "clamp(80px, 10vw, 200px)", // 이미지 크기 조정
+                        width: "clamp(80px, 10vw, 200px)", 
                         alignSelf:'right',
                         filter: "drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.2))",
                       }}

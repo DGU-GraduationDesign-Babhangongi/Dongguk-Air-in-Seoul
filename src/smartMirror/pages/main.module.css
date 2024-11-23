@@ -1,10 +1,8 @@
-/* classRoom.module.css */
 .container {
     width: 100vw;
     min-height: 100vh;
     background-color: #EEEEEE;
 }
-
 
 .topContainer{
     padding-bottom: 4%;
@@ -35,7 +33,6 @@
 
 .img{
     width: 100%;
-    
 }
 
 .mainContainer {
@@ -47,18 +44,10 @@
     justify-content: space-around;
 }
 
-.moveContainer {
-    display: flex;
-    width: 100%;
-    padding: 4% 0%;
-    align-items: center;
-    justify-content: space-between;
-}
-
 .detailContainer {
     display: grid;
     grid-template-columns: 1fr 1fr; 
-    grid-template-rows: 1fr 1fr; /* Keep the 2 rows layout */
+    grid-template-rows: 1fr 1fr;
     width: 90%;
     margin:  0% 5%;
     gap: 2vw;
@@ -111,27 +100,17 @@
     align-items: 'center';
 }
 
-.boxContainer {
-    display: grid;
-    width: 0%;
-    padding: 3% 0%;
-    grid-template-columns: 1fr 1fr; /* Keep the 2 columns layout */
-    grid-template-rows: 1fr 1fr; /* Keep the 2 rows layout */
-    justify-content: space-between;
-}
-
-
 .bottomContainer {
-    
     margin-top: 5%;
     width: 100%;
     font-size: 4vw;
     color: #151515;
     font-weight: 400;
-    display: flex;              /* Flexbox 사용 */
-    justify-content: center;    /* 수평 가운데 정렬 */
-    align-items: center;        /* 수직 가운데 정렬 */
+    display: flex;              
+    justify-content: center;   
+    align-items: center; 
 }
+
 @media (max-width: 1000px) {
     .blackBox {
       display: none;
@@ -160,9 +139,11 @@
     text-align: left;
     box-shadow: 0px 0.4vw 0.4vw rgba(0, 0, 0, 0.25);
 }
+
 .weatherBoxRight{
     display: none;
 }
+
 .weatherBox {
     width: 50%;
     height: 38vw;
@@ -175,6 +156,7 @@
     font-size: 2.5vw;
     line-height: 1.2;
 }
+
 @media (max-width: 1000px) {
     .weatherBox {
         width: 90%;
@@ -194,6 +176,7 @@
         display: block;
     }
   }
+  
 .weatherDateContainer {
     display: flex;
     align-items: center;
@@ -201,12 +184,12 @@
 }
 
 .dateIcon {
-    width: 2.5vw; /* Adjust the icon size */
-    margin-right: 0.7vw; /* Add a small margin between icon and date text */
+    width: 2.5vw;
+    margin-right: 0.7vw; 
 }
 
 .weatherDate {
-    font-size: 2vw; /* Date text size */
+    font-size: 2vw;
 }
 
 .weatherTemperature {

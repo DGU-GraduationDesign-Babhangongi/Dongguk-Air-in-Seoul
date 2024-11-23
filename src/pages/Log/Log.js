@@ -26,7 +26,6 @@ function Log() {
     }
   }, [navigate]);
 
-  // 강의실 목록 API 호출
   useEffect(() => {
     const fetchRoomList = async () => {
       try {
@@ -50,6 +49,33 @@ function Log() {
 
     fetchRoomList();
   }, []);
+
+  useEffect(() => {
+    if (startDate && endDate && selectedRoom) {
+      setSensorData([]);
+      setCurrentPage(0);
+      setHasMore(true);
+    }
+  }, [startDate, endDate, selectedRoom, activeSensors]);
+
+  useEffect(() => {
+    if (startDate && endDate && selectedRoom && hasMore) {
+      fetchSensorData(currentPage);
+    }
+  }, [currentPage, startDate, endDate, selectedRoom, activeSensors]);
+
+  const handleObserver = useCallback((entries) => {
+    const target = entries[0];
+    if (target.isIntersecting && hasMore && !loading) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  }, [hasMore, loading]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleObserver, { threshold: 1.0 });
+    if (observerRef.current) observer.observe(observerRef.current);
+    return () => observer.disconnect();
+  }, [handleObserver]);
 
   const getSensorType = (tab) => {
     switch (tab) {
@@ -140,33 +166,6 @@ function Log() {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (startDate && endDate && selectedRoom) {
-      setSensorData([]);
-      setCurrentPage(0);
-      setHasMore(true);
-    }
-  }, [startDate, endDate, selectedRoom, activeSensors]);
-
-  useEffect(() => {
-    if (startDate && endDate && selectedRoom && hasMore) {
-      fetchSensorData(currentPage);
-    }
-  }, [currentPage, startDate, endDate, selectedRoom, activeSensors]);
-
-  const handleObserver = useCallback((entries) => {
-    const target = entries[0];
-    if (target.isIntersecting && hasMore && !loading) {
-      setCurrentPage((prevPage) => prevPage + 1);
-    }
-  }, [hasMore, loading]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(handleObserver, { threshold: 1.0 });
-    if (observerRef.current) observer.observe(observerRef.current);
-    return () => observer.disconnect();
-  }, [handleObserver]);
 
   const handleSensorChange = (sensor) => {
     setActiveSensors((prevSensors) =>
