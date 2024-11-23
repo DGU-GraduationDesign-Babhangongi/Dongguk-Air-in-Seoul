@@ -1,11 +1,10 @@
-/* ControlBox.module.css */
 * {
   margin: 0;
   padding: 0;
 }
 
 .Container {
-  width: 100%; /* 너비를 100%로 설정하거나 원하는 크기로 조절 */
+  width: 100%; 
   font-size: 1.1vw;
   height: 100%;
   font-weight: bolder;
@@ -13,77 +12,13 @@
 
 .box {
   background-color: white;
-  width: 100%; /* 너비를 100%로 설정하거나 원하는 크기로 조절 */
+  width: 100%; 
   height: calc(25vh - 5vw);
   border-radius: clamp(0.5px, 2vw, 15px);
   display: flex;
   flex-direction: column;
-  justify-content: center; /* 세로 중간 정렬 */
+  justify-content: center; 
   align-items: start;
-  padding: 5% 5%; /* 내부 여백 */
-  /* box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25); */
+  padding: 5% 5%;
 }
 
-.top {
-  width: 110%;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items:flex-end;
-  justify-items: center;
-}
-
-.table {
-  display: flex;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  flex-direction: column;
-}
-
-.tableRow {
-  display: grid;
-  grid-template-columns: 3fr 1fr; /* 3:1 비율로 설정 */
-  width: 100%;
-  font-size: 1vw;
-  margin-top: 4%;
-  gap: 5px; /* 셀 간의 간격 */
-}
-
-
-.tableCell {
-  padding: 2px 5px;
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  }
-
-/* 큰 셀 설정 */
-.tableCell.large {
-  grid-column: 1; /* 첫 번째 칸 */
-}
-
-/* 작은 셀 설정 */
-.tableCell.small {
-  grid-column: 2; /* 두 번째 칸 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.img {
-  width: 40%;
-}
-
-.topImg {
-  margin: 1% 10%;
-  width: 16%;
-}
-
-.message{
-  font-size: 0.9vw;
-  font-weight: normal;
-
-}

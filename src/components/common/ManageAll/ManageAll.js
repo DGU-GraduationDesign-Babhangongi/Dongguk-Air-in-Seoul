@@ -36,24 +36,22 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorite
     return () => clearInterval(intervalId);
   }, [sensorId]);
 
-  // IAQIndex 값 가져오기
   const iaqIndex = sensorData.IAQIndex?.value || null;
 
-  // 테두리 색상 결정 함수
   const getBorderColor = (iaq) => {
-    if (iaq === null) return "#9E9E9E"; // 회색 (데이터 없음)
-    if (iaq >= 90) return "#5C82F5"; // 파란색
-    if (iaq >= 80) return "#8BC34A"; // 초록색
-    if (iaq >= 70) return "#FFEB3B"; // 노란색
-    if (iaq >= 60) return "#FF9800"; // 주황색
-    return "#F44336"; // 빨간색
+    if (iaq === null) return "#9E9E9E";
+    if (iaq >= 90) return "#5C82F5";
+    if (iaq >= 80) return "#8BC34A";
+    if (iaq >= 70) return "#FFEB3B";
+    if (iaq >= 60) return "#FF9800";
+    return "#F44336";
   };
 
   return (
     <div
       className={styles.card}
       style={{
-        borderColor: getBorderColor(iaqIndex), // IAQIndex 값에 따라 테두리 색상 설정
+        borderColor: getBorderColor(iaqIndex),
       }}
     >
       <div className={styles.AllSection}>
@@ -70,7 +68,7 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorite
               classRoom={roomNumber}
               building={buildingName}
               selectedFavorited={favorited}
-              toggleRefresh={toggleRefresh} // 새로고침 함수 전달
+              toggleRefresh={toggleRefresh}
             />
           </div>
           <div className={styles.memoEdit} onClick={() => openMemoModal(buildingName, roomNumber)}>
@@ -81,7 +79,7 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorite
 
         <div className={styles.SecondSection}>
           <div className={styles.sensorSection}>
-            {sensorData.Temperature?.value && ( // 온도 데이터가 있을 때만 렌더링
+            {sensorData.Temperature?.value && (
               <div className={styles.sensorItem}>
                 <img
                   src={require('../../../assets/images/AirQualityIndicator/temperature.png')}
@@ -92,7 +90,7 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorite
               </div>
             )}
 
-            {sensorData.Humidity?.value && ( // 습도 데이터가 있을 때만 렌더링
+            {sensorData.Humidity?.value && (
               <div className={styles.sensorItem}>
                 <img
                   src={require('../../../assets/images/AirQualityIndicator/humidity.png')}
@@ -103,7 +101,7 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorite
               </div>
             )}
 
-            {sensorData.TVOC?.value && ( // TVOC 데이터가 있을 때만 렌더링
+            {sensorData.TVOC?.value && (
               <div className={styles.sensorItem}>
                 <img
                   src={require('../../../assets/images/AirQualityIndicator/TVOC.png')}
@@ -117,7 +115,7 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorite
               </div>
             )}
 
-            {sensorData.PM2_5MassConcentration?.value && ( // PM2.5 데이터가 있을 때만 렌더링
+            {sensorData.PM2_5MassConcentration?.value && (
               <div className={styles.sensorItem}>
                 <img
                   src={require('../../../assets/images/AirQualityIndicator/PM2.5.png')}
@@ -131,7 +129,7 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorite
               </div>
             )}
 
-            {sensorData.AmbientNoise?.value && ( // 소음 데이터가 있을 때만 렌더링
+            {sensorData.AmbientNoise?.value && (
               <div className={styles.sensorItem}>
                 <img
                   src={require('../../../assets/images/AirQualityIndicator/noise.png')}

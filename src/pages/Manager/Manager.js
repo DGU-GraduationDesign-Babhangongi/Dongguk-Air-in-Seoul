@@ -15,13 +15,14 @@ function Manager() {
   const [selectedMemo, setSelectedMemo] = useState('');
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [nickname, setNickname] = useState(''); // 닉네임 상태 추가
-  const [refresh, setRefresh] = useState(false); // 새로고침 상태 추가
-  const navigate = useNavigate(); // useNavigate 초기화
+  const [nickname, setNickname] = useState(''); 
+  const [refresh, setRefresh] = useState(false); 
+  const navigate = useNavigate(); 
+
 useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate('/'); // token 없으면 '/'로 리다이렉트
+      navigate('/'); 
     }
   }, [navigate]);
   const openModal = (building, room) => {
@@ -113,7 +114,7 @@ useEffect(() => {
         <div className={styles.container}>
           <div className={styles.banner}>
             <GoPerson size={36} color="#333" />
-            <h1>{nickname} 관리자</h1> {/* 닉네임을 동적으로 표시 */}
+            <h1>{nickname} 관리자</h1>
           </div>
           {loading ? (
             <p>로딩 중...</p>

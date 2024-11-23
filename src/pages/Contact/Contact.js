@@ -5,7 +5,7 @@ import styles from '../../assets/styles/Contact.module.css';
 import Dropbutton from '../../components/common/Dropbutton/Dropbutton';
 import { FiCpu } from "react-icons/fi";
 import building from "../../assets/images/main/building.png";
-import { useNavigate, useParams } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
 function Contact() {
   const [buildingName, setBuildingName] = useState('');
@@ -19,15 +19,16 @@ function Contact() {
   const [removeRoom, setRemoveRoom] = useState('');
   const [removeReason, setRemoveReason] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // useNavigate 초기화
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
-useEffect(() => {
+
+  useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate('/'); // token 없으면 '/'로 리다이렉트
+      navigate('/');
     }
   }, [navigate]);
-  // API를 통해 건물 목록을 불러오는 함수
+
   useEffect(() => {
     const fetchBuildings = async () => {
       try {
@@ -41,7 +42,6 @@ useEffect(() => {
         });
         if (response.ok) {
           const data = await response.json();
-          // 받은 데이터로 buildingOptions 업데이트
           const options = data.map((building) => ({
             value: building,
             label: building,
@@ -87,8 +87,6 @@ useEffect(() => {
 
       if (response.ok) {
         const result = await response.json();
-
-        // 중복 제거
         const uniqueNames = Array.from(new Set(result.name.split(',')));
 
         uniqueNames.forEach((name) => {
@@ -207,7 +205,7 @@ useEffect(() => {
     <div>
       <Header />
       <div style={{ display: 'flex' }}>
-        <SideBar i='5'/>
+        <SideBar i='5' />
         <div className={styles.container}>
           <div className={styles.banner}>
             <FiCpu size={36} color="#333" />
