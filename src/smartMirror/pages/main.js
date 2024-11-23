@@ -282,6 +282,7 @@ function Main() {
               alignItems: "center",
               justifyContent: "space-around",
               marginTop: "2%",
+              marginBottom: "2%",
             }}
           >
             <img
