@@ -1,18 +1,18 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // useNavigate를 import
-import styles from './classRoomButton.module.css';  // CSS 파일을 모듈로 import
+import { useNavigate } from 'react-router-dom'; 
+import styles from './classRoomButton.module.css';  
 
 function ClassRoomButton({ i }) {
-  const navigate = useNavigate(); // navigate 함수 가져오기
+  const navigate = useNavigate(); 
 
   const handleClick = () => {
-    navigate(`/smartMirror/ClassRoom/${i}`); // 클릭 시 페이지 이동, i를 URL의 일부로 사용
+    navigate(`/smartMirror/ClassRoom/${i}`);  // 해당 강의실 페이지로 이동
   };
 
   return (
     <div className={styles.container} onClick={handleClick} style={{ cursor: 'pointer' }}>
-      <div style={{ width: '100%', textAlign: 'center' }}>
-        {i} {/* 전달된 props를 출력 */}
+      <div style={{ width: '100%', textAlign: 'center', margin:'auto'}}>
+        {i}  
       </div>
     </div>
   );
