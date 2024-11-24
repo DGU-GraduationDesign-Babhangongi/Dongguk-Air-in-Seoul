@@ -1,38 +1,48 @@
-import React from "react";
-import styles from "./Popup.module.css"; // CSS 모듈 스타일을 가져옵니다.
+import React, { useState } from "react";
+import styles from "./Popup.module.css"; // CSS 모듈 스타일
 import { useNavigate } from "react-router-dom";
 
 const Popup = ({ popupContent, onClose, registerLink, buttonText, doit }) => {
+  const [isClosing, setIsClosing] = useState(false);
   const navigate = useNavigate();
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      onClose();
+    }, 300);
+  };
 
   const handleRegister = () => {
     if (registerLink) {
-      navigate(registerLink); // React Router로 경로 이동
+      navigate(registerLink);
     }
     if (doit) {
-      doit(); // 외부에서 전달된 'doit' 함수 실행
+      doit();
     }
-    onClose(); // 팝업을 닫습니다.
+    handleClose();
   };
 
-  // '\n'을 <br />로 변환하는 함수
   const formatTextWithLineBreaks = (text) => {
-    const formattedText = text.replace(/\n/g, "<br />"); // \n을 <br />로 변환
-    return { __html: formattedText }; // dangerouslySetInnerHTML에 사용할 수 있게 객체로 반환
+    const formattedText = text.replace(/\n/g, "<br />");
+    return { __html: formattedText };
   };
 
   return (
     <div className={styles.popup}>
-      <div className={styles.popupContent}>
+      <div
+        className={`${styles.popupContent} ${
+          isClosing ? styles.fadeOut : styles.fadeIn
+        }`}
+      >
         <h2>알 림</h2>
         <div className={styles.dividers}></div>
         <p
           className={styles.content}
-          dangerouslySetInnerHTML={formatTextWithLineBreaks(popupContent)} // 줄바꿈 처리
+          dangerouslySetInnerHTML={formatTextWithLineBreaks(popupContent)}
         ></p>
-        
         <div className={styles.buttonContainer}>
-          <button onClick={onClose} className={styles.popupButton}>
+          <button onClick={handleClose} className={styles.popupButton}>
             닫기
           </button>
           <button onClick={handleRegister} className={styles.popupButton}>
