@@ -32,18 +32,18 @@ function FloorBox({ floor, rooms, click = false }) {
   // 조건에 따라 border 색상 설정
   const borderColor = (() => {
     if (averageIAQ >= 90) {
-      return styles.Border1; // 95 이상
+      return styles.Border1; 
     } else if (averageIAQ >= 80) {
-      return styles.Border2; // 85 ~ 94
-    } else if (averageIAQ >= 65) {
-      return styles.Border3; // 70 ~ 84
-    } else if (averageIAQ >= 50) {
-      return styles.Border4; // 50 ~ 69
+      return styles.Border2;
+    } else if (averageIAQ >= 70) {
+      return styles.Border3; 
+    } else if (averageIAQ >= 60) {
+      return styles.Border4; 
     } else if (averageIAQ === 0) {
       return null;
     }
     else {
-      return styles.Border5; // 50 미만
+      return styles.Border5; 
     }
   })();
 
