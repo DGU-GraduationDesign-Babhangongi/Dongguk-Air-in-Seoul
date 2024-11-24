@@ -1,0 +1,5 @@
+.icons {
+  width: clamp(16px, 2vw, 50px);
+  margin-right: 8px;
+  margin-bottom: -8px;
+}
