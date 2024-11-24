@@ -7,6 +7,7 @@ import API from "../API/api";
 import SensorDetail from "../components/specific/sensorDetail/sensorDetail";
 import WeatherInfo from "../components/specific/weatherInfo/weatherInfo";
 import AbnormalLog from "../components/specific/abnormalLog/abnormalLog";
+
 /*images*/
 import currentbuilding from "../assets/images/main/currentBuilding_icon.png";
 import floorplan from "../assets/images/main/floorplan.png";
@@ -80,11 +81,6 @@ function Main() {
     }
     setPopupContent(buildingInfo);
   };
-  const closePopup = () => {
-    setPopupContent(null);
-    setSelectedBuilding(null);
-  };
-
   const imageRef = useRef(null);
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
