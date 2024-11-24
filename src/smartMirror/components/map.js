@@ -52,7 +52,7 @@ function Map({ classRoom, x, y }) {
         style={{
           position: 'absolute',
           left: `${x}%`,
-          top: `${y}%`,
+          top: `calc(${y}% + 15%)`,
           width: '20%',
           textAlign: 'center',
           fontSize: '1.6vw',
