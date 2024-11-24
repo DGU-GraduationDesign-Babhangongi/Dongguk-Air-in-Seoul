@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 import API from "../API/api";
 import SensorDetail from "../components/specific/sensorDetail/sensorDetail";
 import WeatherInfo from "../components/specific/weatherInfo/weatherInfo";
+import AbnormalLog from "../components/specific/abnormalLog/abnormalLog";
 /*images*/
-import logsensor from "../assets/images/main/sensor_icon.png";
 import currentbuilding from "../assets/images/main/currentBuilding_icon.png";
 import floorplan from "../assets/images/main/floorplan.png";
 import singong from "../assets/images/main/singong.png";
@@ -16,7 +16,7 @@ import jungbo from "../assets/images/main/jungboP.png";
 import Popup from "../components/common/Popup/Popup";
 
 function Main() {
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [token] = useState(localStorage.getItem("token"));
   const [showPopup, setShowPopup] = useState(false);
   const [showNoSensorPopup, setshowNoSensorPopup] = useState(false);
   const [popupContent, setPopupContent] = useState(null);
@@ -31,42 +31,8 @@ function Main() {
   const [hoveredFloor, setHoveredFloor] = useState(null);
   const [allSensorData, setAllSensorData] = useState([]);
   const [nickname, setNickname] = useState("사용자");
-  const [sensorLogs, setSensorLogs] = useState([]);
   const navigate = useNavigate();
 
-  const getLevelColor = (level) => {
-    switch (level) {
-      case "RED":
-        return "#F44336";
-      case "ORANGE":
-        return "#FF9800";
-      case "YELLOW":
-        return "#FFBD2E";
-      default:
-        return "black";
-    }
-  };
-
-  const fetchSensorLogs = async () => {
-    if (!token) {
-      console.error("토큰이 없습니다. 로그인 후 다시 시도하세요.");
-      return;
-    }
-    try {
-      const response = await API.get("/api/sensorData/abnormalValues", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setSensorLogs(response.data);
-    } catch (error) {
-      console.error("Error fetching sensor logs:", error.response || error);
-    }
-  };
-
-  useEffect(() => {
-    fetchSensorLogs();
-  }, []);
   const openPopup = () => {
     setShowPopup(true);
   };
@@ -79,77 +45,6 @@ function Main() {
   const closeshowNoSensorPopupHandler = () => {
     setshowNoSensorPopup(false);
   };
-
-  const renderSensorLogs = () => (
-    <div
-      style={{
-        maxHeight: "200px",
-        overflowY: "auto",
-      }}
-    >
-      {sensorLogs.length > 0 ? (
-        sensorLogs.map((log, index) => {
-          const date = new Date(log.timestamp);
-          const formattedDate = `${date.getFullYear()}. ${(date.getMonth() + 1)
-            .toString()
-            .padStart(2, "0")}. ${date
-            .getDate()
-            .toString()
-            .padStart(2, "0")}. ${date
-            .getHours()
-            .toString()
-            .padStart(2, "0")}:${date
-            .getMinutes()
-            .toString()
-            .padStart(2, "0")}:${date
-            .getSeconds()
-            .toString()
-            .padStart(2, "0")}`;
-
-          const getUnit = (sensorType) => {
-            switch (sensorType) {
-              case "Temperature":
-                return "°C";
-              case "Humidity":
-                return "%";
-              case "TVOC":
-              case "PM2_5MASSCONCENTRATION":
-                return "㎍/m³";
-              case "AmbientNoise":
-                return "dB";
-              default:
-                return "";
-            }
-          };
-
-          const unit = getUnit(log.sensorType);
-
-          return (
-            <div key={index} style={{ marginBottom: "10px" }}>
-              <strong>[{formattedDate}]</strong>
-              <br />
-              <span>
-                {log.building} {log.name}
-                <span
-                  style={{
-                    color: getLevelColor(log.level),
-                    fontWeight: "bold",
-                    marginLeft: "10px",
-                  }}
-                >
-                  {log.sensorType} {log.value}
-                  {unit && `${unit}`}
-                </span>
-              </span>
-              <br />
-            </div>
-          );
-        })
-      ) : (
-        <div>로그인하시면 이상 수치 로그를 확인할 수 있습니다</div>
-      )}
-    </div>
-  );
 
   useEffect(() => {
     const fetchNickname = async () => {
@@ -192,7 +87,7 @@ function Main() {
 
   const imageRef = useRef(null);
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [sensorData, setSensorData] = useState(null);
+
   const coordinates = [
     { building: "신공학관", id: "3115", x: 464, y: 442 },
     { building: "신공학관", id: "3173", x: 488, y: 482 },
@@ -238,28 +133,6 @@ function Main() {
     };
     fetchAllSensorData();
   }, []);
-
-  useEffect(() => {
-    const fetchSensorData = async () => {
-      if (hoveredIndex !== null) {
-        const hoveredCoord = coordinates[hoveredIndex];
-        if (!hoveredCoord) return;
-        try {
-          const endpoint = `/api/sensorData/recent/classroom?building=${encodeURIComponent(
-            hoveredCoord.building
-          )}&name=${encodeURIComponent(hoveredCoord.id)}`;
-          const response = await API.get(endpoint);
-          setSensorData(response.data);
-        } catch (error) {
-          // console.error("Error fetching sensor data:", error);
-          setSensorData(null);
-        }
-      } else {
-        setSensorData(null);
-      }
-    };
-    fetchSensorData();
-  }, [hoveredIndex]);
 
   const getIAQColor = (value) => {
     if (value > 90) return "#5C82F5";
@@ -368,7 +241,6 @@ function Main() {
           top: top,
           left: left,
         }}
-        title={`Go to Floor ${floor}`}
       >
         {hoveredFloor === floor && (
           <div className={styles.hoveredFloor}>{floor}층으로 이동하기</div>
@@ -522,43 +394,10 @@ function Main() {
               dateTime={dateTime}
             />
             <div className={styles.sensorLogs}>
-              <h3
-                style={{
-                  fontSize: "clamp(15px, 1.6vw, 20px)",
-                }}
-              >
-                <img
-                  src={logsensor}
-                  alt="센서 아이콘"
-                  className={styles.icons}
-                />
-                센서 수치 이상 로그 기록
-              </h3>
-              {renderSensorLogs()}
+              <AbnormalLog token={token} />
             </div>
           </div>
         </div>
-        {popupContent && (
-          <div className={styles.popup}>
-            <div className={styles.popupContent}>
-              <h2>알 림</h2>
-              <div className={styles.dividers}></div>
-              <p>{popupContent}</p>
-              <div className={styles.divider}></div>
-              <p className={styles.signupText}>
-                <button
-                  onClick={() => (window.location.href = "/contact")}
-                  className={styles.popupButton}
-                >
-                  등록하기
-                </button>
-                <button onClick={closePopup} className={styles.popupButton}>
-                  닫기
-                </button>
-              </p>
-            </div>
-          </div>
-        )}
       </div>
       {showPopup && (
         <Popup
@@ -574,7 +413,7 @@ function Main() {
           <Popup
             popupContent="해당 건물에 등록된 센서가 없습니다.등록하시겠습니까?"
             onClose={closeshowNoSensorPopupHandler}
-            registerLink="/manager"
+            registerLink="/contact"
             buttonText="등록하기"
           />
         ) : (
