@@ -42,7 +42,7 @@ const LineChartComponent = ({ selectedAttribute, classroomA, classroomB, width, 
 
       setData(formattedData);
     } catch (e) {
-      console.error("API 오류: ", e);
+      //console.error("API 오류: ", e);
       setData([]);
     } finally {
       setLoading(false);

@@ -22,7 +22,7 @@ export const SensorDataProvider = ({ children }) => {
       const response = await API.get(endpoint);
       setData(response.data);
     } catch (e) {
-      console.error("API 오류: ", e);
+      //console.error("API 오류: ", e);
       setData([]); 
     } finally {
       setLoading(false);

@@ -22,7 +22,6 @@ const SideBar = ({ i }) => {
   const logout = () => {
     localStorage.removeItem("token");
     navigate("/"); // 메인 페이지로 이동
-    console.log("User logged out");
   };
 
   // 팝업 닫기 함수
