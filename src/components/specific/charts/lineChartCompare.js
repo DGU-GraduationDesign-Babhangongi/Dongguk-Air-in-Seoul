@@ -24,31 +24,36 @@ const LineChartComponent = ({ selectedAttribute, classroomA, classroomB, width, 
 
   // API 호출을 debounced로 처리
   const fetchDataDebounced = debounce(async () => {
+    
+    if (!selectedAttribute || !classroomA || !classroomB || !period) {
+      return; // 조건에 맞지 않으면 종료
+    }
+  
     setLoading(true);
     try {
       const endpoint1 = `/api/sensorData/classroom/betweenDates?sensorTypes=${encodeURIComponent(selectedAttribute)}&building=${encodeURIComponent(buildingName)}&name=${classroomA}&order=ASC&startDate=${encodeURIComponent(startDate.format('YYYY-MM-DDTHH:mm:ss'))}&endDate=${encodeURIComponent(endDate.format('YYYY-MM-DDTHH:mm:ss'))}&page=0&size=1000000000`;
       const endpoint2 = `/api/sensorData/classroom/betweenDates?sensorTypes=${encodeURIComponent(selectedAttribute)}&building=${encodeURIComponent(buildingName)}&name=${classroomB}&order=ASC&startDate=${encodeURIComponent(startDate.format('YYYY-MM-DDTHH:mm:ss'))}&endDate=${encodeURIComponent(endDate.format('YYYY-MM-DDTHH:mm:ss'))}&page=0&size=1000000000`;
-
+  
       const [response1, response2] = await Promise.all([
         API.get(endpoint1, { headers: { 'Authorization': `Bearer ${token}` } }),
         API.get(endpoint2, { headers: { 'Authorization': `Bearer ${token}` } }),
       ]);
-
+  
       const formattedData = response1.data.data.map((item, index) => ({
         name: item.timestamp.replace('T', ' '),
         [selectedAttribute + 'A']: item.value || null,
         [selectedAttribute + 'B']: response2.data.data[index]?.value || null,
       }));
-
+  
       setData(formattedData);
     } catch (e) {
-      console.error("API 오류: ", e);
+      //console.error("API 오류: ", e);
       setData([]);
     } finally {
       setLoading(false);
     }
   }, 500); // 500ms delay
-
+  
   useEffect(() => {
     fetchDataDebounced();
     return () => fetchDataDebounced.cancel(); 

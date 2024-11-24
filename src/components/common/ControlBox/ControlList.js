@@ -28,7 +28,7 @@ function ControlList({ width, height, gap, building, room }) {
       setDevices(data);
       setToggleStatuses(data.map((device) => device.status));
     } catch (e) {
-      console.error('API 오류:', e);
+      //console.error('API 오류:', e);
       setDevices([]);
     }
   };

@@ -22,7 +22,6 @@
 /*스크롤 바 크기*/
 .scrollableContainer::-webkit-scrollbar {
   width: 6px; /* 세로 스크롤바의 너비를 6px로 설정 */
-  height: 6px; /* 가로 스크롤바의 높이를 6px로 설정 */
 }
 
 /* 스크롤바의 트랙 (스크롤바가 이동하는 부분) 스타일 설정 */
@@ -33,16 +32,14 @@
 
 /* 스크롤바의 손잡이 (사용자가 잡을 수 있는 부분) 스타일 설정 */
 .scrollableContainer::-webkit-scrollbar-thumb {
-  background-color: #888; /* 손잡이 색상 */
+  background-color: #FFE191; /* 손잡이 색상 */
   border-radius: 10px; /* 손잡이에 둥근 모서리 추가 */
 }
 
 /* 스크롤바의 손잡이가 hover될 때 스타일 설정 */
 .scrollableContainer::-webkit-scrollbar-thumb:hover {
-  background-color: #555; /* hover 시 색상 변경 */
+  background-color: #FFB841; /* hover 시 색상 변경 */
 }
 
 
-.scrollableContainer div {
-  padding-bottom: 10px; /* 각 항목 간의 하단 여백 설정 */
-}
+

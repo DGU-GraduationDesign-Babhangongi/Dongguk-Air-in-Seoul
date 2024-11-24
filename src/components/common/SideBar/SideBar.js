@@ -18,7 +18,6 @@ const SideBar = ({ i }) => {
     localStorage.removeItem("token");
     // 로그아웃 후 메인 페이지로 이동
     navigate("/");
-    console.log("User logged out");
   };
 
   // 팝업 닫기 함수

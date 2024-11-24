@@ -1,18 +1,21 @@
 .table {
+  /* 테이블의 전체 레이아웃과 스타일 */
   display: grid;
   width: 56%;
   border-collapse: collapse;
   font-size: clamp(5px, 0.8vw, 12px);
   font-weight: bold;
-  grid-template-columns: 1.1fr 1.7fr 2.1fr 1fr; 
-  row-gap: 5px; /* 행 간격 설정 */
+  grid-template-columns: 1.1fr 1.7fr 2.1fr 1fr;
+  row-gap: 5px;
 }
 
 .tableRow {
-  display: contents; /* grid에서 각 행의 내용을 따로 정의 */
+  /* 테이블의 각 행 */
+  display: contents;
 }
 
 .tableCell {
+  /* 테이블의 개별 셀 */
   padding: 2px 5px;
   display: flex;
   align-items: center;
@@ -20,10 +23,12 @@
 }
 
 .img {
+  /* 셀 내부 이미지 스타일 */
   width: clamp(5px, 1.2vw, 1000px);
 }
 
 .state {
+  /* 상태 표시 스타일 */
   width: 1vw;
   aspect-ratio: 1 / 1;
   border-radius: clamp(5px, 1vw, 800px);
