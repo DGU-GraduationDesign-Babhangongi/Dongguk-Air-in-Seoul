@@ -39,7 +39,6 @@ function FloorCheck() {
     else return "#9E9E9E";
   };
 
-  // 층별 이미지 경로 정의
   const floorImages = {
     3: "/FloorPlan/3층.png",
     4: "/FloorPlan/4층.png",
@@ -62,12 +61,10 @@ function FloorCheck() {
       { id: "6144", x: 180, y: 482 },
     ],
   };
-
-  // 모든 강의실 데이터를 가져오기
   useEffect(() => {
     const fetchAllSensorData = async () => {
       try {
-        const allCoords = Object.values(coordinates).flat(); // 모든 좌표를 하나의 배열로 합침
+        const allCoords = Object.values(coordinates).flat();
         const responses = await Promise.all(
           allCoords.map(async (coord) => {
             const endpoint = `/api/sensorData/recent/classroom?building=신공학관&name${encodeURIComponent()}&name=${encodeURIComponent(

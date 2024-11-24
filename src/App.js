@@ -11,7 +11,6 @@ import Alarm from "../src/pages/Alarm/Alarm";
 import Contact from "../src/pages/Contact/Contact";
 import FloorCheck from "../src/pages/FloorCheck/FloorCheck";
 import Test from "../src/pages/test";
-import Test2 from "../src/pages/FloorCheck/test2";
 
 import SmartMirrorMain from "../src/smartMirror/pages/main";
 import SmartMirrorClassRoom from "../src/smartMirror/pages/classRoom";
@@ -46,7 +45,6 @@ function App() {
             path="/smartMirror/classRoom/:id"
             element={<SmartMirrorClassRoom />}
           />
-          <Route path="/test2" element={<Test2 />} />
         </Routes>
       </SensorDataProvider>
     </Router>
