@@ -33,7 +33,7 @@ const CustomDropdown = ({ onSelect, borderColor = '#A5A5A5', borderWidth = '1px'
 
         setOptions(formattedData);
       } catch (e) {
-        console.error("API 오류: ", e);
+        //console.error("API 오류: ", e);
         setOptions([]);
       } finally {
         setLoading(false);

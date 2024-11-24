@@ -19,16 +19,15 @@ function ToggleButton({ isToggled, onToggleChange, deviceId }) {
     
     try {
       setLoading(true);
-      const response = await API.post(endpoint, {}, {
+      await API.post(endpoint, {}, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      // 응답 데이터를 통해 상태 업데이트 또는 필요한 작업을 할 수 있습니다
-      console.log('Toggle 상태 응답:', response.data);
+      //console.log('Toggle 상태 응답:', response.data);
     } catch (e) {
-      console.error('API 오류: ', e);
+      //console.error('API 오류: ', e);
     } finally {
       setLoading(false);
     }
