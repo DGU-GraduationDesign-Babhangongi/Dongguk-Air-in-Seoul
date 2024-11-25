@@ -59,7 +59,7 @@ function Main() {
           });
           if (response.status === 200) {
             const nickname = response.data; // 서버에서 닉네임 데이터 가져오기
-          
+            setNickname(nickname);
             localStorage.setItem("name", nickname);
           
             // 'storage' 이벤트 트리거
