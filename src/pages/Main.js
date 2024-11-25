@@ -149,14 +149,14 @@ function Main() {
   };
 
   const renderShapes = () => {
-    const imageWidth = imageRef.current?.offsetWidth || 640; // 기본값: 원본 이미지 크기
+    const imageWidth = imageRef.current?.offsetWidth || 640;
     const imageHeight = imageRef.current?.offsetHeight || 640;
 
     return coordinates.map((coord, index) => {
       const IAQIndex = getSensorIAQValue(coord.id);
       const ringColor = getIAQColor(IAQIndex);
-      const adjustedX = (coord.x / 640) * imageWidth; // 640: 원본 이미지 너비
-      const adjustedY = (coord.y / 640) * imageHeight; // 640: 원본 이미지 높이
+      const adjustedX = (coord.x / 640) * imageWidth;
+      const adjustedY = (coord.y / 640) * imageHeight;
 
       return (
         <div
@@ -172,13 +172,9 @@ function Main() {
           }}
           style={{
             position: "absolute",
-            // top: `${coord.y}px`,
-            // left: `${coord.x}px`,
-            // width: "16px",
-            // height: "16px",
             top: `${adjustedY}px`,
             left: `${adjustedX}px`,
-            width: "clamp(8px, 1.5vw, 16px)", // 크기 반응형
+            width: "clamp(8px, 1.5vw, 16px)",
             height: "clamp(8px, 1.5vw, 16px)",
             backgroundColor: ringColor,
             borderRadius: "50%",
