@@ -201,7 +201,7 @@ function FloorCheck() {
                             {IAQIndex}
                           </span>
                         ) : (
-                          "${IAQIndex}점"
+                          `${IAQIndex}점`
                         )}
                       </div>
                     </div>
