@@ -266,6 +266,25 @@
   pointer-events: none;
 }
 
+/* 반응형 처리 */
+@media screen and (max-width: 1000px) {
+  .moveLeft {
+    transform: translateX(-150%);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .moveLeft {
+    transform: translateX(-100%);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .moveLeft {
+    transform: translateX(-50%);
+  }
+}
+
 .additionalContent {
   opacity: 0;
   animation: fadeIn 1s forwards 1s;
@@ -279,6 +298,8 @@
   align-items: center;
   z-index: 10;
   cursor: pointer;
+
+  object-fit: contain;
 }
 
 .another {
