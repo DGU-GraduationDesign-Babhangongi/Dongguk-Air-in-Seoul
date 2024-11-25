@@ -25,14 +25,18 @@ const Login = () => {
       console.log("Login Response:", response);
 
       if (response.status === 200) {
-        // JWT 토큰을 로컬 스토리지에 저장
         const token = response.headers.get("authorization").split(" ")[1];
+        const nickname = response.data.nickname; // 서버에서 닉네임 데이터 가져오기
+      
         localStorage.setItem("token", token);
-        console.log("Received Token:", token);
-
-        // 메인 페이지로 이동
+        localStorage.setItem("name", nickname);
+      
+        // 'storage' 이벤트 트리거
+        window.dispatchEvent(new Event("storage"));
+      
         navigate("/");
-      } else {
+      }
+       else {
         console.error("로그인에 실패했습니다.");
       }
     } catch (error) {

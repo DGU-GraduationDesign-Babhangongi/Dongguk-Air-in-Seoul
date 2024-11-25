@@ -8,7 +8,7 @@ import alarmGray from "../../../assets/images/Header/alarm.png";
 const Header = ({ i }) => {
   const navigate = useNavigate();
   const [token, setToken] = useState(localStorage.getItem("token"));
-  const [nickname, setNickname] = useState("");
+  const [nickname, setNickname] = useState(localStorage.getItem("name"));
   const [hasAlert, setHasAlert] = useState(JSON.parse(localStorage.getItem("hasAlert")) || false);
   const [showToast, setShowToast] = useState(false);
   const [alertMessage, setAlertMessage] = useState({});
@@ -31,13 +31,23 @@ const Header = ({ i }) => {
     }
   };
 
-  // localStorage 변경 감지
   useEffect(() => {
-    const handleStorageChange = () => setToken(localStorage.getItem("token"));
+    const handleStorageChange = () => {
+      const updatedNickname = localStorage.getItem("name");
+      if (updatedNickname !== nickname) {
+        setNickname(updatedNickname);
+      }
+    };
+  
+    // storage 이벤트 리스너 등록
     window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
-
+  
+    return () => {
+      // 컴포넌트가 언마운트될 때 리스너 제거
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, [nickname]);
+   
   // 홈페이지로 이동
   const GoToRoot = () => {
     navigate("/");
