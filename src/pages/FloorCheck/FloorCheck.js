@@ -6,6 +6,11 @@ import SideBar from "../../components/common/SideBar/SideBar";
 import styles from "./FloorCheck.module.css";
 import AirQualityIndicator from "../../components/common/AirQualityIndicator/AirQualityIndicator";
 import API from "../../API/api";
+/*images*/
+import goodImg from "../../assets/images/smartmirror/good.png";
+import averageImg from "../../assets/images/smartmirror/average.png";
+import badImg from "../../assets/images/smartmirror/bad.png";
+import loadingImg from "../../assets/images/smartmirror/loading.png";
 
 function FloorCheck() {
   const { floor } = useParams(); // URL에서 floor 값을 가져옴
@@ -15,12 +20,12 @@ function FloorCheck() {
   const currentFloorRooms = roomIds.filter((Id) => Id.startsWith(currentFloor)); // 현재 층에 해당하는 강의실 필터링
   const [allSensorData, setAllSensorData] = useState([]);
 
-  const getImageSrc = (iaq) =>
-    iaq >= 86
-      ? require("../../assets/images/smartmirror/good.png")
-      : iaq >= 71
-      ? require("../../assets/images/smartmirror/average.png")
-      : require("../../assets/images/smartmirror/bad.png");
+  const getImageSrc = (iaq) => {
+    if (iaq === "loading . . .") {
+      return loadingImg;
+    }
+    return iaq >= 86 ? goodImg : iaq >= 71 ? averageImg : badImg;
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -184,7 +189,9 @@ function FloorCheck() {
                       <img
                         src={getImageSrc(IAQIndex)}
                         alt={
-                          IAQIndex >= 86
+                          IAQIndex === "loading . . ."
+                            ? "loading"
+                            : IAQIndex >= 86
                             ? "good"
                             : IAQIndex >= 71
                             ? "average"
