@@ -18,7 +18,7 @@ const SideBar = ({ i }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("name");
     // 로그아웃 후 메인 페이지로 이동
-    navigate("/");
+    navigate("/"); 
   };
 
   // 팝업 닫기 함수

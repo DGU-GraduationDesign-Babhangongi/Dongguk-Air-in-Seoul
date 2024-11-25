@@ -176,10 +176,10 @@ function Log() {
   };
 
   return (
-    <div>
+    <div  className={styles.fullScreenContainer}>
       <Header i={"2"} />
       <div className={styles.container}>
-        <SideBar />
+        <SideBar/>
         <div className={styles.content}>
           <div className={styles.filters}>
             <div className={styles.filterItem}>

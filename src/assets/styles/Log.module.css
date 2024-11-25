@@ -1,3 +1,15 @@
+* {
+  margin: 0;
+  padding: 0; 
+   box-sizing: border-box;
+}
+
+.fullScreenContainer {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 @font-face {
   font-family: 'NanumBarunGothic';
   font-style: normal;
@@ -9,13 +21,14 @@
 }
 
 .container {
-  display: flex;
-  height: 90vh;
+  display: flex;  
+  width: 100%;
+  height: calc(100vh - 5vw);
   font-family: 'NanumBarunGothic', sans-serif;
 }
 
 .content {
-  width: 96%;
+  width: 100%;
   flex-grow: 1;
   padding: 20px;
   display: flex;
