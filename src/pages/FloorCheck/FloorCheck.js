@@ -196,7 +196,13 @@ function FloorCheck() {
                         className={styles.IAQscore}
                         style={{ color: getColor(IAQIndex) }}
                       >
-                        {IAQIndex}점
+                        {IAQIndex === "loading . . ." ? (
+                          <span style={{ fontSize: "12px", color: "gray" }}>
+                            {IAQIndex}
+                          </span>
+                        ) : (
+                          "${IAQIndex}점"
+                        )}
                       </div>
                     </div>
                   </div>
