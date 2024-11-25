@@ -79,12 +79,7 @@ const AbnormalLog = ({ token }) => {
         <img src={sensor} alt="센서 아이콘" className={styles.icons} />
         센서 수치 이상 로그 기록
       </h3>
-      <div
-        style={{
-          maxHeight: "200px",
-          overflowY: "auto",
-        }}
-      >
+      <div className={styles.scrollableContainer}>
         {isLoading ? (
           <div>이상 센서 수치 값을 로딩 중입니다...</div>
         ) : sensorLogs.length > 0 ? (
