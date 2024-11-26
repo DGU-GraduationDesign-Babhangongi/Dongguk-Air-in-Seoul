@@ -36,7 +36,7 @@ const SignUp = () => {
       console.error("API 오류: ", error);
       if(error.response && error.response.status===400){
         alert("허가되지 않은 이메일 입니다. 관리자 이메일로 가입해주세요.");
-      }else if(error.response && error.response.status===403){
+      }else if(error.response && error.response.status===409){
         alert("입력하신 이메일은 이미 사용 중입니다. 다른 이메일을 입력해주세요.");
       }
       else{
