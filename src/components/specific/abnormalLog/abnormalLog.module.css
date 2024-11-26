@@ -16,4 +16,6 @@
   scrollbar-width: thin; /* 스크롤바 두께 */
   border-radius: 10px; /* 둥근 트랙 */
   scrollbar-gutter: stable; /* 스크롤 버튼 제거 */
+
 }
+
