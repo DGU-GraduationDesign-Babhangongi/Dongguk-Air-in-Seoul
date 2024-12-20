@@ -78,7 +78,7 @@ const RemoveRoomComponent = ({ token }) => {
       <ContentBoxHeader
         icon="building.png"
         title="강의실 삭제"
-        content="최대 1일의 시간이 소요될 수 있습니다." 
+        content="센서가 더 이상 존재하지 않는 강의실을 삭제할 수 있습니다." 
       />
       <label>Building</label>
       <Dropbutton

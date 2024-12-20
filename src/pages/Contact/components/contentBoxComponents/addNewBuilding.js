@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import styles from '../../../../assets/styles/Contact.module.css';
 import ContentBoxHeader from '../contentBoxHeader';
-import API from '../../../../API/api';
 
-const AddNewBuilding = ({ buildingOptions, setBuildingOptions }) => {
+const AddNewBuilding = ({}) => {
   const [buildingName, setBuildingName] = useState('');
   const [maxFloors, setMaxFloors] = useState('');
   const [drawings, setDrawings] = useState({});
@@ -98,7 +97,7 @@ const AddNewBuilding = ({ buildingOptions, setBuildingOptions }) => {
       <ContentBoxHeader
         icon="building.png"
         title="새 건물 등록"
-        content="최대 7일의 시간이 소요될 수 있습니다."
+        content="센서를 설치하고자 하는 새로운 건물을 등록할 수 있습니다."
       />
       <label>Building Name</label>
       <input
