@@ -1,17 +1,38 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Header1 from "../../components/common/Header1/Header1";
 import styles from "./UnivMain.module.css";
 
-import univ1 from "../../assets/images/univ1.png";
-import univ2 from "../../assets/images/univ2.png";
-import univ3 from "../../assets/images/univ3.png";
-import univ4 from "../../assets/images/univ4.png";
-import univ5 from "../../assets/images/univ5.png";
-
 function Main() {
   const [showPopup, setShowPopup] = useState(false); // 팝업 상태 관리
-  const [symbolColor, setSymbolColor] = useState("#000000"); // 초기 색상 값을 지정
+  const [schools, setSchools] = useState([]); // 학교 데이터 상태 관리
+  const [formData, setFormData] = useState({
+    name: "",
+    englishName: "",
+    address: "",
+    adminEmail: "",
+    themeColor: "",
+    logo: null,
+  }); // 폼 데이터 상태
   const scrollContainerRef = useRef(null);
+
+  useEffect(() => {
+    // API를 호출하여 학교 데이터를 가져오는 함수
+    const fetchSchools = async () => {
+      try {
+        const response = await fetch("/api/schools");
+        if (response.ok) {
+          const data = await response.json();
+          setSchools(data); // 가져온 데이터를 상태에 저장
+        } else {
+          console.error("Failed to fetch schools");
+        }
+      } catch (error) {
+        console.error("Error fetching schools:", error);
+      }
+    };
+
+    fetchSchools();
+  }, []); // 컴포넌트가 마운트될 때 한 번 실행
 
   const scrollLeft = () => {
     scrollContainerRef.current.scrollBy({
@@ -35,6 +56,49 @@ function Main() {
     setShowPopup(false); // 팝업 닫기
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setFormData((prevData) => ({
+      ...prevData,
+      logo: file,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formDataToSend = new FormData();
+    Object.keys(formData).forEach((key) => {
+      formDataToSend.append(key, formData[key]);
+    });
+
+    try {
+      const response = await fetch("/api/schools", {
+        method: "POST",
+        body: formDataToSend,
+      });
+
+      if (response.ok) {
+        // 성공적으로 등록된 경우, 학교 목록을 갱신
+        const newSchool = await response.json();
+        setSchools((prevSchools) => [...prevSchools, newSchool]);
+        closePopup(); // 팝업 닫기
+      } else {
+        console.error("Failed to register school");
+      }
+    } catch (error) {
+      console.error("Error registering school:", error);
+    }
+  };
+
   return (
     <div>
       <Header1 />
@@ -49,26 +113,12 @@ function Main() {
           </button>
           <div className={styles.buildingsWrapper} ref={scrollContainerRef}>
             <div className={styles.buildings}>
-              <div className={styles.building}>
-                <img src={univ1} alt="동국대학교" />
-                <h2>동국대학교</h2>
-              </div>
-              <div className={styles.building}>
-                <img src={univ2} alt="제주대학교" />
-                <h2>제주대학교</h2>
-              </div>
-              <div className={styles.building}>
-                <img src={univ3} alt="대전대학교" />
-                <h2>대전대학교</h2>
-              </div>
-              <div className={styles.building}>
-                <img src={univ4} alt="한라대학교" />
-                <h2>한라대학교</h2>
-              </div>
-              <div className={styles.building}>
-                <img src={univ5} alt="세종대학교" />
-                <h2>세종대학교</h2>
-              </div>
+              {schools.map((school) => (
+                <div className={styles.building} key={school.id}>
+                  <img src={school.logoUrl} alt={school.name} />
+                  <h2>{school.name}</h2>
+                </div>
+              ))}
             </div>
           </div>
           <button className={styles.scrollButton} onClick={scrollRight}>
@@ -87,31 +137,62 @@ function Main() {
         <div className={styles.popupOverlay}>
           <div className={styles.popupContent}>
             <h3 className={styles.popupTitle}>대학교 등록</h3>
-            <form className={styles.popupForm}>
+            <form className={styles.popupForm} onSubmit={handleSubmit}>
               <label>학교 이름:</label>
-              <input type="text" placeholder="예: 동국대학교" />
+              <input
+                type="text"
+                name="name"
+                placeholder="예: 동국대학교"
+                value={formData.name}
+                onChange={handleInputChange}
+              />
               <label>영어 이름:</label>
-              <input type="text" placeholder="예: Dongguk University" />
+              <input
+                type="text"
+                name="englishName"
+                placeholder="예: Dongguk University"
+                value={formData.englishName}
+                onChange={handleInputChange}
+              />
               <label>로고:</label>
-              <input type="file" />
+              <input type="file" name="logo" onChange={handleFileChange} />
               <label>주소:</label>
-              <input type="text" placeholder="예: 서울특별시 중구 필동로 1길" />
+              <input
+                type="text"
+                name="address"
+                placeholder="예: 서울특별시 중구 필동로 1길"
+                value={formData.address}
+                onChange={handleInputChange}
+              />
               <label>최초 관리자 메일:</label>
-              <input type="email" placeholder="예: admin@example.com" />
-              <label htmlFor="symbolColor">상징 색:</label>
-  <input
-    type="color"
-    id="symbolColor"
-    value={symbolColor}
-    onChange={(e) => setSymbolColor(e.target.value)}
-  />
+              <input
+                type="email"
+                name="adminEmail"
+                placeholder="예: admin@example.com"
+                value={formData.adminEmail}
+                onChange={handleInputChange}
+              />
+              <label htmlFor="themeColor">상징 색:</label>
+              <input
+                type="text"
+                name="themeColor"
+                placeholder="#000000"
+                value={formData.themeColor}
+                onChange={handleInputChange}
+              />
+              <div className={styles.popupActions}>
+                <button
+                  type="button"
+                  className={`${styles.popupButton} cancel`}
+                  onClick={closePopup}
+                >
+                  취소
+                </button>
+                <button type="submit" className={`${styles.popupButton} submit`}>
+                  등록
+                </button>
+              </div>
             </form>
-            <div className={styles.popupActions}>
-              <button className={`${styles.popupButton} cancel`} onClick={closePopup}>
-                취소
-              </button>
-              <button className={`${styles.popupButton} submit`}>등록</button>
-            </div>
           </div>
         </div>
       )}
