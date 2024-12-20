@@ -1,5 +1,5 @@
 /* Main.js */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Header from "../../components/common/Header/Header";
 import styles from "./SejongMain.module.css";
 import { useNavigate } from "react-router-dom";
@@ -7,16 +7,21 @@ import API from "../../API/api";
 import WeatherInfo from "../../components/specific/weatherInfo/weatherInfo";
 import AbnormalLog from "../../components/specific/abnormalLog/abnormalLog";
 import Popup from "../../components/common/Popup/Popup";
+
+/*images*/
 import addBuilding from "../../assets/images/addBuilding.png";
+import currentbuilding from "../../assets/images/main/currentBuilding_icon.png";
 
 function Main() {
   const [token] = useState(localStorage.getItem("token"));
   const [showPopup, setShowPopup] = useState(false);
   const [buildingList, setBuildingList] = useState([]); // 건물 리스트 상태
+  const [selectedBuilding, setSelectedBuilding] = useState(null);
+  const [currentBuildingName, setCurrentBuildingName] = useState("");
   const navigate = useNavigate();
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    // API를 통해 건물 리스트 가져오기
     const fetchBuildings = async () => {
       try {
         const response = await API.get("/api/buildings", {
@@ -47,6 +52,16 @@ function Main() {
     setShowPopup(false);
   };
 
+  const handleBuildingClick = (buildingId) => {
+    setSelectedBuilding(buildingId);
+    const clickedBuilding = buildingList.find(
+      (building) => building.id === buildingId
+    );
+    if (clickedBuilding) {
+      setCurrentBuildingName(clickedBuilding.name);
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -58,6 +73,69 @@ function Main() {
           alignItems: "center",
         }}
       >
+        {selectedBuilding && (
+          <div
+            className={styles.topMessage}
+            style={{
+              width: "400px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "16px",
+              marginBottom: "16px", // 건물 리스트와 간격 추가
+              position: "absolute", // 문구를 건물 리스트 위로 배치
+              top: "280px", // 원하는 위치로 조정
+              left: "10px",
+            }}
+          >
+            <img
+              src={currentbuilding}
+              alt="현재 건물"
+              style={{
+                width: "80px",
+                height: "84px",
+                marginRight: "16px",
+                marginBottom: "16px",
+              }}
+            />
+            <div
+              style={{
+                width: "300px",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <div
+                className={styles.topMessageDetail}
+                style={{ fontSize: "40px" }}
+              >
+                {currentBuildingName}
+              </div>
+              <p className={styles.another}>
+                <span
+                  onClick={() => (window.location.href = "/")}
+                  onMouseEnter={(e) => {
+                    e.target.style.color = "black";
+                    e.target.style.textDecoration = "underline";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.color = "gray";
+                    e.target.style.textDecoration = "none";
+                  }}
+                  style={{
+                    color: "gray",
+                    cursor: "pointer",
+                  }}
+                >
+                  다른 건물의 공기질을 확인하려면
+                  <br />
+                  여기를 누르세요{" "}
+                </span>
+              </p>
+            </div>
+          </div>
+        )}
+
         <div
           className={styles.content}
           style={{
@@ -65,14 +143,16 @@ function Main() {
             display: "flex",
             alignItems: "flex-start",
             padding: "10px",
+            marginTop: selectedBuilding ? "100px" : "0", // 선택된 건물 문구로 인해 건물 리스트가 밀리지 않도록 설정
           }}
         >
           <div
+            ref={containerRef}
             className={styles.buildingsList}
             style={{
               display: "flex",
               gap: "6%",
-              overflowX: "auto",
+              overflowX: selectedBuilding ? "hidden" : "auto", // 스크롤 제거
               padding: "10px",
               maxWidth: "70%",
               scrollSnapType: "x mandatory",
@@ -93,7 +173,7 @@ function Main() {
                 <div className={styles.welcomeMessage}>
                   <img
                     src={addBuilding}
-                    alt="환영 이미지"
+                    alt="건물 추가"
                     className={styles.addBuilding}
                   />
                   <p style={{ marginBottom: "20%" }}>
@@ -112,12 +192,23 @@ function Main() {
                 <div
                   key={building.id}
                   className={styles.building}
-                  onClick={() => navigate(`/buildings/${building.id}`)}
+                  onClick={() => handleBuildingClick(building.id)}
                   style={{
                     flex: "0 0 auto",
                     scrollSnapAlign: "center",
                     minWidth: "200px",
                     textAlign: "center",
+                    transform:
+                      selectedBuilding === building.id
+                        ? `translateX(calc(-150% + ${
+                            containerRef.current?.offsetLeft || 0
+                          }px))`
+                        : "translateX(0)", // 선택된 건물은 일정한 위치로 이동
+                    opacity:
+                      selectedBuilding && selectedBuilding !== building.id
+                        ? 0
+                        : 1,
+                    transition: "all 1.5s ease",
                   }}
                 >
                   <img
@@ -125,16 +216,32 @@ function Main() {
                     alt={building.name}
                     className={styles.buildingImage}
                   />
-                  <h2>{building.name}</h2>
-                  <p>최대 층수: {building.maxFloor}</p>
-                  <p>센서 개수: {building.sensorCount}</p>
+                  <h2
+                    style={{
+                      fontSize: "20px",
+                      textShadow: "3px 3px 1.5px #d3d3d3",
+                    }}
+                  >
+                    {building.name}
+                  </h2>
+                  <p>
+                    {building.sensorCount}
+                    <span className={styles.greenLight}></span>
+                  </p>
                 </div>
               ))
             )}
           </div>
           <div
             className={styles.weatherAndLogs}
-            style={{ width: "25%", flexShrink: 0 }}
+            style={{
+              width: "25%",
+              flexShrink: 0,
+              transform: selectedBuilding
+                ? "translateY(-50px)"
+                : "translateY(0)", // 선택된 건물에 따라 아래로 이동
+              position: "relative",
+            }}
           >
             <div className={styles.weatherLogs}>
               <WeatherInfo />
@@ -145,7 +252,6 @@ function Main() {
           </div>
         </div>
       </div>
-
       {showPopup && (
         <Popup
           popupContent="로그인이 필요한 서비스입니다."

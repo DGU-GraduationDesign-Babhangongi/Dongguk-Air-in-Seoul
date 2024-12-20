@@ -15,6 +15,28 @@
 .sensorLogs > div::-webkit-scrollbar-track {
   background: lightgray;
 }
+.topMessage {
+  margin-left: 6%;
+  margin-bottom: -44px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  animation: fadeInLeft 1.5s;
+  align-items: center;
+}
+
+.greenLight {
+  width: 10px;
+  height: 10px;
+  margin-left: 10px;
+  background-color: green;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.buildingImage {
+  filter: drop-shadow(0 8px 8px #c7c7c7);
+}
 
 .mainContainer {
   padding: 20px;
@@ -22,6 +44,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-top: -2%;
 }
 
 .content {
@@ -103,7 +126,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   border-radius: 8px;
 }
 
@@ -116,7 +138,7 @@
 }
 
 .building img {
-  width: clamp(240px, 3vw, 480px);
+  width: clamp(320px, 3vw, 480px);
   height: auto;
   margin-bottom: 10px;
 }
