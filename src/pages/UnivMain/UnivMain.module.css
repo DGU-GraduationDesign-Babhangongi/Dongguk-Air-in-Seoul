@@ -87,6 +87,14 @@
     font-size: 1rem;
   }
   
+  .registerButton {
+    background-color: #4E8A66;
+  }
+
+  .registerButton:hover {
+    background-color: #2D6A4F;
+  }
+
   .popupOverlay {
     position: fixed;
     top: 0;
@@ -143,6 +151,11 @@
     cursor: pointer;
     width: 170px;
     height: 40px;
+    background-color:#4E8A66;
+  }
+
+  .popupButton:hover {
+    background-color:#2D6A4F;
   }
   
   .popupButton.cancel {
@@ -152,7 +165,6 @@
   }
   
   .popupButton.submit {
-    background-color: #ffc107;
     color: white;
   }
   
