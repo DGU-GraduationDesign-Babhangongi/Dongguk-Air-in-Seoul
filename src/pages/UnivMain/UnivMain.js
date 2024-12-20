@@ -10,6 +10,7 @@ import univ5 from "../../assets/images/univ5.png";
 
 function Main() {
   const [showPopup, setShowPopup] = useState(false); // 팝업 상태 관리
+  const [symbolColor, setSymbolColor] = useState("#000000"); // 초기 색상 값을 지정
   const scrollContainerRef = useRef(null);
 
   const scrollLeft = () => {
@@ -97,8 +98,13 @@ function Main() {
               <input type="text" placeholder="예: 서울특별시 중구 필동로 1길" />
               <label>최초 관리자 메일:</label>
               <input type="email" placeholder="예: admin@example.com" />
-              <label>상징 색:</label>
-              <input type="color" />
+              <label htmlFor="symbolColor">상징 색:</label>
+  <input
+    type="color"
+    id="symbolColor"
+    value={symbolColor}
+    onChange={(e) => setSymbolColor(e.target.value)}
+  />
             </form>
             <div className={styles.popupActions}>
               <button className={`${styles.popupButton} cancel`} onClick={closePopup}>
