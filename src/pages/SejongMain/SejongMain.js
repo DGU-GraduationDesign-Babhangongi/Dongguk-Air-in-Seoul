@@ -4,8 +4,8 @@ import Header from "../../components/common/Header/Header";
 import styles from "./SejongMain.module.css";
 import { useNavigate } from "react-router-dom";
 import API from "../../API/api";
-import WeatherInfo from "../../components/specific/weatherInfo/weatherInfo";
-import AbnormalLog from "../../components/specific/abnormalLog/abnormalLog";
+import WeatherInfo from "../../components/specific/weatherInfo2/weatherInfoSEJONG";
+import AbnormalLog from "../../components/specific/abnormalLog2/abnormalLogSEJONG";
 import Popup from "../../components/common/Popup/Popup";
 
 /*images*/
@@ -18,6 +18,8 @@ function Main() {
   const [buildingList, setBuildingList] = useState([]); // 건물 리스트 상태
   const [selectedBuilding, setSelectedBuilding] = useState(null);
   const [currentBuildingName, setCurrentBuildingName] = useState("");
+  const [showWelcomeMessage, setShowWelcomeMessage] = useState(true); // 환영 메시지 상태
+  const [isFadingOut, setIsFadingOut] = useState(false); // 애니메이션 상태
   const navigate = useNavigate();
   const containerRef = useRef(null);
 
@@ -53,7 +55,15 @@ function Main() {
   };
 
   const handleBuildingClick = (buildingId) => {
-    setSelectedBuilding(buildingId);
+    setIsFadingOut(true); // 애니메이션 트리거
+
+    // 애니메이션이 끝난 후 상태 업데이트
+    setTimeout(() => {
+      setSelectedBuilding(buildingId);
+      setShowWelcomeMessage(false); // 환영 메시지 숨기기
+      setIsFadingOut(false);
+    }, 1000);
+
     const clickedBuilding = buildingList.find(
       (building) => building.id === buildingId
     );
@@ -65,6 +75,28 @@ function Main() {
   return (
     <div>
       <Header />
+      {showWelcomeMessage && (
+        <div
+          className={`${styles.welcomeMessage} ${
+            isFadingOut ? styles.fadeOut : styles.fadeIn
+          }`}
+          style={{
+            position: "absolute",
+            top: "15%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            padding: "20px",
+            zIndex: 100,
+          }}
+        >
+          <h2 style={{ fontSize: "clamp(18px, 2vw, 28px)" }}>
+            사용자님 환영합니다!
+          </h2>
+          <p style={{ fontSize: "clamp(12px, 1.5vw, 20px)" }}>
+            공기질을 확인할 강의실을 선택해주세요.
+          </p>
+        </div>
+      )}
       <div
         className={styles.mainContainer}
         style={{

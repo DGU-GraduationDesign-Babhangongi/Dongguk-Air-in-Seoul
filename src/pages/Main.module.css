@@ -234,6 +234,15 @@
   margin-right: -10px;
 }
 
+.weatherLogs {
+  background-color: #fffcd5;
+  border-radius: 20px 0 0 20px;
+  padding: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.261);
+  width: 100%;
+  color: black;
+}
+
 .sensorLogs {
   background-color: #ffd9b7;
   border-radius: 20px 0 0 20px;
