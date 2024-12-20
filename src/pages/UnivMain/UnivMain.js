@@ -1,25 +1,37 @@
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
 import Header1 from "../../components/common/Header1/Header1";
 import styles from "./UnivMain.module.css";
 
-import jungbo from "../../assets/images/main/jungboP.png";
-import singong from "../../assets/images/main/singong.png";
-import wonheung from "../../assets/images/main/wonheung.png";
-import anotherBuilding from "../../assets/images/main/wonheung.png";
+import univ1 from "../../assets/images/univ1.png";
+import univ2 from "../../assets/images/univ2.png";
+import univ3 from "../../assets/images/univ3.png";
+import univ4 from "../../assets/images/univ4.png";
+import univ5 from "../../assets/images/univ5.png";
 
 function Main() {
+  const [showPopup, setShowPopup] = useState(false); // 팝업 상태 관리
   const scrollContainerRef = useRef(null);
 
   const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: -200, behavior: "smooth" });
-    }
+    scrollContainerRef.current.scrollBy({
+      left: -240,
+      behavior: "smooth",
+    });
   };
 
   const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: 200, behavior: "smooth" });
-    }
+    scrollContainerRef.current.scrollBy({
+      left: 240,
+      behavior: "smooth",
+    });
+  };
+
+  const openPopup = () => {
+    setShowPopup(true); // 팝업 열기
+  };
+
+  const closePopup = () => {
+    setShowPopup(false); // 팝업 닫기
   };
 
   return (
@@ -27,41 +39,76 @@ function Main() {
       <Header1 />
       <div className={styles.mainContainer}>
         <div className={styles.welcomeMessage}>
-          <h2 style={{ fontSize: "clamp(18px, 2vw, 28px)" }}>
-            사용자님 환영합니다!
-          </h2>
-          <p style={{ fontSize: "clamp(12px, 1.5vw, 20px)" }}>
-            공기질을 확인할 강의실을 선택해주세요.
-          </p>
+          <h2>관리자님 환영합니다!</h2>
+          <p>공기질을 확인할 대학교를 선택해주세요.</p>
         </div>
-        <div className={styles.buildingsWrapper}>
-          <button className={`${styles.scrollButton} ${styles.left}`} onClick={scrollLeft}>
-            ◀
+        <div className={styles.scrollContainer}>
+          <button className={styles.scrollButton} onClick={scrollLeft}>
+            &lt;
           </button>
-          <div className={styles.buildings} ref={scrollContainerRef}>
-            <div className={styles.building}>
-              <img src={jungbo} alt="정보문화관 P" />
-              <h2>정보문화관 P</h2>
-            </div>
-            <div className={styles.building}>
-              <img src={singong} alt="신공학관" />
-              <h2>신공학관</h2>
-            </div>
-            <div className={styles.building}>
-              <img src={wonheung} alt="원흥관" />
-              <h2>원흥관</h2>
-            </div>
-            <div className={styles.building}>
-              <img src={anotherBuilding} alt="다른 건물" />
-              <h2>다른 건물</h2>
+          <div className={styles.buildingsWrapper} ref={scrollContainerRef}>
+            <div className={styles.buildings}>
+              <div className={styles.building}>
+                <img src={univ1} alt="동국대학교" />
+                <h2>동국대학교</h2>
+              </div>
+              <div className={styles.building}>
+                <img src={univ2} alt="제주대학교" />
+                <h2>제주대학교</h2>
+              </div>
+              <div className={styles.building}>
+                <img src={univ3} alt="대전대학교" />
+                <h2>대전대학교</h2>
+              </div>
+              <div className={styles.building}>
+                <img src={univ4} alt="한라대학교" />
+                <h2>한라대학교</h2>
+              </div>
+              <div className={styles.building}>
+                <img src={univ5} alt="세종대학교" />
+                <h2>세종대학교</h2>
+              </div>
             </div>
           </div>
-          <button className={`${styles.scrollButton} ${styles.right}`} onClick={scrollRight}>
-            ▶
+          <button className={styles.scrollButton} onClick={scrollRight}>
+            &gt;
           </button>
         </div>
-        <p style={{ marginTop: "20px" }}>새로운 대학교를 등록하고 싶으신가요? <a href="/register">등록하기</a></p>
+        <div className={styles.registerMessage}>
+          새로운 대학교를 등록하고 싶으신가요?{" "}
+          <button className={styles.registerButton} onClick={openPopup}>
+            등록하기
+          </button>
+        </div>
       </div>
+
+      {showPopup && (
+        <div className={styles.popupOverlay}>
+          <div className={styles.popupContent}>
+            <h3 className={styles.popupTitle}>대학교 등록</h3>
+            <form className={styles.popupForm}>
+              <label>학교 이름:</label>
+              <input type="text" placeholder="예: 동국대학교" />
+              <label>영어 이름:</label>
+              <input type="text" placeholder="예: Dongguk University" />
+              <label>로고:</label>
+              <input type="file" />
+              <label>주소:</label>
+              <input type="text" placeholder="예: 서울특별시 중구 필동로 1길" />
+              <label>최초 관리자 메일:</label>
+              <input type="email" placeholder="예: admin@example.com" />
+              <label>상징 색:</label>
+              <input type="color" />
+            </form>
+            <div className={styles.popupActions}>
+              <button className={`${styles.popupButton} cancel`} onClick={closePopup}>
+                취소
+              </button>
+              <button className={`${styles.popupButton} submit`}>등록</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
