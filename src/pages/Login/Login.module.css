@@ -110,7 +110,6 @@
 }
 
 .loginButton {
-  background-color: #ffc233;
   color: white;
   padding: 12px;
   border: none;
@@ -121,6 +120,4 @@
   font-family: "NanumBarunGothic", Arial, sans-serif; /* 폰트 적용 */
 }
 
-.loginButton:hover {
-  background-color: #ff9a02;
-}
+
