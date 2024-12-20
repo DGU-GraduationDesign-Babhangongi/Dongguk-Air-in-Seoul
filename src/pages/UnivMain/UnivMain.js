@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Header1 from "../../components/common/Header1/Header1";
 import styles from "./UnivMain.module.css";
 
 function Main() {
-  const [showPopup, setShowPopup] = useState(false); // 팝업 상태 관리
-  const [schools, setSchools] = useState([]); // 학교 데이터 상태 관리
+  const [showPopup, setShowPopup] = useState(false);
+  const [schools, setSchools] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     englishName: "",
@@ -12,17 +13,17 @@ function Main() {
     adminEmail: "",
     themeColor: "",
     logo: null,
-  }); // 폼 데이터 상태
+  });
   const scrollContainerRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // API를 호출하여 학교 데이터를 가져오는 함수
     const fetchSchools = async () => {
       try {
         const response = await fetch("/api/schools");
         if (response.ok) {
           const data = await response.json();
-          setSchools(data); // 가져온 데이터를 상태에 저장
+          setSchools(data);
         } else {
           console.error("Failed to fetch schools");
         }
@@ -32,7 +33,7 @@ function Main() {
     };
 
     fetchSchools();
-  }, []); // 컴포넌트가 마운트될 때 한 번 실행
+  }, []);
 
   const scrollLeft = () => {
     scrollContainerRef.current.scrollBy({
@@ -48,12 +49,8 @@ function Main() {
     });
   };
 
-  const openPopup = () => {
-    setShowPopup(true); // 팝업 열기
-  };
-
-  const closePopup = () => {
-    setShowPopup(false); // 팝업 닫기
+  const handleLogoClick = (school) => {
+    navigate("/login", { state: { school } });
   };
 
   const handleInputChange = (e) => {
@@ -87,10 +84,9 @@ function Main() {
       });
 
       if (response.ok) {
-        // 성공적으로 등록된 경우, 학교 목록을 갱신
         const newSchool = await response.json();
         setSchools((prevSchools) => [...prevSchools, newSchool]);
-        closePopup(); // 팝업 닫기
+        setShowPopup(false);
       } else {
         console.error("Failed to register school");
       }
@@ -114,7 +110,11 @@ function Main() {
           <div className={styles.buildingsWrapper} ref={scrollContainerRef}>
             <div className={styles.buildings}>
               {schools.map((school) => (
-                <div className={styles.building} key={school.id}>
+                <div
+                  className={styles.building}
+                  key={school.id}
+                  onClick={() => handleLogoClick(school)}
+                >
                   <img src={school.logoUrl} alt={school.name} />
                   <h2>{school.name}</h2>
                 </div>
@@ -127,7 +127,7 @@ function Main() {
         </div>
         <div className={styles.registerMessage}>
           새로운 대학교를 등록하고 싶으신가요?{" "}
-          <button className={styles.registerButton} onClick={openPopup}>
+          <button className={styles.registerButton} onClick={() => setShowPopup(true)}>
             등록하기
           </button>
         </div>
@@ -184,7 +184,7 @@ function Main() {
                 <button
                   type="button"
                   className={`${styles.popupButton} cancel`}
-                  onClick={closePopup}
+                  onClick={() => setShowPopup(false)}
                 >
                   취소
                 </button>
