@@ -396,12 +396,15 @@ function Main() {
             className={styles.weatherAndLogs}
             style={{ position: "relative" }}
           >
-            <WeatherInfo
-              forecast={forecast}
-              forecast2={forecast2}
-              loading={loadingdata}
-              dateTime={dateTime}
-            />
+            {" "}
+            <div className={styles.weatherLogs}>
+              <WeatherInfo
+                forecast={forecast}
+                forecast2={forecast2}
+                loading={loadingdata}
+                dateTime={dateTime}
+              />
+            </div>
             <div className={styles.sensorLogs}>
               <AbnormalLog token={token} />
             </div>

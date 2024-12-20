@@ -25,6 +25,41 @@
   align-items: center;
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.welcomeMessage {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+.fadeIn {
+  animation-name: fadeIn;
+}
+
+.fadeOut {
+  animation-name: fadeOut;
+}
+
 .greenLight {
   width: 10px;
   height: 10px;
@@ -145,8 +180,14 @@
 
 .welcomeMessage {
   text-align: center;
+  margin-right: calc(25%);
+  margin-top: 20px;
   animation: slideDown 1.5s ease-in-out;
-  margin-bottom: 100%;
+}
+.fadeOutMessage {
+  transform: translateY(-50px);
+  opacity: 0;
+  transition: transform 1.5s ease-in-out, opacity 1.5s ease-in-out;
 }
 
 .noBuildingsMessage {
@@ -154,11 +195,6 @@
 }
 .welcomeTitle {
   font-size: clamp(18px, 2vw, 28px);
-}
-.fadeOutMessage {
-  transform: translateY(-50px);
-  opacity: 0;
-  transition: transform 1.5s ease-in-out, opacity 1.5s ease-in-out;
 }
 
 .addBuilding {

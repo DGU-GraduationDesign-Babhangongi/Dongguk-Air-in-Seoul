@@ -1,0 +1,70 @@
+.weatherInfo {
+  font-size: clamp(20px, 2vw, 50px);
+  font-weight: bold;
+  margin-top: 1%;
+  border-radius: 20px 0 0 20px; /* 모서리 */
+  padding: clamp(12px, 1vw, 100px); /* 박스 내부 여백 */
+  width: 100%; /* 박스가 부모의 너비를 차지하도록 */
+  color: black;
+  z-index: 800;
+}
+
+.weatherMinMax {
+  font-size: clamp(16px, 1vw, 24px);
+  text-align: right;
+  font-weight: 600;
+  color: black;
+}
+
+.weatherMinMax2 {
+  text-align: right;
+  font-size: clamp(9px, 1vw, 13px);
+  margin-bottom: 10px;
+  color: black;
+}
+
+.weatherTemperature {
+  font-size: clamp(25px, 3vw, 100px);
+  font-weight: bold;
+  text-align: right;
+}
+
+.weatherRain {
+  font-size: 2vw;
+  text-align: center;
+  color: black;
+}
+
+.weatherAdvice {
+  text-align: right;
+  white-space: pre-line;
+  font-size: clamp(12px, 1.2vw, 18px);
+  color: black;
+}
+
+.weatherloading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.weatherImg {
+  width: clamp(70px, 7vw, 200px);
+  filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.2));
+}
+
+.weatherInfo h3 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.weatherInfo p,
+.sensorInfo p {
+  margin: 5px 0;
+}
+
+.icons {
+  width: clamp(16px, 2vw, 50px);
+  margin-right: 8px;
+  margin-bottom: -8px;
+}
