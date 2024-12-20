@@ -11,6 +11,7 @@ import Alarm from "../src/pages/Alarm/Alarm";
 import Contact from "../src/pages/Contact/Contact";
 import FloorCheck from "../src/pages/FloorCheck/FloorCheck";
 import Test from "../src/pages/test";
+import UnivMain from "../src/pages/UnivMain/UnivMain";
 
 import SmartMirrorMain from "../src/smartMirror/pages/main";
 import SmartMirrorClassRoom from "../src/smartMirror/pages/classRoom";
@@ -23,7 +24,8 @@ function App() {
       <SensorDataProvider>
         <Routes>
           {/* 기본 페이지들 */}
-          <Route path="/" element={<Main />} />
+          <Route path="/" element={<UnivMain />} />
+          <Route path="/main" element={<Main />} />
 
           <Route path="/figures" element={<Figures />} />
           <Route path="/figures/:id" element={<Figures />} />
