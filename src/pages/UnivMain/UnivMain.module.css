@@ -1,0 +1,391 @@
+.sensorLogs > div {
+    scrollbar-width: thin;
+    scrollbar-color: gray lightgray;
+  }
+  
+  .sensorLogs > div::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .sensorLogs > div::-webkit-scrollbar-thumb {
+    background: gray;
+    border-radius: 4px;
+  }
+  
+  .sensorLogs > div::-webkit-scrollbar-track {
+    background: lightgray;
+  }
+  
+
+  .scrollButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 100;
+    border-radius: 50%;
+  }
+  
+  .scrollButton.left {
+    left: -20px; /* 버튼 위치를 바깥쪽으로 이동 */
+  }
+  
+  .scrollButton.right {
+    right: -20px; /* 버튼 위치를 바깥쪽으로 이동 */
+  }
+  
+  .scrollButton:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  /* 스크롤 바 스타일링 */
+  .buildingsWrapper::-webkit-scrollbar {
+    height: 8px; /* 세로 스크롤 바 높이 */
+  }
+  
+  .buildingsWrapper::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+  }
+  
+  .buildingsWrapper::-webkit-scrollbar-track {
+    background-color: rgba(200, 200, 200, 0.5);
+  }
+
+  .mainContainer {
+    padding: 20px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  @keyframes fadeInAndGrow {
+    0% {
+      opacity: 0;
+      transform: scale(0.8); /* 크기를 80%로 줄여 시작 */
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1); /* 원래 크기로 돌아옴 */
+    }
+  }
+  
+  @keyframes slideDown {
+    0% {
+      opacity: 0;
+      transform: translateY(-50px); /* 위에서 시작 */
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0); /* 원래 위치로 이동 */
+    }
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeInLeft {
+    0% {
+      opacity: 0;
+      transform: translate3d(-8%, 0, 0);
+    }
+  
+    to {
+      opacity: 1;
+      transform: translateZ(0);
+    }
+  }
+  
+  .welcomeMessage {
+    text-align: center;
+    margin-right: calc(25%);
+    margin-top: -300px;
+    animation: slideDown 1.5s ease-in-out;
+  }
+  .fadeOutMessage {
+    transform: translateY(-50px);
+    opacity: 0;
+    transition: transform 1.5s ease-in-out, opacity 1.5s ease-in-out;
+  }
+  
+  .topMessage {
+    display: flex;
+    margin-left: 6%;
+    margin-bottom: -44px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    animation: fadeInLeft 1.5s;
+    align-items: center;
+  }
+  
+  .ring {
+    position: absolute;
+    border: 2px solid;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 1.5s infinite;
+    opacity: 1;
+    z-index: 1;
+  }
+  .ring:nth-child(2) {
+    width: 52px;
+    height: 52px;
+    animation-delay: 0.75s;
+    z-index: 1;
+  }
+  
+  .animated-shape {
+    position: relative;
+    z-index: 10;
+  }
+  @keyframes pulse {
+    0% {
+      transform: translate(-50%, -50%) scale(0.5);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1.5);
+      opacity: 0;
+    }
+  }
+  
+  .hoverBox {
+    position: absolute;
+    left: 260%;
+    width: 260px;
+    padding: 160%;
+    background-color: #f0fbeb;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    z-index: 1000;
+  }
+  
+  .topMessageDetail {
+    font-size: clamp(44px, 2vw, 64px);
+    font-weight: bold;
+    color: #333;
+    text-shadow: 3px 3px 1.5px lightgray;
+    margin-top: 44px;
+  }
+  
+  .content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* 수평 중앙 정렬 */
+    height: 80%; /* 부모 요소 높이에 맞추기 위해 추가 */
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .buildings {
+    display: flex;
+  gap: 20px; /* 건물 간 간격 */
+  padding: 10px;
+  }
+  
+  /* 각 건물의 위치 고정 */
+  .buildings > div:nth-child(1) {
+    left: 10%;
+    top: 40%;
+  }
+  .buildings > div:nth-child(2) {
+    left: 32%;
+    top: 40%;
+  }
+  .buildings > div:nth-child(3) {
+    left: 54%;
+    top: 40%;
+  }
+  
+  .buildingsWrapper {
+    display: flex;
+  align-items: center;
+  position: relative;
+  width: 90%; /* 화면 폭에 맞추기 */
+  overflow-x: scroll; /* 가로 스크롤 활성화 */
+  scroll-behavior: smooth; /* 부드러운 스크롤 */
+  margin: 0 auto;
+  }
+
+  .building {
+    text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  width: 200px; /* 고정된 너비 */
+  flex: 0 0 auto; /* 요소 크기 고정 */
+  }
+  
+  .building:hover {
+  transform: scale(1.1);
+}
+  
+  .building img {
+    width: 150px; /* 이미지 크기 고정 */
+  height: auto;
+  filter: drop-shadow(0px 8px 8px rgba(0, 0, 0, 0.1));
+  }
+  
+  .building h2 {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    color: #333;
+  }
+
+  .sensorInfo {
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+  
+  .greenLight {
+    width: 10px;
+    height: 10px;
+    background-color: green;
+    display: inline-block;
+    border-radius: 50%;
+  }
+  
+  .redLight {
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    display: inline-block;
+    border-radius: 50%;
+  }
+  
+  .weatherAndLogs {
+    width: 22%;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 15%;
+    margin-right: -10px;
+  }
+  
+  .sensorLogs {
+    background-color: #ffd9b7;
+    border-radius: 20px 0 0 20px;
+    padding: clamp(12px, 1vw, 100px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.261);
+    width: 100%;
+    color: black;
+    z-index: 800;
+  }
+  
+  .sensorLogs h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .fadeOut {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s ease-in-out;
+  }
+  
+  .moveLeft {
+    display: flex;
+    transform: translateX(-200%);
+    transition: transform 1.5s ease-in-out;
+  }
+  
+  .moveLeft:hover {
+    transform: translateX(-200%);
+    pointer-events: none;
+  }
+  
+  /* 반응형 처리 */
+  @media screen and (max-width: 1000px) {
+    .moveLeft {
+      transform: translateX(-150%);
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .moveLeft {
+      transform: translateX(-100%);
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .moveLeft {
+      transform: translateX(-50%);
+    }
+  }
+  
+  .additionalContent {
+    opacity: 0;
+    animation: fadeIn 1s forwards 1s;
+  }
+  
+  .selectedBuildingImage {
+    position: absolute;
+    top: 20%;
+    left: 35%;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    cursor: pointer;
+  
+    object-fit: contain;
+  }
+  
+  .another {
+    margin: 0;
+    font-size: 16px;
+    margin-top: 10px;
+    z-index: 10;
+  }
+  
+  .sensorLogs p {
+    font-size: clamp(11px, 1.2vw, 18px);
+  }
+  
+  .roomName {
+    font-weight: 500;
+    text-shadow: 1.5px 1.5px 1.5px lightgray;
+    font-size: 1.5rem;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  
+  .hovered {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    z-index: 101;
+  }
+  .hoveredFloor {
+    position: absolute;
+    top: -28%;
+    left: 35%;
+    transform: translateX(-50%);
+    background-color: white;
+    color: black;
+    padding: 10%;
+    border-radius: 8px;
+    font-size: 20px;
+    white-space: nowrap;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.261);
+  }
+  
