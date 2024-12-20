@@ -4,8 +4,8 @@ import Header from "../../components/common/Header/Header";
 import styles from "./SejongMain.module.css";
 import { useNavigate } from "react-router-dom";
 import API from "../../API/api";
-import WeatherInfo from "../../components/specific/weatherInfo2/weatherInfoSEJONG";
-import AbnormalLog from "../../components/specific/abnormalLog2/abnormalLogSEJONG";
+import WeatherInfo from "./../../components/specific/weatherInfo2/weatherInfoSEJONG";
+import AbnormalLog from "./../../components/specific/abnormalLog2/abnormalLogSEJONG";
 import Popup from "../../components/common/Popup/Popup";
 
 /*images*/
