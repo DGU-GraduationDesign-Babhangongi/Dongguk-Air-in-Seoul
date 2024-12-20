@@ -65,7 +65,7 @@ function Main() {
             // 'storage' 이벤트 트리거
             window.dispatchEvent(new Event("storage"));
 
-            navigate("/");
+            navigate("/main");
           }
         } catch (error) {
           // console.error("닉네임을 불러오는 데 실패했습니다:", error);
