@@ -1,0 +1,144 @@
+.sensorLogs > div {
+  scrollbar-width: thin;
+  scrollbar-color: gray lightgray;
+}
+
+.sensorLogs > div::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sensorLogs > div::-webkit-scrollbar-thumb {
+  background: gray;
+  border-radius: 4px;
+}
+
+.sensorLogs > div::-webkit-scrollbar-track {
+  background: lightgray;
+}
+
+.mainContainer {
+  padding: 20px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.content {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 80%;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.noBuildingsMessage {
+  text-align: center;
+  margin: auto;
+}
+
+.addBuildingButton {
+  background-color: #d1d8dd;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.addBuildingButton:hover {
+  background-color: #7e929f;
+  color: white;
+}
+
+.weatherAndLogs {
+  width: 22%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.weatherLogs {
+  background-color: #fffcd5;
+  border-radius: 20px 0 0 20px;
+  padding: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.261);
+  width: 100%;
+  color: black;
+}
+
+.sensorLogs {
+  background-color: #dbe1e5;
+  border-radius: 20px 0 0 20px;
+  padding: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.261);
+  width: 100%;
+  color: black;
+}
+
+.sensorLogs p {
+  font-size: 14px;
+}
+
+.buildingsList {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 10px;
+  max-width: 100%;
+  scroll-snap-type: x mandatory;
+}
+
+.building {
+  text-align: center;
+  cursor: pointer;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 8px;
+}
+
+.building:hover {
+  transform: scale(1.05);
+}
+
+.building h2 {
+  font-size: 18px;
+}
+
+.building img {
+  width: clamp(240px, 3vw, 480px);
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.welcomeMessage {
+  text-align: center;
+  animation: slideDown 1.5s ease-in-out;
+  margin-bottom: 100%;
+}
+
+.noBuildingsMessage {
+  margin-bottom: 20px; /* 여백 추가 */
+}
+.welcomeTitle {
+  font-size: clamp(18px, 2vw, 28px);
+}
+.fadeOutMessage {
+  transform: translateY(-50px);
+  opacity: 0;
+  transition: transform 1.5s ease-in-out, opacity 1.5s ease-in-out;
+}
+
+.addBuilding {
+  width: clamp(140px, 2vw, 200px);
+}

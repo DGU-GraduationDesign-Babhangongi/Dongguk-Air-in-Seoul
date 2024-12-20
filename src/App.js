@@ -12,6 +12,7 @@ import Contact from "../src/pages/Contact/Contact";
 import FloorCheck from "../src/pages/FloorCheck/FloorCheck";
 import Test from "../src/pages/test";
 import UnivMain from "../src/pages/UnivMain/UnivMain";
+import SejongMain from "../src/pages/SejongMain/SejongMain";
 
 import SmartMirrorMain from "../src/smartMirror/pages/main";
 import SmartMirrorClassRoom from "../src/smartMirror/pages/classRoom";
@@ -26,6 +27,7 @@ function App() {
           {/* 기본 페이지들 */}
           <Route path="/" element={<UnivMain />} />
           <Route path="/main" element={<Main />} />
+          <Route path="/sejongmain" element={<SejongMain />} />
 
           <Route path="/figures" element={<Figures />} />
           <Route path="/figures/:id" element={<Figures />} />
