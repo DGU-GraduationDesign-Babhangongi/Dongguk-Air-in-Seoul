@@ -6,7 +6,7 @@ const AddEmail = ({ }) => {
   const [email, setEmail] = useState('');  // 이메일 상태 추가
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("token");
-
+  const color = localStorage.getItem("schoolColor");
   const handleRegisterEmail = async () => {
     if (!email) {
       alert("이메일을 입력해주세요.");
@@ -56,7 +56,12 @@ const AddEmail = ({ }) => {
         onChange={(e) => setEmail(e.target.value)}  // 이메일 상태 업데이트
       />
 
-      <button onClick={handleRegisterEmail} disabled={loading}>
+      <button onMouseEnter={(e) => {
+    e.target.style.backgroundColor = color; // hover 시 배경색 변경
+  }}
+  onMouseLeave={(e) => {
+    e.target.style.backgroundColor = 'lightgray'; // hover 벗어나면 원래 배경색으로 변경
+  }} onClick={handleRegisterEmail} disabled={loading}>
         {loading ? '등록 중...' : '등록'}
       </button>
     </div>

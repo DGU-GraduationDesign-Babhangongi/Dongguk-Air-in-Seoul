@@ -45,7 +45,7 @@ function Contact() {
       <Header />
       <div style={{ display: 'flex' }}>
         <SideBar i='5' />
-        <div className={styles.container}>
+        <div className={styles.container} >
           <div className={styles.banner} style={{backgroundColor:`${color}`}}>
             <FiCpu size={36} color="#333" />
             <h1>관리자 페이지</h1>
@@ -65,10 +65,21 @@ function Contact() {
           <div style={{ display: 'flex', justifyContent:'center'}}>
 
           <div className={styles.navigation}>
-              <button onClick={goToPrevSlide} disabled={currentSlide === 0} >
+              <button   onMouseEnter={(e) => {
+    e.target.style.backgroundColor = color; // hover 시 배경색 변경
+  }}
+  onMouseLeave={(e) => {
+    e.target.style.backgroundColor = 'lightgray'; // hover 벗어나면 원래 배경색으로 변경
+  }}onClick={goToPrevSlide} disabled={currentSlide === 0} >
                 <span>&lt;</span>
+                
               </button>
-              <button onClick={goToNextSlide} disabled={currentSlide + slideCount >= totalItems.length}>
+              <button   onMouseEnter={(e) => {
+    e.target.style.backgroundColor = color; // hover 시 배경색 변경
+  }}
+  onMouseLeave={(e) => {
+    e.target.style.backgroundColor = 'lightgray'; // hover 벗어나면 원래 배경색으로 변경
+  }} onClick={goToNextSlide} disabled={currentSlide + slideCount >= totalItems.length}>
                 <span>&gt;</span>
               </button>
             </div>

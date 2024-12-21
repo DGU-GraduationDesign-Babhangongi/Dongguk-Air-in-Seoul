@@ -9,7 +9,7 @@ const RemoveRoomComponent = ({ token }) => {
   const [removeReason, setRemoveReason] = useState('');
   const [buildingOptions, setBuildingOptions] = useState([]);
   const [refreshKey, setRefreshKey] = useState(0); // key 상태 추가
-
+  const color = localStorage.getItem("schoolColor");
   const fetchBuildings = async () => {
     try {
       const response = await fetch('https://donggukseoul.com/api/buildings', {
@@ -104,7 +104,12 @@ const RemoveRoomComponent = ({ token }) => {
         placeholder="삭제를 원하시는 이유를 작성해주세요"
         onChange={(e) => setRemoveReason(e.target.value)}
       />
-      <button onClick={handleRemoveRoom}>삭제</button>
+      <button onMouseEnter={(e) => {
+    e.target.style.backgroundColor = color; // hover 시 배경색 변경
+  }}
+  onMouseLeave={(e) => {
+    e.target.style.backgroundColor = 'lightgray'; // hover 벗어나면 원래 배경색으로 변경
+  }} onClick={handleRemoveRoom}>삭제</button>
     </div>
   );
 };

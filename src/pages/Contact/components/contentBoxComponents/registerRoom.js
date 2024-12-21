@@ -12,7 +12,7 @@ const RegisterRoom = ({ buildingOptions, token }) => {
   const [drawingCoordinates, setDrawingCoordinates] = useState({ x: 0, y: 0 });
   const [drawingImage, setDrawingImage] = useState(null);
   const [refreshKey, setRefreshKey] = useState(0); // Refresh key for re-render
-
+  const color = localStorage.getItem("schoolColor");
   const handleRegisterRoom = async () => {
     if (!roomBuildingName || !floor || !room || !serialNum || !sensorType) {
       alert('모든 필드를 채워주세요.');
@@ -134,7 +134,12 @@ const RegisterRoom = ({ buildingOptions, token }) => {
         style={{ marginBottom: '5px' }}
       />
 
-      <button onClick={searchDrawing} style={{ fontSize: '14px', marginBottom: '22px' }}>
+      <button onMouseEnter={(e) => {
+    e.target.style.backgroundColor = color; // hover 시 배경색 변경
+  }}
+  onMouseLeave={(e) => {
+    e.target.style.backgroundColor = 'lightgray'; // hover 벗어나면 원래 배경색으로 변경
+  }} onClick={searchDrawing} style={{ fontSize: '14px', marginBottom: '22px' }}>
         해당 층 도면도 불러오기
       </button>
 
@@ -187,7 +192,12 @@ const RegisterRoom = ({ buildingOptions, token }) => {
         onChange={(e) => setSensorType(e.target.value)}
       />
 
-      <button onClick={handleRegisterRoom}>등록</button>
+      <button onMouseEnter={(e) => {
+    e.target.style.backgroundColor = color; // hover 시 배경색 변경
+  }}
+  onMouseLeave={(e) => {
+    e.target.style.backgroundColor = 'lightgray'; // hover 벗어나면 원래 배경색으로 변경
+  }} onClick={handleRegisterRoom}>등록</button>
     </div>
   );
 };
