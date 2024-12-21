@@ -67,7 +67,7 @@ function Alarm() {
     switch (tab) {
       case '온도': return 'TEMPERATURE';
       case '습도': return 'HUMIDITY';
-      case 'TVOC': return 'TVOC';
+      case 'tvoc': return 'tvoc';
       case 'PM2.5': return 'PM2_5MASSCONCENTRATION';
       case '소음': return 'AMBIENTNOISE';
       default: return null;
@@ -76,28 +76,28 @@ function Alarm() {
 
   const getSensorNameInKorean = (sensorType) => {
     switch (sensorType) {
-      case 'Temperature': return '온도';
-      case 'Humidity': return '습도';
-      case 'TVOC': return 'TVOC';
+      case 'temperature': return '온도';
+      case 'humidity': return '습도';
+      case 'tvoc': return 'tvoc';
       case 'PM2_5MassConcentration': return 'PM2.5';
-      case 'AmbientNoise': return '소음';
+      case 'ambientNoise': return '소음';
       default: return sensorType;
     }
   };
 
   const getBorderColor = (value, type) => {
     switch (type) {
-      case 'Temperature':
+      case 'temperature':
         if (value < 16.5 || value > 27.5) return '#F44336';
         if ((value >= 16.5 && value < 17.6) || (value > 26.4 && value <= 27.5)) return '#FF9800';
         if ((value >= 17.6 && value < 18.7) || (value > 25.3 && value <= 26.4)) return '#FFEB3B';
         return '#9E9E9E';
-      case 'Humidity':
+      case 'humidity':
         if (value < 10 || value > 90) return '#F44336';
         if ((value >= 10 && value < 20) || (value > 80 && value <= 90)) return '#FF9800';
         if ((value >= 20 && value < 30) || (value > 70 && value <= 80)) return '#FFEB3B';
         return '#9E9E9E';
-      case 'TVOC':
+      case 'tvoc':
         if (value > 10000) return '#F44336';
         if (value > 3000 && value <= 10000) return '#FF9800';
         if (value > 1000 && value <= 3000) return '#FFEB3B';
@@ -107,7 +107,7 @@ function Alarm() {
         if (value > 53 && value <= 64) return '#FF9800';
         if (value > 41 && value <= 53) return '#FFEB3B';
         return '#9E9E9E';
-      case 'AmbientNoise':
+      case 'ambientNoise':
         if (value > 80) return '#F44336';
         if (value > 70 && value <= 80) return '#FF9800';
         if (value > 60 && value <= 70) return '#FFEB3B';
@@ -204,7 +204,7 @@ function Alarm() {
           </div>
 
           <div className={styles.tabs}>
-            {['온도', '습도', 'TVOC', 'PM2.5', '소음'].map((sensor) => (
+            {['온도', '습도', 'tvoc', 'PM2.5', '소음'].map((sensor) => (
               <label key={sensor} className={styles.tabLabel}>
                 <input
                   type="checkbox"
