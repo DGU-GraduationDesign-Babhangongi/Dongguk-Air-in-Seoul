@@ -18,7 +18,7 @@ body {
 .banner {
   display: flex;
   align-items: center;
-  background-color: #FFB841; 
+  background-color: #FF9999; 
   padding: 10px 20px;
   margin-bottom: 20px;
   width: 100%;
@@ -89,7 +89,7 @@ textarea {
 
 button {
   width: 100%;
-  background-color: #FFCC80; 
+  background-color: #FF9999; 
   color: #fff;
   padding: 12px;
   border: none;
@@ -99,7 +99,7 @@ button {
 }
 
 button:hover {
-  background-color: #FFB841; 
+  background-color: #ff5b5b; 
 }
 
 .floorDrawings div, .Contact_registerBuilding__map {
@@ -149,7 +149,7 @@ button:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 32%;
   height: 580px;
-  border: 2px solid #FFB841;
+  border: 2px solid #FF9999;
   overflow-y: auto;
 }
 

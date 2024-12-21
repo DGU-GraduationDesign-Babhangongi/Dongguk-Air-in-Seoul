@@ -24,23 +24,9 @@ function Main() {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    const fetchBuildings = async () => {
-      try {
-        const response = await API.get("/api/buildings", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setBuildingList(response.data); // API 응답 데이터 설정
-        console.log("건물 리스트:", response.data);
-      } catch (error) {
-        console.error("건물 리스트를 가져오는 중 오류 발생:", error);
-        setBuildingList([]); // 오류 발생 시 빈 리스트로 설정
-      }
-    };
-
-    fetchBuildings();
-  }, [token]);
+    // API 호출을 하지 않고 buildingList를 직접 초기화
+    setBuildingList([]); // 빈 배열로 초기화
+  }, []);
 
   const handleAddBuildingClick = () => {
     if (!token) {
@@ -89,12 +75,12 @@ function Main() {
             zIndex: 100,
           }}
         >
-          <h2 style={{ fontSize: "clamp(18px, 2vw, 28px)" }}>
+          {/* <h2 style={{ fontSize: "clamp(18px, 2vw, 28px)" }}>
             사용자님 환영합니다!
           </h2>
           <p style={{ fontSize: "clamp(12px, 1.5vw, 20px)" }}>
             공기질을 확인할 강의실을 선택해주세요.
-          </p>
+          </p> */}
         </div>
       )}
       <div
@@ -189,6 +175,7 @@ function Main() {
               maxWidth: "70%",
               scrollSnapType: "x mandatory",
               marginTop: "8%",
+              marginRight: "24%",
             }}
           >
             {buildingList.length === 0 ? (
@@ -196,10 +183,8 @@ function Main() {
                 className={styles.noBuildingsMessage}
                 style={{ textAlign: "center" }}
               >
-                <h2 className={styles.welcomeTitle}>
-                  {token ? "사용자님 환영합니다!" : "환영합니다!"}
-                </h2>
-                <p style={{ marginBottom: "20%" }}>
+                <h2 className={styles.welcomeTitle}>사용자님 환영합니다!</h2>
+                <p style={{ marginBottom: "20%", marginRight: "20px" }}>
                   현재 등록된 건물이 없습니다.
                 </p>
                 <div className={styles.welcomeMessage}>

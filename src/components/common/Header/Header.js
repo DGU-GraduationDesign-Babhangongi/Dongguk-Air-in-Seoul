@@ -127,7 +127,7 @@ const Header = ({ i }) => {
     <div className={styles.all}>
       <header className={styles.header}>
         <img
-          src={require("../../../assets/images/logo.png")}
+          src={require("../../../assets/images/logo1.png")}
           alt="logo"
           className={styles.logo}
           style={{ cursor: "pointer" }}

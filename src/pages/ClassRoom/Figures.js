@@ -71,9 +71,9 @@ function Figures() {
               </div>
               <NEBDropdown onSelect={setSelectedOption} selectedInitialValue={id} />
             </div>
-            <TopBox image="tempIcon.png" value={loading ? '-' : sensorData.Temperature?.value} unit="℃" name="temp" />
-            <TopBox image="humidIcon.png" value={loading ? '-' : sensorData.Humidity?.value} unit="%" name="humidity" />
-            <TopBox image="TVOCIcon.png" value={loading ? '-' : sensorData.TVOC?.value} unit="㎍/m³" name="TVOC" />
+            <TopBox image="tempIcon.png" value={loading ? '-' : sensorData.temperature?.value} unit="℃" name="temp" />
+            <TopBox image="humidIcon.png" value={loading ? '-' : sensorData.humidity?.value} unit="%" name="humidity" />
+            <TopBox image="TVOCIcon.png" value={loading ? '-' : sensorData.tvoc?.value} unit="㎍/m³" name="TVOC" />
             <TopBox image="PM25Icon.png" value={loading ? '-' : sensorData.PM2_5MassConcentration?.value} unit="㎍/m³" name="PM2.5" />
           </div>
           <div className={styles.bottom}>

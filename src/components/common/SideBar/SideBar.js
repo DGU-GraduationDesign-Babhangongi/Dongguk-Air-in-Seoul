@@ -6,7 +6,7 @@ import { FiGrid, FiLayers, FiCpu, FiLogOut } from "react-icons/fi";
 import styles from "./SideBar.module.css";
 
 
-var buildingName = "신공학관";
+var buildingName = "세종대";
 
 const SideBar = ({ i }) => {
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ const SideBar = ({ i }) => {
               paddingLeft: "clamp(19px, 1.9%, 31px)",
             }}
           >
-            현재 건물
+            현재 대학
           </div>
           <div className={styles.title}>
             <img
