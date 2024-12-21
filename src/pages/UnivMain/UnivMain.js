@@ -51,6 +51,12 @@ function Main() {
 
   const handleLogoClick = (school) => {
     navigate("/login", { state: { school } });
+    localStorage.setItem("school", school);
+    localStorage.setItem("schoolKname", school.name);
+    localStorage.setItem("schoolEname", school.englishName);
+    localStorage.setItem("schoolLogo", school.logoUrl);
+    localStorage.setItem("schoolAddress", school.address);
+    localStorage.setItem("schoolColor", school.themeColor);
   };
 
   const handleInputChange = (e) => {

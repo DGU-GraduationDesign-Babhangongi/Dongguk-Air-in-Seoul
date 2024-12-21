@@ -49,10 +49,10 @@ function ClassRoom() {
   // 좌표값 추출 (기본값은 x=0, y=0)
   const { x, y } = coordinates[Id] || { x: '0', y: '0' };
 
-  // IAQIndex 값에 따라 공기질 이미지 설정
-  const iaqImageSrc = sensorData.IAQIndex?.value >= 86
+  // iaqIndex 값에 따라 공기질 이미지 설정
+  const iaqImageSrc = sensorData.iaqIndex?.value >= 86
     ? require("../../assets/images/smartmirror/good.png")
-    : sensorData.IAQIndex?.value >= 71
+    : sensorData.iaqIndex?.value >= 71
     ? require("../../assets/images/smartmirror/average.png")
     : require("../../assets/images/smartmirror/bad.png");
 
@@ -95,8 +95,8 @@ function ClassRoom() {
             <div style={{ fontWeight: 'bold', fontSize: '4.6vw' }}>{Id} 강의실</div>
             <div style={{ fontSize: '3vw' }}>동국대학교 신공학관</div>
             <img
-              src={iaqImageSrc}  // IAQIndex 값에 따라 이미지 설정
-              alt={sensorData.IAQIndex?.value >= 85 ? "good" : sensorData.IAQIndex?.value >= 60 ? "average" : "bad"}
+              src={iaqImageSrc}  // iaqIndex 값에 따라 이미지 설정
+              alt={sensorData.iaqIndex?.value >= 85 ? "good" : sensorData.iaqIndex?.value >= 60 ? "average" : "bad"}
               style={{ width: '76%' }}
             />
             {loading ? (
@@ -104,7 +104,7 @@ function ClassRoom() {
             ) : error ? (
               <div>Error: {error}</div>
             ) : (
-              <div style={{ fontSize: '6vw' }}>{sensorData.IAQIndex?.value || '--'}점</div>
+              <div style={{ fontSize: '6vw' }}>{sensorData.iaqIndex?.value || '--'}점</div>
             )}
           </div>
         </div>
@@ -148,11 +148,11 @@ function ClassRoom() {
         </div>
 
         <div className={styles.boxContainer}>
-          <ShowBox image='temp.png' i={loading ? '--' : sensorData.Temperature?.value} unit='°C' name='Temperature' />
-          <ShowBox image='humidity.png' i={loading ? '--' : sensorData.Humidity?.value} unit='%' name='Humidity' />
-          <ShowBox image='tvoc.png' i={loading ? '--' : sensorData.TVOC?.value} unit='㎍/㎥' name='TVOC' />
+          <ShowBox image='temp.png' i={loading ? '--' : sensorData.temperature?.value} unit='°C' name='temperature' />
+          <ShowBox image='humidity.png' i={loading ? '--' : sensorData.humidity?.value} unit='%' name='humidity' />
+          <ShowBox image='tvoc.png' i={loading ? '--' : sensorData.tvoc?.value} unit='㎍/㎥' name='tvoc' />
           <ShowBox image='pm2.5.png' i={loading ? '--' : sensorData.PM2_5MassConcentration?.value} unit='㎛' name='PM2.5' />
-          <ShowBox image='noise.png' i={loading ? '--' : sensorData.AmbientNoise?.value} unit='dB' name='Noise' />
+          <ShowBox image='noise.png' i={loading ? '--' : sensorData.ambientNoise?.value} unit='dB' name='Noise' />
           <ShowBox image='sensor.png' i={loading ? '--' : 'ON'} unit='' name='Sensor' />
         </div>
       </div>

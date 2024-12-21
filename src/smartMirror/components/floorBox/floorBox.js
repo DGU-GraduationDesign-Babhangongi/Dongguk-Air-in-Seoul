@@ -16,7 +16,7 @@ function FloorBox({ floor, rooms, click = false }) {
         });
 
         const responses = await Promise.all(promises);
-        const iaqValues = responses.map(response => response?.data?.IAQIndex?.value || 0);
+        const iaqValues = responses.map(response => response?.data?.iaqIndex?.value || 0);
         const avg = iaqValues.reduce((sum, value) => sum + value, 0) / iaqValues.length;
 
         setAverageIAQ(avg);

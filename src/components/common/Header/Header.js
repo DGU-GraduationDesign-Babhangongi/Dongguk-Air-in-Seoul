@@ -13,7 +13,9 @@ const Header = ({ i }) => {
   const [showToast, setShowToast] = useState(false);
   const [alertMessage, setAlertMessage] = useState({});
   const [toastDismissed, setToastDismissed] = useState(false);
-
+  const school = localStorage.getItem("schoolEname");
+  const schoollogo= localStorage.getItem("schoolLogo");
+  
   const getUnit = (sensorType) => {
     switch (sensorType) {
       case "Temperature":
@@ -126,13 +128,21 @@ const Header = ({ i }) => {
   return (
     <div className={styles.all}>
       <header className={styles.header}>
-        <img
+        {/*<img
           src={require("../../../assets/images/logo1.png")}
           alt="logo"
           className={styles.logo}
           style={{ cursor: "pointer" }}
           onClick={GoToRoot}
-        />
+        />*/}
+    
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+  <img src={schoollogo} alt={school} style={{ width: '10%' }} />
+  <div style={{ marginLeft: '10px' }}>
+    <div>CLEAN AIR</div>
+    <div>In {school}</div>
+  </div>
+</div>
 
         {!token ? (
           <div className={styles.noTokenMessage}>

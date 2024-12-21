@@ -5,6 +5,7 @@ import Header from "../../components/common/Header/Header"; //
 import API from "../../API/api";
 
 const Login = () => {
+  const color = localStorage.getItem("schoolColor");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -153,9 +154,25 @@ const Login = () => {
                 className={styles.inputField}
               />
             </div>
-            <button type="submit" className={styles.loginButton}>
-              로그인
-            </button>
+            <button 
+  type="submit" 
+  className={styles.loginButton}
+  style={{ 
+    backgroundColor: 'lightgray', 
+    color: 'white', 
+    border: 'none', 
+    padding: '10px 20px', 
+    cursor: 'pointer' 
+  }}
+  onMouseEnter={(e) => {
+    e.target.style.backgroundColor = color; // hover 시 배경색 변경
+  }}
+  onMouseLeave={(e) => {
+    e.target.style.backgroundColor = 'lightgray'; // hover 벗어나면 원래 배경색으로 변경
+  }}
+>
+  로그인
+</button>
           </form>
         </div>
       </div>
