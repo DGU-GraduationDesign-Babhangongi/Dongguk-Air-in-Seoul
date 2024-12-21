@@ -18,7 +18,7 @@
 
 .mainContainer {
   padding: 20px;
-  height: 100vh; /* 전체 화면 높이를 맞추기 위해 추가 */
+  height: 86vh; /* 전체 화면 높이를 맞추기 위해 추가 */
   display: flex;
   flex-direction: column;
   justify-content: center; /* 수직 중앙 정렬 */
@@ -154,40 +154,13 @@
 }
 
 .buildings {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 20px;
-  width: 70%;
-  align-items: flex-start;
-  margin-top: -180px;
-  margin-left: 40px;
-}
+  display: flex ;
 
-/* 각 건물의 위치 고정 */
-.buildings > div:nth-child(1) {
-  left: 10%;
-  top: 40%;
-}
-.buildings > div:nth-child(2) {
-  left: 32%;
-  top: 40%;
-}
-.buildings > div:nth-child(3) {
-  left: 54%;
-  top: 40%;
-}
-
-.building {
-  position: absolute;
-  text-align: center;
-  cursor: pointer;
-  margin: 0 4px;
-  width: 200px;
-  height: 300px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+ 
+  width: 100%; 
+  justify-content: space-around; /* Distribute items with equal space around */
   align-items: center;
+ 
 }
 
 .building:hover {
@@ -349,4 +322,23 @@
   font-size: 20px;
   white-space: nowrap;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.261);
+}
+.arrowLeft:hover,
+.arrowRight:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+.arrowLeft {
+  left: 10px;
+}
+
+.arrowRight {
+
+  right: 10px;
+}
+.buildingsContainer {
+  display: flex;
+  justify-content: space-around; /* Distribute items with equal space around */
+  align-items: center;
+  width: 100%; /* Adjust the width as needed */
+
 }

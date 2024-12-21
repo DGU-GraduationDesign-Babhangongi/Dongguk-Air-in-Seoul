@@ -6,7 +6,7 @@ import { FiGrid, FiLayers, FiCpu, FiLogOut } from "react-icons/fi";
 import styles from "./SideBar.module.css";
 
 
-var buildingName = "세종대";
+var buildingName = "동국대";
 
 const SideBar = ({ i }) => {
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ const SideBar = ({ i }) => {
                 className={`${styles.navItem} ${i === "1" ? styles.bold : ""}`}
               >
                 <FiGrid className={styles.icon} />
-                <Link to="/" className={styles.navLink}>
+                <Link to="/main" className={styles.navLink}>
                   메인화면
                 </Link>
               </li>
