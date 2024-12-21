@@ -18,7 +18,7 @@ function Manager() {
   const [nickname, setNickname] = useState(''); 
   const [refresh, setRefresh] = useState(false); 
   const navigate = useNavigate(); 
-
+  const color2 = localStorage.getItem("schoolColor");
 useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -112,7 +112,7 @@ useEffect(() => {
       <div className={styles.layout}>
         <SideBar />
         <div className={styles.container}>
-          <div className={styles.banner}>
+          <div className={styles.banner} style={{backgroundColor:`${color2}`}}>
             <GoPerson size={36} color="#333" />
             <h1>{nickname} 관리자</h1>
           </div>
