@@ -200,3 +200,7 @@
 .addBuilding {
   width: clamp(140px, 2vw, 200px);
 }
+.buildingFloorMap img {
+  max-width: 100%;   /* 부모 컨테이너에 맞게 크기 조정 */
+  height: auto;      /* 비율을 유지하며 크기 조정 */
+}

@@ -10,10 +10,10 @@ import Manager from "../src/pages/Manager/Manager";
 import Alarm from "../src/pages/Alarm/Alarm";
 import Contact from "../src/pages/Contact/Contact";
 import FloorCheck from "../src/pages/FloorCheck/FloorCheck";
-import Test from "../src/pages/test";
+//import Test from "../src/pages/test";
 import UnivMain from "../src/pages/UnivMain/UnivMain";
 import SejongMain from "../src/pages/SejongMain/SejongMain";
-
+import Test from "./pages/SejongMain/test";
 import SmartMirrorMain from "../src/smartMirror/pages/main";
 import SmartMirrorClassRoom from "../src/smartMirror/pages/classRoom";
 
@@ -28,7 +28,7 @@ function App() {
           <Route path="/" element={<UnivMain />} />
           <Route path="/main" element={<Main />} />
           <Route path="/sejongmain" element={<SejongMain />} />
-
+          <Route path="/test" element={<Test />} />
           <Route path="/figures" element={<Figures />} />
           <Route path="/figures/:id" element={<Figures />} />
 
@@ -43,7 +43,7 @@ function App() {
           <Route path="/floorcheck/:floor" element={<FloorCheck />} />
 
           {/* 테스트 페이지 */}
-          <Route path="/test" element={<Test />} />
+
           <Route path="/smartM" element={<SmartMirrorMain />} />
           <Route
             path="/smartMirror/classRoom/:id"

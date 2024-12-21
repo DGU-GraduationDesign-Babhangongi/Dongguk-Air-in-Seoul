@@ -121,3 +121,7 @@
 }
 
 
+.loginButton:hover {
+  color: white;
+  background: #C2072E;
+}

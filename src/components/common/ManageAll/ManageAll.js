@@ -79,29 +79,29 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorite
 
         <div className={styles.SecondSection}>
           <div className={styles.sensorSection}>
-            {sensorData.Temperature?.value && (
+            {sensorData.temperature?.value && (
               <div className={styles.sensorItem}>
                 <img
                   src={require('../../../assets/images/AirQualityIndicator/temperature.png')}
                   alt="Temperature Icon"
                 />
                 <span>온도</span>
-                <span>{`${sensorData.Temperature.value}°C`}</span>
+                <span>{`${sensorData.temperature.value}°C`}</span>
               </div>
             )}
 
-            {sensorData.Humidity?.value && (
+            {sensorData.humidity?.value && (
               <div className={styles.sensorItem}>
                 <img
                   src={require('../../../assets/images/AirQualityIndicator/humidity.png')}
                   alt="Humidity Icon"
                 />
                 <span>습도</span>
-                <span>{`${sensorData.Humidity.value}%`}</span>
+                <span>{`${sensorData.humidity.value}%`}</span>
               </div>
             )}
 
-            {sensorData.TVOC?.value && (
+            {sensorData.tvoc?.value && (
               <div className={styles.sensorItem}>
                 <img
                   src={require('../../../assets/images/AirQualityIndicator/TVOC.png')}
@@ -109,7 +109,7 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorite
                 />
                 <span>TVOC</span>
                 <span>
-                  {`${sensorData.TVOC.value}`}
+                  {`${sensorData.tvoc.value}`}
                   <span className={styles.unit}>㎍/m³</span>
                 </span>
               </div>
@@ -129,14 +129,14 @@ function ManageAll({ openMemoModal, buildingName, roomNumber, sensorId, favorite
               </div>
             )}
 
-            {sensorData.AmbientNoise?.value && (
+            {sensorData.ambientNoise?.value && (
               <div className={styles.sensorItem}>
                 <img
                   src={require('../../../assets/images/AirQualityIndicator/noise.png')}
                   alt="Noise Icon"
                 />
                 <span>소음</span>
-                <span>{`${sensorData.AmbientNoise.value}dB`}</span>
+                <span>{`${sensorData.ambientNoise.value}dB`}</span>
               </div>
             )}
           </div>

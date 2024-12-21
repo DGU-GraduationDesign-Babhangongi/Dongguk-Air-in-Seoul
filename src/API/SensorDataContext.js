@@ -20,6 +20,7 @@ export const SensorDataProvider = ({ children }) => {
     setLoading(true);
     try {
       const response = await API.get(endpoint);
+      //console.log(response.data);
       setData(response.data);
     } catch (e) {
       //console.error("API 오류: ", e);
@@ -40,7 +41,7 @@ export const SensorDataProvider = ({ children }) => {
   useEffect(() => {
     if (!children) resetSensorData(); // children 없을 경우 데이터 초기화
   }, [children]);
-
+console.log(children);
   return (
     <SensorDataContext.Provider value={{ data, setSelectedSensorName, setSelectedBuilding, loading, resetSensorData }}>
       {children}

@@ -34,7 +34,7 @@ const Login = () => {
         // 'storage' 이벤트 트리거
         window.dispatchEvent(new Event("storage"));
       
-        navigate("/");
+        navigate("/main");
       }
        else {
         console.error("로그인에 실패했습니다.");

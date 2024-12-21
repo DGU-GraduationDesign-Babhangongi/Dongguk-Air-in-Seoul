@@ -72,12 +72,12 @@ function AirQualityIndicator({ classRoom, onNoPm25Data }) {
 
   return (
     <div className={styles.table}>
-      {renderRow('temperature', '온도', data.Temperature?.value && `${data.Temperature?.value}°C`, 'temperatureStatus')}
-      {renderRow('humidity', '습도', data.Humidity?.value && `${data.Humidity?.value}%`, 'humidityStatus')}
-      {renderRow('TVOC', 'TVOC', data.TVOC?.value && `${data.TVOC?.value}㎍/m³`, 'tvocStatus')}
+      {renderRow('temperature', '온도', data.temperature?.value && `${data.temperature?.value}°C`, 'temperatureStatus')}
+      {renderRow('humidity', '습도', data.humidity?.value && `${data.humidity?.value}%`, 'humidityStatus')}
+      {renderRow('TVOC', 'TVOC', data.tvoc?.value && `${data.tvoc?.value}㎍/m³`, 'tvocStatus')}
       {data.PM2_5MassConcentration?.value && 
         renderRow('PM2.5', 'PM 2.5', `${data.PM2_5MassConcentration?.value}um`, 'pm25Status')}
-      {renderRow('noise', '소음', data.AmbientNoise?.value && `${data.AmbientNoise?.value}dB`, 'ambientNoiseStatus')}
+      {renderRow('noise', '소음', data.ambientNoise?.value && `${data.ambientNoise?.value}dB`, 'ambientNoiseStatus')}
     </div>
   );
 }

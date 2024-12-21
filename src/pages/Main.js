@@ -5,12 +5,12 @@ import styles from "./Main.module.css";
 import { useNavigate } from "react-router-dom";
 import API from "../API/api";
 import SensorDetail from "../components/specific/sensorDetail/sensorDetail";
-import WeatherInfo from "../components/specific/weatherInfo/weatherInfo";
-import AbnormalLog from "../components/specific/abnormalLog/abnormalLog";
-
+import WeatherInfo from "../components/specific/weatherInfo2/weatherInfoSEJONG";
+import AbnormalLog from "../components/specific/abnormalLog2/abnormalLogSEJONG";
+import FloorPlanGroup from "./SejongMain/components/FloorPlanGroup";
 /*images*/
 import currentbuilding from "../assets/images/main/currentBuilding_icon.png";
-import floorplan from "../assets/images/main/floorplan.png";
+import FloorPlan from "../assets/images/main/floorplan.png";
 import singong from "../assets/images/main/singong.png";
 import wonheung from "../assets/images/main/wonheung.png";
 import jungbo from "../assets/images/main/jungboP.png";
@@ -76,7 +76,7 @@ function Main() {
   }, []);
 
   const handleBuildingClick = (building, buildingInfo) => {
-    if (building == "신공학관") {
+    if (building == "광개토관") {
       setIsFadingOut(true);
       setFadeOut(true);
       setTimeout(() => {
@@ -92,13 +92,13 @@ function Main() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const coordinates = [
-    { building: "신공학관", id: "3115", x: 464, y: 442 },
-    { building: "신공학관", id: "3173", x: 488, y: 482 },
-    { building: "신공학관", id: "4142", x: 262, y: 388 },
-    { building: "신공학관", id: "5145", x: 192, y: 237 },
-    { building: "신공학관", id: "5147", x: 184, y: 213 },
-    { building: "신공학관", id: "6119", x: 366, y: 125 },
-    { building: "신공학관", id: "6144", x: 137, y: 116 },
+    { building: "광개토관", id: "3115", x: 464, y: 442 },
+    { building: "광개토관", id: "3173", x: 488, y: 482 },
+    { building: "광개토관", id: "4142", x: 262, y: 388 },
+    { building: "광개토관", id: "5145", x: 192, y: 237 },
+    { building: "광개토관", id: "5147", x: 184, y: 213 },
+    { building: "광개토관", id: "6119", x: 366, y: 125 },
+    { building: "광개토관", id: "6144", x: 137, y: 116 },
   ];
 
   const handleClick = (id) => {
@@ -155,83 +155,7 @@ function Main() {
     return sensor.IAQIndex;
   };
 
-  const renderShapes = () => {
-    const imageWidth = imageRef.current?.offsetWidth || 640;
-    const imageHeight = imageRef.current?.offsetHeight || 640;
-
-    return coordinates.map((coord, index) => {
-      const IAQIndex = getSensorIAQValue(coord.id);
-      const ringColor = getIAQColor(IAQIndex);
-      const adjustedX = (coord.x / 640) * imageWidth;
-      const adjustedY = (coord.y / 640) * imageHeight;
-
-      return (
-        <div
-          key={`coord-${index}`}
-          onMouseEnter={() => setHoveredIndex(index)}
-          onMouseLeave={() => setHoveredIndex(null)}
-          onClick={() => {
-            if (token) {
-              handleClick(coord.id);
-            } else {
-              openPopup();
-            }
-          }}
-          style={{
-            position: "absolute",
-            top: `${adjustedY}px`,
-            left: `${adjustedX}px`,
-            width: "clamp(8px, 1.5vw, 16px)",
-            height: "clamp(8px, 1.5vw, 16px)",
-            backgroundColor: ringColor,
-            borderRadius: "50%",
-            transform: "translate(-50%, -50%)",
-            cursor: "pointer",
-            zIndex: "11",
-          }}
-          className="animated-shape"
-        >
-          <div
-            className={styles.ring}
-            style={{
-              borderColor: ringColor,
-            }}
-          ></div>
-          <div
-            className={styles.ring}
-            style={{
-              borderColor: ringColor,
-            }}
-          ></div>
-          {hoveredIndex === index && (
-            <div
-              className={styles.hoverBox}
-              style={{
-                [coord.id === "6144" ||
-                coord.id === "6119" ||
-                coord.id === "3173" ||
-                coord.id === "3115"
-                  ? "bottom"
-                  : "top"]:
-                  coord.id === "5147" || coord.id === "4142" ? "20%" : "-100%",
-              }}
-            >
-              <div className={styles.roomName}>{coord.id} 강의실</div>
-              <hr
-                style={{
-                  margin: "4px 4px 20px 4px",
-                }}
-              />
-              <SensorDetail
-                coord={coordinates[hoveredIndex]}
-                hoveredIndex={hoveredIndex}
-              />
-            </div>
-          )}
-        </div>
-      );
-    });
-  };
+  
   const renderFloorCoordinates = () => {
     return floorcoordinates.map(({ floor, top, left }, index) => (
       <div
@@ -251,9 +175,7 @@ function Main() {
           left: left,
         }}
       >
-        {hoveredFloor === floor && (
-          <div className={styles.hoveredFloor}>{floor}층으로 이동하기</div>
-        )}
+       
       </div>
     ));
   };
@@ -276,7 +198,7 @@ function Main() {
             </p>
           </div>
         )}
-        {selectedBuilding === "신공학관" && (
+        {selectedBuilding === "광개토관" && (
           <div className={styles.topMessage} style={{ width: "400px" }}>
             <img
               src={currentbuilding}
@@ -284,7 +206,7 @@ function Main() {
               style={{ width: "80px", height: "84px", marginRight: "16px" }}
             />
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <div className={styles.topMessageDetail}>신공학관</div>
+              <div className={styles.topMessageDetail}>광개토관</div>
               <p className={styles.another}>
                 <span
                   onClick={() => (window.location.href = "/")}
@@ -313,12 +235,12 @@ function Main() {
           <div className={styles.buildings}>
             <div
               className={`${styles.building} ${
-                selectedBuilding === "신공학관" ? styles.fadeOut : ""
+                selectedBuilding === "광개토관" ? styles.fadeOut : ""
               }`}
               onClick={() => openshowNoSensorPopup()}
             >
-              <img src={jungbo} alt="정보문화관 P" />
-              <h2>정보문화관 P</h2>
+              <img src={jungbo} alt="세종관 P" />
+              <h2>세종관 P</h2>
               <div className={styles.sensorInfo}>
                 <p>설치된 센서</p>
                 <p>
@@ -331,23 +253,23 @@ function Main() {
             </div>
             <div
               className={`${styles.building} ${
-                selectedBuilding !== null && selectedBuilding !== "신공학관"
+                selectedBuilding !== null && selectedBuilding !== "광개토관"
                   ? styles.fadeOut
                   : ""
-              } ${selectedBuilding === "신공학관" ? styles.moveLeft : ""}`}
-              onClick={() => handleBuildingClick("신공학관", null)}
+              } ${selectedBuilding === "광개토관" ? styles.moveLeft : ""}`}
+              onClick={() => handleBuildingClick("광개토관", null)}
               onMouseEnter={(e) => {
-                if (selectedBuilding === "신공학관") {
+                if (selectedBuilding === "광개토관") {
                   e.preventDefault();
                 }
               }}
             >
-              <img src={singong} alt="신공학관" />
-              <h2>신공학관</h2>
+              <img src={singong} alt="광개토관" />
+              <h2>광개토관</h2>
               <div className={styles.sensorInfo}>
                 <p>설치된 센서</p>
                 <p>
-                  7 <span className={styles.greenLight}></span>
+                  8 <span className={styles.greenLight}></span>
                 </p>
                 <p>
                   0 <span className={styles.redLight}></span>
@@ -357,12 +279,12 @@ function Main() {
 
             <div
               className={`${styles.building} ${
-                selectedBuilding === "신공학관" ? styles.fadeOut : ""
+                selectedBuilding === "광개토관" ? styles.fadeOut : ""
               }`}
               onClick={() => openshowNoSensorPopup()}
             >
-              <img src={wonheung} alt="원흥관" />
-              <h2>원흥관</h2>
+              <img src={wonheung} alt="명덕관" />
+              <h2>명덕관</h2>
               <div className={styles.sensorInfo}>
                 <p>설치된 센서</p>
                 <p>
@@ -374,19 +296,11 @@ function Main() {
               </div>
             </div>
 
-            {selectedBuilding === "신공학관" && (
+            {selectedBuilding === "광개토관" && (
               <div className={styles.additionalContent}>
                 <div className={styles.selectedBuildingImage}>
-                  <img
-                    src={floorplan}
-                    alt="신공학관 도면도"
-                    ref={imageRef}
-                    style={{
-                      width: "clamp(300px, 50vw, 640px)" /* 반응형 크기 조정 */,
-                      height: "auto",
-                    }}
-                  />
-                  {renderShapes()}
+                <FloorPlanGroup   width="clamp(300px, 50vw, 640px)" buildingName="광개토관" maxFloor="3"/>
+                
                   {renderFloorCoordinates()}
                 </div>
               </div>
