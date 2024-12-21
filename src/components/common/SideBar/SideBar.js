@@ -11,7 +11,7 @@ var buildingName = "동국대";
 const SideBar = ({ i }) => {
   const navigate = useNavigate();
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-
+  const school = localStorage.getItem("schoolKname");
   // 로그아웃 함수
   const logout = () => {
     // localStorage에서 토큰 제거
@@ -44,7 +44,7 @@ const SideBar = ({ i }) => {
               alt="building"
               className={styles.titleImg}
             />
-            {buildingName}
+            {school}
           </div>
           <nav className={styles.nav}>
             <ul className={styles.navList}>

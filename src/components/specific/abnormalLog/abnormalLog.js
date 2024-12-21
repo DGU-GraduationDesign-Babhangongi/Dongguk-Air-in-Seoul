@@ -6,7 +6,7 @@ import API from "../../../API/api";
 const AbnormalLog = ({ token }) => {
   const [sensorLogs, setSensorLogs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const school = localStorage.getItem("schoolEname");
   const fetchSensorLogs = async () => {
     if (!token) {
       console.error("토큰이 없습니다. 로그인 후 다시 시도하세요.");
@@ -82,7 +82,7 @@ const AbnormalLog = ({ token }) => {
       <div className={styles.scrollableContainer}>
         {isLoading ? (
           <div>이상 센서 수치 값을 로딩 중입니다...</div>
-        ) : sensorLogs.length > 0 ? (
+        ) : (sensorLogs.length > 0&& school==="DONGGUK") ? (
           sensorLogs.map((log, index) => (
             <div key={index} style={{ marginBottom: "10px" }}>
               <strong>[{formatLogDate(log.timestamp)}]</strong>
@@ -104,7 +104,7 @@ const AbnormalLog = ({ token }) => {
             </div>
           ))
         ) : (
-          <div>로그인하시면 이상 수치 로그를 확인할 수 있습니다</div>
+          <div>센서 수치 이상이 존재하지 않습니다.</div>
         )}
       </div>
     </div>

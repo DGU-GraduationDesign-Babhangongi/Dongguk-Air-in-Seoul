@@ -10,6 +10,7 @@ import semicloudyIcon from "../../assets/images/main/semicloudy_icon.png";
 import cloudyrainIcon from "../../assets/images/main/cloudyrain_icon.png";
 
 function Main() {
+  const color = localStorage.getItem("schoolColor");
   const [dateTime, setDateTime] = useState(new Date());
   const [forecast, setForecast] = useState(null);
   const [forecast2, setForecast2] = useState(null);

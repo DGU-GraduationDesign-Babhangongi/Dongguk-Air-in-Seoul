@@ -14,6 +14,8 @@ import FloorPlans from "./SejongMain/components/FloorPlanGroup";
 import { Link } from 'react-router-dom';
 
 function Main() {
+  const color2 = localStorage.getItem("schoolColor");
+
   const [buildingList, setBuildingList] = useState([]); // 상태로 관리
   const [loading, setLoading] = useState(true); // Start with loading set to true
   const [nickname, setNickname] = useState(true); // Start with loading set to true
@@ -220,7 +222,7 @@ function Main() {
         <div
           key={index}
           className={styles.building}
-          onClick={() => { setSelectedBuilding(building); setShowNoSensorPopup(true)}}
+          onClick={() => { setSelectedBuilding(building); if(building.sensorCount===0){setShowNoSensorPopup(true)}}}
         >
           <img src={building.imageUrl} alt={building.name} />
           <h2>{building.name}</h2>
@@ -271,7 +273,7 @@ function Main() {
 )}
 
           <div className={styles.weatherAndLogs} style={{ position: "relative" }}>
-            <div className={styles.weatherLogs}>
+            <div className={styles.weatherLogs} style={{backgroundColor:`${color2}50`}}>
               <WeatherInfo
                 forecast={forecast}
                 forecast2={forecast2}
@@ -279,7 +281,7 @@ function Main() {
                 dateTime={dateTime}
               />
             </div>
-            <div className={styles.sensorLogs}>
+            <div className={styles.sensorLogs} style={{backgroundColor:`${color2}20`}}>
               <AbnormalLog token={token} />
             </div>
           </div>
@@ -297,14 +299,7 @@ function Main() {
 
       </div>
 
-      {showPopup && (
-        <Popup
-          popupContent="로그인이 필요한 서비스입니다."
-          onClose={closePopupHandler}
-          registerLink="/login"
-          buttonText="로그인"
-        />
-      )}
+
 
       {showNoSensorPopup &&
         (token ? (

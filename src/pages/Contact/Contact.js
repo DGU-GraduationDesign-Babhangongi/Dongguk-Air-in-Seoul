@@ -39,14 +39,14 @@ function Contact() {
 
   // 한 번에 3개씩 슬라이드 항목을 보여줌
   const currentItems = totalItems.slice(currentSlide, currentSlide + slideCount);
-
+  const color = localStorage.getItem("schoolColor");
   return (
     <div>
       <Header />
       <div style={{ display: 'flex' }}>
         <SideBar i='5' />
         <div className={styles.container}>
-          <div className={styles.banner}>
+          <div className={styles.banner} style={{backgroundColor:`${color}`}}>
             <FiCpu size={36} color="#333" />
             <h1>관리자 페이지</h1>
           </div>
@@ -54,7 +54,7 @@ function Contact() {
           <div className={styles.registerSection}>
             <div className={styles.sliderContainer}>
               {currentItems.map((item, index) => (
-                <div className={styles.ContentBox} key={index}>
+                <div className={styles.ContentBox} key={index} style={{borderColor:`${color}`}}>
                   {item}
                 </div>
               ))}
@@ -65,7 +65,7 @@ function Contact() {
           <div style={{ display: 'flex', justifyContent:'center'}}>
 
           <div className={styles.navigation}>
-              <button onClick={goToPrevSlide} disabled={currentSlide === 0}>
+              <button onClick={goToPrevSlide} disabled={currentSlide === 0} >
                 <span>&lt;</span>
               </button>
               <button onClick={goToNextSlide} disabled={currentSlide + slideCount >= totalItems.length}>

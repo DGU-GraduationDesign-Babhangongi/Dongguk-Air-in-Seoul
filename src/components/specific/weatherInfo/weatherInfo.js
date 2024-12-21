@@ -13,7 +13,7 @@ const WeatherInfo = () => {
   const [forecast, setForecast] = useState(null);
   const [forecast2, setForecast2] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const location = localStorage.getItem("schoolAddress");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -80,7 +80,7 @@ const WeatherInfo = () => {
         }}
       >
         <img src={weatherlocation} alt="현재 위치" className={styles.icons} />
-        서울 중구 필동
+        {location}
       </h3>
       {forecast && forecast2 ? (
         <>
