@@ -10,7 +10,7 @@ const AddNewBuilding = ({}) => {
   const [loading, setLoading] = useState(false);
   const [fileInputKey, setFileInputKey] = useState(0);  // key 상태 추가
   const token = localStorage.getItem("token");
-
+  const color = localStorage.getItem("schoolColor");
   const handleRegisterBuilding = async () => {
     // 필수 입력값 체크
     if (!buildingName || !maxFloors || !buildingImage || Object.keys(drawings).length < Number(maxFloors)) {
@@ -139,7 +139,12 @@ const AddNewBuilding = ({}) => {
         </div>
       )}
 
-      <button onClick={handleRegisterBuilding} disabled={loading}>등록</button>
+      <button onMouseEnter={(e) => {
+    e.target.style.backgroundColor = color; // hover 시 배경색 변경
+  }}
+  onMouseLeave={(e) => {
+    e.target.style.backgroundColor = 'lightgray'; // hover 벗어나면 원래 배경색으로 변경
+  }} onClick={handleRegisterBuilding} disabled={loading}>등록</button>
     </div>
   );
 };
