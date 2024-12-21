@@ -1,25 +1,26 @@
 /*Main.js*/
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/common/Header/Header";
 import styles from "./Main.module.css";
+import addInage from '../assets/images/addBuilding.png'
 import { useNavigate } from "react-router-dom";
 import API from "../API/api";
-import SensorDetail from "../components/specific/sensorDetail/sensorDetail";
-import WeatherInfo from "../components/specific/weatherInfo2/weatherInfoSEJONG";
-import AbnormalLog from "../components/specific/abnormalLog2/abnormalLogSEJONG";
-import FloorPlanGroup from "./SejongMain/components/FloorPlanGroup";
+import WeatherInfo from "../components/specific/weatherInfo/weatherInfo";
+import AbnormalLog from "../components/specific/abnormalLog/abnormalLog";
+import Popup from "../components/common/Popup/Popup";
 /*images*/
 import currentbuilding from "../assets/images/main/currentBuilding_icon.png";
-import FloorPlan from "../assets/images/main/floorplan.png";
-import singong from "../assets/images/main/singong.png";
-import wonheung from "../assets/images/main/wonheung.png";
-import jungbo from "../assets/images/main/jungboP.png";
-import Popup from "../components/common/Popup/Popup";
+import FloorPlans from "./SejongMain/components/FloorPlanGroup";
+import { Link } from 'react-router-dom';
 
 function Main() {
+  const [buildingList, setBuildingList] = useState([]); // 상태로 관리
+  const [loading, setLoading] = useState(true); // Start with loading set to true
+  const [nickname, setNickname] = useState(true); // Start with loading set to true
+  
   const [token] = useState(localStorage.getItem("token"));
   const [showPopup, setShowPopup] = useState(false);
-  const [showNoSensorPopup, setshowNoSensorPopup] = useState(false);
+  const [showNoSensorPopup, setShowNoSensorPopup] = useState(false);
   const [popupContent, setPopupContent] = useState(null);
   const [selectedBuilding, setSelectedBuilding] = useState(null);
   const [fadeOut, setFadeOut] = useState(false);
@@ -29,22 +30,37 @@ function Main() {
   const [forecast] = useState(null);
   const [forecast2] = useState(null);
   const [loadingdata] = useState(true);
-  const [hoveredFloor, setHoveredFloor] = useState(null);
-  const [allSensorData, setAllSensorData] = useState([]);
-  const [nickname, setNickname] = useState("사용자");
   const navigate = useNavigate();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const slideCount = 3;
 
-  const openPopup = () => {
-    setShowPopup(true);
+  // Next button handler to move the slide right
+  const handleNext = () => {
+    if (currentIndex + slideCount < buildingList.length) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  // Prev button handler to move the slide left
+  const handlePrev = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
+
+  const handleAddBuildingClick = () => {
+ 
+      navigate("/contact"); // 건물 추가 페이지로 이동
+    
   };
   const closePopupHandler = () => {
     setShowPopup(false);
   };
   const openshowNoSensorPopup = () => {
-    setshowNoSensorPopup(true);
+    setShowNoSensorPopup(true);
   };
   const closeshowNoSensorPopupHandler = () => {
-    setshowNoSensorPopup(false);
+    setShowNoSensorPopup(false);
   };
 
   useEffect(() => {
@@ -72,119 +88,49 @@ function Main() {
         }
       }
     };
-    fetchNickname();
-  }, []);
 
-  const handleBuildingClick = (building, buildingInfo) => {
-    if (building == "광개토관") {
-      setIsFadingOut(true);
-      setFadeOut(true);
-      setTimeout(() => {
-        setSelectedBuilding(building);
-        setFadeOut(false);
-        setIsFadingOut(false);
-        setShowMessage(false);
-      }, 1000);
-    }
-    setPopupContent(buildingInfo);
-  };
-  const imageRef = useRef(null);
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-
-  const coordinates = [
-    { building: "광개토관", id: "3115", x: 464, y: 442 },
-    { building: "광개토관", id: "3173", x: 488, y: 482 },
-    { building: "광개토관", id: "4142", x: 262, y: 388 },
-    { building: "광개토관", id: "5145", x: 192, y: 237 },
-    { building: "광개토관", id: "5147", x: 184, y: 213 },
-    { building: "광개토관", id: "6119", x: 366, y: 125 },
-    { building: "광개토관", id: "6144", x: 137, y: 116 },
-  ];
-
-  const handleClick = (id) => {
-    navigate(`/figures/${id}`);
-  };
-  const floorcoordinates = [
-    { floor: 3, top: "480px" },
-    { floor: 4, top: "350px" },
-    { floor: 5, top: "220px" },
-    { floor: 6, top: "90px" },
-  ];
-  const handleFloorClick = (floor) => {
-    navigate(`/floorcheck/${floor}`);
-  };
-
-  useEffect(() => {
-    const fetchAllSensorData = async () => {
+    const fetchBuildings = async () => {
       try {
-        const responses = await Promise.all(
-          coordinates.map(async (coord) => {
-            const endpoint = `/api/sensorData/recent/classroom?building=${encodeURIComponent(
-              coord.building
-            )}&name=${encodeURIComponent(coord.id)}`;
-            const response = await API.get(endpoint);
-            return {
-              id: coord.id,
-              IAQIndex: response.data?.IAQIndex?.value || "--",
-            };
-          })
-        );
-        setAllSensorData(responses);
+        const response = await fetch('https://donggukseoul.com/api/buildings', {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const options = data.map((building) => ({
+            id: building.id,  // assuming `id` is a unique identifier for the building
+            name: building.name, // assuming `name` is the label you want to display
+            maxFloor: building.maxFloor, 
+            imageUrl: building.imageUrl, 
+            sensorCount: building.sensorCount, 
+          }));
+          setBuildingList(options);  // Update the state with building options
+        } else {
+          console.error('Failed to fetch building data');
+        }
       } catch (error) {
-        // console.error("Error fetching all sensor data:", error);
+        console.error('Error fetching building data:', error);
+      } finally {
+        setLoading(false); // Stop loading after the fetch completes
       }
     };
-    fetchAllSensorData();
-  }, []);
 
-  const getIAQColor = (value) => {
-    if (value > 90) return "#5C82F5";
-    if (value > 80 && value <= 90) return "#8BC34A";
-    if (value > 70 && value <= 80) return "#FFEB3B";
-    if (value > 60 && value <= 70) return "#FF9800";
-    return "#F44336";
-  };
-
-  const getSensorIAQValue = (id) => {
-    const sensor = allSensorData.find((data) => data.id === id);
-    if (!sensor || sensor.IAQIndex === "--") {
-      console.warn(`ID: ${id}에 대한 IAQIndex 데이터 없음.`);
-      return "--";
-    }
-    console.log(`강의실 ID: ${id}, IAQIndex:`, sensor.IAQIndex);
-    return sensor.IAQIndex;
-  };
-
+    fetchBuildings();
+    fetchNickname();
   
-  const renderFloorCoordinates = () => {
-    return floorcoordinates.map(({ floor, top, left }, index) => (
-      <div
-        key={`floor-${index}`}
-        onMouseEnter={() => setHoveredFloor(floor)}
-        onMouseLeave={() => setHoveredFloor(null)}
-        onClick={() => {
-          if (token) {
-            handleFloorClick(floor);
-          } else {
-            openPopup();
-          }
-        }}
-        className={styles.hovered}
-        style={{
-          top: top,
-          left: left,
-        }}
-      >
-       
-      </div>
-    ));
-  };
+  }, [token, navigate]);
+
+  const currentBuildings = buildingList.slice(currentIndex, currentIndex + slideCount);
 
   return (
     <div>
       <Header />
       <div className={styles.mainContainer}>
-        {showMessage && (
+        {(selectedBuilding?.sensorCount < 1 || selectedBuilding==null) && (
           <div
             className={`${styles.welcomeMessage} ${
               isFadingOut ? styles.fadeOutMessage : ""
@@ -198,7 +144,8 @@ function Main() {
             </p>
           </div>
         )}
-        {selectedBuilding === "광개토관" && (
+
+        {selectedBuilding?.sensorCount > 0 && (
           <div className={styles.topMessage} style={{ width: "400px" }}>
             <img
               src={currentbuilding}
@@ -206,7 +153,7 @@ function Main() {
               style={{ width: "80px", height: "84px", marginRight: "16px" }}
             />
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <div className={styles.topMessageDetail}>광개토관</div>
+              <div className={styles.topMessageDetail}>{selectedBuilding?.name}</div>
               <p className={styles.another}>
                 <span
                   onClick={() => (window.location.href = "/")}
@@ -231,86 +178,99 @@ function Main() {
             </div>
           </div>
         )}
+
         <div className={styles.content}>
-          <div className={styles.buildings}>
-            <div
-              className={`${styles.building} ${
-                selectedBuilding === "광개토관" ? styles.fadeOut : ""
-              }`}
-              onClick={() => openshowNoSensorPopup()}
-            >
-              <img src={jungbo} alt="세종관 P" />
-              <h2>세종관 P</h2>
-              <div className={styles.sensorInfo}>
-                <p>설치된 센서</p>
-                <p>
-                  0 <span className={styles.greenLight}></span>
-                </p>
-                <p>
-                  0 <span className={styles.redLight}></span>
-                </p>
-              </div>
-            </div>
-            <div
-              className={`${styles.building} ${
-                selectedBuilding !== null && selectedBuilding !== "광개토관"
-                  ? styles.fadeOut
-                  : ""
-              } ${selectedBuilding === "광개토관" ? styles.moveLeft : ""}`}
-              onClick={() => handleBuildingClick("광개토관", null)}
-              onMouseEnter={(e) => {
-                if (selectedBuilding === "광개토관") {
-                  e.preventDefault();
-                }
-              }}
-            >
-              <img src={singong} alt="광개토관" />
-              <h2>광개토관</h2>
-              <div className={styles.sensorInfo}>
-                <p>설치된 센서</p>
-                <p>
-                  8 <span className={styles.greenLight}></span>
-                </p>
-                <p>
-                  0 <span className={styles.redLight}></span>
-                </p>
-              </div>
-            </div>
+        {buildingList.length === 0 && (
+  <div style={{
+    display: 'flex', 
+    flexDirection: 'column', 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    textAlign: 'center',
+    marginLeft: '26%',
+    height: '100vh'  // 화면 전체 높이를 차지하도록 설정
+  }}>
+    <Link to="/contact">
+    <img 
+      src={addInage} 
+      alt="Add Building" 
+ 
+      style={{
+        width: '50%', 
+        cursor: 'pointer' // 마우스를 올렸을 때 클릭 모양 변경
+      }} 
+    /></Link>
+    <p style={{
+      width: '80%', 
+      fontSize: '24px', 
+      fontWeight: 'bold'
+    }}>
+      건물 등록하러 가기
+    </p>
+  </div>
+)}
 
-            <div
-              className={`${styles.building} ${
-                selectedBuilding === "광개토관" ? styles.fadeOut : ""
-              }`}
-              onClick={() => openshowNoSensorPopup()}
-            >
-              <img src={wonheung} alt="명덕관" />
-              <h2>명덕관</h2>
-              <div className={styles.sensorInfo}>
-                <p>설치된 센서</p>
-                <p>
-                  0 <span className={styles.greenLight}></span>
-                </p>
-                <p>
-                  0 <span className={styles.redLight}></span>
-                </p>
-              </div>
-            </div>
 
-            {selectedBuilding === "광개토관" && (
-              <div className={styles.additionalContent}>
-                <div className={styles.selectedBuildingImage}>
-                <FloorPlanGroup   width="clamp(300px, 50vw, 640px)" buildingName="광개토관" maxFloor="3"/>
-                
-                  {renderFloorCoordinates()}
-                </div>
-              </div>
-            )}
+
+
+        {(selectedBuilding?.sensorCount < 1 || selectedBuilding==null) ? (
+  <div className={styles.buildings}>
+    <div className={styles.buildingsContainer}>
+      {currentBuildings.map((building, index) => (
+        <div
+          key={index}
+          className={styles.building}
+          onClick={() => { setSelectedBuilding(building); setShowNoSensorPopup(true)}}
+        >
+          <img src={building.imageUrl} alt={building.name} />
+          <h2>{building.name}</h2>
+          <div className={styles.sensorInfo}>
+            <p>설치된 센서</p>
+            <p>
+              {building.sensorCount}{" "}
+              <span className={styles.greenLight}></span>
+            </p>
           </div>
-          <div
-            className={styles.weatherAndLogs}
-            style={{ position: "relative" }}
-          >
-            {" "}
+        </div>
+      ))}
+    </div>
+  </div>
+) : (
+<div className={styles.buildings}>
+  <div className={styles.buildingsContainer}>
+    <div className={styles.building}>
+      <img src={selectedBuilding.imageUrl} alt={selectedBuilding.name} />
+      <h2>{selectedBuilding.name}</h2>
+      <div className={styles.sensorInfo}>
+        <p>설치된 센서</p>
+        <p>
+          {selectedBuilding.sensorCount}{" "}
+          <span className={styles.greenLight}></span>
+        </p>
+      </div>
+    </div>
+    <div
+  style={{
+    width: "40%",
+    height: "100%",
+    position: "relative", // 부모 요소를 기준으로 위치 설정
+  }}
+>
+  <FloorPlans
+    width="100%"
+    buildingName={selectedBuilding?.name}
+    maxFloor={selectedBuilding?.maxFloor}
+
+  />
+</div>
+
+
+  </div>
+</div>
+
+)}
+
+          <div className={styles.weatherAndLogs} style={{ position: "relative" }}>
             <div className={styles.weatherLogs}>
               <WeatherInfo
                 forecast={forecast}
@@ -324,7 +284,19 @@ function Main() {
             </div>
           </div>
         </div>
+        {(selectedBuilding?.sensorCount < 1 || selectedBuilding==null) &&(buildingList.length>0) &&(
+  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", gap: "50%" }}>
+    <button className={styles.arrowLeft} onClick={handlePrev}>
+      &lt;
+    </button>
+    <button className={styles.arrowRight} onClick={handleNext}>
+      &gt;
+    </button>
+  </div>
+)}
+
       </div>
+
       {showPopup && (
         <Popup
           popupContent="로그인이 필요한 서비스입니다."
@@ -337,20 +309,23 @@ function Main() {
       {showNoSensorPopup &&
         (token ? (
           <Popup
-            popupContent="해당 건물에 등록된 센서가 없습니다.등록하시겠습니까?"
+            popupContent="해당 건물에 등록된 센서가 없습니다. 등록하시겠습니까?"
             onClose={closeshowNoSensorPopupHandler}
             registerLink="/contact"
             buttonText="등록하기"
           />
         ) : (
           <Popup
-            popupContent="해당 건물에 등록된 센서가 없습니다.등록을 원하시면 로그인해주세요."
+            popupContent="로그인이 필요합니다. 로그인 후 센서를 확인하세요."
             onClose={closeshowNoSensorPopupHandler}
             registerLink="/login"
             buttonText="로그인"
           />
         ))}
     </div>
+
+ 
   );
 }
+
 export default Main;
